@@ -35,6 +35,7 @@ val premiumUnlockPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_RADIO_ID)
+    category("Premium")
 
     execute {
         isUnlockedFingerprint.method.addInstructions(

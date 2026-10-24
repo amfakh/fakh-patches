@@ -76,6 +76,7 @@ val disableAdSdksPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_RADIO_ID)
+    category("Privacy")
     dependsOn(premiumUnlockPatch, adSdksManifestPatch)
 
     execute {

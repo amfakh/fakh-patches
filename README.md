@@ -17,14 +17,19 @@ and load it as a local patch file.
 
 ## Patches
 
-All four are enabled by default.
+All of them are enabled by default. Morphe Manager groups them by category.
 
-| Patch | What it does |
-|---|---|
-| Premium unlock | Unlocks the lifetime premium client-side: no visual ads, and the music equalizer (EQ button in the mini player). |
-| Disable data collection SDKs | Stops the SDKs that collect location, Wi-Fi and mobile network data to sell or share with third parties. |
-| Disable analytics | Turns off Firebase Analytics, Crashlytics, Performance and Sessions, and the Facebook SDK. |
-| Disable ad SDKs | Keeps every ad network from starting at all, so none of them runs in the background. Requires Premium unlock. |
+| Category | Patch | What it does |
+|---|---|---|
+| Player | Song info in media notification | Shows the song title and its album art in the media notification and the system media player (lock screen, quick settings, Samsung Now Bar), instead of the station name with no picture. The station moves to the album line. |
+| Premium | Premium unlock | Unlocks the lifetime premium client-side: no visual ads, and the music equalizer (EQ button in the mini player). |
+| Privacy | Disable data collection SDKs | Stops the SDKs that collect location, Wi-Fi and mobile network data to sell or share with third parties. |
+| Privacy | Disable analytics | Turns off Firebase Analytics, Crashlytics, Performance and Sessions, and the Facebook SDK. |
+| Privacy | Disable ad SDKs | Keeps every ad network from starting at all, so none of them runs in the background. Requires Premium unlock. |
+
+The media notification patch adds a small extension class to the app. It downloads the artwork
+the station already publishes for the current song, scales it down and hands it to the media
+session, because Android's media player does not download web images by itself.
 
 ## What the app ships with, in plain terms
 
@@ -107,10 +112,11 @@ unlock.
 ## Build
 
 The Morphe Gradle plugin needs GitHub credentials for its package registry, even when building
-offline from the Gradle cache.
+offline from the Gradle cache. The extension module is an Android library, so it also needs an
+Android SDK; the build installs any platform or build tools it is missing.
 
 ```bash
-GITHUB_ACTOR=<github user> GITHUB_TOKEN=$(gh auth token) ./gradlew :patches:buildAndroid
+ANDROID_HOME=<android sdk> GITHUB_ACTOR=<github user> GITHUB_TOKEN=$(gh auth token) ./gradlew :patches:buildAndroid
 ```
 
 The bundle lands in `patches/build/libs/patches-<version>.mpp`. Load it in Morphe Manager as a
@@ -121,7 +127,7 @@ local patch file.
 With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs Java 21):
 
 ```bash
-java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.0.0.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
+java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.1.0.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
 ```
 
 ## Getting the APK

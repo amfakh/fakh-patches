@@ -69,6 +69,7 @@ val disableDataSdksPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_RADIO_ID)
+    category("Privacy")
 
     execute {
         listOf(trackingBlockedFingerprint, speedcheckerBlockedFingerprint).forEach {
