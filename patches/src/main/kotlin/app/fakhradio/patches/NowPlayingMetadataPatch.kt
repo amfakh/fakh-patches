@@ -44,7 +44,7 @@ val nowPlayingMetadataPatch = bytecodePatch(
             0,
             """
                 iget-object v0, p0, $SERVICE->${session.name}:$SESSION
-                invoke-static { v0, p2 }, $EXTENSION->decorate(Ljava/lang/Object;Landroid/os/Parcelable;)Landroid/os/Parcelable;
+                invoke-static { p0, v0, p2 }, $EXTENSION->decorate(Landroid/content/Context;Ljava/lang/Object;Landroid/os/Parcelable;)Landroid/os/Parcelable;
                 move-result-object p2
                 check-cast p2, $METADATA
             """,

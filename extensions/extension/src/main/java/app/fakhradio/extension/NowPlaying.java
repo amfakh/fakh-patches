@@ -1,5 +1,8 @@
 package app.fakhradio.extension;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -8,7 +11,9 @@ import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -49,6 +54,7 @@ public final class NowPlaying {
     private static final int CACHE_SIZE = 12;
     private static final int MAX_REDIRECTS = 5;
     private static final long RETRY_AFTER_MS = 30_000;
+    private static final String TAG = "FakhRadio";
 
     private static final ExecutorService loader = Executors.newFixedThreadPool(2);
     private static final Handler main = new Handler(Looper.getMainLooper());
@@ -64,6 +70,7 @@ public final class NowPlaying {
     /** When each URL last failed to download, so it is retried later instead of never. */
     private static final Map<String, Long> failedAt = new HashMap<>();
 
+    private static Context lastContext;
     private static Object lastSession;
     private static Parcelable lastMetadata;
 
@@ -78,11 +85,13 @@ public final class NowPlaying {
      * the station logo. Whatever is missing is fetched in the background, and the
      * metadata is published again once it arrives.
      *
+     * @param context  the media service, used to post the media notification again
      * @param session  the service's {@code MediaSessionCompat}
      * @param metadata the {@code MediaMetadataCompat} the app built, or null
      * @return the rewritten metadata, or {@code metadata} unchanged on any failure
      */
-    public static synchronized Parcelable decorate(Object session, Parcelable metadata) {
+    public static synchronized Parcelable decorate(Context context, Object session, Parcelable metadata) {
+        lastContext = context;
         lastSession = session;
         lastMetadata = metadata;
         if (metadata == null) {
@@ -112,6 +121,7 @@ public final class NowPlaying {
             }
             return fromBundle(metadata, bundle);
         } catch (Throwable t) {
+            Log.w(TAG, "decorate failed", t);
             return metadata;
         }
     }
@@ -154,11 +164,19 @@ public final class NowPlaying {
         });
     }
 
-    /** Sets the last metadata on the last session again, with whatever artwork is cached now. */
+    /**
+     * Sets the last metadata on the last session again, with whatever artwork is
+     * cached now, then posts the media notification again. SystemUI only reads
+     * the session metadata, artwork included, when the media notification is
+     * posted or updated; a metadata change alone leaves the card on the picture
+     * it read when the song started.
+     */
     private static void republish() {
+        Context context;
         Object session;
         Parcelable metadata;
         synchronized (NowPlaying.class) {
+            context = lastContext;
             session = lastSession;
             metadata = lastMetadata;
         }
@@ -166,17 +184,35 @@ public final class NowPlaying {
             return;
         }
         try {
-            Parcelable decorated = decorate(session, metadata);
+            Parcelable decorated = decorate(context, session, metadata);
             for (Method method : session.getClass().getMethods()) {
                 Class<?>[] parameters = method.getParameterTypes();
                 if (method.getReturnType() == void.class && parameters.length == 1
                         && parameters[0] == metadata.getClass()) {
                     method.invoke(session, decorated);
+                    repostMediaNotification(context);
                     return;
                 }
             }
-        } catch (Throwable ignored) {
+            Log.w(TAG, "republish found no setMetadata on " + session.getClass().getName());
+        } catch (Throwable t) {
             // The next metadata update from the app attaches the cached bitmap anyway.
+            Log.w(TAG, "republish failed", t);
+        }
+    }
+
+    /** Posts the app's media notification again unchanged, so SystemUI reads the session metadata anew. */
+    private static void repostMediaNotification(Context context) {
+        if (context == null) {
+            return;
+        }
+        NotificationManager manager = context.getSystemService(NotificationManager.class);
+        for (StatusBarNotification posted : manager.getActiveNotifications()) {
+            Notification notification = posted.getNotification();
+            if (notification.extras.containsKey(Notification.EXTRA_MEDIA_SESSION)) {
+                notification.flags |= Notification.FLAG_ONLY_ALERT_ONCE;
+                manager.notify(posted.getTag(), posted.getId(), notification);
+            }
         }
     }
 
@@ -204,6 +240,7 @@ public final class NowPlaying {
                         continue;
                     }
                     if (code != HttpURLConnection.HTTP_OK) {
+                        Log.w(TAG, "download " + current + " got HTTP " + code);
                         return null;
                     }
                     try (InputStream in = connection.getInputStream()) {
@@ -213,8 +250,9 @@ public final class NowPlaying {
                     connection.disconnect();
                 }
             }
-        } catch (Throwable ignored) {
+        } catch (Throwable t) {
             // Falls through to null; the URL is retried after RETRY_AFTER_MS.
+            Log.w(TAG, "download " + url + " failed", t);
         }
         return null;
     }
