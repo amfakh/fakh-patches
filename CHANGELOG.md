@@ -1,3 +1,9 @@
+## [1.2.2](https://github.com/amfakh/fakh-radio-patches/compare/v1.2.1...v1.2.2) (2026-10-24)
+
+### 🐛 Bug Fixes
+
+* show the song's album art in the media notification once it finishes downloading, instead of keeping the station logo ([1dc1652](https://github.com/amfakh/fakh-radio-patches/commit/1dc16525acad5311d07f15da98d88c3c37230f90))
+
 ## [1.2.1](https://github.com/amfakh/fakh-radio-patches/compare/v1.2.0...v1.2.1) (2026-10-24)
 
 ### 🐛 Bug Fixes
