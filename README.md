@@ -4,6 +4,17 @@ Patches for use with [Morphe](https://github.com/MorpheApp). The only app covere
 **Radio Indonesia** (`com.appmind.radios.id`, "Radio Streaming Indonesia" on APKPure), version
 `4.2.30`, as an XAPK.
 
+## Use
+
+In Morphe Manager, add this repository as a patch source:
+
+```
+https://github.com/amfakh/fakh-radio-patches
+```
+
+Or download the `.mpp` from [releases](https://github.com/amfakh/fakh-radio-patches/releases/latest)
+and load it as a local patch file.
+
 ## Patches
 
 All four are enabled by default.
