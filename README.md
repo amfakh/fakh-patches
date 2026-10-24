@@ -21,6 +21,7 @@ All of them are enabled by default. Morphe Manager groups them by category.
 
 | Category | Patch | What it does |
 |---|---|---|
+| Feature | Faster startup | Stops the splash screen from waiting up to 5 seconds on the Firebase Remote Config fetch, which happens about once a day or whenever the network is slow. The fetch still finishes in the background. |
 | Feature | Song info in media notification | Shows the song title and its album art in the media notification and the system media player (lock screen, quick settings, Samsung Now Bar), instead of the station name with no picture. The station moves to the album line. |
 | Premium | Premium unlock | Unlocks the lifetime premium client-side: no visual ads, and the music equalizer (EQ button in the mini player). Also keeps every ad network from starting at all, so none of them runs in the background. |
 | Privacy | Disable data collection SDKs | Stops the SDKs that collect location, Wi-Fi and mobile network data to sell or share with third parties. |
@@ -125,7 +126,7 @@ local patch file.
 With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs Java 21):
 
 ```bash
-java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.1.1.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
+java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.2.0.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
 ```
 
 ## Getting the APK

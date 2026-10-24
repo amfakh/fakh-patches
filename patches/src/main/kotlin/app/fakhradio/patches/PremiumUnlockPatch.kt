@@ -2,19 +2,12 @@ package app.fakhradio.patches
 
 import app.fakhradio.patches.shared.Constants.COMPATIBILITY_RADIO_ID
 import app.fakhradio.patches.shared.disableProviders
+import app.fakhradio.patches.shared.references
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import com.android.tools.smali.dexlib2.iface.Method
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import org.w3c.dom.Element
-
-/** Whether this method references anything whose descriptor starts with [prefix]. */
-private fun Method.references(prefix: String): Boolean =
-    implementation?.instructions?.any {
-        (it as? ReferenceInstruction)?.reference?.toString()?.startsWith(prefix) == true
-    } == true
 
 /**
  * Every premium check in the app (ads manager, mini player EQ button, paywall)
