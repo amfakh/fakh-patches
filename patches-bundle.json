@@ -1,0 +1,7 @@
+{
+  "created_at": "2026-10-24T15:41:03",
+  "description": "## v1.0.0\n\nFirst release for Radio Indonesia (com.appmind.radios.id) 4.2.30 XAPK.\n\n- Premium unlock: no visual ads and the music equalizer.\n- Disable data collection SDKs: Weplan, Wavebrook and its partners, Speedchecker, LowLagLabs and GeoTruth.\n- Disable analytics: Firebase Analytics, Crashlytics, Performance and Sessions, and the Facebook SDK.\n- Disable ad SDKs: keeps every ad network and AppHarbr from starting (requires Premium unlock).",
+  "download_url": "https://github.com/amfakh/fakh-radio-patches/releases/download/v1.0.0/patches-1.0.0.mpp",
+  "signature_download_url": "",
+  "version": "1.0.0"
+}
