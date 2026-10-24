@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-24T16:13:17",
-  "description": "## [1.1.1](https://github.com/amfakh/fakh-radio-patches/compare/v1.1.0...v1.1.1) (2026-10-24)\n\n### 🐛 Bug Fixes\n\n* fold Disable ad SDKs into Premium unlock, since it only works together with the unlock ([3e1541f](https://github.com/amfakh/fakh-radio-patches/commit/3e1541fc549db233fa9802ee1b2fe790834a6aa7))\n* rename the Player category to Feature ([3e1541f](https://github.com/amfakh/fakh-radio-patches/commit/3e1541fc549db233fa9802ee1b2fe790834a6aa7))",
-  "download_url": "https://github.com/amfakh/fakh-radio-patches/releases/download/v1.1.1/patches-1.1.1.mpp",
+  "created_at": "2026-10-24T16:19:22",
+  "description": "## [1.2.0](https://github.com/amfakh/fakh-radio-patches/compare/v1.1.1...v1.2.0) (2026-10-24)\n\n### ✨ New Features\n\n* add Faster startup to stop the splash screen from waiting up to 5 seconds on the remote config fetch ([34f1e9c](https://github.com/amfakh/fakh-radio-patches/commit/34f1e9c3d6ebd31dc0d4f3e0eca955ce80a633d9))",
+  "download_url": "https://github.com/amfakh/fakh-radio-patches/releases/download/v1.2.0/patches-1.2.0.mpp",
   "signature_download_url": "",
-  "version": "1.1.1"
+  "version": "1.2.0"
 }
