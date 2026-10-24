@@ -31,7 +31,7 @@ val nowPlayingMetadataPatch = bytecodePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_RADIO_ID)
-    category("Player")
+    category("Feature")
     extendWith("extensions/extension.mpe")
 
     execute {

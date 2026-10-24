@@ -21,11 +21,10 @@ All of them are enabled by default. Morphe Manager groups them by category.
 
 | Category | Patch | What it does |
 |---|---|---|
-| Player | Song info in media notification | Shows the song title and its album art in the media notification and the system media player (lock screen, quick settings, Samsung Now Bar), instead of the station name with no picture. The station moves to the album line. |
-| Premium | Premium unlock | Unlocks the lifetime premium client-side: no visual ads, and the music equalizer (EQ button in the mini player). |
+| Feature | Song info in media notification | Shows the song title and its album art in the media notification and the system media player (lock screen, quick settings, Samsung Now Bar), instead of the station name with no picture. The station moves to the album line. |
+| Premium | Premium unlock | Unlocks the lifetime premium client-side: no visual ads, and the music equalizer (EQ button in the mini player). Also keeps every ad network from starting at all, so none of them runs in the background. |
 | Privacy | Disable data collection SDKs | Stops the SDKs that collect location, Wi-Fi and mobile network data to sell or share with third parties. |
 | Privacy | Disable analytics | Turns off Firebase Analytics, Crashlytics, Performance and Sessions, and the Facebook SDK. |
-| Privacy | Disable ad SDKs | Keeps every ad network from starting at all, so none of them runs in the background. Requires Premium unlock. |
 
 The media notification patch adds a small extension class to the app. It downloads the artwork
 the station already publishes for the current song, scales it down and hands it to the media
@@ -92,12 +91,11 @@ Turbine (DT Exchange / Fyber), Meta Audience Network, Magnite and CloudX.
 On top of those there is **AppHarbr**, an ad quality service that inspects the ads being shown
 and reports on them.
 
-**How the patch stops them:** the ad manager's setup step, which initializes every network, is
-skipped, and so is the AppHarbr start. Ten of these SDKs also start themselves from a content
+**How Premium unlock stops them:** the ad manager's setup step, which initializes every network,
+is skipped, and so is the AppHarbr start. Ten of these SDKs also start themselves from a content
 provider before the app's own code runs; the patch disables those providers in the manifest, and
-removes Unity's entry from `androidx.startup`. Because premium already hides every ad slot,
-nothing in the UI looks for these SDKs afterwards, which is why this patch requires Premium
-unlock.
+removes Unity's entry from `androidx.startup`. This only works together with the unlock itself:
+premium hides every ad slot, so nothing in the UI looks for these SDKs afterwards.
 
 ### What is left on purpose
 
@@ -127,7 +125,7 @@ local patch file.
 With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs Java 21):
 
 ```bash
-java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.1.0.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
+java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.1.1.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
 ```
 
 ## Getting the APK
