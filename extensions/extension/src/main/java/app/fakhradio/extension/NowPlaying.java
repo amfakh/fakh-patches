@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -15,6 +16,12 @@ import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,13 +44,26 @@ public final class NowPlaying {
     private static final String DISPLAY_TITLE = "android.media.metadata.DISPLAY_TITLE";
     private static final String DISPLAY_SUBTITLE = "android.media.metadata.DISPLAY_SUBTITLE";
     private static final String DISPLAY_ICON_URI = "android.media.metadata.DISPLAY_ICON_URI";
+    private static final String STATION_ICON_URI = "appmind.media.metadata.PLAYABLE_ICON_URI";
     private static final int MAX_ART_SIZE = 512;
+    private static final int CACHE_SIZE = 12;
+    private static final int MAX_REDIRECTS = 5;
+    private static final long RETRY_AFTER_MS = 30_000;
 
-    private static final ExecutorService loader = Executors.newSingleThreadExecutor();
+    private static final ExecutorService loader = Executors.newFixedThreadPool(2);
     private static final Handler main = new Handler(Looper.getMainLooper());
 
-    private static String artUrl;
-    private static Bitmap art;
+    /** Downloaded artwork by URL, least recently used first. */
+    private static final Map<String, Bitmap> cache = new LinkedHashMap<String, Bitmap>(16, 0.75f, true) {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<String, Bitmap> eldest) {
+            return size() > CACHE_SIZE;
+        }
+    };
+    private static final Set<String> loading = new HashSet<>();
+    /** When each URL last failed to download, so it is retried later instead of never. */
+    private static final Map<String, Long> failedAt = new HashMap<>();
+
     private static Object lastSession;
     private static Parcelable lastMetadata;
 
@@ -53,6 +73,10 @@ public final class NowPlaying {
     /**
      * Called by the patched {@code MediaService2.Z()} right before it hands
      * {@code metadata} to {@code session}. Returns the metadata to publish instead.
+     *
+     * <p>Attaches the best artwork that is already downloaded: the song's, else
+     * the station logo. Whatever is missing is fetched in the background, and the
+     * metadata is published again once it arrives.
      *
      * @param session  the service's {@code MediaSessionCompat}
      * @param metadata the {@code MediaMetadataCompat} the app built, or null
@@ -66,7 +90,6 @@ public final class NowPlaying {
         }
         try {
             Bundle bundle = toBundle(metadata);
-            String url = firstNonEmpty(bundle.getString(ART_URI), bundle.getString(DISPLAY_ICON_URI));
             CharSequence song = bundle.getString(TITLE);
             if (!TextUtils.isEmpty(song)) {
                 // The station moves to the album line, where players that show
@@ -75,10 +98,17 @@ public final class NowPlaying {
                 bundle.putCharSequence(DISPLAY_TITLE, song);
                 bundle.putCharSequence(DISPLAY_SUBTITLE, bundle.getString(ARTIST));
             }
-            if (url != null && url.equals(artUrl) && art != null) {
-                bundle.putParcelable(ART, art);
-            } else if (url != null && !url.equals(artUrl)) {
+            Bitmap art = null;
+            for (String url : artworkUrls(bundle)) {
+                Bitmap cached = cache.get(url);
+                if (cached != null) {
+                    art = cached;
+                    break;
+                }
                 load(url);
+            }
+            if (art != null) {
+                bundle.putParcelable(ART, art);
             }
             return fromBundle(metadata, bundle);
         } catch (Throwable t) {
@@ -86,26 +116,45 @@ public final class NowPlaying {
         }
     }
 
+    /** The artwork URLs in {@code bundle}, best first: the song's, then the station logo. */
+    private static Set<String> artworkUrls(Bundle bundle) {
+        Set<String> urls = new LinkedHashSet<>();
+        for (String key : new String[] {ART_URI, DISPLAY_ICON_URI, STATION_ICON_URI}) {
+            String url = bundle.getString(key);
+            if (!TextUtils.isEmpty(url)) {
+                urls.add(url);
+            }
+        }
+        return urls;
+    }
+
     /**
-     * Downloads {@code url} off the main thread, then publishes the last metadata
-     * again so it picks up the bitmap.
+     * Downloads {@code url} off the main thread unless it is already loading or
+     * failed recently, then publishes the last metadata again so it picks the
+     * bitmap up.
      */
     private static void load(String url) {
-        artUrl = url;
-        art = null;
+        Long failed = failedAt.get(url);
+        if (loading.contains(url) || (failed != null && SystemClock.elapsedRealtime() - failed < RETRY_AFTER_MS)) {
+            return;
+        }
+        loading.add(url);
         loader.execute(() -> {
             Bitmap bitmap = download(url);
             synchronized (NowPlaying.class) {
-                if (bitmap == null || !url.equals(artUrl)) {
+                loading.remove(url);
+                if (bitmap == null) {
+                    failedAt.put(url, SystemClock.elapsedRealtime());
                     return;
                 }
-                art = bitmap;
+                failedAt.remove(url);
+                cache.put(url, bitmap);
             }
             main.post(NowPlaying::republish);
         });
     }
 
-    /** Sets the last metadata on the last session again, now with the bitmap attached. */
+    /** Sets the last metadata on the last session again, with whatever artwork is cached now. */
     private static void republish() {
         Object session;
         Parcelable metadata;
@@ -131,33 +180,56 @@ public final class NowPlaying {
         }
     }
 
-    /** Fetches and decodes the image at {@code url}, scaled down to about {@code MAX_ART_SIZE} pixels. */
+    /**
+     * Fetches and decodes the image at {@code url}, scaled down to about
+     * {@code MAX_ART_SIZE} pixels. Follows redirects itself, since
+     * {@link HttpURLConnection} does not follow one between http and https.
+     */
     private static Bitmap download(String url) {
-        HttpURLConnection connection = null;
         try {
-            connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setConnectTimeout(10_000);
-            connection.setReadTimeout(10_000);
-            byte[] data;
-            try (InputStream in = connection.getInputStream()) {
-                data = readAll(in);
+            URL current = new URL(url);
+            for (int hop = 0; hop <= MAX_REDIRECTS; hop++) {
+                HttpURLConnection connection = (HttpURLConnection) current.openConnection();
+                try {
+                    connection.setInstanceFollowRedirects(false);
+                    connection.setConnectTimeout(10_000);
+                    connection.setReadTimeout(10_000);
+                    int code = connection.getResponseCode();
+                    if (code >= 300 && code < 400) {
+                        String location = connection.getHeaderField("Location");
+                        if (location == null) {
+                            return null;
+                        }
+                        current = new URL(current, location);
+                        continue;
+                    }
+                    if (code != HttpURLConnection.HTTP_OK) {
+                        return null;
+                    }
+                    try (InputStream in = connection.getInputStream()) {
+                        return decode(readAll(in));
+                    }
+                } finally {
+                    connection.disconnect();
+                }
             }
-            BitmapFactory.Options bounds = new BitmapFactory.Options();
-            bounds.inJustDecodeBounds = true;
-            BitmapFactory.decodeByteArray(data, 0, data.length, bounds);
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 1;
-            while (Math.max(bounds.outWidth, bounds.outHeight) / (options.inSampleSize * 2) >= MAX_ART_SIZE) {
-                options.inSampleSize *= 2;
-            }
-            return BitmapFactory.decodeByteArray(data, 0, data.length, options);
-        } catch (Throwable t) {
-            return null;
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
+        } catch (Throwable ignored) {
+            // Falls through to null; the URL is retried after RETRY_AFTER_MS.
         }
+        return null;
+    }
+
+    /** Decodes {@code data}, halving the size until it is at most about {@code MAX_ART_SIZE} pixels. */
+    private static Bitmap decode(byte[] data) {
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length, bounds);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 1;
+        while (Math.max(bounds.outWidth, bounds.outHeight) / (options.inSampleSize * 2) >= MAX_ART_SIZE) {
+            options.inSampleSize *= 2;
+        }
+        return BitmapFactory.decodeByteArray(data, 0, data.length, options);
     }
 
     /** Reads {@code in} to the end. */
@@ -196,13 +268,5 @@ public final class NowPlaying {
         } finally {
             parcel.recycle();
         }
-    }
-
-    /** Returns {@code first} unless it is null or empty, else {@code second} unless empty, else null. */
-    private static String firstNonEmpty(String first, String second) {
-        if (!TextUtils.isEmpty(first)) {
-            return first;
-        }
-        return TextUtils.isEmpty(second) ? null : second;
     }
 }

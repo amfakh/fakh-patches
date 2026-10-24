@@ -29,7 +29,9 @@ All of them are enabled by default. Morphe Manager groups them by category.
 
 The media notification patch adds a small extension class to the app. It downloads the artwork
 the station already publishes for the current song, scales it down and hands it to the media
-session, because Android's media player does not download web images by itself.
+session, because Android's media player does not download web images by itself. Until the song's
+artwork arrives, or when a station has none, the card shows the station logo. Failed downloads
+are retried after 30 seconds.
 
 ## What the app ships with, in plain terms
 
@@ -126,7 +128,7 @@ local patch file.
 With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs Java 21):
 
 ```bash
-java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.2.0.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
+java -jar morphe-desktop-1.19.0-all.jar patch -p patches/build/libs/patches-1.2.1.mpp -o radio-patched.apk Radio+Streaming+Indonesia_4.2.30_APKPure.xapk
 ```
 
 ## Getting the APK
