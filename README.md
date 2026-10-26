@@ -1,7 +1,10 @@
 # Fakh Patches
 
-Patches for use with [Morphe](https://github.com/MorpheApp). The only app covered so far is
-**GitHub** (`com.github.android`), version `1.282.0`, as the APKM from APKMirror.
+Patches for use with [Morphe](https://github.com/MorpheApp). Apps covered so far:
+
+| App | Package | Version | Format |
+|---|---|---|---|
+| GitHub | `com.github.android` | `1.282.0` | APKM from APKMirror |
 
 ## Use
 
