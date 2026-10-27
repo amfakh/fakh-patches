@@ -1,3 +1,17 @@
+## [1.3.0](https://github.com/amfakh/fakh-patches/compare/v1.2.1...v1.3.0) (2026-10-27)
+
+### ✨ New Features
+
+* **Radio:** add patches for Radio Indonesia 4.2.30: premium unlock, disable data collection SDKs and disable analytics ([84fd82a](https://github.com/amfakh/fakh-patches/commit/84fd82a3221916f0cd7dd0e3c30fde8626884d2c))
+* **Radio:** show the song's title and album art in the media notification, and group patches by category ([791af16](https://github.com/amfakh/fakh-patches/commit/791af165da4a7ce97670c1d73f62dcb6a0330e94))
+* **Radio:** add Faster startup to stop the splash screen from waiting on the remote config fetch ([34f1e9c](https://github.com/amfakh/fakh-patches/commit/34f1e9c3d6ebd31dc0d4f3e0eca955ce80a633d9))
+
+### 🐛 Bug Fixes
+
+* **Radio:** fold Disable ad SDKs into Premium unlock, since it only works together with the unlock, and rename the Player category to Feature ([3e1541f](https://github.com/amfakh/fakh-patches/commit/3e1541fc549db233fa9802ee1b2fe790834a6aa7))
+* **Radio:** keep album art in the media notification by retrying failed downloads, following redirects and showing the station logo meanwhile ([11315a9](https://github.com/amfakh/fakh-patches/commit/11315a94179d230b386c8f44844627e918d0f2f1))
+* **Radio:** show the song's album art in the media notification once it finishes downloading ([1dc1652](https://github.com/amfakh/fakh-patches/commit/1dc16525acad5311d07f15da98d88c3c37230f90))
+
 ## [1.2.1](https://github.com/amfakh/fakh-patches/compare/v1.2.0...v1.2.1) (2026-10-27)
 
 ### ✨ New Features
