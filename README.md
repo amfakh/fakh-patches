@@ -5,6 +5,7 @@ Patches for use with [Morphe](https://github.com/MorpheApp). Apps covered so far
 | App | Package | Version | Format |
 |---|---|---|---|
 | GitHub | `com.github.android` | `1.282.0` | APKM from APKMirror |
+| LinkedIn | `com.linkedin.android` | `4.1.1264` (also `4.1.1261`) | APKM from APKMirror |
 
 ## Use
 
@@ -18,6 +19,8 @@ Or download the `.mpp` from [releases](https://github.com/amfakh/fakh-patches/re
 load it as a local patch file.
 
 ## Patches
+
+### GitHub
 
 | Category | Patch | What it does |
 |---|---|---|
@@ -34,6 +37,24 @@ launch.
 
 Install over the app you already have only if it was patched by the same Morphe Manager keystore;
 otherwise Android asks you to uninstall first.
+
+### LinkedIn
+
+Based on [Michii Patches](https://github.com/heyymichii/michii-patches) by heyymichii (GPLv3).
+
+| Category | Patch | What it does |
+|---|---|---|
+| Ads | Hide ads, Hide promoted jobs, Hide suggested posts, Hide Premium upsells | Removes promoted posts and jobs, suggested posts, and Premium/AI upsells, including the Me panel card. |
+| Feed | Feed filters, Disable double-tap like | Optional filters (focus mode, celebrations, job cards, reposts, videos, "New posts" pill, "See translation"), and no like on double tap. |
+| Media | Download media | A download button on full screen photos, videos, profile photos and banners. |
+| Chat | Messaging | Hides sponsored messages, with an optional ghost mode. |
+| Links | Open links directly, Sanitize share links | Skips the warning page, resolves `lnkd.in` links, and strips tracking from shared links. |
+| Privacy | Block tracking | Optional block of most analytics events. |
+| Theme | Material You, Remove gaps and dividers | Wallpaper colors for accents, backgrounds, cards, bars and borders, and flat lists without gaps or dividers. |
+| Sign-in | GmsCore support | Sign in with Google through [microG RE](https://github.com/MorpheApp/microg-RE). |
+
+Settings are in **Fakh Patches** on LinkedIn's Settings screen (Me panel → Settings & Privacy), or long press
+the Home tab.
 
 ## Build
 

@@ -19,3 +19,11 @@ provided that such references:
 - Are accurate, factual, and non-misleading;
 - Do not suggest authorship by the Morphe project; and
 - Appear only in a secondary or descriptive context, not as part of the product or project name.
+
+
+LinkedIn patches
+================
+
+The LinkedIn patches and their extension (app.fakh.patches.linkedin and
+app.fakh.extension.linkedin) are based on Michii Patches by heyymichii
+(https://github.com/heyymichii/michii-patches), licensed under GPLv3.
