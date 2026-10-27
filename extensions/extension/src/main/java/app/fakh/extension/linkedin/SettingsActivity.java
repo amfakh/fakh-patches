@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -59,14 +61,18 @@ public final class SettingsActivity extends Activity {
         final Runnable onChange;
         /** Non-null for rows that open a picker instead of a switch. */
         final ValueRow value;
+        /** A checkbox instead of a switch, for one choice of a list. */
+        final boolean checkbox;
 
-        Item(String key, boolean def, String title, String summary, Runnable onChange, ValueRow value) {
+        Item(String key, boolean def, String title, String summary, Runnable onChange, ValueRow value,
+                boolean checkbox) {
             this.key = key;
             this.def = def;
             this.title = title;
             this.summary = summary;
             this.onChange = onChange;
             this.value = value;
+            this.checkbox = checkbox;
         }
     }
 
@@ -92,12 +98,17 @@ public final class SettingsActivity extends Activity {
         }
 
         Category toggle(String key, boolean def, String title, String summary, Runnable onChange) {
-            items.add(new Item(key, def, title, summary, onChange, null));
+            items.add(new Item(key, def, title, summary, onChange, null, false));
+            return this;
+        }
+
+        Category check(String key, boolean def, String title) {
+            items.add(new Item(key, def, title, null, null, null, true));
             return this;
         }
 
         Category value(String title, ValueRow value) {
-            items.add(new Item(null, false, title, null, null, value));
+            items.add(new Item(null, false, title, null, null, value, false));
             return this;
         }
 
@@ -155,15 +166,23 @@ public final class SettingsActivity extends Activity {
                                 "Work anniversaries and new jobs.")
                         .toggle(Settings.HIDE_FEED_JOBS, false, "Hide job posts",
                                 "Job cards in your feed.")
-                        .toggle(Settings.HIDE_REPOSTS, false, "Hide reposts",
-                                "Posts reshared from someone else.")
+                        .toggle(Settings.HIDE_REPOSTS, false, "Hide network activity",
+                                "Posts shown because someone you know liked, commented on, or reposted them.")
                         .toggle(Settings.HIDE_VIDEO_POSTS, false, "Hide video posts", "Posts with a video.")
                         .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Hide the \"New posts\" button",
                                 "The button at the top of the feed.")
-                        .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"See translation\"",
+                        .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"Show translation\"",
                                 "Shown below posts in other languages.");
             }
             categories.add(feed);
+        }
+
+        if (Settings.isMoreMenuIncluded()) {
+            Category more = new Category("More tab")
+                    .toggle(Settings.HIDE_MORE_TAB, true, "Move to the profile menu",
+                            "Hide the More tab and list its items in the profile menu.");
+            for (MoreMenu.Item item : MoreMenu.items()) more.check(item.key(), true, item.label);
+            categories.add(more);
         }
 
         if (Settings.isRemoveGapsAndDividersIncluded() || Settings.isMaterialYouIncluded()) {
@@ -552,12 +571,19 @@ public final class SettingsActivity extends Activity {
         row.addView(texts(item.title, item.summary, categoryName),
                 new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
-        Switch toggle = new Switch(this);
-        toggle.setChecked(Settings.get(item.key, item.def));
         int[][] states = {{android.R.attr.state_checked}, {}};
-        toggle.setThumbTintList(new ColorStateList(states, new int[]{accent, dark ? 0xFFB0B0B0 : 0xFFFFFFFF}));
-        toggle.setTrackTintList(new ColorStateList(states, new int[]{(accent & 0x00FFFFFF) | 0x80000000,
-                dark ? 0xFF474747 : 0xFFBDBDBD}));
+        CompoundButton toggle;
+        if (item.checkbox) {
+            toggle = new CheckBox(this);
+            toggle.setButtonTintList(new ColorStateList(states, new int[]{accent, textSecondary}));
+        } else {
+            Switch track = new Switch(this);
+            track.setThumbTintList(new ColorStateList(states, new int[]{accent, dark ? 0xFFB0B0B0 : 0xFFFFFFFF}));
+            track.setTrackTintList(new ColorStateList(states, new int[]{(accent & 0x00FFFFFF) | 0x80000000,
+                    dark ? 0xFF474747 : 0xFFBDBDBD}));
+            toggle = track;
+        }
+        toggle.setChecked(Settings.get(item.key, item.def));
         toggle.setOnCheckedChangeListener((button, checked) -> {
             Settings.set(item.key, checked);
             showRestartBanner();
@@ -635,6 +661,7 @@ public final class SettingsActivity extends Activity {
                 {"Block tracking", Settings.isBlockTrackingIncluded()},
                 {"Remove gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
                 {"Material You", Settings.isMaterialYouIncluded()},
+                {"More tab", Settings.isMoreMenuIncluded()},
                 {"GmsCore support", Settings.isGmsCoreSupportIncluded()},
         };
     }

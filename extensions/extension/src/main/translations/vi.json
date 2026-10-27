@@ -21,13 +21,13 @@
   "Work anniversaries and new jobs.": "",
   "Hide job posts": "",
   "Job cards in your feed.": "Thẻ việc làm trên bảng tin chính.",
-  "Hide reposts": "Ẩn bài đăng lại",
-  "Posts reshared from someone else.": "",
+  "Hide network activity": "",
+  "Posts shown because someone you know liked, commented on, or reposted them.": "",
   "Hide video posts": "Ẩn bài viết có video",
   "Posts with a video.": "",
   "Hide the \"New posts\" button": "Ẩn nút \"Bài viết mới\"",
   "The button at the top of the feed.": "",
-  "Hide \"See translation\"": "Ẩn \"Xem bản dịch\"",
+  "Hide \"Show translation\"": "",
   "Shown below posts in other languages.": "",
   "Download button": "Nút tải xuống",
   "On photos, videos, profile photos, and banners.": "",
@@ -102,5 +102,8 @@
   "RESTART": "KHỞI ĐỘNG LẠI",
   "Restart LinkedIn": "",
   "Based on Michii Patches by heyymichii": "",
-  "Can't open the link": ""
+  "Can't open the link": "",
+  "More tab": "",
+  "Move to the profile menu": "",
+  "Hide the More tab and list its items in the profile menu.": ""
 }

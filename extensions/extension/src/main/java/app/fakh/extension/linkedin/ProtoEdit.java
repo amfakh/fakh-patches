@@ -118,6 +118,29 @@ final class ProtoEdit {
         return write(fields);
     }
 
+    /** Replaces every length-delimited field that starts with {@code prefix} with {@code to}, at any depth. */
+    static byte[] replaceStringsStartingWith(byte[] data, String prefix, String to) {
+        if (!contains(data, prefix)) return data;
+        List<Field> fields = parse(data);
+        if (fields == null) return data;
+        byte[] prefixBytes = prefix.getBytes(StandardCharsets.UTF_8);
+        for (Field field : fields) {
+            if (field.wireType != 2) continue;
+            if (startsWith(field.data, prefixBytes)) {
+                field.data = to.getBytes(StandardCharsets.UTF_8);
+            } else if (contains(field.data, prefix)) {
+                field.data = replaceStringsStartingWith(field.data, prefix, to);
+            }
+        }
+        return write(fields);
+    }
+
+    private static boolean startsWith(byte[] data, byte[] prefix) {
+        if (data.length < prefix.length) return false;
+        for (int i = 0; i < prefix.length; i++) if (data[i] != prefix[i]) return false;
+        return true;
+    }
+
     /** Replaces varint field {@code number} holding {@code from} with {@code to}, at any depth. */
     static byte[] replaceVarint(byte[] data, int number, long from, long to) {
         List<Field> fields = parse(data);

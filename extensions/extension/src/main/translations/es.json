@@ -21,13 +21,13 @@
   "Work anniversaries and new jobs.": "",
   "Hide job posts": "",
   "Job cards in your feed.": "Tarjetas de empleo en el feed de inicio.",
-  "Hide reposts": "Ocultar publicaciones compartidas",
-  "Posts reshared from someone else.": "",
+  "Hide network activity": "",
+  "Posts shown because someone you know liked, commented on, or reposted them.": "",
   "Hide video posts": "Ocultar publicaciones con video",
   "Posts with a video.": "",
   "Hide the \"New posts\" button": "Ocultar el botón \"Nuevas publicaciones\"",
   "The button at the top of the feed.": "",
-  "Hide \"See translation\"": "Ocultar \"Ver traducción\"",
+  "Hide \"Show translation\"": "",
   "Shown below posts in other languages.": "",
   "Download button": "Botón de descarga",
   "On photos, videos, profile photos, and banners.": "",
@@ -102,5 +102,8 @@
   "RESTART": "REINICIAR",
   "Restart LinkedIn": "",
   "Based on Michii Patches by heyymichii": "",
-  "Can't open the link": ""
+  "Can't open the link": "",
+  "More tab": "",
+  "Move to the profile menu": "",
+  "Hide the More tab and list its items in the profile menu.": ""
 }

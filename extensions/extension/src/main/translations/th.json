@@ -21,13 +21,13 @@
   "Work anniversaries and new jobs.": "",
   "Hide job posts": "",
   "Job cards in your feed.": "การ์ดงานในฟีดหน้าแรก",
-  "Hide reposts": "ซ่อนการรีโพสต์",
-  "Posts reshared from someone else.": "",
+  "Hide network activity": "",
+  "Posts shown because someone you know liked, commented on, or reposted them.": "",
   "Hide video posts": "ซ่อนโพสต์วิดีโอ",
   "Posts with a video.": "",
   "Hide the \"New posts\" button": "ซ่อนปุ่ม \"โพสต์ใหม่\"",
   "The button at the top of the feed.": "",
-  "Hide \"See translation\"": "ซ่อน \"ดูคำแปล\"",
+  "Hide \"Show translation\"": "",
   "Shown below posts in other languages.": "",
   "Download button": "ปุ่มดาวน์โหลด",
   "On photos, videos, profile photos, and banners.": "",
@@ -102,5 +102,8 @@
   "RESTART": "รีสตาร์ท",
   "Restart LinkedIn": "",
   "Based on Michii Patches by heyymichii": "",
-  "Can't open the link": ""
+  "Can't open the link": "",
+  "More tab": "",
+  "Move to the profile menu": "",
+  "Hide the More tab and list its items in the profile menu.": ""
 }

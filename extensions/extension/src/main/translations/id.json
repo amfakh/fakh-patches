@@ -21,13 +21,13 @@
   "Work anniversaries and new jobs.": "Ulang tahun kerja dan pekerjaan baru.",
   "Hide job posts": "Sembunyikan post lowongan",
   "Job cards in your feed.": "Kartu lowongan di feed.",
-  "Hide reposts": "Sembunyikan repost",
-  "Posts reshared from someone else.": "Post yang dibagikan ulang dari orang lain.",
+  "Hide network activity": "Sembunyikan aktivitas jaringan",
+  "Posts shown because someone you know liked, commented on, or reposted them.": "Post yang muncul karena orang yang kamu kenal menyukai, mengomentari, atau me-repost-nya.",
   "Hide video posts": "Sembunyikan post video",
   "Posts with a video.": "Post yang berisi video.",
   "Hide the \"New posts\" button": "Sembunyikan tombol \"Post baru\"",
   "The button at the top of the feed.": "Tombol di atas feed.",
-  "Hide \"See translation\"": "Sembunyikan \"Lihat terjemahan\"",
+  "Hide \"Show translation\"": "Sembunyikan \"Tampilkan terjemahan\"",
   "Shown below posts in other languages.": "Muncul di bawah post berbahasa lain.",
   "Download button": "Tombol download",
   "On photos, videos, profile photos, and banners.": "Di foto, video, foto profil, dan banner.",
@@ -107,5 +107,8 @@
   "Colors from your wallpaper across the app.": "Warna dari wallpaper di seluruh aplikasi.",
   "Restart LinkedIn": "Restart LinkedIn",
   "Based on Michii Patches by heyymichii": "Berbasis Michii Patches oleh heyymichii",
-  "Can't open the link": "Tidak bisa membuka link"
+  "Can't open the link": "Tidak bisa membuka link",
+  "More tab": "Tab More",
+  "Move to the profile menu": "Pindahkan ke menu profil",
+  "Hide the More tab and list its items in the profile menu.": "Sembunyikan tab More dan tampilkan isinya di menu profil."
 }

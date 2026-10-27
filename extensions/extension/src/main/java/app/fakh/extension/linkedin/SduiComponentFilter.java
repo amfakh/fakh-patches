@@ -1,7 +1,10 @@
 package app.fakh.extension.linkedin;
 
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Hook for the server driven UI (SDUI) screens, which render through
@@ -15,12 +18,43 @@ public final class SduiComponentFilter {
     private static final String MEDIA_SCREEN_PREFIX = "com.linkedin.sdui.impl.mediaproduct.screens.";
     private static final String PROFILE_MEDIA_PREFIX = "com.linkedin.sdui.impl.profile.destinations.";
 
+    /** Social count buttons of 4.1.1264: the count is a format string in the button, filled in from state. */
+    private static final Set<String> COUNT_BUTTONS = new HashSet<>(Arrays.asList(
+            "reaction-button", "feed-comment-button", "feed-share-button", "comment-reaction-button",
+            "comment-container", "comment-reply"));
+    private static final String[] COUNT_FORMATS = {"{0,plural,", "{0,number,"};
+
+    /**
+     * Called with every SDUI component before it is transformed; returns it or an edited copy. Focus mode blanks the
+     * counts of the like, comment and repost buttons, and the Settings screen gets the Fakh Patches row.
+     */
+    public static Object rewrite(Object component) {
+        component = SduiSettingsEntry.inject(component);
+        if (!Settings.focusMode()) return component;
+        try {
+            Object viewTracking = Proto.is(component, "hasViewTracking") ? Proto.call(component, "getViewTracking") : null;
+            String viewName = Proto.string(viewTracking, "getViewName");
+            if (!COUNT_BUTTONS.contains(viewName)) return component;
+            byte[] bytes = payload(component);
+            if (bytes == null) return component;
+            byte[] edited = bytes;
+            for (String format : COUNT_FORMATS) edited = ProtoEdit.replaceStringsStartingWith(edited, format, "\u200b");
+            if (edited == bytes) return component;
+            Object copy = component.getClass().getMethod("parseFrom", byte[].class).invoke(null, (Object) edited);
+            return copy != null ? copy : component;
+        } catch (Throwable t) {
+            Diagnostics.error("rewrite failed", t);
+            return component;
+        }
+    }
+
     public static boolean shouldHide(Object component) {
         try {
             Object viewTracking = Proto.is(component, "hasViewTracking")
                     ? Proto.call(component, "getViewTracking") : null;
             String viewName = Proto.string(viewTracking, "getViewName");
             String screenName = Proto.string(component, "getObservabilityViewName");
+            if (MoreMenu.MORE_SCREEN.equals(screenName)) MoreMenu.capture(payload(component));
 
             switch (viewName) {
                 case "feed-full-update":
@@ -34,6 +68,7 @@ public final class SduiComponentFilter {
                 case "feed-comment-count":
                 case "feed-repost-count":
                 case "comment-reaction-count":
+                case "view-likers":
                     return hide(Settings.focusMode(), "focus mode: " + viewName);
                 case "feed-new-update-pill":
                     return hide(Settings.hideNewPostsPill(), "new posts pill");
@@ -46,6 +81,8 @@ public final class SduiComponentFilter {
                 default:
                     break;
             }
+
+            if (MoreMenu.hideItem(viewName)) return hide(true, "more item: " + viewName);
 
             if (Settings.hidePremium() && viewName.contains("upsell")) {
                 // premium-upsell-card, profile-ai-enhance-card-upsell, taj-home-upsell, ...
@@ -89,8 +126,12 @@ public final class SduiComponentFilter {
         if (jobs && ProtoScanner.containsAscii(payload, "feed-job-card-entity")) {
             return hide(true, "job post");
         }
-        if (reposts && ProtoScanner.containsAscii(payload, "feed-original-share-description")) {
-            return hide(true, "repost");
+        // Posts shown because of someone in the network ("X likes this", "X commented", "X reposted this",
+        // "Followed by X") carry a header with that person's picture, or a highlighted comment of theirs; posts of
+        // people you follow have neither.
+        if (reposts && (ProtoScanner.containsAscii(payload, "feed-header-actor-image")
+                || ProtoScanner.containsAscii(payload, "comment-container"))) {
+            return hide(true, "network activity");
         }
         if (videos && ProtoScanner.containsAscii(payload, "large-single-video-view")) {
             return hide(true, "video post");

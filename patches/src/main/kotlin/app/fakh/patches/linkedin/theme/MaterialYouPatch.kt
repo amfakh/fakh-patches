@@ -275,8 +275,24 @@ private val materialYouResourcePatch = resourcePatch {
         if (accents != THEME_ACCENTS.size) throw PatchException("Theme accent attributes not found")
         // -v31: the system palette only exists on Android 12+, older versions keep LinkedIn's colors.
         writeColors("values-v31", colors)
+
+        // The notification count badges of the bottom bar use the red that errors also use, so the badges
+        // are pointed at the blue that maps to the accent instead of changing the red.
+        for (badge in NOTIFICATION_BADGES) {
+            document("res/drawable/$badge.xml").use { document ->
+                val solid = document.getElementsByTagName("solid").item(0) as? Element
+                    ?: throw PatchException("$badge has no solid color")
+                solid.setAttribute("android:color", "@color/mercado_mvp_blue_70")
+            }
+        }
     }
 }
+
+/** Backgrounds of the bottom bar's notification badges, with a count and without. */
+private val NOTIFICATION_BADGES = listOf(
+    "mercado_mvp_notification_badge_determinate_bg_default",
+    "mercado_mvp_notification_badge_indeterminate_bg_default",
+)
 
 /** Background resource colors, and the theme attributes that use a generic white or gray as a background. */
 private val materialYouBackgroundsResourcePatch = resourcePatch {

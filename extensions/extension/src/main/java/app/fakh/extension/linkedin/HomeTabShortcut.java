@@ -13,6 +13,7 @@ final class HomeTabShortcut {
      * resets its listeners, so the listener is set once the window has laid out.
      */
     static void attach(Activity activity) {
+        GamesShortcut.schedule(activity);
         activity.getWindow().getDecorView().postDelayed(() -> {
             int id = activity.getResources().getIdentifier("tab_feed", "id", activity.getPackageName());
             View tab = id == 0 ? null : activity.findViewById(id);

@@ -41,7 +41,7 @@ val hidePromotedJobsPatch = bytecodePatch(
 val feedFiltersPatch = bytecodePatch(
     name = "Feed filters",
     description = "Adds optional filters (off by default, turned on in Fakh Patches): focus mode, " +
-        "celebrations, job cards, reposts, video posts, the \"New posts\" pill and \"See translation\".",
+        "celebrations, job cards, network activity (likes, comments, reposts), video posts, the \"New posts\" pill and \"Show translation\".",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)
@@ -68,7 +68,7 @@ private object NavPanelPremiumFingerprint : Fingerprint(
 @Suppress("unused")
 val hidePremiumUpsellsPatch = bytecodePatch(
     name = "Hide Premium upsells",
-    description = "Removes Premium and AI upsell cards and banners, including on profiles and the Me panel.",
+    description = "Removes Premium and AI upsell cards and banners, including on profiles and the profile menu.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)

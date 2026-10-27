@@ -36,6 +36,11 @@ public final class Settings {
     static final String DISABLE_DOUBLE_TAP_LIKE = "disable_double_tap_like";
     static final String REMOVE_GAPS_AND_DIVIDERS = "remove_gaps_and_dividers";
     static final String MATERIAL_YOU = "material_you";
+    static final String HIDE_MORE_TAB = "hide_more_tab";
+    /** Items of the More tab last seen, as JSON (MoreMenu). */
+    static final String MORE_ITEMS = "more_items";
+    /** Followed by an item id: whether that More item shows in the Me panel. */
+    static final String MORE_ITEM_PREFIX = "more_item_";
     static final String SANITIZE_SHARE_LINKS = "sanitize_share_links";
     static final String RESOLVE_SHORT_LINKS = "resolve_short_links";
     static final String DOWNLOAD_BASE_DIR = "download_base_dir";
@@ -119,6 +124,18 @@ public final class Settings {
 
     static boolean materialYou() {
         return isMaterialYouIncluded() && get(MATERIAL_YOU, true);
+    }
+
+    public static boolean isMoreMenuIncluded() {
+        return false;
+    }
+
+    static boolean moreMenu() {
+        return isMoreMenuIncluded();
+    }
+
+    static boolean hideMoreTab() {
+        return isMoreMenuIncluded() && get(HIDE_MORE_TAB, true);
     }
 
     public static boolean isGmsCoreSupportIncluded() {

@@ -14,7 +14,6 @@ import app.morphe.patcher.util.smali.ExternalLabel
 private const val SETTINGS_CLASS = "$EXTENSION_PACKAGE/Settings;"
 private const val SETTINGS_ACTIVITY = "app.fakh.extension.linkedin.SettingsActivity"
 private const val SDUI_FILTER_CLASS = "$EXTENSION_PACKAGE/SduiComponentFilter;"
-private const val SDUI_SETTINGS_ENTRY_CLASS = "$EXTENSION_PACKAGE/SduiSettingsEntry;"
 private const val SDUI_MEDIA_CLASS = "$EXTENSION_PACKAGE/SduiMediaDownload;"
 private const val SDUI_FRAGMENT = "Lcom/linkedin/android/infra/sdui/view/SduiFragment;"
 
@@ -119,11 +118,11 @@ val sduiComponentFilterPatch = bytecodePatch {
                 """,
                 ExternalLabel("show", getInstruction(0))
             )
-            // Runs before the filter: the Settings screen gets the Fakh Patches row here.
+            // Runs before the filter: edits components (the Fakh Patches row on the Settings screen, focus mode counts).
             addInstructions(
                 0,
                 """
-                    invoke-static/range { p1 .. p1 }, $SDUI_SETTINGS_ENTRY_CLASS->inject(Ljava/lang/Object;)Ljava/lang/Object;
+                    invoke-static/range { p1 .. p1 }, $SDUI_FILTER_CLASS->rewrite(Ljava/lang/Object;)Ljava/lang/Object;
                     move-result-object p1
                     check-cast p1, Lproto/sdui/components/core/Component;
                 """
