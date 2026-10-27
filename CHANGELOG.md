@@ -1,3 +1,13 @@
+## [1.1.0](https://github.com/amfakh/fakh-patches/compare/v1.0.0...v1.1.0) (2026-10-27)
+
+### ✨ New Features
+
+* add LinkedIn patches based on Michii Patches by heyymichii: hide ads, promoted jobs, suggested posts and Premium upsells, feed filters, media downloads, ghost mode, direct links and clean share links ([1d581fe](https://github.com/amfakh/fakh-patches/commit/1d581feaa8c38290b83a935054239a736c727afd))
+* color LinkedIn from your wallpaper with Material You, and optionally remove the gaps and dividers between list items ([1d581fe](https://github.com/amfakh/fakh-patches/commit/1d581feaa8c38290b83a935054239a736c727afd))
+* sign in to LinkedIn with Google through microG RE with the GmsCore support patch ([1d581fe](https://github.com/amfakh/fakh-patches/commit/1d581feaa8c38290b83a935054239a736c727afd))
+* open the LinkedIn patch settings from a Fakh Patches row in LinkedIn's Settings, or by long pressing the Home tab ([1d581fe](https://github.com/amfakh/fakh-patches/commit/1d581feaa8c38290b83a935054239a736c727afd))
+* support LinkedIn 4.1.1264 and 4.1.1261 ([1d581fe](https://github.com/amfakh/fakh-patches/commit/1d581feaa8c38290b83a935054239a736c727afd))
+
 ## 1.0.0 (2026-10-26)
 
 ### ✨ New Features
