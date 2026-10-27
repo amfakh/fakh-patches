@@ -14,7 +14,7 @@ import java.util.Collections;
 
 /**
  * A launcher shortcut (long press the LinkedIn icon) that opens Puzzle games, drawn like LinkedIn's own shortcuts.
- * It follows the "Puzzle games" item of the More tab settings: hiding the item removes the shortcut.
+ * It has its own switch in the More tab settings; turning it off removes the shortcut.
  */
 final class GamesShortcut {
     private static final String ID = "fakh_puzzle_games";
@@ -35,13 +35,18 @@ final class GamesShortcut {
         activity.getWindow().getDecorView().postDelayed(() -> publish(context), 6000);
     }
 
+    /** Adds or removes the shortcut right away, when its switch changes. */
+    static void update(Context context) {
+        publish(context.getApplicationContext());
+    }
+
     private static void publish(Context context) {
         try {
             ShortcutManager manager = context.getSystemService(ShortcutManager.class);
             if (manager == null) return;
             MoreMenu.Item games = null;
             for (MoreMenu.Item item : MoreMenu.items()) if ("games".equals(item.id)) games = item;
-            if (games == null || !Settings.get(games.key(), true)) {
+            if (games == null || !Settings.gamesShortcut()) {
                 manager.removeDynamicShortcuts(Collections.singletonList(ID));
                 return;
             }

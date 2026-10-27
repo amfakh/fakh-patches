@@ -180,7 +180,9 @@ public final class SettingsActivity extends Activity {
         if (Settings.isMoreMenuIncluded()) {
             Category more = new Category("More tab")
                     .toggle(Settings.HIDE_MORE_TAB, true, "Move to the profile menu",
-                            "Hide the More tab and list its items in the profile menu.");
+                            "Hide the More tab and list its items in the profile menu.")
+                    .toggle(Settings.GAMES_SHORTCUT, true, "Puzzle games shortcut",
+                            "Add it to the menu of the LinkedIn app icon.", () -> GamesShortcut.update(this));
             for (MoreMenu.Item item : MoreMenu.items()) more.check(item.key(), true, item.label);
             categories.add(more);
         }

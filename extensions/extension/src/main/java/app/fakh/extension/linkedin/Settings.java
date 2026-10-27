@@ -37,6 +37,7 @@ public final class Settings {
     static final String REMOVE_GAPS_AND_DIVIDERS = "remove_gaps_and_dividers";
     static final String MATERIAL_YOU = "material_you";
     static final String HIDE_MORE_TAB = "hide_more_tab";
+    static final String GAMES_SHORTCUT = "games_shortcut";
     /** Items of the More tab last seen, as JSON (MoreMenu). */
     static final String MORE_ITEMS = "more_items";
     /** Followed by an item id: whether that More item shows in the Me panel. */
@@ -132,6 +133,10 @@ public final class Settings {
 
     static boolean moreMenu() {
         return isMoreMenuIncluded();
+    }
+
+    static boolean gamesShortcut() {
+        return isMoreMenuIncluded() && get(GAMES_SHORTCUT, true);
     }
 
     static boolean hideMoreTab() {
