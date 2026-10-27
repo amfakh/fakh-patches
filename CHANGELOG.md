@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/amfakh/fakh-patches/compare/v1.2.0...v1.2.1) (2026-10-27)
+
+### ✨ New Features
+
+* add a switch for the Puzzle games shortcut in the More tab settings, which adds or removes the shortcut right away ([38667e0](https://github.com/amfakh/fakh-patches/commit/38667e06375519b7461e2520b758fa88470f11a1))
+
 ## [1.2.0](https://github.com/amfakh/fakh-patches/compare/v1.1.0...v1.2.0) (2026-10-27)
 
 ### ✨ New Features

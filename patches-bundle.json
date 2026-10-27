@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-27T03:16:39",
-  "description": "## [1.2.0](https://github.com/amfakh/fakh-patches/compare/v1.1.0...v1.2.0) (2026-10-27)\n\n### ✨ New Features\n\n* hide items of LinkedIn's More tab, or move them into the profile menu and remove the tab ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))\n* add a Puzzle games shortcut to the LinkedIn app icon, drawn like LinkedIn's own shortcuts ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))\n* hide the likes, comments, reposts and reply counts in LinkedIn's focus mode on 4.1.1264 ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))\n* hide posts shown because someone you know liked, commented on or reposted them, replacing the old repost filter ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))\n* color the notification badges with the Material You accent ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))\n* add a restart button to the settings, and open the settings by long pressing the Home tab ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))\n* support LinkedIn 4.1.1264 only, and drop 4.1.1261 ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.2.0/patches-1.2.0.mpp",
+  "created_at": "2026-10-27T03:21:50",
+  "description": "## [1.2.1](https://github.com/amfakh/fakh-patches/compare/v1.2.0...v1.2.1) (2026-10-27)\n\n### ✨ New Features\n\n* add a switch for the Puzzle games shortcut in the More tab settings, which adds or removes the shortcut right away ([38667e0](https://github.com/amfakh/fakh-patches/commit/38667e06375519b7461e2520b758fa88470f11a1))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.2.1/patches-1.2.1.mpp",
   "signature_download_url": "",
-  "version": "1.2.0"
+  "version": "1.2.1"
 }
