@@ -1,3 +1,9 @@
+## [1.4.0](https://github.com/amfakh/fakh-patches/compare/v1.3.0...v1.4.0) (2026-10-27)
+
+### ✨ New Features
+
+* **Radio:** add Material You: wallpaper colors in light and dark mode, rounder cards, a floating now playing bar, a Material 3 bottom bar, and a redesigned full player with scrolling titles and the station logo as artwork fallback ([89b87f7](https://github.com/amfakh/fakh-patches/commit/89b87f7fb30f1eb407501b54addd8646d1b447ef))
+
 ## [1.3.0](https://github.com/amfakh/fakh-patches/compare/v1.2.1...v1.3.0) (2026-10-27)
 
 ### ✨ New Features
