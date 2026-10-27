@@ -1,3 +1,15 @@
+## [1.2.0](https://github.com/amfakh/fakh-patches/compare/v1.1.0...v1.2.0) (2026-10-27)
+
+### ✨ New Features
+
+* hide items of LinkedIn's More tab, or move them into the profile menu and remove the tab ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))
+* add a Puzzle games shortcut to the LinkedIn app icon, drawn like LinkedIn's own shortcuts ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))
+* hide the likes, comments, reposts and reply counts in LinkedIn's focus mode on 4.1.1264 ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))
+* hide posts shown because someone you know liked, commented on or reposted them, replacing the old repost filter ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))
+* color the notification badges with the Material You accent ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))
+* add a restart button to the settings, and open the settings by long pressing the Home tab ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))
+* support LinkedIn 4.1.1264 only, and drop 4.1.1261 ([6e5d2b4](https://github.com/amfakh/fakh-patches/commit/6e5d2b4e53a73d4495caa8df8a16f310f41048df))
+
 ## [1.1.0](https://github.com/amfakh/fakh-patches/compare/v1.0.0...v1.1.0) (2026-10-27)
 
 ### ✨ New Features
