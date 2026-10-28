@@ -4,6 +4,8 @@ Patches for the GitHub app (`com.github.android`, version `1.282.0`, APKM from A
 
 ## Patches
 
+Enabled by default.
+
 | Category | Patch | What it does |
 |---|---|---|
 | Theme | Material You | Colors the app from your wallpaper (Android 12+): the accent color instead of GitHub blue, and tinted surfaces, cards and borders in light and dark mode. Adds a **Fakh Patches** section to Settings with a **Material You** switch and a **Pitch black in dark mode** switch. |
@@ -27,3 +29,8 @@ With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs J
 ```bash
 java -jar morphe-desktop-1.19.1-all.jar patch -p patches/build/libs/patches-<version>.mpp -o github-patched.apk com.github.android_1.282.0-953_4arch_6dpi_apkmirror.com.apkm
 ```
+
+## Getting the APK
+
+Download the `1.282.0` APKM from APKMirror. Morphe Manager looks the app up on APKMirror itself,
+so it can take you to that page.
