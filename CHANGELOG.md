@@ -1,3 +1,11 @@
+## [1.5.3](https://github.com/amfakh/fakh-patches/compare/v1.5.2...v1.5.3) (2026-10-28)
+
+### ✨ New Features
+
+* **DoDo Music:** add Fix song playback, so songs play on the patched app instead of hanging on "loading" ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))
+* **DoDo Music:** add GmsCore support, so you can sign in with Google and your saved collection comes back ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))
+* **DoDo Music:** add Disable analytics, turning off Adjust, TikTok and Firebase ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))
+
 ## [1.5.2](https://github.com/amfakh/fakh-patches/compare/v1.5.1...v1.5.2) (2026-10-28)
 
 ### 🐛 Bug Fixes

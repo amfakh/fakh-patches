@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-28T15:27:19",
-  "description": "## [1.5.2](https://github.com/amfakh/fakh-patches/compare/v1.5.1...v1.5.2) (2026-10-28)\n\n### \ud83d\udc1b Bug Fixes\n\n* **Windy:** describe Unlock Premium by what it unlocks (deeper map zoom, 1-hour forecast steps, the premium calendar view, no \"Go Premium\" button) instead of how it edits the app ([f0e4631](https://github.com/amfakh/fakh-patches/commit/f0e463166451c8ddd37e9e03c9f861183d8f20b3))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.5.2/patches-1.5.2.mpp",
+  "created_at": "2026-10-28T16:13:40",
+  "description": "## [1.5.3](https://github.com/amfakh/fakh-patches/compare/v1.5.2...v1.5.3) (2026-10-28)\n\n### \u2728 New Features\n\n* **DoDo Music:** add Fix song playback, so songs play on the patched app instead of hanging on \"loading\" ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))\n* **DoDo Music:** add GmsCore support, so you can sign in with Google and your saved collection comes back ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))\n* **DoDo Music:** add Disable analytics, turning off Adjust, TikTok and Firebase ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.5.3/patches-1.5.3.mpp",
   "signature_download_url": "",
-  "version": "1.5.2"
+  "version": "1.5.3"
 }
