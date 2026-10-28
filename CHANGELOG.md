@@ -1,3 +1,9 @@
+## [1.5.0](https://github.com/amfakh/fakh-patches/compare/v1.4.0...v1.5.0) (2026-10-28)
+
+### ✨ New Features
+
+* **Windy:** add patches for Windy 51.3.2: unlock premium ([2f9ed23](https://github.com/amfakh/fakh-patches/commit/2f9ed23f4a2af0c1792d0c71c7a71ef151727c0b))
+
 ## [1.4.0](https://github.com/amfakh/fakh-patches/compare/v1.3.0...v1.4.0) (2026-10-27)
 
 ### ✨ New Features
