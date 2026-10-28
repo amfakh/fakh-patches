@@ -1,3 +1,9 @@
+## [1.5.1](https://github.com/amfakh/fakh-patches/compare/v1.5.0...v1.5.1) (2026-10-28)
+
+### ✨ New Features
+
+* **DoDo Music:** add patches for DoDo Music 2.0.14: premium unlock, which also removes ads and keeps the app from closing on the Play license check ([c624374](https://github.com/amfakh/fakh-patches/commit/c6243747358be57e4c7c2ad5ad33c876ed630c7e))
+
 ## [1.5.0](https://github.com/amfakh/fakh-patches/compare/v1.4.0...v1.5.0) (2026-10-28)
 
 ### ✨ New Features
