@@ -5,6 +5,7 @@ import app.fakh.patches.dodo.shared.disableProviders
 import app.fakh.patches.dodo.shared.references
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
 import org.w3c.dom.Element
@@ -69,7 +70,8 @@ private val adSdksManifestPatch = resourcePatch {
 @Suppress("unused")
 val premiumUnlockPatch = bytecodePatch(
     name = "Premium unlock",
-    description = "Unlocks premium client-side (no ads, unlimited features) and stops the PairIP license check from closing the app. Keeps the AdMob, Facebook and Adjust SDK providers from starting at all, so they cannot collect or send anything in the background.",
+    description = "Unlocks premium on your phone (no ads, every premium feature), stops the Play license check " +
+        "from closing the app, and keeps the ad SDK from starting so it cannot load ads or track in the background.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_DODO)
@@ -85,5 +87,17 @@ val premiumUnlockPatch = bytecodePatch(
             """,
         )
         checkLicenseFingerprint.method.addInstructions(0, "return-void")
+
+        // MainApp.initAds and the ad loader call MobileAds.initialize directly, so the disabled provider alone
+        // still leaves the SDK running and fetching its scripts. Premium hides every ad slot, so nothing waits on it.
+        var stubbed = 0
+        classDefForEach { classDef ->
+            if (classDef.type != "Lcom/google/android/gms/ads/MobileAds;") return@classDefForEach
+            mutableClassDefBy(classDef).methods.filter { it.name == "initialize" && it.returnType == "V" }.forEach {
+                it.addInstructions(0, "return-void")
+                stubbed++
+            }
+        }
+        if (stubbed != 2) throw PatchException("Expected 2 MobileAds.initialize overloads, found $stubbed")
     }
 }
