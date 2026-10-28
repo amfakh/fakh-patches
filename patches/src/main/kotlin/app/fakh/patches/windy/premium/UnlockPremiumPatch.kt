@@ -186,12 +186,9 @@ private val PATCHES = listOf(
 @Suppress("unused")
 val windyUnlockPremiumPatch = rawResourcePatch(
     name = "Unlock Premium",
-    description = "Unlocks Windy Pro features by patching the versioned JS bundle. " +
-        "Sets the subscription store default to 'premium', forces the premium flag and " +
-        "hasAny() to true at module load, and stops clearTier from clearing the store and " +
-        "from removing the subs-premium body class, so the premium CSS class persists even " +
-        "when the server reports no active subscription. Unlocks higher tile zoom, 1-hour " +
-        "forecast steps, the premium calendar view and all premium UI.",
+    description = "Unlocks Windy Pro on your phone: deeper map zoom, 1-hour forecast steps, " +
+        "the premium calendar view and the rest of the premium screens, and hides the " +
+        "\"Go Premium\" button. Stays unlocked when you are logged out.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_WINDY)
