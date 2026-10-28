@@ -1,3 +1,9 @@
+## [1.5.2](https://github.com/amfakh/fakh-patches/compare/v1.5.1...v1.5.2) (2026-10-28)
+
+### 🐛 Bug Fixes
+
+* **Windy:** describe Unlock Premium by what it unlocks (deeper map zoom, 1-hour forecast steps, the premium calendar view, no "Go Premium" button) instead of how it edits the app ([f0e4631](https://github.com/amfakh/fakh-patches/commit/f0e463166451c8ddd37e9e03c9f861183d8f20b3))
+
 ## [1.5.1](https://github.com/amfakh/fakh-patches/compare/v1.5.0...v1.5.1) (2026-10-28)
 
 ### ✨ New Features
