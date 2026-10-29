@@ -171,7 +171,7 @@ public final class SettingsActivity extends Activity {
                         .toggle(Settings.HIDE_VIDEO_POSTS, false, "Hide video posts", "Posts with a video.")
                         .toggle(Settings.HIDE_RECOMMENDATIONS, false, "Hide \"Recommended for you\"",
                                 "Lists of people and pages to follow.")
-                        .toggle(Settings.HIDE_GAMES, false, "Hide puzzle games", "Game cards in your feed and search.")
+                        .toggle(Settings.HIDE_GAMES, false, "Hide puzzle games", "Game cards in search.")
                         .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Hide the \"New posts\" button",
                                 "The button at the top of the feed.")
                         .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"Show translation\"",

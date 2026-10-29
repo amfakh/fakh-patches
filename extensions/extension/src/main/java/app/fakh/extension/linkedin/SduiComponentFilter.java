@@ -210,12 +210,12 @@ public final class SduiComponentFilter {
     }
 
     /**
-     * Components of LinkedIn's puzzle games: the search cards (search-game-card-queens), the search carousel's "Show
-     * all" (search-global-typeahead-games-carousel-show-all), the hub (games-sdui-hub).
+     * Game promotions inside other screens: the search cards (search-game-card-queens) and the search carousel's
+     * "Show all" (search-global-typeahead-games-carousel-show-all). The games hub itself (games-entry and its
+     * children) stays, so opening the games from a shortcut or a link still shows them.
      */
     private static boolean isGameView(String viewName) {
-        return viewName.startsWith("games-") || viewName.startsWith("game-") || viewName.contains("-game-")
-                || viewName.contains("-games-") || viewName.endsWith("-game") || viewName.endsWith("-games");
+        return viewName.contains("-game-") || viewName.contains("-games-");
     }
 
     /**
