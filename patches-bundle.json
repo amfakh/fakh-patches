@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-28T16:13:40",
-  "description": "## [1.5.3](https://github.com/amfakh/fakh-patches/compare/v1.5.2...v1.5.3) (2026-10-28)\n\n### \u2728 New Features\n\n* **DoDo Music:** add Fix song playback, so songs play on the patched app instead of hanging on \"loading\" ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))\n* **DoDo Music:** add GmsCore support, so you can sign in with Google and your saved collection comes back ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))\n* **DoDo Music:** add Disable analytics, turning off Adjust, TikTok and Firebase ([48a8bac](https://github.com/amfakh/fakh-patches/commit/48a8bac9801f947c0fd9b661b5c66bd2e26fb86a))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.5.3/patches-1.5.3.mpp",
+  "created_at": "2026-10-29T04:35:47",
+  "description": "## [1.5.4](https://github.com/amfakh/fakh-patches/compare/v1.5.3...v1.5.4) (2026-10-29)\n\n### \u2728 New Features\n\n* **LinkedIn:** add Hide \"Recommended for you\" to Feed filters, which removes the lists of people and pages to follow from your feed ([25caf81](https://github.com/amfakh/fakh-patches/commit/25caf81133e95db13f574bfebc7b55a67523f40e))\n* **LinkedIn:** add Hide puzzle games to Feed filters, which removes the game cards, the \"Today's puzzles\" title and its \"Show all\" button from search ([25caf81](https://github.com/amfakh/fakh-patches/commit/25caf81133e95db13f574bfebc7b55a67523f40e))\n\n### \ud83d\udc1b Bug Fixes\n\n* **LinkedIn:** fix Material You failing to apply on LinkedIn versions where the system bar and navigation bar calls use wider registers ([141e0ab](https://github.com/amfakh/fakh-patches/commit/141e0ab788f11d1743facc907b2bdd52cc5c9174))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.5.4/patches-1.5.4.mpp",
   "signature_download_url": "",
-  "version": "1.5.3"
+  "version": "1.5.4"
 }

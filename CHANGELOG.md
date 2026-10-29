@@ -1,3 +1,14 @@
+## [1.5.4](https://github.com/amfakh/fakh-patches/compare/v1.5.3...v1.5.4) (2026-10-29)
+
+### ✨ New Features
+
+* **LinkedIn:** add Hide "Recommended for you" to Feed filters, which removes the lists of people and pages to follow from your feed ([25caf81](https://github.com/amfakh/fakh-patches/commit/25caf81133e95db13f574bfebc7b55a67523f40e))
+* **LinkedIn:** add Hide puzzle games to Feed filters, which removes the game cards, the "Today's puzzles" title and its "Show all" button from search ([25caf81](https://github.com/amfakh/fakh-patches/commit/25caf81133e95db13f574bfebc7b55a67523f40e))
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** fix Material You failing to apply on LinkedIn versions where the system bar and navigation bar calls use wider registers ([141e0ab](https://github.com/amfakh/fakh-patches/commit/141e0ab788f11d1743facc907b2bdd52cc5c9174))
+
 ## [1.5.3](https://github.com/amfakh/fakh-patches/compare/v1.5.2...v1.5.3) (2026-10-28)
 
 ### ✨ New Features
