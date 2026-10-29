@@ -41,7 +41,7 @@ val hidePromotedJobsPatch = bytecodePatch(
 val feedFiltersPatch = bytecodePatch(
     name = "Feed filters",
     description = "Adds optional filters (off by default, turned on in Fakh Patches): focus mode, " +
-        "celebrations, job cards, network activity (likes, comments, reposts), video posts, the \"New posts\" pill and \"Show translation\".",
+        "celebrations, job cards, network activity (likes, comments, reposts), video posts, \"Recommended for you\", puzzle games, the \"New posts\" pill and \"Show translation\".",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)

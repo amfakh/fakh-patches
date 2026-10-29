@@ -27,6 +27,8 @@ public final class Settings {
     static final String HIDE_FEED_JOBS = "hide_feed_jobs";
     static final String HIDE_REPOSTS = "hide_reposts";
     static final String HIDE_VIDEO_POSTS = "hide_video_posts";
+    static final String HIDE_RECOMMENDATIONS = "hide_recommendations";
+    static final String HIDE_GAMES = "hide_games";
     static final String HIDE_NEW_POSTS_PILL = "hide_new_posts_pill";
     static final String HIDE_TRANSLATION = "hide_translation";
     static final String OPEN_LINKS_DIRECTLY = "open_links_directly";
@@ -241,6 +243,14 @@ public final class Settings {
 
     static boolean hideVideoPosts() {
         return isFeedFiltersIncluded() && get(HIDE_VIDEO_POSTS, false);
+    }
+
+    static boolean hideRecommendations() {
+        return isFeedFiltersIncluded() && get(HIDE_RECOMMENDATIONS, false);
+    }
+
+    static boolean hideGames() {
+        return isFeedFiltersIncluded() && get(HIDE_GAMES, false);
     }
 
     static boolean hideNewPostsPill() {

@@ -13,7 +13,7 @@ default except Material You, Remove gaps and dividers, and GmsCore support.
 | Hide promoted jobs | On | Removes promoted job listings from the Jobs tab and job search. |
 | Hide suggested posts | On | Removes "Suggested" posts from people outside your network. |
 | Hide Premium upsells | On | Removes Premium and AI upsell cards and banners, including on profiles and the profile menu. |
-| Feed filters | On | Adds filters you can turn on in Fakh Patches: focus mode, celebrations, job cards, network activity (likes, comments, reposts), video posts, the "New posts" pill and "Show translation". All start off. |
+| Feed filters | On | Adds filters you can turn on in Fakh Patches: focus mode, celebrations, job cards, network activity (likes, comments, reposts), video posts, "Recommended for you", puzzle games, the "New posts" pill and "Show translation". All start off. |
 | Disable double-tap like | On | Double tapping a post or photo no longer likes it. |
 | Download media | On | A download button on full screen photos and videos, profile photos and banners. |
 | Messaging | On | Hides sponsored messages, and adds an optional ghost mode that sends no typing indicator and no automatic read receipts. |

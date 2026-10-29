@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Hook for the server driven UI (SDUI) screens, which render through
@@ -22,6 +23,10 @@ public final class SduiComponentFilter {
     private static final Set<String> COUNT_BUTTONS = new HashSet<>(Arrays.asList(
             "reaction-button", "feed-comment-button", "feed-share-button", "comment-reaction-button",
             "comment-container", "comment-reply"));
+    private static final String DEFAULT_GAMES_TITLE = "Today's puzzles";
+    private static volatile String gamesTitle = DEFAULT_GAMES_TITLE;
+    private static final int MAX_LOGGED_VIEW_NAMES = 500;
+    private static final Set<String> loggedViewNames = ConcurrentHashMap.newKeySet();
     private static final String[] COUNT_FORMATS = {"{0,plural,", "{0,number,"};
 
     /**
@@ -54,6 +59,8 @@ public final class SduiComponentFilter {
                     ? Proto.call(component, "getViewTracking") : null;
             String viewName = Proto.string(viewTracking, "getViewName");
             String screenName = Proto.string(component, "getObservabilityViewName");
+            logViewName(viewName);
+            if (viewName.isEmpty() && Settings.debug()) logUnnamed(component, screenName);
             if (MoreMenu.MORE_SCREEN.equals(screenName)) MoreMenu.capture(payload(component));
 
             switch (viewName) {
@@ -82,6 +89,14 @@ public final class SduiComponentFilter {
                     break;
             }
 
+            if (Settings.hideGames()) {
+                if (isGameView(viewName)) {
+                    learnGamesTitle(viewName, payload(component));
+                    return hide(true, "games: " + viewName);
+                }
+                if (viewName.isEmpty() && isGamesHeader(payload(component))) return hide(true, "games header");
+            }
+
             if (MoreMenu.hideItem(viewName)) return hide(true, "more item: " + viewName);
 
             if (Settings.hidePremium() && viewName.contains("upsell")) {
@@ -99,15 +114,45 @@ public final class SduiComponentFilter {
         }
     }
 
+    /**
+     * With diagnostic logging on, logs each view name once, so a report shows the names of the components a user
+     * saw (for new filters). Names with digits are skipped: those can carry profile names.
+     */
+    private static void logViewName(String viewName) {
+        if (viewName.isEmpty() || !Settings.debug() || loggedViewNames.size() >= MAX_LOGGED_VIEW_NAMES) return;
+        for (int i = 0; i < viewName.length(); i++) {
+            if (Character.isDigit(viewName.charAt(i))) return;
+        }
+        if (loggedViewNames.add(viewName)) Settings.debugLog("view " + viewName);
+    }
+
+    private static void logUnnamed(Object component, String screenName) {
+        if (loggedViewNames.size() >= MAX_LOGGED_VIEW_NAMES) return;
+        StringBuilder sb = new StringBuilder("unnamed screen=").append(screenName).append(" strings=");
+        byte[] bytes = payload(component);
+        if (bytes != null) {
+            int n = 0;
+            for (String s : ProtoScanner.scan(bytes).strings) {
+                if (s.length() > 60) continue;
+                sb.append('[').append(s).append(']');
+                if (++n >= 10) break;
+            }
+        }
+        if (loggedViewNames.add(sb.toString())) Settings.debugLog(sb.toString());
+    }
+
     private static boolean hideFeedUpdate(Object component, Object viewTracking) {
         boolean ads = Settings.hideAds();
         boolean suggested = Settings.hideSuggested();
         boolean celebrations = Settings.hideCelebrations();
         boolean jobs = Settings.hideFeedJobs();
         boolean reposts = Settings.hideReposts();
+        boolean recommendations = Settings.hideRecommendations();
         boolean videos = Settings.hideVideoPosts();
         boolean shortLinks = Settings.resolveShortLinks();
-        if (!ads && !suggested && !celebrations && !jobs && !reposts && !videos && !shortLinks) return false;
+        if (!ads && !suggested && !celebrations && !jobs && !reposts && !recommendations && !videos && !shortLinks) {
+            return false;
+        }
 
         byte[] payload = payload(component);
         if (shortLinks && ProtoScanner.containsAscii(payload, ShortLinkResolver.PREFIX)) {
@@ -133,6 +178,9 @@ public final class SduiComponentFilter {
                 || ProtoScanner.containsAscii(payload, "comment-container"))) {
             return hide(true, "network activity");
         }
+        if (recommendations && isRecommendationModule(payload)) {
+            return hide(true, "recommended for you");
+        }
         if (videos && ProtoScanner.containsAscii(payload, "large-single-video-view")) {
             return hide(true, "video post");
         }
@@ -142,6 +190,49 @@ public final class SduiComponentFilter {
             return hide(true, "suggested post");
         }
         return false;
+    }
+
+    /**
+     * "Recommended for you": a feed item listing several people or pages to follow, with a call to action and no post
+     * text. Regular posts have one author, so two or more authors without post text mark the module.
+     */
+    private static boolean isRecommendationModule(byte[] payload) {
+        if (!ProtoScanner.containsAscii(payload, "feed-call-to-action")
+                || !ProtoScanner.containsAscii(payload, "edge-creation-follow-action")
+                || ProtoScanner.containsAscii(payload, "feed-commentary")) {
+            return false;
+        }
+        int authors = 0;
+        for (String s : ProtoScanner.scan(payload).strings) {
+            if (s.equals("feed-actor") && ++authors >= 2) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Components of LinkedIn's puzzle games: the search cards (search-game-card-queens), the search carousel's "Show
+     * all" (search-global-typeahead-games-carousel-show-all), the hub (games-sdui-hub).
+     */
+    private static boolean isGameView(String viewName) {
+        return viewName.startsWith("games-") || viewName.startsWith("game-") || viewName.contains("-game-")
+                || viewName.contains("-games-") || viewName.endsWith("-game") || viewName.endsWith("-games");
+    }
+
+    /**
+     * The "Today's puzzles" title above the search game cards is an unnamed text component whose only string is the
+     * title. The carousel's "Show all" button carries that title as its first string, so it is learned from there
+     * and the title matches in every language.
+     */
+    private static boolean isGamesHeader(byte[] payload) {
+        if (payload == null) return false;
+        List<String> strings = ProtoScanner.scan(payload).strings;
+        return strings.size() == 1 && (strings.get(0).equals(gamesTitle) || strings.get(0).equals(DEFAULT_GAMES_TITLE));
+    }
+
+    private static void learnGamesTitle(String viewName, byte[] payload) {
+        if (!viewName.endsWith("-games-carousel-show-all") || payload == null) return;
+        List<String> strings = ProtoScanner.scan(payload).strings;
+        if (!strings.isEmpty()) gamesTitle = strings.get(0);
     }
 
     private static boolean hidePromotedJob(Object component) {
