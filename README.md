@@ -10,6 +10,7 @@ Each app has its own README with the full patch list.
 | Radio Indonesia | `com.appmind.radios.id` | `4.2.30` | XAPK from APKPure | [apps/radio](apps/radio/README.md) |
 | DoDo Music | `com.dundunstudio.autoplay` | `2.0.14` | XAPK from APKPure | [apps/dodo](apps/dodo/README.md) |
 | Windy | `com.windyty.android` | `51.3.2` | APKM from APKMirror | [apps/windy](apps/windy/README.md) |
+| Smart Life | `com.tuya.smartlife` | `7.12.3` | XAPK from APKPure | [apps/smartlife](apps/smartlife/README.md) |
 
 ## Use
 
