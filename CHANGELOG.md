@@ -1,3 +1,10 @@
+## [1.5.5](https://github.com/amfakh/fakh-patches/compare/v1.5.4...v1.5.5) (2026-10-29)
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** fix Hide puzzle games blanking the Games page when you open it from a shortcut or link ([85b4e5d](https://github.com/amfakh/fakh-patches/commit/85b4e5d9d8ce7b275882702b8947e213bc923038))
+* **LinkedIn:** fix Hide video posts not hiding videos on LinkedIn 4.1.1264 ([d13d8a9](https://github.com/amfakh/fakh-patches/commit/d13d8a97f4281b6e49128f88691665ba88ca4e4c))
+
 ## [1.5.4](https://github.com/amfakh/fakh-patches/compare/v1.5.3...v1.5.4) (2026-10-29)
 
 ### ✨ New Features
