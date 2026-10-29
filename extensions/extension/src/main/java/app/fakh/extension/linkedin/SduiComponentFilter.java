@@ -126,6 +126,18 @@ public final class SduiComponentFilter {
         if (loggedViewNames.add(viewName)) Settings.debugLog("view " + viewName);
     }
 
+    /** Logs the names of the child components embedded in a post, once each, to find markers for new post types. */
+    private static void logChildNames(byte[] payload) {
+        if (payload == null) return;
+        for (String s : ProtoScanner.scan(payload).strings) {
+            if (s.length() > 3 && s.length() < 60 && s.matches("[a-z]+(-[a-z]+)+")) {
+                if (loggedViewNames.size() < MAX_LOGGED_VIEW_NAMES && loggedViewNames.add("child " + s)) {
+                    Settings.debugLog("child " + s);
+                }
+            }
+        }
+    }
+
     private static void logUnnamed(Object component, String screenName) {
         if (loggedViewNames.size() >= MAX_LOGGED_VIEW_NAMES) return;
         StringBuilder sb = new StringBuilder("unnamed screen=").append(screenName).append(" strings=");
@@ -155,6 +167,7 @@ public final class SduiComponentFilter {
         }
 
         byte[] payload = payload(component);
+        if (Settings.debug()) logChildNames(payload);
         if (shortLinks && ProtoScanner.containsAscii(payload, ShortLinkResolver.PREFIX)) {
             for (String s : ProtoScanner.scan(payload).strings) {
                 if (s.contains(ShortLinkResolver.PREFIX)) OpenLinksDirectlyPatch.prefetchShortLinks(s);
@@ -181,7 +194,9 @@ public final class SduiComponentFilter {
         if (recommendations && isRecommendationModule(payload)) {
             return hide(true, "recommended for you");
         }
-        if (videos && ProtoScanner.containsAscii(payload, "large-single-video-view")) {
+        // 4.1.1264 posts with a video embed the player controls (media-video-thumbnail-play, media-video-end-replay).
+        if (videos && (ProtoScanner.containsAscii(payload, "media-video-")
+                || ProtoScanner.containsAscii(payload, "large-single-video-view"))) {
             return hide(true, "video post");
         }
         // The header label is its own string field, so match the whole string, never a substring
