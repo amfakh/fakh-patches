@@ -12,4 +12,20 @@ object Constants {
         appIconColor = 0xFF5A1F,
         targets = listOf(AppTarget(version = "7.12.3", versionCode = 877)),
     )
+
+    val COMPATIBILITY_TUYA_SMART = Compatibility(
+        name = "Tuya Smart",
+        packageName = "com.tuya.smart",
+        apkFileType = ApkFileType.APKM,
+        appIconColor = 0xFF5A1F,
+        targets = listOf(AppTarget(version = "7.12.3", versionCode = 870)),
+    )
+
+    val COMPATIBILITY_BARDI = Compatibility(
+        name = "BARDI Smart Home",
+        packageName = "com.bardi.smart.home",
+        apkFileType = ApkFileType.XAPK,
+        appIconColor = 0xFF5A1F,
+        targets = listOf(AppTarget(version = "1.5.3", versionCode = 49)),
+    )
 }

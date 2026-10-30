@@ -1,11 +1,14 @@
 package app.fakh.patches.smartlife
 
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_SMARTLIFE
+import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_TUYA_SMART
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import org.w3c.dom.Element
 
 private const val APPSFLYER_CORE = "Lcom/appsflyer/internal/AFa1tSDK;"
@@ -13,12 +16,19 @@ private const val APPSFLYER_CORE = "Lcom/appsflyer/internal/AFa1tSDK;"
 /** AppsFlyer entry points that start attribution or log an event; `init` returns the library, the rest return nothing. */
 private val APPSFLYER_VOID = setOf("start", "logEvent")
 
-/** The app's own switch that turns Firebase Analytics collection back on at runtime, overriding the manifest. */
+/**
+ * The app's own switch that turns Firebase Analytics collection back on at runtime, overriding the manifest: a static
+ * `(boolean)` method that logs "setAnalyticsCollectionEnabled(". R8 renames it between releases, so it is found by
+ * that string.
+ */
 private object EnableAnalyticsCollectionFingerprint : Fingerprint(
-    definingClass = "Ljuc;",
-    name = "c",
     returnType = "V",
     parameters = listOf("Z"),
+    custom = { method, _ ->
+        method.implementation?.instructions?.any {
+            ((it as? ReferenceInstruction)?.reference as? StringReference)?.string?.startsWith("setAnalyticsCollectionEnabled(") == true
+        } == true
+    },
 )
 
 /** Firebase's own manifest switches for Analytics, Crashlytics and Sessions. */
@@ -54,7 +64,7 @@ val disableAnalyticsPatch = bytecodePatch(
         "Crashlytics and Sessions. Tuya's own usage statistics are left on.",
     default = true,
 ) {
-    compatibleWith(COMPATIBILITY_SMARTLIFE)
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART)
     category("Privacy")
     dependsOn(signatureSpoofPatch, firebaseManifestPatch)
 
