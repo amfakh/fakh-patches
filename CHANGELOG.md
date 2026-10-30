@@ -1,3 +1,9 @@
+## [1.6.2](https://github.com/amfakh/fakh-patches/compare/v1.6.1...v1.6.2) (2026-10-30)
+
+### ✨ New Features
+
+* **LinkedIn:** group the patches into Ads, Feed, Privacy, Theme and Feature categories in Morphe Manager ([1f5224c](https://github.com/amfakh/fakh-patches/commit/1f5224cdfbada94d1b524c032c0b2bfb9476d3f4))
+
 ## [1.6.1](https://github.com/amfakh/fakh-patches/compare/v1.6.0...v1.6.1) (2026-10-30)
 
 ### ✨ New Features

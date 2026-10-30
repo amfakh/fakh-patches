@@ -1,7 +1,7 @@
 {
-  "created_at": "2026-10-30T02:21:55",
-  "description": "## [1.6.1](https://github.com/amfakh/fakh-patches/compare/v1.6.0...v1.6.1) (2026-10-30)\n\n### ✨ New Features\n\n* **Tuya Smart:** support 7.12.3-870 with Hide Plus button, Hide Recommended for you, Hide AI ask bar, Hide Explore tab, Hide Rewards Hub, Hide My Orders, Hide Tuya AI Web Version, Disable analytics and GmsCore support ([1b7478e](https://github.com/amfakh/fakh-patches/commit/1b7478e0f9acf75dd75f1cf075ea92808af19967))\n* **Smart Life, Tuya Smart:** add Hide ads to remove the ad banners and the AdMob ad entry ([1b7478e](https://github.com/amfakh/fakh-patches/commit/1b7478e0f9acf75dd75f1cf075ea92808af19967))\n* **BARDI:** support Smart Home 1.5.3 with Hide Mall tab, Hide Me banner and Hide App Mall to clean up the bottom navigation and the Me tab ([1b7478e](https://github.com/amfakh/fakh-patches/commit/1b7478e0f9acf75dd75f1cf075ea92808af19967))\n* **BARDI:** add GmsCore support (off by default) so \"Sign in with Google\" works through microG RE ([1b7478e](https://github.com/amfakh/fakh-patches/commit/1b7478e0f9acf75dd75f1cf075ea92808af19967))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.6.1/patches-1.6.1.mpp",
+  "created_at": "2026-10-30T02:30:18",
+  "description": "## [1.6.2](https://github.com/amfakh/fakh-patches/compare/v1.6.1...v1.6.2) (2026-10-30)\n\n### \u2728 New Features\n\n* **LinkedIn:** group the patches into Ads, Feed, Privacy, Theme and Feature categories in Morphe Manager ([1f5224c](https://github.com/amfakh/fakh-patches/commit/1f5224cdfbada94d1b524c032c0b2bfb9476d3f4))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.6.2/patches-1.6.2.mpp",
   "signature_download_url": "",
-  "version": "1.6.1"
+  "version": "1.6.2"
 }
