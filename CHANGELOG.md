@@ -1,3 +1,9 @@
+## [1.7.0](https://github.com/amfakh/fakh-patches/compare/v1.6.2...v1.7.0) (2026-11-01)
+
+### ✨ New Features
+
+* **IDN:** support 6.69.0 with Hide ads, Hide Create button, Hide home tabs, Hide package banner, Stop autoplay, Redirect Gold purchase and Allow Developer options, plus a Fakh Patches page in the app's Settings to turn each one on or off ([8ed3b39](https://github.com/amfakh/fakh-patches/commit/8ed3b39001b4ba073dbeb8f260561059ae8129fb))
+
 ## [1.6.2](https://github.com/amfakh/fakh-patches/compare/v1.6.1...v1.6.2) (2026-10-30)
 
 ### ✨ New Features
