@@ -1,3 +1,12 @@
+## [1.8.0](https://github.com/amfakh/fakh-patches/compare/v1.7.0...v1.8.0) (2026-11-01)
+
+### ✨ New Features
+
+* **KOMPAS.com:** support 9.8.4 with Hide ads to remove the ad banners and their grey "Iklan" blocks, the video ads, the full-screen ad and the banners on kompas.com pages opened in the app ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))
+* **KOMPAS.com:** add Stop autoplay so the videos in "Video Pilihan" under an article only play when tapped ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))
+* **KOMPAS.com:** add Disable analytics to stop AppsFlyer, Mixpanel and Insider tracking and turn off Firebase Analytics, Crashlytics, Performance and Sessions ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))
+* **KOMPAS.com:** add GmsCore support (off by default) so "Login dengan Google" works through microG RE ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))
+
 ## [1.7.0](https://github.com/amfakh/fakh-patches/compare/v1.6.2...v1.7.0) (2026-11-01)
 
 ### ✨ New Features

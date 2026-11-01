@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-01T03:16:44",
-  "description": "## [1.7.0](https://github.com/amfakh/fakh-patches/compare/v1.6.2...v1.7.0) (2026-11-01)\n\n### \u2728 New Features\n\n* **IDN:** support 6.69.0 with Hide ads, Hide Create button, Hide home tabs, Hide package banner, Stop autoplay, Redirect Gold purchase and Allow Developer options, plus a Fakh Patches page in the app's Settings to turn each one on or off ([8ed3b39](https://github.com/amfakh/fakh-patches/commit/8ed3b39001b4ba073dbeb8f260561059ae8129fb))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.7.0/patches-1.7.0.mpp",
+  "created_at": "2026-11-01T04:09:25",
+  "description": "## [1.8.0](https://github.com/amfakh/fakh-patches/compare/v1.7.0...v1.8.0) (2026-11-01)\n\n### ✨ New Features\n\n* **KOMPAS.com:** support 9.8.4 with Hide ads to remove the ad banners and their grey \"Iklan\" blocks, the video ads, the full-screen ad and the banners on kompas.com pages opened in the app ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))\n* **KOMPAS.com:** add Stop autoplay so the videos in \"Video Pilihan\" under an article only play when tapped ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))\n* **KOMPAS.com:** add Disable analytics to stop AppsFlyer, Mixpanel and Insider tracking and turn off Firebase Analytics, Crashlytics, Performance and Sessions ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))\n* **KOMPAS.com:** add GmsCore support (off by default) so \"Login dengan Google\" works through microG RE ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.8.0/patches-1.8.0.mpp",
   "signature_download_url": "",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }
