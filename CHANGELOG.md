@@ -1,3 +1,9 @@
+## [1.8.1](https://github.com/amfakh/fakh-patches/compare/v1.8.0...v1.8.1) (2026-11-01)
+
+### ✨ New Features
+
+* **IDN:** add Disable analytics to stop AppsFlyer, CleverTap, Firebase Analytics, Crashlytics, Google Tag Manager, comScore and Facebook events, while push notifications stay ([31e3d73](https://github.com/amfakh/fakh-patches/commit/31e3d735002a759deb122bf97bd39ec4917f6105))
+
 ## [1.8.0](https://github.com/amfakh/fakh-patches/compare/v1.7.0...v1.8.0) (2026-11-01)
 
 ### ✨ New Features

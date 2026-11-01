@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-01T04:09:25",
-  "description": "## [1.8.0](https://github.com/amfakh/fakh-patches/compare/v1.7.0...v1.8.0) (2026-11-01)\n\n### ✨ New Features\n\n* **KOMPAS.com:** support 9.8.4 with Hide ads to remove the ad banners and their grey \"Iklan\" blocks, the video ads, the full-screen ad and the banners on kompas.com pages opened in the app ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))\n* **KOMPAS.com:** add Stop autoplay so the videos in \"Video Pilihan\" under an article only play when tapped ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))\n* **KOMPAS.com:** add Disable analytics to stop AppsFlyer, Mixpanel and Insider tracking and turn off Firebase Analytics, Crashlytics, Performance and Sessions ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))\n* **KOMPAS.com:** add GmsCore support (off by default) so \"Login dengan Google\" works through microG RE ([b7afa50](https://github.com/amfakh/fakh-patches/commit/b7afa503142654afb6fc7db2ddb1948525b51ce1))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.8.0/patches-1.8.0.mpp",
+  "created_at": "2026-11-01T04:13:05",
+  "description": "## [1.8.1](https://github.com/amfakh/fakh-patches/compare/v1.8.0...v1.8.1) (2026-11-01)\n\n### \u2728 New Features\n\n* **IDN:** add Disable analytics to stop AppsFlyer, CleverTap, Firebase Analytics, Crashlytics, Google Tag Manager, comScore and Facebook events, while push notifications stay ([31e3d73](https://github.com/amfakh/fakh-patches/commit/31e3d735002a759deb122bf97bd39ec4917f6105))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.8.1/patches-1.8.1.mpp",
   "signature_download_url": "",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }
