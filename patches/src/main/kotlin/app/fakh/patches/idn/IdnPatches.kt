@@ -451,3 +451,117 @@ val hidePackageBannerPatch = bytecodePatch(
         }
     }
 }
+
+/** Switches the analytics SDKs off that have a manifest switch. The values replace the entry if the app already has it. */
+private val analyticsManifestPatch = resourcePatch {
+    execute {
+        document("AndroidManifest.xml").use { document ->
+            val application = document.getElementsByTagName("application").item(0)
+            val existing = document.getElementsByTagName("meta-data")
+            val switches = mapOf(
+                "firebase_analytics_collection_deactivated" to "true",
+                "google_analytics_adid_collection_enabled" to "false",
+                "google_analytics_default_allow_ad_personalization_signals" to "false",
+                "firebase_sessions_enabled" to "false",
+                "com.facebook.sdk.AutoLogAppEventsEnabled" to "false",
+                "com.facebook.sdk.AdvertiserIDCollectionEnabled" to "false",
+                "CLEVERTAP_USE_GOOGLE_AD_ID" to "0",
+            )
+            switches.forEach { (name, value) ->
+                val entry = (0 until existing.length).map { existing.item(it) as org.w3c.dom.Element }
+                    .firstOrNull { it.getAttribute("android:name") == name }
+                    ?: document.createElement("meta-data").also {
+                        it.setAttribute("android:name", name)
+                        application.appendChild(it)
+                    }
+                entry.setAttribute("android:value", value)
+            }
+        }
+    }
+}
+
+/** IDNAppsFlyerHelper.initialize(IDNApp): starts AppsFlyer from the startup pipeline. */
+private object AppsFlyerInitFingerprint : Fingerprint(
+    definingClass = "Lmedia/idn/core/util/appsflyer/IDNAppsFlyerHelper;",
+    returnType = "V",
+    parameters = listOf("Lcom/idntimes/idntimes/IDNApp;"),
+    custom = { method, _ -> method.accessFlags and 0x8 != 0 },
+)
+
+/** CleverTapSdkInitializer.initialize: the startup step that sets CleverTap up. */
+private object CleverTapInitFingerprint : Fingerprint(
+    definingClass = "Lmedia/idn/core/startup/initializers/CleverTapSdkInitializer;",
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Lkotlin/coroutines/jvm/internal/ContinuationImpl;"),
+)
+
+/** GtmSdkInitializer.initialize: the startup step that sets Google Tag Manager up. */
+private object GtmInitFingerprint : Fingerprint(
+    definingClass = "Lmedia/idn/core/startup/initializers/GtmSdkInitializer;",
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Lkotlin/coroutines/jvm/internal/ContinuationImpl;"),
+)
+
+/** ComScoreInitializer.create: the androidx.startup entry that starts comScore. */
+private object ComScoreInitFingerprint : Fingerprint(
+    definingClass = "Lcom/idntimes/idntimes/util/initializer/ComScoreInitializer;",
+    name = "create",
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Landroid/content/Context;"),
+)
+
+/** FirebaseSdkInitializer.initialize: it turns Crashlytics collection on right after Firebase starts. */
+private object FirebaseInitFingerprint : Fingerprint(
+    definingClass = "Lmedia/idn/core/startup/initializers/FirebaseSdkInitializer;",
+    returnType = "Ljava/lang/Object;",
+    parameters = listOf("Lkotlin/coroutines/jvm/internal/ContinuationImpl;"),
+)
+
+@Suppress("unused")
+val disableAnalyticsPatch = bytecodePatch(
+    name = "Disable analytics",
+    description = "Stops the analytics and crash reporting SDKs (AppsFlyer, CleverTap, Firebase Analytics, Crashlytics, Google Tag Manager, comScore and Facebook events) from collecting data. Push notifications stay.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_IDN)
+    category("Privacy")
+    dependsOn(analyticsManifestPatch)
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        // The startup steps return Success without doing their work, so the pipeline treats them as started.
+        val success = "sget-object p0, Lmedia/idn/core/startup/InitializationResult\$Success;->a:Lmedia/idn/core/startup/InitializationResult\$Success;\nreturn-object p0"
+        GtmInitFingerprint.method.addInstructions(0, success)
+
+        ComScoreInitFingerprint.method.addInstructions(
+            0,
+            """
+                sget-object p0, Lkotlin/Unit;->a:Lkotlin/Unit;
+                return-object p0
+            """,
+        )
+
+        // AppsFlyer starts later with start(); the extension stops it first, and a stopped SDK ignores start().
+        AppsFlyerInitFingerprint.method.addInstruction(
+            0,
+            "invoke-static { }, Lapp/fakh/extension/idn/IdnAnalytics;->stopAppsFlyer()V",
+        )
+
+        // CleverTap stays for push and popups, but records nothing about the user.
+        CleverTapInitFingerprint.method.addInstruction(
+            0,
+            "invoke-static { }, Lapp/fakh/extension/idn/IdnAnalytics;->optOutCleverTap()V",
+        )
+
+        FirebaseInitFingerprint.method.apply {
+            val enable = instructions.indexOfFirst {
+                (it as? ReferenceInstruction)?.reference?.toString() ==
+                    "Lcom/google/firebase/crashlytics/FirebaseCrashlytics;->b(Z)V"
+            }
+            if (enable < 0) throw PatchException("IDN: the Crashlytics collection switch was not found.")
+            val register = (instructions[enable] as FiveRegisterInstruction).registerD
+            // Crashlytics collection stays off, whatever the app asks for.
+            addInstruction(enable, "const/4 v$register, 0x0")
+        }
+    }
+}

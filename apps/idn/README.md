@@ -13,6 +13,7 @@ Every patch is on by default. Morphe Manager groups them by category.
 | Layout | Hide Create button | Removes the "+" button (write news, start a live stream) from the middle of the bottom navigation. |
 | Layout | Hide home tabs | Adds switches to hide the Nonton, IDN Live, Berita and Quiz tabs. |
 | Layout | Hide package banner | Removes the "Beli Paket" banner from the profile. |
+| Privacy | Disable analytics | Stops AppsFlyer, CleverTap, Firebase Analytics, Crashlytics, Google Tag Manager, comScore and Facebook events from collecting data. Push notifications and the app's own Lifestream activity feed stay. |
 | Feature | Stop autoplay | Adds an Autoplay setting that can stop the video previews and the automatic sliding of the home banners. |
 | Feature | Redirect Gold purchase | Opens `connect.idn.media/my-account/gold` in the browser instead of the in-app Gold top up. |
 | Feature | Allow Developer options | Lets short movies play while Developer options are turned on, instead of asking to turn them off. |
