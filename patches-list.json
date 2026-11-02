@@ -55,13 +55,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -294,13 +287,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -326,13 +312,6 @@
               "version": "4.1.1264",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -387,13 +366,6 @@
               "version": "4.1.1264",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -517,13 +489,6 @@
               "version": "4.1.1264",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -979,13 +944,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1242,13 +1200,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1395,13 +1346,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1427,13 +1371,6 @@
               "version": "4.1.1264",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -1490,13 +1427,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1551,13 +1481,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1585,13 +1508,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1617,13 +1533,6 @@
               "version": "4.1.1264",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
@@ -1744,13 +1653,6 @@
               "isExperimental": false,
               "minSdk": null,
               "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
-              "minSdk": null,
-              "description": null
             }
           ]
         }
@@ -1776,13 +1678,6 @@
               "version": "4.1.1264",
               "versionCodes": null,
               "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            },
-            {
-              "version": null,
-              "versionCodes": null,
-              "isExperimental": true,
               "minSdk": null,
               "description": null
             }
