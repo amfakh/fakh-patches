@@ -1,3 +1,9 @@
+## [1.8.2](https://github.com/amfakh/fakh-patches/compare/v1.8.1...v1.8.2) (2026-11-03)
+
+### 🐛 Bug Fixes
+
+* **Smart Life, Tuya Smart:** fix Hide AI ask bar leaving the AI bar at the bottom of device panels ([9d25230](https://github.com/amfakh/fakh-patches/commit/9d252302d8d38b5bb324bad23152d33abd13e09d))
+
 ## [1.8.1](https://github.com/amfakh/fakh-patches/compare/v1.8.0...v1.8.1) (2026-11-01)
 
 ### ✨ New Features
