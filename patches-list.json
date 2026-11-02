@@ -1819,6 +1819,84 @@
       "options": []
     },
     {
+      "name": "Spoof signature",
+      "description": "Lets the patched app start. A patched app is signed with a different key, which the app's integrity check rejects, so without this it closes a few seconds after it opens.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.tuya.smartlife",
+          "name": "Smart Life",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF5A1F",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.12.3",
+              "versionCodes": {
+                "ARM64_V8A": 877,
+                "ARMEABI_V7A": 877,
+                "X86_64": 877,
+                "X86": 877
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.tuya.smart",
+          "name": "Tuya Smart",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#FF5A1F",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "7.12.3",
+              "versionCodes": {
+                "ARM64_V8A": 870,
+                "ARMEABI_V7A": 870,
+                "X86_64": 870,
+                "X86": 870
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        },
+        {
+          "packageName": "com.bardi.smart.home",
+          "name": "BARDI Smart Home",
+          "description": null,
+          "apkFileType": "XAPK",
+          "appIconColor": "#FF5A1F",
+          "signatures": null,
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.5.3",
+              "versionCodes": {
+                "ARM64_V8A": 49,
+                "ARMEABI_V7A": 49,
+                "X86_64": 49,
+                "X86": 49
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Stop autoplay",
       "description": "Adds a switch to stop the video previews and the automatic sliding of the home banners, on a Fakh Patches page in the app's Settings.",
       "default": true,
