@@ -61,6 +61,13 @@ private object AiBarFactoryFingerprint : Fingerprint(
     custom = { method, _ -> method.instantiates("Lcom/thingclips/smart/ai/aiassistant/ui/view/AIHomeEntryView;") },
 )
 
+/** The same service's factory for the floating bar on device panels; null makes the host skip it. */
+private object PanelAiBarFactoryFingerprint : Fingerprint(
+    definingClass = "Lcom/thingclips/smart/ai/aiassistant/AIAssistantEnableServiceImpl;",
+    returnType = "Lcom/thingclips/smart/ai/assistant/view/AIBarView;",
+    custom = { method, _ -> method.instantiates("Lcom/thingclips/smart/ai/aiassistant/ui/view/InnerFloatAIBarLayout;") },
+)
+
 /** HomeAdvCardService.addUiCard: registers every card type the home list can show. */
 private object AddUiCardFingerprint : Fingerprint(
     definingClass = "Lcom/thingclips/smart/home/adv/service/HomeAdvCardService;",
@@ -264,7 +271,7 @@ val hideRecommendedForYouPatch = bytecodePatch(
 @Suppress("unused")
 val hideAiAskBarPatch = bytecodePatch(
     name = "Hide AI ask bar",
-    description = "Removes the \"How can I help?\" Tuya AI bar above the bottom navigation.",
+    description = "Removes the \"How can I help?\" Tuya AI bar above the bottom navigation and at the bottom of device panels.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART)
@@ -272,13 +279,15 @@ val hideAiAskBarPatch = bytecodePatch(
     dependsOn(signatureSpoofPatch)
 
     execute {
-        AiBarFactoryFingerprint.method.addInstructions(
-            0,
-            """
-                const/4 v0, 0x0
-                return-object v0
-            """,
-        )
+        listOf(AiBarFactoryFingerprint, PanelAiBarFactoryFingerprint).forEach {
+            it.method.addInstructions(
+                0,
+                """
+                    const/4 v0, 0x0
+                    return-object v0
+                """,
+            )
+        }
     }
 }
 
