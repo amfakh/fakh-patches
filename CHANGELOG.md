@@ -1,3 +1,9 @@
+## [1.9.1](https://github.com/amfakh/fakh-patches/compare/v1.9.0...v1.9.1) (2026-11-03)
+
+### 🐛 Bug Fixes
+
+* **Smart Life, Tuya Smart, BARDI:** fix Spoof signature missing the original certificate on some devices, so the app no longer quits right after start ([3970956](https://github.com/amfakh/fakh-patches/commit/39709568e84d1f79fa721e851bc9d5c701dd9ac3))
+
 ## [1.9.0](https://github.com/amfakh/fakh-patches/compare/v1.8.2...v1.9.0) (2026-11-03)
 
 ### ✨ New Features
