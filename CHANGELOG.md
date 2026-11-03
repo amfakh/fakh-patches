@@ -1,3 +1,14 @@
+## [1.10.0](https://github.com/amfakh/fakh-patches/compare/v1.9.1...v1.10.0) (2026-11-03)
+
+### ✨ New Features
+
+* **LinkedIn:** support 4.1.1267, next to 4.1.1264 ([e1c3549](https://github.com/amfakh/fakh-patches/commit/e1c35494caa727072995dbc64c33550495bda296))
+* **IDN:** support 6.69.1, from an XAPK or an APKS bundle; Disable analytics keeps CleverTap for push and popups, without the advertising ID ([518e6a0](https://github.com/amfakh/fakh-patches/commit/518e6a07d8cb2f36de8f277a085974efeaa2a997))
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** hide the highlighted comments of a post that a feed filter hid, instead of leaving them on their own in the feed ([b5d87cc](https://github.com/amfakh/fakh-patches/commit/b5d87cc448c84c56fc0b6a36e4451c5ae7e61eb3))
+
 ## [1.9.1](https://github.com/amfakh/fakh-patches/compare/v1.9.0...v1.9.1) (2026-11-03)
 
 ### 🐛 Bug Fixes
