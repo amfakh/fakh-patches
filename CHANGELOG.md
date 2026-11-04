@@ -1,3 +1,9 @@
+## [1.11.2](https://github.com/amfakh/fakh-patches/compare/v1.11.1...v1.11.2) (2026-11-04)
+
+### ✨ New Features
+
+* **LinkedIn:** add Expand posts, a switch in Fakh Patches that shows the full text of posts without tapping "more" ([6518865](https://github.com/amfakh/fakh-patches/commit/651886501a48740c5aadd4f66a1671c524af7e8d))
+
 ## [1.11.1](https://github.com/amfakh/fakh-patches/compare/v1.11.0...v1.11.1) (2026-11-04)
 
 ### ✨ New Features
