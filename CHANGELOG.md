@@ -1,3 +1,13 @@
+## [1.11.1](https://github.com/amfakh/fakh-patches/compare/v1.11.0...v1.11.1) (2026-11-04)
+
+### ✨ New Features
+
+* **LinkedIn:** support 4.1.1269, next to 4.1.1264 and 4.1.1267 ([336a29a](https://github.com/amfakh/fakh-patches/commit/336a29a0e782adb0ba0cd9e4fc35d333821bbcca))
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** the highlighted comments of a hidden post no longer stay behind in the feed now and then ([e9c1804](https://github.com/amfakh/fakh-patches/commit/e9c18045ed80c87549b663c926767405c6283e83))
+
 ## [1.11.0](https://github.com/amfakh/fakh-patches/compare/v1.10.0...v1.11.0) (2026-11-04)
 
 ### ✨ New Features
