@@ -29,6 +29,7 @@ public final class SduiComponentFilter {
     private static final int MAX_LOGGED_VIEW_NAMES = 500;
     private static final Set<String> loggedViewNames = ConcurrentHashMap.newKeySet();
     private static final String[] COUNT_FORMATS = {"{0,plural,", "{0,number,"};
+    private static final Set<Integer> COLLAPSE_FIELDS = new HashSet<>(Arrays.asList(8, 12, 15, 16));
     private static final String COMMENT_SHEET_PREFIX = "commentSheetNavigating_";
     private static final int MAX_HIDDEN_COMMENT_SHEETS = 500;
     /** Comment sheet keys of hidden posts, to hide their highlighted comments, which 4.1.1267 renders apart. */
@@ -36,19 +37,26 @@ public final class SduiComponentFilter {
 
     /**
      * Called with every SDUI component before it is transformed; returns it or an edited copy. Focus mode blanks the
-     * counts of the like, comment and repost buttons, and the Settings screen gets the Fakh Patches row.
+     * counts of the like, comment and repost buttons, Expand posts opens the post text, and the Settings screen gets
+     * the Fakh Patches row.
      */
     public static Object rewrite(Object component) {
         component = SduiSettingsEntry.inject(component);
-        if (!Settings.focusMode()) return component;
+        boolean focusMode = Settings.focusMode();
+        boolean expandPosts = Settings.expandPosts();
+        if (!focusMode && !expandPosts) return component;
         try {
             Object viewTracking = Proto.is(component, "hasViewTracking") ? Proto.call(component, "getViewTracking") : null;
             String viewName = Proto.string(viewTracking, "getViewName");
-            if (!COUNT_BUTTONS.contains(viewName)) return component;
+            boolean counts = focusMode && COUNT_BUTTONS.contains(viewName);
+            boolean commentary = expandPosts && viewName.equals("feed-commentary");
+            if (!counts && !commentary) return component;
             byte[] bytes = payload(component);
             if (bytes == null) return component;
-            byte[] edited = bytes;
-            for (String format : COUNT_FORMATS) edited = ProtoEdit.replaceStringsStartingWith(edited, format, "\u200b");
+            byte[] edited = commentary ? expandCommentary(bytes) : bytes;
+            if (counts) {
+                for (String format : COUNT_FORMATS) edited = ProtoEdit.replaceStringsStartingWith(edited, format, "\u200b");
+            }
             if (edited == bytes) return component;
             Object copy = component.getClass().getMethod("parseFrom", byte[].class).invoke(null, (Object) edited);
             return copy != null ? copy : component;
@@ -56,6 +64,30 @@ public final class SduiComponentFilter {
             Diagnostics.error("rewrite failed", t);
             return component;
         }
+    }
+
+    /**
+     * Drops the line limit of a post's text. The TextBlock sits in field 2 of the component's field 35; its fields 8
+     * (hasShowMore), 12 (expansionBehavior), 15 (flatten new lines when collapsed) and 16 (maxLineCount) make it
+     * collapsible.
+     */
+    private static byte[] expandCommentary(byte[] component) {
+        List<ProtoEdit.Field> fields = ProtoEdit.parse(component);
+        if (fields == null) return component;
+        for (ProtoEdit.Field content : fields) {
+            if (content.number != 35 || content.wireType != 2) continue;
+            List<ProtoEdit.Field> wrapper = ProtoEdit.parse(content.data);
+            if (wrapper == null) return component;
+            for (ProtoEdit.Field block : wrapper) {
+                if (block.number != 2 || block.wireType != 2) continue;
+                List<ProtoEdit.Field> text = ProtoEdit.parse(block.data);
+                if (text == null || !text.removeIf(f -> COLLAPSE_FIELDS.contains(f.number))) return component;
+                block.data = ProtoEdit.write(text);
+                content.data = ProtoEdit.write(wrapper);
+                return ProtoEdit.write(fields);
+            }
+        }
+        return component;
     }
 
     public static boolean shouldHide(Object component) {
