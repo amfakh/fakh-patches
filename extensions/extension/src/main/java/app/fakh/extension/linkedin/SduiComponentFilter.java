@@ -2,6 +2,7 @@ package app.fakh.extension.linkedin;
 
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -69,9 +70,7 @@ public final class SduiComponentFilter {
 
             switch (viewName) {
                 case "feed-full-update":
-                    if (!hideFeedUpdate(component, viewTracking)) return false;
-                    rememberCommentSheets(payload(component));
-                    return true;
+                    return hideFeedUpdate(component, viewTracking);
                 case "job-card":
                     return hidePromotedJob(component);
                 case "multiphoto-viewer":
@@ -95,8 +94,10 @@ public final class SduiComponentFilter {
                     break;
             }
 
-            if (viewName.isEmpty() && isCommentsOfHiddenPost(payload(component))) {
-                return hide(true, "comments of a hidden post");
+            if (viewName.isEmpty()) {
+                byte[] bytes = payload(component);
+                rememberHiddenWrapper(bytes);
+                if (isCommentsOfHiddenPost(bytes)) return hide(true, "comments of a hidden post");
             }
 
             if (Settings.hideGames()) {
@@ -183,38 +184,58 @@ public final class SduiComponentFilter {
                 if (s.contains(ShortLinkResolver.PREFIX)) OpenLinksDirectlyPatch.prefetchShortLinks(s);
             }
         }
-        if (ads && (hasSponsoredTracking(viewTracking)
-                || ProtoScanner.containsAscii(payload, "urn:li:sponsoredContentV2:"))) {
-            return hide(true, "sponsored feed update");
+        if (ads && hasSponsoredTracking(viewTracking)) return hide(true, "sponsored feed update");
+        String reason = contentFilter(payload, ProtoScanner.containsAscii(payload, "comment-container"));
+        return reason != null && hide(true, reason);
+    }
+
+    /** The filter that hides a post with this payload, or null. A highlighted comment counts as network activity. */
+    private static String contentFilter(byte[] payload, boolean highlightedComment) {
+        if (Settings.hideAds() && ProtoScanner.containsAscii(payload, "urn:li:sponsoredContentV2:")) {
+            return "sponsored feed update";
         }
         // Child components are embedded in the post payload, so their view names identify the post type.
-        if (celebrations && ProtoScanner.containsAscii(payload, "feed-celebrations-update-detail")) {
-            return hide(true, "celebration post");
+        if (Settings.hideCelebrations() && ProtoScanner.containsAscii(payload, "feed-celebrations-update-detail")) {
+            return "celebration post";
         }
-        if (jobs && ProtoScanner.containsAscii(payload, "feed-job-card-entity")) {
-            return hide(true, "job post");
+        if (Settings.hideFeedJobs() && ProtoScanner.containsAscii(payload, "feed-job-card-entity")) {
+            return "job post";
         }
         // Posts shown because of someone in the network ("X likes this", "X commented", "X reposted this",
         // "Followed by X") carry a header with that person's picture, or a highlighted comment of theirs; posts of
         // people you follow have neither.
-        if (reposts && (ProtoScanner.containsAscii(payload, "feed-header-actor-image")
-                || ProtoScanner.containsAscii(payload, "comment-container"))) {
-            return hide(true, "network activity");
+        if (Settings.hideReposts() && (highlightedComment
+                || ProtoScanner.containsAscii(payload, "feed-header-actor-image"))) {
+            return "network activity";
         }
-        if (recommendations && isRecommendationModule(payload)) {
-            return hide(true, "recommended for you");
+        if (Settings.hideRecommendations() && isRecommendationModule(payload)) {
+            return "recommended for you";
         }
         // 4.1.1264 posts with a video embed the player controls (media-video-thumbnail-play, media-video-end-replay).
-        if (videos && (ProtoScanner.containsAscii(payload, "media-video-")
+        if (Settings.hideVideoPosts() && (ProtoScanner.containsAscii(payload, "media-video-")
                 || ProtoScanner.containsAscii(payload, "large-single-video-view"))) {
-            return hide(true, "video post");
+            return "video post";
         }
         // The header label is its own string field, so match the whole string, never a substring
         // of post text.
-        if (suggested && ProtoScanner.hasExactString(payload, "Suggested", "Disarankan")) {
-            return hide(true, "suggested post");
+        if (Settings.hideSuggested() && ProtoScanner.hasExactString(payload, "Suggested", "Disarankan")) {
+            return "suggested post";
         }
-        return false;
+        return null;
+    }
+
+    /**
+     * The wrapper of one post holds the post and its comments block and is transformed first; the two inside run on
+     * different threads in either order, so the decision for the comments has to be made here. Its comments block is
+     * part of this payload, so a comment does not count as network activity at this level.
+     */
+    private static void rememberHiddenWrapper(byte[] payload) {
+        if (payload == null || !ProtoScanner.containsAscii(payload, COMMENT_SHEET_PREFIX)
+                || !ProtoScanner.containsAscii(payload, "feed-full-update")
+                || Collections.frequency(ProtoScanner.scan(payload).strings, "feed-full-update") != 1) {
+            return;
+        }
+        if (contentFilter(payload, false) != null) rememberCommentSheets(payload);
     }
 
     /** Keeps the comment sheet keys of a hidden post, which its highlighted comments block carries too. */
