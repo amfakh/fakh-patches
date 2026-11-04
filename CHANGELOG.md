@@ -1,3 +1,10 @@
+## [1.11.0](https://github.com/amfakh/fakh-patches/compare/v1.10.0...v1.11.0) (2026-11-04)
+
+### ✨ New Features
+
+* **detikcom:** support 7.14.1, with Hide ads (feed, article, Live TV and Milidetik), Disable analytics, Merge article pages to read a paged article in one go, and Stop autoplay for the video embeds, live ones included ([ee97776](https://github.com/amfakh/fakh-patches/commit/ee97776912867ffa3f6a1a37c500567474f85c90))
+* **CNN Indonesia:** support 2.50.7, with Hide ads (banners, "Promoted" rows, full-screen ads, ads on web pages), Disable analytics, and Merge article pages to read a paged article in one go ([b52fdfd](https://github.com/amfakh/fakh-patches/commit/b52fdfdc6bc5dc67230bbe5c1b9a756448ded257))
+
 ## [1.10.0](https://github.com/amfakh/fakh-patches/compare/v1.9.1...v1.10.0) (2026-11-03)
 
 ### ✨ New Features
