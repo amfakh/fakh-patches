@@ -1,0 +1,71 @@
+name: Bug report
+description: A patch fails to apply, a patched app crashes, or a feature does not work
+title: "bug: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before you report, please use the [latest patches](https://github.com/amfakh/fakh-patches/releases/latest) and an app version listed in the [README](https://github.com/amfakh/fakh-patches#readme). Other app versions might not be supported.
+  - type: input
+    id: app
+    attributes:
+      label: App and version
+      placeholder: Smart Life 7.12.3
+    validations:
+      required: true
+  - type: input
+    id: apk-source
+    attributes:
+      label: Where did you download the app?
+      placeholder: APKMirror, APKPure
+    validations:
+      required: true
+  - type: input
+    id: patches-version
+    attributes:
+      label: Patches version
+      placeholder: 1.11.3
+    validations:
+      required: true
+  - type: input
+    id: patches-off
+    attributes:
+      label: Patches you changed
+      description: Leave this empty if you used the default selection.
+      placeholder: Turned off Disable analytics
+  - type: input
+    id: device
+    attributes:
+      label: Phone model and Android version
+      placeholder: Pixel 8, Android 16
+    validations:
+      required: true
+  - type: dropdown
+    id: unpatched
+    attributes:
+      label: Does the same thing happen in the unpatched app?
+      options:
+        - "Yes"
+        - "No"
+        - Not tested
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened
+      description: Where in the app it happens, what you did, and what you expected.
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: Drag images or videos here.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Patcher log, or logcat from right after the problem. Skip this if you can't get one.
+      render: shell
