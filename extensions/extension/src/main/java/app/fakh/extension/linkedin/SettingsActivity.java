@@ -162,7 +162,7 @@ public final class SettingsActivity extends Activity {
                         "Double-tapping a post or photo won't like it.");
             }
             if (Settings.isExpandPostsIncluded()) {
-                feed.toggle(Settings.EXPAND_POSTS, false, "Show full posts", "Post text opens without tapping \"more\".");
+                feed.toggle(Settings.EXPAND_POSTS, false, "Expand posts by default", "Posts start expanded. Tap the text to collapse.");
             }
             if (Settings.isFeedFiltersIncluded()) {
                 feed.toggle(Settings.FOCUS_MODE, false, "Focus mode", "Hide like, comment, and repost counts.")
