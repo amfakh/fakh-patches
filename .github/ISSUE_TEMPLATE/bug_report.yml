@@ -6,7 +6,11 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before you report, please use the [latest patches](https://github.com/amfakh/fakh-patches/releases/latest) and an app version listed in the [README](https://github.com/amfakh/fakh-patches#readme). Other app versions might not be supported. Please also [search existing issues](https://github.com/amfakh/fakh-patches/issues?q=is%3Aissue) to see if it was already reported.
+        > [!IMPORTANT]
+        > **Before you report**
+        > - Use the [latest patches](https://github.com/amfakh/fakh-patches/releases/latest).
+        > - Use an app version listed in the [README](https://github.com/amfakh/fakh-patches#readme). Other versions might not be supported.
+        > - [Search existing issues](https://github.com/amfakh/fakh-patches/issues?q=is%3Aissue) to see if it was already reported.
   - type: input
     id: app
     attributes:
@@ -63,6 +67,7 @@ body:
     attributes:
       label: What happened
       description: Where in the app it happens and what you expected.
+      placeholder: The video tab shows a blank screen instead of the feed. I expected the videos to load.
     validations:
       required: true
   - type: textarea
@@ -89,3 +94,4 @@ body:
     attributes:
       label: Possible solution
       description: If you have an idea of the cause or a fix.
+      placeholder: It only breaks with the Disable analytics patch on, so that patch may hide something the app needs.
