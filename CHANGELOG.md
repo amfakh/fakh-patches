@@ -1,3 +1,9 @@
+## [1.11.5](https://github.com/amfakh/fakh-patches/compare/v1.11.4...v1.11.5) (2026-11-05)
+
+### ✨ New Features
+
+* **Tuya Smart:** all patches now work on version 7.12.6-872 ([0424bc5](https://github.com/amfakh/fakh-patches/commit/0424bc5688ceeef01f5bfb6fa8674d71354a4826))
+
 ## [1.11.4](https://github.com/amfakh/fakh-patches/compare/v1.11.3...v1.11.4) (2026-11-05)
 
 ### 🐛 Bug Fixes
