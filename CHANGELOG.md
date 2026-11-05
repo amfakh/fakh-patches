@@ -1,3 +1,9 @@
+## [1.11.4](https://github.com/amfakh/fakh-patches/compare/v1.11.3...v1.11.4) (2026-11-05)
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** Material You now recolors the red message badge in the top bar ([d9149f3](https://github.com/amfakh/fakh-patches/commit/d9149f30355559dffadd005ffbda0c3de61a96a7))
+
 ## [1.11.3](https://github.com/amfakh/fakh-patches/compare/v1.11.2...v1.11.3) (2026-11-05)
 
 ### 🐛 Bug Fixes
