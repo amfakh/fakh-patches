@@ -1,3 +1,9 @@
+## [1.11.6](https://github.com/amfakh/fakh-patches/compare/v1.11.5...v1.11.6) (2026-11-05)
+
+### 🐛 Bug Fixes
+
+* **Smart Life, Tuya Smart, BARDI:** the app no longer closes a few seconds after opening when its integrity check still rejects the patched signature ([8b802cb](https://github.com/amfakh/fakh-patches/commit/8b802cb948a0b38b616f43812281212696dff7cc))
+
 ## [1.11.5](https://github.com/amfakh/fakh-patches/compare/v1.11.4...v1.11.5) (2026-11-05)
 
 ### ✨ New Features
