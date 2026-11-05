@@ -1,3 +1,9 @@
+## [1.11.3](https://github.com/amfakh/fakh-patches/compare/v1.11.2...v1.11.3) (2026-11-05)
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** Expand posts now shows posts expanded by default, and tapping the text collapses them again ([c10d2cc](https://github.com/amfakh/fakh-patches/commit/c10d2ccaba74c8b6f67b9e3eb6062f2e94dbe58e))
+
 ## [1.11.2](https://github.com/amfakh/fakh-patches/compare/v1.11.1...v1.11.2) (2026-11-04)
 
 ### ✨ New Features
