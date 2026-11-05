@@ -88,9 +88,10 @@ body:
     attributes:
       label: Logs
       description: |
-        In Morphe Manager, go to `Settings > System > About > Export debug logs` right after the problem and paste the content here. If the log is very large, attach the file under Proof instead.
+        - Patching failed: in Morphe Manager, go to `Settings > System > About > Export debug logs` and paste the content here.
+        - The patched app crashes or misbehaves: run `adb logcat -d` on a computer right after it happens and paste the output here. Export debug logs does not include the patched app.
 
-        Skip this if you can't get one.
+        If the log is very large, attach the file under Proof instead. Skip this if you can't get one.
       render: shell
   - type: textarea
     id: solution
