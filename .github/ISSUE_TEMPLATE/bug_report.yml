@@ -10,8 +10,15 @@ body:
   - type: input
     id: app
     attributes:
-      label: App and version
-      placeholder: Smart Life 7.12.3
+      label: App
+      placeholder: Smart Life
+    validations:
+      required: true
+  - type: input
+    id: app-version
+    attributes:
+      label: App version
+      placeholder: 7.12.3
     validations:
       required: true
   - type: input
@@ -59,9 +66,9 @@ body:
     validations:
       required: true
   - type: textarea
-    id: screenshots
+    id: proof
     attributes:
-      label: Screenshots
+      label: Proof
       description: Drag images or videos here.
   - type: textarea
     id: logs
