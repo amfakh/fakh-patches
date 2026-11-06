@@ -58,10 +58,13 @@ val signatureSpoofPatch = bytecodePatch(
     execute {
         AttachBaseContextFingerprint.method.addInstructions(
             0,
-            "invoke-static { }, Lapp/fakh/extension/smartlife/SignatureSpoof;->install()V",
+            "invoke-static { p1 }, Lapp/fakh/extension/smartlife/SignatureSpoof;->install(Landroid/content/Context;)V",
         )
         // Safety net for phones where the spoof does not cover every check: the app keeps running instead of quitting.
-        IntegrityKillFingerprint.method.addInstructions(0, "return-void")
+        IntegrityKillFingerprint.method.addInstructions(
+            0,
+            "invoke-static { }, Lapp/fakh/extension/smartlife/SignatureSpoof;->logIntegrityKill()V\nreturn-void",
+        )
     }
 }
 
