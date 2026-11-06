@@ -17,6 +17,7 @@ Each app has its own README with the full patch list.
 | KOMPAS.com | `com.ertanto.kompas.official` | `9.8.4` | XAPK from APKPure | [apps/kompas](apps/kompas/README.md) |
 | detikcom | `org.detikcom.rss` | `7.14.1` | APK from APKMirror | [apps/detik](apps/detik/README.md) |
 | CNN Indonesia | `com.cnn.indonesia` | `2.50.7` | APK from APKMirror | [apps/cnn](apps/cnn/README.md) |
+| FlipSide | `com.dinoster.flipside` | `1.6` | APKS from APKCube | [apps/flipside](apps/flipside/README.md) |
 
 ## Use
 
