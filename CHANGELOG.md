@@ -1,3 +1,9 @@
+## [1.13.2](https://github.com/amfakh/fakh-patches/compare/v1.13.1...v1.13.2) (2026-11-06)
+
+### 🐛 Bug Fixes
+
+* **Smart Life, Tuya Smart & BARDI:** keep the signature fix working on devices that block the hidden-API exemption, where the app could still close after opening with "Invalid client" ([b559baf](https://github.com/amfakh/fakh-patches/commit/b559bafeec270c5534f36fd131e94da37391dd97))
+
 ## [1.13.1](https://github.com/amfakh/fakh-patches/compare/v1.13.0...v1.13.1) (2026-11-06)
 
 ### 🐛 Bug Fixes
