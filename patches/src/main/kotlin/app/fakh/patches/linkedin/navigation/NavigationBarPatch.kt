@@ -75,7 +75,7 @@ internal val navigationHooksPatch = bytecodePatch {
 val navigationBarPatch = bytecodePatch(
     name = "Navigation bar",
     description = "Adds options (turned on in Fakh Patches) to hide the More, Jobs, Network and Notifications tabs " +
-        "of the bottom bar, its count badges and its labels.",
+        "of the navigation bar, its count badges and its labels.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)
@@ -85,15 +85,15 @@ val navigationBarPatch = bytecodePatch(
 }
 
 @Suppress("unused")
-val glassBottomBarPatch = bytecodePatch(
-    name = "Glass bottom bar",
-    description = "Draws the bottom bar as a floating, translucent capsule.",
+val glassNavigationBarPatch = bytecodePatch(
+    name = "Glass navigation bar",
+    description = "Draws the navigation bar as a floating, translucent capsule.",
     default = false
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)
     category("Theme")
     dependsOn(navigationHooksPatch)
-    execute { markIncluded("isGlassBottomBarIncluded") }
+    execute { markIncluded("isGlassNavigationBarIncluded") }
 }
 
 /** Indices of all instructions with the opcode, last first so edits keep earlier indices valid. */

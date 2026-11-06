@@ -20,14 +20,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /** Draws LinkedIn's bottom bar as a floating, translucent capsule, in the style of Morphe's glass navigation bar. */
-final class GlassBottomBar {
+final class GlassNavigationBar {
     private static final float FILL_ALPHA = 0.85f;
     private static final int SIDE_MARGIN_DP = 12;
     private static final int INNER_PADDING_DP = 14;
     /** The widest a tab gets, so the capsule stays compact on a wide screen. */
     private static final int MAX_TAB_DP = 96;
 
-    private GlassBottomBar() {
+    private GlassNavigationBar() {
     }
 
     /** Replaces the background of the bar with the capsule, and removes what the app draws apart from it. */

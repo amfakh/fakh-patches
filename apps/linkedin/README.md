@@ -14,7 +14,7 @@ Morphe Manager groups them by category.
 | Ads | Hide Premium upsells | On | Removes Premium and AI upsell cards and banners, including on profiles and the profile menu. |
 | Feature | Download media | On | A download button on full screen photos and videos, profile photos and banners. |
 | Feature | More tab | On | Hides items of the More tab (Puzzle games, Groups, Events, Newsletters), or lists them at the bottom of the profile menu. Adds a Puzzle games shortcut to the LinkedIn app icon, with its own switch. |
-| Feature | Navigation bar | On | Adds switches in Fakh Patches to show or hide the More, Jobs, Network and Notifications tabs of the bottom bar, its notification badges and its tab labels. |
+| Feature | Navigation bar | On | Adds switches in Fakh Patches to show or hide the More, Jobs, Network and Notifications tabs of the navigation bar, its notification badges and its tab labels. |
 | Feature | GmsCore support | Off | Makes "Continue with Google" work by signing in through [microG RE](https://github.com/MorpheApp/microg-RE) instead of Google Play services. Needs microG RE installed and signed in to a Google account. |
 | Feed | Hide suggested posts | On | Removes "Suggested" posts from people outside your network. |
 | Feed | Feed filters | On | Adds filters you can turn on in Fakh Patches: engagement counts, celebrations, job cards, network activity (likes, comments, reposts), video posts, "Recommended for you", puzzle games, the "New posts" pill and "Show translation". All start off. |
@@ -27,7 +27,7 @@ Morphe Manager groups them by category.
 | Theme | Material You | Off | Wallpaper colors (Android 12+) instead of LinkedIn blue for accents, backgrounds, cards, bars and borders. Some screens drawn by LinkedIn's servers keep their own colors. |
 | Theme | Pitch black | Off | Replaces the gray backgrounds of dark mode with black, and cards with a slightly lighter black. Works with or without Material You. |
 | Theme | Remove gaps and dividers | Off | Removes the gray gaps between posts and the dividers between list items, so the feed and lists are one flat surface. |
-| Theme | Glass bottom bar | Off | Draws the bottom bar as a floating, translucent capsule, in the style of the glass navigation bar of [Morphe Patches](https://github.com/MorpheApp/morphe-patches). |
+| Theme | Glass navigation bar | Off | Draws the navigation bar as a floating, translucent capsule, in the style of the glass navigation bar of [Morphe Patches](https://github.com/MorpheApp/morphe-patches). |
 
 Settings are in **Fakh Patches** on LinkedIn's Settings screen (profile menu → Settings & Privacy), or long press
 the Home tab.

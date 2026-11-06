@@ -184,16 +184,16 @@ public final class SettingsActivity extends Activity {
             categories.add(feed);
         }
 
-        if (Settings.isNavigationBarIncluded() || Settings.isGlassBottomBarIncluded()) {
+        if (Settings.isNavigationBarIncluded() || Settings.isGlassNavigationBarIncluded()) {
             Category navigation = new Category("Navigation bar");
-            if (Settings.isGlassBottomBarIncluded()) {
-                navigation.toggle(Settings.GLASS_BOTTOM_BAR, true, "Glass bottom bar",
-                        "A floating, translucent bottom bar.");
+            if (Settings.isGlassNavigationBarIncluded()) {
+                navigation.toggle(Settings.GLASS_NAVIGATION_BAR, true, "Glass navigation bar",
+                        "A floating, translucent navigation bar.");
             }
             if (Settings.isNavigationBarIncluded()) {
-                navigation.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels", "Text under the bottom bar icons.")
+                navigation.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels", "Text under the navigation bar icons.")
                         .toggle(Settings.HIDE_TAB_BADGES, false, "Hide notification badges",
-                                "The count on the bottom bar tabs.")
+                                "The count on the navigation bar tabs.")
                         .action("Navigation bar tabs", "Home is always shown.", null)
                         .check(Settings.SHOW_TAB_JOBS, true, "Jobs")
                         .check(Settings.SHOW_TAB_NETWORK, true, "Network")
@@ -701,7 +701,7 @@ public final class SettingsActivity extends Activity {
                 {"Remove gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
                 {"Material You", Settings.isMaterialYouIncluded()},
                 {"Pitch black", Settings.isAmoledBlackIncluded()},
-                {"Glass bottom bar", Settings.isGlassBottomBarIncluded()},
+                {"Glass navigation bar", Settings.isGlassNavigationBarIncluded()},
                 {"Navigation bar", Settings.isNavigationBarIncluded()},
                 {"More tab", Settings.isMoreMenuIncluded()},
                 {"GmsCore support", Settings.isGmsCoreSupportIncluded()},

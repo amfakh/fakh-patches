@@ -37,7 +37,7 @@ public final class Settings {
     static final String GHOST_MODE = "ghost_mode";
     static final String BLOCK_TRACKING = "block_tracking";
     static final String DISABLE_DOUBLE_TAP_LIKE = "disable_double_tap_like";
-    static final String GLASS_BOTTOM_BAR = "glass_bottom_bar";
+    static final String GLASS_NAVIGATION_BAR = "glass_navigation_bar";
     static final String HIDE_TAB_LABELS = "hide_tab_labels";
     static final String HIDE_TAB_BADGES = "hide_tab_badges";
     static final String SHOW_TAB_JOBS = "show_tab_jobs";
@@ -129,7 +129,7 @@ public final class Settings {
         return false;
     }
 
-    public static boolean isGlassBottomBarIncluded() {
+    public static boolean isGlassNavigationBarIncluded() {
         return false;
     }
 
@@ -143,8 +143,8 @@ public final class Settings {
         return isRemoveGapsAndDividersIncluded() && get(REMOVE_GAPS_AND_DIVIDERS, true);
     }
 
-    static boolean glassBottomBar() {
-        return isGlassBottomBarIncluded() && get(GLASS_BOTTOM_BAR, true);
+    static boolean glassNavigationBar() {
+        return isGlassNavigationBarIncluded() && get(GLASS_NAVIGATION_BAR, true);
     }
 
     public static boolean isNavigationBarIncluded() {

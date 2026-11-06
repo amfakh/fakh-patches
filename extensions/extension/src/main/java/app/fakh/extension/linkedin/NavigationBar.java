@@ -68,7 +68,7 @@ public final class NavigationBar {
             if (!(row instanceof ViewGroup)) return;
             ViewGroup tabs = (ViewGroup) row;
             if (prepared.put(tabs, true) == null) {
-                if (Settings.glassBottomBar()) GlassBottomBar.install(bar, tabs);
+                if (Settings.glassNavigationBar()) GlassNavigationBar.install(bar, tabs);
                 tabs.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> arrange(bar, tabs));
             }
             arrange(bar, tabs);
@@ -78,7 +78,7 @@ public final class NavigationBar {
     }
 
     private static void arrange(View bar, ViewGroup tabs) {
-        if (Settings.glassBottomBar()) GlassBottomBar.arrangeTabs(tabs, bar.getWidth());
+        if (Settings.glassNavigationBar()) GlassNavigationBar.arrangeTabs(tabs, bar.getWidth());
         boolean labels = !Settings.hideTabLabels();
         boolean badges = !Settings.hideTabBadges();
         for (int i = 0; i < tabs.getChildCount(); i++) {
