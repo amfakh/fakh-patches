@@ -1,3 +1,9 @@
+## [1.13.1](https://github.com/amfakh/fakh-patches/compare/v1.13.0...v1.13.1) (2026-11-06)
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** rename Glass bottom bar to Glass navigation bar, and use "navigation bar" in the wording of the Navigation bar options ([ede16cb](https://github.com/amfakh/fakh-patches/commit/ede16cbc03948e55ec1f218c8061aafb3e29c031))
+
 ## [1.13.0](https://github.com/amfakh/fakh-patches/compare/v1.12.0...v1.13.0) (2026-11-06)
 
 ### ✨ New Features

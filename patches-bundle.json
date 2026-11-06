@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-06T05:52:48",
-  "description": "## [1.13.0](https://github.com/amfakh/fakh-patches/compare/v1.12.0...v1.13.0) (2026-11-06)\n\n### ✨ New Features\n\n* **LinkedIn:** add Glass bottom bar, which draws the bottom bar as a floating translucent capsule ([680e757](https://github.com/amfakh/fakh-patches/commit/680e75742042dd80548db0718404b28cd88838aa))\n* **LinkedIn:** add Navigation bar, with switches to show or hide the Jobs, Network, Notifications and More tabs, the notification badges and the tab labels ([680e757](https://github.com/amfakh/fakh-patches/commit/680e75742042dd80548db0718404b28cd88838aa))\n* **LinkedIn:** add Pitch black, which turns the gray backgrounds of dark mode into black, with or without Material You ([680e757](https://github.com/amfakh/fakh-patches/commit/680e75742042dd80548db0718404b28cd88838aa))\n* **LinkedIn:** the More tab items can also be listed in the profile menu while the tab stays, and the Puzzle games shortcut has its own Shortcuts section ([680e757](https://github.com/amfakh/fakh-patches/commit/680e75742042dd80548db0718404b28cd88838aa))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.13.0/patches-1.13.0.mpp",
+  "created_at": "2026-11-06T06:50:02",
+  "description": "## [1.13.1](https://github.com/amfakh/fakh-patches/compare/v1.13.0...v1.13.1) (2026-11-06)\n\n### 🐛 Bug Fixes\n\n* **LinkedIn:** rename Glass bottom bar to Glass navigation bar, and use \"navigation bar\" in the wording of the Navigation bar options ([ede16cb](https://github.com/amfakh/fakh-patches/commit/ede16cbc03948e55ec1f218c8061aafb3e29c031))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.13.1/patches-1.13.1.mpp",
   "signature_download_url": "",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }
