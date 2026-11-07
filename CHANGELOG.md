@@ -1,3 +1,11 @@
+## [1.15.0](https://github.com/amfakh/fakh-patches/compare/v1.14.2...v1.15.0) (2026-11-07)
+
+### New Features
+
+* **GitHub:** add Navigation bar, a switch in Settings that hides the text under the icons of the navigation bar ([25eca88](https://github.com/amfakh/fakh-patches/commit/25eca88b82e0098b00bc3801ffd8561b77f14e42))
+* **GitHub:** add Glass navigation bar, a switch that draws the bottom bar as a floating, translucent capsule the screen scrolls behind, and the side bar in landscape as a small upright capsule ([25eca88](https://github.com/amfakh/fakh-patches/commit/25eca88b82e0098b00bc3801ffd8561b77f14e42))
+* **GitHub:** add Navigation bar on the right, a switch that moves the landscape navigation bar from the left edge to the right one ([25eca88](https://github.com/amfakh/fakh-patches/commit/25eca88b82e0098b00bc3801ffd8561b77f14e42))
+
 ## [1.14.2](https://github.com/amfakh/fakh-patches/compare/v1.14.1...v1.14.2) (2026-11-07)
 
 ### Bug Fixes
