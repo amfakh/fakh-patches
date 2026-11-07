@@ -1,3 +1,9 @@
+## [1.14.2](https://github.com/amfakh/fakh-patches/compare/v1.14.1...v1.14.2) (2026-11-07)
+
+### Bug Fixes
+
+* sign the patch bundle again, so Morphe Manager accepts the update instead of refusing the unsigned 1.14.0 and 1.14.1 builds ([d924861](https://github.com/amfakh/fakh-patches/commit/d9248617152a09c44683e7d305c256901b5bcac0))
+
 ## [1.14.1](https://github.com/amfakh/fakh-patches/compare/v1.14.0...v1.14.1) (2026-11-07)
 
 ### Updated App Support
