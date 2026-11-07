@@ -1,6 +1,6 @@
 {
   "created_at": "2026-11-07T03:31:29",
-  "description": "## [1.14.1](https://github.com/amfakh/fakh-patches/compare/v1.14.0...v1.14.1) (2026-11-07)\n\n### 🐛 Bug Fixes\n\n* **GitHub:** all patches work on version 1.282.0 again, next to 1.283.0 ([dfbada2](https://github.com/amfakh/fakh-patches/commit/dfbada221783d8d3aaa4226abe38e1e6bfc21f54))",
+  "description": "## [1.14.1](https://github.com/amfakh/fakh-patches/compare/v1.14.0...v1.14.1) (2026-11-07)\n\n### Updated App Support\n\n* **GitHub:** add support for `1.282.0`, next to `1.283.0` ([dfbada2](https://github.com/amfakh/fakh-patches/commit/dfbada221783d8d3aaa4226abe38e1e6bfc21f54))",
   "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.14.1/patches-1.14.1.mpp",
   "signature_download_url": "",
   "version": "1.14.1",
