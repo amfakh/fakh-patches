@@ -1,3 +1,19 @@
+## [1.14.0](https://github.com/amfakh/fakh-patches/compare/v1.13.2...v1.14.0) (2026-11-07)
+
+### ✨ New Features
+
+* **LinkedIn:** add Swipe between tabs, so swiping sideways goes to the next or previous tab of the navigation bar with a slide animation, except where something under the finger can scroll sideways ([9b7318e](https://github.com/amfakh/fakh-patches/commit/9b7318eec082eb8ea591b720b180e476ddf6ba08))
+* **LinkedIn:** add Copy text, which opens a post, comment or any other text in a sheet where it can be selected and copied when you press and hold it ([9b7318e](https://github.com/amfakh/fakh-patches/commit/9b7318eec082eb8ea591b720b180e476ddf6ba08))
+* **LinkedIn:** add Anonymous profile viewing, a switch that stops the app from reporting your visits to profiles ([9b7318e](https://github.com/amfakh/fakh-patches/commit/9b7318eec082eb8ea591b720b180e476ddf6ba08))
+* **LinkedIn:** the download button of Download media looks like the app's own download button of a document, sits level with the back button and hides with the viewer's controls when you tap the screen ([9b7318e](https://github.com/amfakh/fakh-patches/commit/9b7318eec082eb8ea591b720b180e476ddf6ba08))
+* **LinkedIn:** all patches now work on version 4.1.1270 ([9b7318e](https://github.com/amfakh/fakh-patches/commit/9b7318eec082eb8ea591b720b180e476ddf6ba08))
+* **GitHub:** all patches now work on version 1.283.0 ([c9e5875](https://github.com/amfakh/fakh-patches/commit/c9e587539b263cf663374f748a4b86e15a1f0457))
+
+### 🐛 Bug Fixes
+
+* **LinkedIn:** the Glass navigation bar is visible in light mode, and its active tab now has an animated background ([9b7318e](https://github.com/amfakh/fakh-patches/commit/9b7318eec082eb8ea591b720b180e476ddf6ba08))
+* **LinkedIn:** the header and navigation bar go back to the normal dark gray when Pitch black is turned off ([9b7318e](https://github.com/amfakh/fakh-patches/commit/9b7318eec082eb8ea591b720b180e476ddf6ba08))
+
 ## [1.13.2](https://github.com/amfakh/fakh-patches/compare/v1.13.1...v1.13.2) (2026-11-06)
 
 ### 🐛 Bug Fixes
