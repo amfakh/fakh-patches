@@ -1,3 +1,9 @@
+## [1.14.1](https://github.com/amfakh/fakh-patches/compare/v1.14.0...v1.14.1) (2026-11-07)
+
+### 🐛 Bug Fixes
+
+* **GitHub:** all patches work on version 1.282.0 again, next to 1.283.0 ([dfbada2](https://github.com/amfakh/fakh-patches/commit/dfbada221783d8d3aaa4226abe38e1e6bfc21f54))
+
 ## [1.14.0](https://github.com/amfakh/fakh-patches/compare/v1.13.2...v1.14.0) (2026-11-07)
 
 ### ✨ New Features
