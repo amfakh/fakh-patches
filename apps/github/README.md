@@ -1,6 +1,6 @@
 # GitHub
 
-Patches for the GitHub app (`com.github.android`, version `1.282.0`, APKM from APKMirror).
+Patches for the GitHub app (`com.github.android`, version `1.283.0`, APKM from APKMirror).
 
 ## Patches
 
@@ -27,10 +27,10 @@ otherwise Android asks you to uninstall first.
 With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs Java 21):
 
 ```bash
-java -jar morphe-desktop-1.19.1-all.jar patch -p patches/build/libs/patches-<version>.mpp -o github-patched.apk com.github.android_1.282.0-953_4arch_6dpi_apkmirror.com.apkm
+java -jar morphe-desktop-1.19.1-all.jar patch -p patches/build/libs/patches-<version>.mpp -o github-patched.apk com.github.android_1.283.0-954_4arch_6dpi_apkmirror.com.apkm
 ```
 
 ## Getting the APK
 
-Download the `1.282.0` APKM from APKMirror. Morphe Manager looks the app up on APKMirror itself,
+Download the `1.283.0` APKM from APKMirror. Morphe Manager looks the app up on APKMirror itself,
 so it can take you to that page.
