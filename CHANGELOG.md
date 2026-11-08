@@ -1,8 +1,15 @@
+## [1.15.2](https://github.com/amfakh/fakh-patches/compare/v1.15.1...v1.15.2) (2026-11-08)
+
+### Bug Fixes
+
+* **GitHub:** keep buttons pinned to the bottom of a screen, such as Comment and Finish your review, above the glass navigation bar instead of behind it ([1485679](https://github.com/amfakh/fakh-patches/commit/14856799a8b116b3328147ff2d4b4eed60c34a6b))
+* **GitHub:** keep the neutral lines and line numbers of a diff dark in dark mode with Material You, instead of white ([1485679](https://github.com/amfakh/fakh-patches/commit/14856799a8b116b3328147ff2d4b4eed60c34a6b))
+
 ## [1.15.1](https://github.com/amfakh/fakh-patches/compare/v1.15.0...v1.15.1) (2026-11-07)
 
 ### New Features
 
-* **LinkedIn:** complete the French translation of the settings ([019b79e](https://github.com/amfakh/fakh-patches/commit/019b79eda4a0c5c5fb531a72b230300c5610d421))
+* **LinkedIn:** complete the French translation of the settings, by [foXaCe](https://github.com/foXaCe) ([019b79e](https://github.com/amfakh/fakh-patches/commit/019b79eda4a0c5c5fb531a72b230300c5610d421))
 
 ## [1.15.0](https://github.com/amfakh/fakh-patches/compare/v1.14.2...v1.15.0) (2026-11-07)
 
