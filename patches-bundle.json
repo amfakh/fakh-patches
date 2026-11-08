@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-08T06:14:36",
-  "description": "## [1.15.2](https://github.com/amfakh/fakh-patches/compare/v1.15.1...v1.15.2) (2026-11-08)\n\n### Bug Fixes\n\n* **GitHub:** keep buttons pinned to the bottom of a screen, such as Comment and Finish your review, above the glass navigation bar instead of behind it ([1485679](https://github.com/amfakh/fakh-patches/commit/14856799a8b116b3328147ff2d4b4eed60c34a6b))\n* **GitHub:** keep the neutral lines and line numbers of a diff dark in dark mode with Material You, instead of white ([1485679](https://github.com/amfakh/fakh-patches/commit/14856799a8b116b3328147ff2d4b4eed60c34a6b))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.15.2/patches-1.15.2.mpp",
+  "created_at": "2026-11-08T07:12:05",
+  "description": "## [1.15.3](https://github.com/amfakh/fakh-patches/compare/v1.15.2...v1.15.3) (2026-11-08)\n\n### Bug Fixes\n\n* **LinkedIn:** swiping between tabs keeps working after you come back from another screen, such as messages or a profile ([538edd4](https://github.com/amfakh/fakh-patches/commit/538edd4c416f240d0f8d96a9a045d515021eb8ff))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.15.3/patches-1.15.3.mpp",
   "signature_download_url": "",
-  "version": "1.15.2",
+  "version": "1.15.3",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }

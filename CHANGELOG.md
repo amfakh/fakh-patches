@@ -1,3 +1,9 @@
+## [1.15.3](https://github.com/amfakh/fakh-patches/compare/v1.15.2...v1.15.3) (2026-11-08)
+
+### Bug Fixes
+
+* **LinkedIn:** swiping between tabs keeps working after you come back from another screen, such as messages or a profile ([538edd4](https://github.com/amfakh/fakh-patches/commit/538edd4c416f240d0f8d96a9a045d515021eb8ff))
+
 ## [1.15.2](https://github.com/amfakh/fakh-patches/compare/v1.15.1...v1.15.2) (2026-11-08)
 
 ### Bug Fixes
