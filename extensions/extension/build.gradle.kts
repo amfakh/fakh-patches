@@ -77,8 +77,9 @@ val generateTranslations by tasks.registering {
                 val actual = placeholder.findAll(text).map { it.value }.sorted().toList()
                 check(expected == actual) { "$code.json: placeholders of \"$english\" are $actual, expected $expected" }
             }
-            val missing = source - entries.keys
-            if (missing.isNotEmpty()) logger.warn("$code.json is missing ${missing.size} translations; English is used for them.")
+            // Every language is complete: a missing or empty value would show English inside a translated screen.
+            val untranslated = source.filter { entries[it].isNullOrEmpty() }
+            check(untranslated.isEmpty()) { "$code.json has no translation for ${untranslated.size} strings: $untranslated" }
             out.append("\n    private static Map<String, String> language$index() {\n")
             out.append("        Map<String, String> m = new HashMap<>();\n")
             entries.forEach { (english, text) ->
