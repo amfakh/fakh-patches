@@ -131,26 +131,31 @@ internal val FieldReference.smali get() = "$definingClass->$name:$type"
 private var switchApi: PreferenceApi? = null
 
 /**
- * Smali that adds the switch for the setting [key] to the category in v3. It persists to GitHub's settings file,
- * where the extension reads it, and applies the change from its click listener.
+ * Smali that adds the row for the setting [key] to the category in v3: a switch that persists to GitHub's settings
+ * file, where the extension reads it, or with no [default] a plain row. Both report a click to the extension.
  */
-private fun row(api: PreferenceApi, key: String, title: String, default: Boolean) = """
-    new-instance v1, $SWITCH_PREFERENCE
+private fun row(api: PreferenceApi, key: String, title: String, default: Boolean?): String {
+    val type = if (default == null) PREFERENCE else SWITCH_PREFERENCE
+    return """
+    new-instance v1, $type
     const/4 v2, 0x0
-    invoke-direct { v1, v0, v2 }, $SWITCH_PREFERENCE-><init>(Landroid/content/Context;Landroid/util/AttributeSet;)V
+    invoke-direct { v1, v0, v2 }, $type-><init>(Landroid/content/Context;Landroid/util/AttributeSet;)V
     const-string v2, "$key"
     invoke-virtual { v1, v2 }, ${api.setKey.smali}
     const-string v2, "$title"
     invoke-virtual { v1, v2 }, ${api.setTitle.smali}
     invoke-virtual { v1 }, ${api.finish.smali}
+    ${if (default == null) "" else """
     sget-object v2, Ljava/lang/Boolean;->${if (default) "TRUE" else "FALSE"}:Ljava/lang/Boolean;
     iput-object v2, v1, ${api.defaultValue.smali}
+    """}
     const-string v2, "$key"
     new-instance v4, $SETTINGS_ENTRY
     invoke-direct { v4, v2 }, $SETTINGS_ENTRY-><init>(Ljava/lang/String;)V
     iput-object v4, v1, ${api.listener.smali}
     invoke-virtual { v3, v1 }, ${api.addPreference.smali}
 """
+}
 
 /**
  * The Fakh Patches section of GitHub's Settings, shared by every patch that has a switch: this patch builds the
@@ -242,8 +247,11 @@ internal val githubSettingsPatch = bytecodePatch {
     }
 }
 
-/** Adds a switch to the Fakh Patches section; run after [githubSettingsPatch] has built it. */
-internal fun BytecodePatchContext.addSwitch(key: String, title: String, default: Boolean) {
+/**
+ * Adds a row to the Fakh Patches section; run after [githubSettingsPatch] has built it. A null [default] makes a
+ * plain row that only reports its click, such as one that opens a sheet.
+ */
+internal fun BytecodePatchContext.addSwitch(key: String, title: String, default: Boolean?) {
     val api = switchApi ?: throw PatchException("The Fakh Patches section is not built yet")
     val section = mutableClassDefBy(SETTINGS_FRAGMENT).methods.first { it.name == "fakhAddPatchesSection" }
     section.addInstructions(section.implementation!!.instructions.count() - 1, row(api, key, title, default))

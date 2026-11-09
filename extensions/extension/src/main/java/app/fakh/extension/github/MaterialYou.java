@@ -298,6 +298,11 @@ public final class MaterialYou {
      * @param key     the switch's key
      */
     public static void toggled(Context context, String key) {
+        if (NavigationBar.NAV_TABS.equals(key)) {
+            Activity activity = activity(context);
+            if (activity != null) NavigationBar.showTabsSheet(activity);
+            return;
+        }
         SharedPreferences prefs = prefs(context);
         boolean on = prefs.getBoolean(key, MATERIAL_YOU.equals(key));
         prefs.edit().putBoolean(key, on).commit();
@@ -374,7 +379,7 @@ public final class MaterialYou {
      * A snackbar-like bar at the bottom of the screen, in the Material 3 inverse surface colors, saying the change
      * applies after a restart, with a Restart action. It hides itself after a few seconds.
      */
-    private static void showRestartBar(Activity activity) {
+    static void showRestartBar(Activity activity) {
         ViewGroup root = activity.findViewById(android.R.id.content);
         if (root == null) return;
         View old = root.findViewWithTag(RESTART_BAR);
@@ -451,7 +456,7 @@ public final class MaterialYou {
     }
 
     /** GitHub's settings file, where the Fakh Patches switches save their state. */
-    private static SharedPreferences prefs(Context context) {
+    static SharedPreferences prefs(Context context) {
         return context.getApplicationContext() != null
                 ? context.getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 : context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
@@ -466,7 +471,7 @@ public final class MaterialYou {
     }
 
     /** The app's Application, for the scheme initializers that run without a Context at hand. */
-    private static Application application() {
+    static Application application() {
         try {
             return (Application) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null);
         } catch (ReflectiveOperationException e) {
