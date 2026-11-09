@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 
 import app.fakh.extension.shared.TabSheet;
+import app.fakh.extension.shared.Translations;
 
 /**
  * Fakh Patches settings screen, laid out like LinkedIn's own settings pages (Account preferences and the like):
@@ -985,7 +986,7 @@ public final class SettingsActivity extends Activity {
         banner.setBackground(rounded(dark ? 0xFF262626 : 0xFF202124, 16));
         banner.setElevation(dp(8));
 
-        TextView message = text("Restart LinkedIn to apply the change.", 14, 0xFFFFFFFF, false);
+        TextView message = text(I18n.f("Restart %1$s to apply the change", "LinkedIn"), 14, 0xFFFFFFFF, false);
         banner.addView(message, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
         TextView action = text("RESTART", 14, MaterialYou.settingsAccent(true, 0xFF2DBCB1), true);

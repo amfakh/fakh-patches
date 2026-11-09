@@ -106,7 +106,6 @@
   "Settings reset to defaults": "Pengaturan dikembalikan ke default",
   "Save": "Simpan",
   "Default": "Default",
-  "Restart LinkedIn to apply the change.": "Buka ulang LinkedIn untuk menerapkan semua perubahan.",
   "RESTART": "BUKA ULANG",
   "Appearance": "Tampilan",
   "Hide gaps and dividers": "Sembunyikan jarak dan garis pemisah",
@@ -146,5 +145,16 @@
   "Text copied": "Teks disalin",
   "%1$s of %2$s shown": "%1$s dari %2$s ditampilkan",
   "Items in the More tab": "Item di tab More",
-  "Choose which items the More tab lists.": "Pilih item yang ditampilkan di tab More."
+  "Choose which items the More tab lists.": "Pilih item yang ditampilkan di tab More.",
+  "Hide Rovo": "Sembunyikan Rovo",
+  "Spaces": "Space",
+  "All work": "Semua pekerjaan",
+  "Dashboards": "Dasbor",
+  "Home": "Beranda",
+  "Left": "Kiri",
+  "Right": "Kanan",
+  "Landscape navigation bar position": "Posisi bilah navigasi saat lanskap",
+  "Restart %1$s to apply the change": "Buka ulang %1$s untuk menerapkan perubahan",
+  "Restart": "Buka ulang",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "\"%1$s\" butuh microG RE. Pasang dulu dan masuk ke akun Google, lalu coba lagi."
 }

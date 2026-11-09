@@ -106,7 +106,6 @@
   "Settings reset to defaults": "Настройки сброшены",
   "Save": "Сохранить",
   "Default": "По умолчанию",
-  "Restart LinkedIn to apply the change.": "Перезапустите LinkedIn, чтобы применить все изменения.",
   "RESTART": "ПЕРЕЗАПУСТИТЬ",
   "Appearance": "Внешний вид",
   "Hide gaps and dividers": "Скрывать промежутки и разделители",
@@ -146,5 +145,16 @@
   "Text copied": "Текст скопирован",
   "%1$s of %2$s shown": "Показано: %1$s из %2$s",
   "Items in the More tab": "Пункты вкладки «Ещё»",
-  "Choose which items the More tab lists.": "Выберите, какие пункты показывает вкладка «Ещё»."
+  "Choose which items the More tab lists.": "Выберите, какие пункты показывает вкладка «Ещё».",
+  "Hide Rovo": "Скрывать Rovo",
+  "Spaces": "Пространства",
+  "All work": "Вся работа",
+  "Dashboards": "Дашборды",
+  "Home": "Главная",
+  "Left": "Слева",
+  "Right": "Справа",
+  "Landscape navigation bar position": "Положение панели навигации в альбомной ориентации",
+  "Restart %1$s to apply the change": "Перезапустите %1$s, чтобы применить изменение",
+  "Restart": "Перезапустить",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "Для «%1$s» нужен microG RE. Установите его и войдите в аккаунт Google, затем повторите попытку."
 }

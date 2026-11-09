@@ -106,7 +106,6 @@
   "Settings reset to defaults": "設定を初期状態に戻しました",
   "Save": "保存",
   "Default": "デフォルト",
-  "Restart LinkedIn to apply the change.": "すべての変更を適用するにはLinkedInを再起動してください。",
   "RESTART": "再起動",
   "Appearance": "外観",
   "Hide gaps and dividers": "隙間と区切り線を非表示",
@@ -146,5 +145,16 @@
   "Text copied": "テキストをコピーしました",
   "%1$s of %2$s shown": "%2$s件中%1$s件を表示",
   "Items in the More tab": "その他タブの項目",
-  "Choose which items the More tab lists.": "その他タブに表示する項目を選びます。"
+  "Choose which items the More tab lists.": "その他タブに表示する項目を選びます。",
+  "Hide Rovo": "Rovoを非表示",
+  "Spaces": "スペース",
+  "All work": "すべての作業",
+  "Dashboards": "ダッシュボード",
+  "Home": "ホーム",
+  "Left": "左",
+  "Right": "右",
+  "Landscape navigation bar position": "横向き時のナビゲーションバーの位置",
+  "Restart %1$s to apply the change": "変更を適用するには%1$sを再起動してください",
+  "Restart": "再起動",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "「%1$s」にはmicroG REが必要です。インストールしてGoogleアカウントにログインしてから、もう一度お試しください。"
 }

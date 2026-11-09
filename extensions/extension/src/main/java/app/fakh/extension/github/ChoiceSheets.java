@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.fakh.extension.shared.GlassTabs;
+import app.fakh.extension.shared.I18n;
 import app.fakh.extension.shared.AppRuntime;
 
 /**
@@ -74,21 +75,21 @@ final class ChoiceSheets {
             items.add(helper("fakhMultiItem", name, id == 0 ? name : context.getString(id)));
             if (!NavigationBar.hidden(name)) selected.add(name);
         }
-        helper("fakhShowMulti", settings, "Navigation bar tabs", selected, items, NAV_TABS);
+        helper("fakhShowMulti", settings, I18n.tr("Navigation bar tabs"), selected, items, NAV_TABS);
     }
 
     /** The single-choice sheet: left or right. */
     private static void openPosition(Object settings) throws ReflectiveOperationException {
         ArrayList<Object> items = new ArrayList<>();
-        items.add(helper("fakhSingleItem", "left", "Left"));
-        items.add(helper("fakhSingleItem", "right", "Right"));
-        helper("fakhShowSingle", settings, "Landscape navigation bar position",
+        items.add(helper("fakhSingleItem", "left", I18n.tr("Left")));
+        items.add(helper("fakhSingleItem", "right", I18n.tr("Right")));
+        helper("fakhShowSingle", settings, I18n.tr("Landscape navigation bar position"),
                 MaterialYou.flag(NavigationBar.NAV_RIGHT) ? "right" : "left", NAV_POSITION, items);
     }
 
     /** What a row shows under its title: the position, or how many tabs the bar shows; null while unknown. */
     static String summary(String key) {
-        if (NAV_POSITION.equals(key)) return MaterialYou.flag(NavigationBar.NAV_RIGHT) ? "Right" : "Left";
+        if (NAV_POSITION.equals(key)) return I18n.tr(MaterialYou.flag(NavigationBar.NAV_RIGHT) ? "Right" : "Left");
         if (!NAV_TABS.equals(key) || NavigationBar.allTabs.isEmpty()) return null;
         int shown = 0;
         for (Object tab : NavigationBar.allTabs) {

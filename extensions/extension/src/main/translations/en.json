@@ -106,7 +106,6 @@
   "Settings reset to defaults": "Settings reset to defaults",
   "Save": "Save",
   "Default": "Default",
-  "Restart LinkedIn to apply the change.": "Restart LinkedIn to apply the change.",
   "RESTART": "RESTART",
   "Appearance": "Appearance",
   "Hide gaps and dividers": "Hide gaps and dividers",
@@ -146,5 +145,16 @@
   "Text copied": "Text copied",
   "%1$s of %2$s shown": "%1$s of %2$s shown",
   "Items in the More tab": "Items in the More tab",
-  "Choose which items the More tab lists.": "Choose which items the More tab lists."
+  "Choose which items the More tab lists.": "Choose which items the More tab lists.",
+  "Hide Rovo": "Hide Rovo",
+  "Spaces": "Spaces",
+  "All work": "All work",
+  "Dashboards": "Dashboards",
+  "Home": "Home",
+  "Left": "Left",
+  "Right": "Right",
+  "Landscape navigation bar position": "Landscape navigation bar position",
+  "Restart %1$s to apply the change": "Restart %1$s to apply the change",
+  "Restart": "Restart",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again."
 }

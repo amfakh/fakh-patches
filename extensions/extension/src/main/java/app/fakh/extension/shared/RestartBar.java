@@ -46,13 +46,13 @@ public final class RestartBar {
         bar.setElevation(6 * density);
 
         TextView label = new TextView(activity);
-        label.setText("Restart " + activity.getApplicationInfo().loadLabel(activity.getPackageManager()) + " to apply the change");
+        label.setText(I18n.f("Restart %1$s to apply the change", activity.getApplicationInfo().loadLabel(activity.getPackageManager())));
         label.setTextSize(14);
         label.setTextColor(text);
         bar.addView(label, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
         TextView restart = new TextView(activity);
-        restart.setText("Restart");
+        restart.setText(I18n.tr("Restart"));
         restart.setTextSize(14);
         restart.setAllCaps(true);
         restart.setTextColor(action);

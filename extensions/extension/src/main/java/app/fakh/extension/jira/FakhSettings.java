@@ -20,6 +20,7 @@ import java.lang.reflect.Proxy;
 
 import app.fakh.extension.shared.GlassTabs;
 import app.fakh.extension.shared.AppRuntime;
+import app.fakh.extension.shared.I18n;
 import app.fakh.extension.shared.RestartBar;
 import app.fakh.extension.shared.TabSheet;
 
@@ -149,7 +150,7 @@ public final class FakhSettings {
                     }
                     boolean selected = MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[which], MaterialYou.DEFAULTS[which]);
                     // Label, checked, onChange, subtitle (none), enabled (default), composer, changed, defaults.
-                    row.invoke(null, MaterialYou.LABELS[which], selected, toggle(types[2], which), null, false, args[0], 0, 24);
+                    row.invoke(null, I18n.tr(MaterialYou.LABELS[which]), selected, toggle(types[2], which), null, false, args[0], 0, 24);
                     break;
                 }
                 return null;
@@ -214,7 +215,7 @@ public final class FakhSettings {
             });
             String summary = GlassTabs.summary(shown, MaterialYou.KEYS.length - FIRST_TAB + 1);
             // Label, selected (no check), click, modifier (default), subtitle, composer, changed, defaults.
-            row.invoke(null, "Navigation bar tabs", false, click, null, summary, composer, 0, 8);
+            row.invoke(null, I18n.tr("Navigation bar tabs"), false, click, null, summary, composer, 0, 8);
             return;
         }
     }
@@ -235,7 +236,7 @@ public final class FakhSettings {
         for (int i = FIRST_TAB - 1; i < MaterialYou.KEYS.length; i++) {
             final int which = i;
             boolean fixed = i < FIRST_TAB;
-            String label = fixed ? "Home" : MaterialYou.LABELS[i].replace("Show ", "").replace(" tab", "");
+            String label = I18n.tr(fixed ? "Home" : MaterialYou.LABELS[i]);
             boolean on = fixed || MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[i], MaterialYou.DEFAULTS[i]);
             rows.addView(TabSheet.checkRow(activity, label, on, !fixed, text, accent, checked -> {
                 MaterialYou.prefs(context).edit().putBoolean(MaterialYou.KEYS[which], checked).commit();
@@ -243,7 +244,7 @@ public final class FakhSettings {
                 bumpVersion();
             }));
         }
-        TabSheet.show(activity, root, "Navigation bar tabs", null, app.fakh.extension.shared.MaterialYou.sheetSurface(activity),
+        TabSheet.show(activity, root, I18n.tr("Navigation bar tabs"), null, app.fakh.extension.shared.MaterialYou.sheetSurface(activity),
                 text, text, rows, () -> {
                     if (changed[0]) showSnackbar();
                 });

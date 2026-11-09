@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 /**
  * Tells the user that signing in with Google needs GmsCore (microG RE) when it is not installed. Each app has a small
- * class of its own that calls {@link #require} with its own message, and the GmsCore patch of the app calls that class
+ * class of its own that calls {@link #require} with the name of its own sign-in button, and the GmsCore patch of the app calls that class
  * where the app starts the Google sign-in.
  */
 public final class GmsCoreCheck {
@@ -19,17 +19,19 @@ public final class GmsCoreCheck {
     }
 
     /**
-     * Shows [message] once per process when GmsCore is missing; does nothing when it is installed.
+     * Tells the user once per process that signing in needs GmsCore when it is missing; does nothing when it is
+     * installed.
      *
-     * @param message what to tell the user, in the app's own words
+     * @param button the name of the app's own Google sign-in button, such as "Sign in with Google"
      */
-    public static void require(String message) {
+    public static void require(String button) {
         Application app = AppRuntime.application();
         if (app == null || warned) return;
         try {
             app.getPackageManager().getPackageInfo(GMS_CORE, 0);
         } catch (PackageManager.NameNotFoundException missing) {
             warned = true;
+            String message = I18n.f("\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.", button);
             new Handler(Looper.getMainLooper()).post(() -> Toast.makeText(app, message, Toast.LENGTH_LONG).show());
         }
     }

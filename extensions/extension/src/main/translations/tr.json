@@ -106,7 +106,6 @@
   "Settings reset to defaults": "Ayarlar varsayılanlara sıfırlandı",
   "Save": "Kaydet",
   "Default": "Varsayılan",
-  "Restart LinkedIn to apply the change.": "Tüm değişiklikleri uygulamak için LinkedIn'i yeniden başlatın.",
   "RESTART": "YENİDEN BAŞLAT",
   "Appearance": "Görünüm",
   "Hide gaps and dividers": "Boşlukları ve ayırıcıları gizle",
@@ -146,5 +145,16 @@
   "Text copied": "Metin kopyalandı",
   "%1$s of %2$s shown": "%2$s öğeden %1$s tanesi gösteriliyor",
   "Items in the More tab": "Daha Fazla sekmesindeki öğeler",
-  "Choose which items the More tab lists.": "Daha Fazla sekmesinin hangi öğeleri listeleyeceğini seçin."
+  "Choose which items the More tab lists.": "Daha Fazla sekmesinin hangi öğeleri listeleyeceğini seçin.",
+  "Hide Rovo": "Rovo'yu gizle",
+  "Spaces": "Alanlar",
+  "All work": "Tüm işler",
+  "Dashboards": "Panolar",
+  "Home": "Ana Sayfa",
+  "Left": "Sol",
+  "Right": "Sağ",
+  "Landscape navigation bar position": "Yatay modda gezinme çubuğunun konumu",
+  "Restart %1$s to apply the change": "Değişikliği uygulamak için %1$s uygulamasını yeniden başlatın",
+  "Restart": "Yeniden başlat",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "\"%1$s\" için microG RE gerekir. Yükleyin, bir Google hesabında oturum açın ve tekrar deneyin."
 }

@@ -13,7 +13,7 @@ configurations.configureEach {
     exclude(group = "org.jetbrains.kotlin")
 }
 
-// LinkedIn translations live in src/main/translations as one JSON file per language (en.json is the source), the format
+// Translations of every app live in src/main/translations as one JSON file per language (en.json is the source), the format
 // Crowdin uses. Extensions can't carry Android resources, so the files are turned into a Java class at build time.
 val translationsDir = layout.projectDirectory.dir("src/main/translations")
 val generatedTranslationsDir = layout.buildDirectory.dir("generated/translations")
@@ -47,17 +47,17 @@ val generateTranslations by tasks.registering {
         val source = readJson(dir.resolve("en.json")).keys
 
         val out = StringBuilder()
-        out.append("package app.fakh.extension.linkedin;\n\n")
+        out.append("package app.fakh.extension.shared;\n\n")
         out.append("import java.util.HashMap;\nimport java.util.LinkedHashMap;\nimport java.util.Map;\n\n")
         out.append("/** Generated from src/main/translations. Do not edit. */\n")
-        out.append("final class Translations {\n")
-        out.append("    static final Map<String, String> LANGUAGES = new LinkedHashMap<>();\n\n")
+        out.append("public final class Translations {\n")
+        out.append("    public static final Map<String, String> LANGUAGES = new LinkedHashMap<>();\n\n")
         out.append("    static {\n")
         languages.forEach { (code, name) -> out.append("        LANGUAGES.put(${quote(code)}, ${quote(name)});\n") }
         out.append("    }\n\n")
         out.append("    private Translations() {\n    }\n\n")
         out.append("    /** English text to translated text, or null for English and unknown languages. */\n")
-        out.append("    static Map<String, String> forLanguage(String code) {\n        switch (code) {\n")
+        out.append("    public static Map<String, String> forLanguage(String code) {\n        switch (code) {\n")
         val translated = languages.keys.filter { it != "en" }
         translated.forEachIndexed { index, code ->
             out.append("            case ${quote(code)}: return language$index();\n")
@@ -89,7 +89,7 @@ val generateTranslations by tasks.registering {
         }
         out.append("}\n")
 
-        val target = generatedTranslationsDir.get().asFile.resolve("app/fakh/extension/linkedin/Translations.java")
+        val target = generatedTranslationsDir.get().asFile.resolve("app/fakh/extension/shared/Translations.java")
         target.parentFile.mkdirs()
         target.writeText(out.toString())
     }

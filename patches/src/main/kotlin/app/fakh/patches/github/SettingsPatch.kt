@@ -147,6 +147,8 @@ private fun row(api: PreferenceApi, key: String, title: String, default: Boolean
     const-string v2, "$key"
     invoke-virtual { v1, v2 }, ${api.setKey.smali}
     const-string v2, "$title"
+    invoke-static { v2 }, Lapp/fakh/extension/shared/I18n;->tr(Ljava/lang/String;)Ljava/lang/String;
+    move-result-object v2
     invoke-virtual { v1, v2 }, ${api.setTitle.smali}
     ${if (default != null) "" else """
     const-string v2, "$key"

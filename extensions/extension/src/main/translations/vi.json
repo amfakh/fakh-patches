@@ -106,7 +106,6 @@
   "Settings reset to defaults": "Đã khôi phục cài đặt mặc định",
   "Save": "Lưu",
   "Default": "Mặc định",
-  "Restart LinkedIn to apply the change.": "Khởi động lại LinkedIn để áp dụng mọi thay đổi.",
   "RESTART": "KHỞI ĐỘNG LẠI",
   "Appearance": "Giao diện",
   "Hide gaps and dividers": "Ẩn khoảng trống và đường phân cách",
@@ -146,5 +145,16 @@
   "Text copied": "Đã sao chép văn bản",
   "%1$s of %2$s shown": "Hiển thị %1$s trên %2$s",
   "Items in the More tab": "Mục trong thẻ Thêm",
-  "Choose which items the More tab lists.": "Chọn các mục mà thẻ Thêm liệt kê."
+  "Choose which items the More tab lists.": "Chọn các mục mà thẻ Thêm liệt kê.",
+  "Hide Rovo": "Ẩn Rovo",
+  "Spaces": "Không gian",
+  "All work": "Tất cả công việc",
+  "Dashboards": "Bảng điều khiển",
+  "Home": "Trang chủ",
+  "Left": "Trái",
+  "Right": "Phải",
+  "Landscape navigation bar position": "Vị trí thanh điều hướng khi xoay ngang",
+  "Restart %1$s to apply the change": "Khởi động lại %1$s để áp dụng thay đổi",
+  "Restart": "Khởi động lại",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "\"%1$s\" cần microG RE. Hãy cài đặt và đăng nhập tài khoản Google, rồi thử lại."
 }

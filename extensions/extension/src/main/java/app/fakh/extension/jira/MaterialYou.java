@@ -83,8 +83,8 @@ public final class MaterialYou {
     /** Pref key, label and default of each Fakh Patches switch, by the number its row is made with. */
     static final String[] KEYS = {MATERIAL_YOU, PITCH_BLACK, HIDE_ROVO, "fakh_hide_tab_labels", "fakh_tab_Spaces",
             "fakh_tab_All work", "fakh_tab_Dashboards", "fakh_tab_Notifications"};
-    static final String[] LABELS = {"Material You", "Pitch black", "Hide Rovo", "Hide tab labels", "Show Spaces tab",
-            "Show All work tab", "Show Dashboards tab", "Show Notifications tab"};
+    static final String[] LABELS = {"Material You", "Pitch black", "Hide Rovo", "Hide tab labels", "Spaces",
+            "All work", "Dashboards", "Notifications"};
     static final boolean[] DEFAULTS = {true, false, true, false, true, true, true, true};
 
     /** The darkest page background (0xRRGGBB), the canvas behind cards, which pitch black turns black. */

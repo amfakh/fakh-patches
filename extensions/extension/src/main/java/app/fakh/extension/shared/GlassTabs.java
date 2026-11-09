@@ -47,6 +47,6 @@ public final class GlassTabs {
      * @return for example {@code "4 of 5 shown"}
      */
     public static String summary(int shown, int total) {
-        return shown + " of " + total + " shown";
+        return I18n.f("%1$s of %2$s shown", shown, total);
     }
 }

@@ -106,7 +106,6 @@
   "Settings reset to defaults": "Configurações restauradas",
   "Save": "Salvar",
   "Default": "Padrão",
-  "Restart LinkedIn to apply the change.": "Reinicie o LinkedIn para aplicar todas as alterações.",
   "RESTART": "REINICIAR",
   "Appearance": "Aparência",
   "Hide gaps and dividers": "Ocultar espaços e divisores",
@@ -146,5 +145,16 @@
   "Text copied": "Texto copiado",
   "%1$s of %2$s shown": "%1$s de %2$s exibidas",
   "Items in the More tab": "Itens da aba Mais",
-  "Choose which items the More tab lists.": "Escolha quais itens a aba Mais lista."
+  "Choose which items the More tab lists.": "Escolha quais itens a aba Mais lista.",
+  "Hide Rovo": "Ocultar Rovo",
+  "Spaces": "Espaços",
+  "All work": "Todo o trabalho",
+  "Dashboards": "Painéis",
+  "Home": "Início",
+  "Left": "Esquerda",
+  "Right": "Direita",
+  "Landscape navigation bar position": "Posição da barra de navegação na horizontal",
+  "Restart %1$s to apply the change": "Reinicie o %1$s para aplicar a alteração",
+  "Restart": "Reiniciar",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "\"%1$s\" precisa do microG RE. Instale-o, entre em uma conta do Google e tente de novo."
 }

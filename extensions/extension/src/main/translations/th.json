@@ -106,7 +106,6 @@
   "Settings reset to defaults": "คืนค่าการตั้งค่าเริ่มต้นแล้ว",
   "Save": "บันทึก",
   "Default": "ค่าเริ่มต้น",
-  "Restart LinkedIn to apply the change.": "รีสตาร์ท LinkedIn เพื่อใช้การเปลี่ยนแปลงทั้งหมด",
   "RESTART": "รีสตาร์ท",
   "Appearance": "หน้าตา",
   "Hide gaps and dividers": "ซ่อนช่องว่างและเส้นแบ่ง",
@@ -146,5 +145,16 @@
   "Text copied": "คัดลอกข้อความแล้ว",
   "%1$s of %2$s shown": "แสดง %1$s จาก %2$s",
   "Items in the More tab": "รายการในแท็บเพิ่มเติม",
-  "Choose which items the More tab lists.": "เลือกรายการที่แท็บเพิ่มเติมแสดง"
+  "Choose which items the More tab lists.": "เลือกรายการที่แท็บเพิ่มเติมแสดง",
+  "Hide Rovo": "ซ่อน Rovo",
+  "Spaces": "พื้นที่",
+  "All work": "งานทั้งหมด",
+  "Dashboards": "แดชบอร์ด",
+  "Home": "หน้าหลัก",
+  "Left": "ซ้าย",
+  "Right": "ขวา",
+  "Landscape navigation bar position": "ตำแหน่งแถบนำทางในแนวนอน",
+  "Restart %1$s to apply the change": "รีสตาร์ท %1$s เพื่อใช้การเปลี่ยนแปลง",
+  "Restart": "รีสตาร์ท",
+  "\"%1$s\" needs microG RE. Install it and sign in to a Google account, then try again.": "\"%1$s\" ต้องใช้ microG RE ติดตั้งและเข้าสู่ระบบบัญชี Google แล้วลองอีกครั้ง"
 }
