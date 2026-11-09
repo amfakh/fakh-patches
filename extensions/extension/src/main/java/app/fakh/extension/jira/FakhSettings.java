@@ -195,7 +195,7 @@ public final class FakhSettings {
         for (Method row : rowType.getDeclaredMethods()) {
             Class<?>[] types = row.getParameterTypes();
             if (!row.getName().equals("a") || types.length != 8 || types[0] != String.class || types[1] != boolean.class) continue;
-            int shown = 0;
+            int shown = 1;
             for (int i = FIRST_TAB; i < MaterialYou.KEYS.length; i++) {
                 if (MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[i], MaterialYou.DEFAULTS[i])) shown++;
             }
@@ -208,7 +208,7 @@ public final class FakhSettings {
                     return null;
                 }
             });
-            String summary = shown + " of " + (MaterialYou.KEYS.length - FIRST_TAB) + " shown";
+            String summary = shown + " of " + (MaterialYou.KEYS.length - FIRST_TAB + 1) + " shown";
             // Label, selected (no check), click, modifier (default), subtitle, composer, changed, defaults.
             row.invoke(null, "Navigation tabs", false, click, null, summary, composer, 0, 8);
             return;
@@ -302,15 +302,17 @@ public final class FakhSettings {
         sheet.addView(title);
 
         final Context context = MaterialYou.application();
-        for (int i = FIRST_TAB; i < MaterialYou.KEYS.length; i++) {
+        // Home is always shown: its row is checked and dimmed, and does nothing.
+        for (int i = FIRST_TAB - 1; i < MaterialYou.KEYS.length; i++) {
             final int which = i;
+            final boolean fixed = i < FIRST_TAB;
             LinearLayout line = new LinearLayout(activity);
             line.setOrientation(LinearLayout.HORIZONTAL);
             line.setGravity(Gravity.CENTER_VERTICAL);
             int vertical = Math.round(14 * density);
             line.setPadding(0, vertical, 0, vertical);
             TextView label = new TextView(activity);
-            label.setText(MaterialYou.LABELS[i].replace("Show ", "").replace(" tab", ""));
+            label.setText(fixed ? "Home" : MaterialYou.LABELS[i].replace("Show ", "").replace(" tab", ""));
             label.setTextColor(text);
             label.setTextSize(16);
             line.addView(label, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
@@ -318,8 +320,13 @@ public final class FakhSettings {
             check.setText("\u2713");
             check.setTextColor(accent);
             check.setTextSize(20);
-            check.setVisibility(MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[i], MaterialYou.DEFAULTS[i]) ? View.VISIBLE : View.INVISIBLE);
+            check.setVisibility(fixed || MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[i], MaterialYou.DEFAULTS[i]) ? View.VISIBLE : View.INVISIBLE);
             line.addView(check);
+            if (fixed) {
+                line.setAlpha(0.38f);
+                sheet.addView(line);
+                continue;
+            }
             line.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
