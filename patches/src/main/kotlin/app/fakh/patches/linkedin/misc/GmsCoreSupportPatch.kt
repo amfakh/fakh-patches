@@ -37,6 +37,7 @@ val gmsCoreSupportPatch = bytecodePatch(
             .addInstructions(
                 0,
                 """
+                    invoke-static { }, Lapp/fakh/extension/linkedin/GmsCore;->require()V
                     invoke-virtual { p0 }, $CREDENTIAL_PROVIDER_FACTORY->tryCreateClosedSourceProviderFromManifest()Landroidx/credentials/CredentialProvider;
                     move-result-object v0
                     return-object v0

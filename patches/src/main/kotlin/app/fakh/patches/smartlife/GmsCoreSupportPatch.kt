@@ -48,6 +48,7 @@ val gmsCoreSupportPatch = bytecodePatch(
 ) {
     compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
     category("Feature")
+    extendWith("extensions/extension.mpe")
     dependsOn(gmsCoreSupportResourcePatch(SIGNATURES))
 
     execute {
@@ -58,6 +59,7 @@ val gmsCoreSupportPatch = bytecodePatch(
         FrameworkCredentialProviderFingerprint.method.addInstructions(
             0,
             """
+                invoke-static { }, Lapp/fakh/extension/smartlife/GmsCore;->require()V
                 const/4 v0, 0x0
                 return v0
             """,

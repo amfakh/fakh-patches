@@ -3,6 +3,7 @@ package app.fakh.patches.dodo
 import app.fakh.patches.dodo.shared.Constants.COMPATIBILITY_DODO
 import app.fakh.patches.shared.gms.gmsCoreSupportResourcePatch
 import app.fakh.patches.shared.gms.redirectToGmsCore
+import app.fakh.patches.shared.gms.warnWithoutGmsCore
 import app.morphe.patcher.patch.bytecodePatch
 
 private const val DODO_PACKAGE = "com.dundunstudio.autoplay"
@@ -26,9 +27,14 @@ val gmsCoreSupportPatch = bytecodePatch(
 ) {
     compatibleWith(COMPATIBILITY_DODO)
     category("Feature")
+    extendWith("extensions/extension.mpe")
     dependsOn(gmsCoreSupportResourcePatch(DODO_PACKAGE, DODO_SIGNATURE))
 
     execute {
         redirectToGmsCore()
+        warnWithoutGmsCore(
+            "Lapp/fakh/extension/dodo/GmsCore;->require()V",
+            "Lcom/google/android/gms/auth/api/identity/Identity;" to "getSignInClient",
+        )
     }
 }
