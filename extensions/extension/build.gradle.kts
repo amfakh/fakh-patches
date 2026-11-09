@@ -36,9 +36,10 @@ val generateTranslations by tasks.registering {
             append('"')
         }
 
+        // Keys that start with "//" only group the strings by app and are not translated.
         fun readJson(file: File): Map<String, String> {
             @Suppress("UNCHECKED_CAST")
-            return groovy.json.JsonSlurper().parse(file, "UTF-8") as Map<String, String>
+            return (groovy.json.JsonSlurper().parse(file, "UTF-8") as Map<String, String>).filterKeys { !it.startsWith("//") }
         }
 
         val dir = translationsDir.asFile
