@@ -985,7 +985,7 @@ public final class SettingsActivity extends Activity {
         banner.setBackground(rounded(dark ? 0xFF262626 : 0xFF202124, 16));
         banner.setElevation(dp(8));
 
-        TextView message = text("Restart LinkedIn to apply all changes.", 14, 0xFFFFFFFF, false);
+        TextView message = text("Restart LinkedIn to apply the change.", 14, 0xFFFFFFFF, false);
         banner.addView(message, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
 
         TextView action = text("RESTART", 14, MaterialYou.settingsAccent(true, 0xFF2DBCB1), true);

@@ -410,7 +410,7 @@ public final class MaterialYou {
     /** Says the change applies after a restart, with a Restart action. */
     static void showRestartBar(Activity activity) {
         ViewGroup root = activity.findViewById(android.R.id.content);
-        if (root != null) RestartBar.show(activity, "Restart GitHub to apply", navigationBarHeight(root));
+        if (root != null) RestartBar.show(activity, navigationBarHeight(root));
     }
 
     /** Height of the navigation bar under the content, which edge-to-edge screens draw behind. */

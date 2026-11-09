@@ -17,14 +17,13 @@ public final class RestartBar {
     }
 
     /**
-     * Shows the bar above the bottom edge of the screen; a second call replaces the first. It hides itself after a
-     * few seconds.
+     * Shows the bar above the bottom edge of the screen, saying "Restart [app] to apply the change"; a second call
+     * replaces the first. It hides itself after a few seconds.
      *
      * @param activity the activity to show it in
-     * @param message  what it says, such as "Restart GitHub to apply"
      * @param bottom   extra space under the bar, such as the height of the navigation bar, in pixels
      */
-    public static void show(Activity activity, String message, int bottom) {
+    public static void show(Activity activity, int bottom) {
         ViewGroup root = activity.findViewById(android.R.id.content);
         if (root == null) return;
         View old = root.findViewWithTag(TAG);
@@ -47,7 +46,7 @@ public final class RestartBar {
         bar.setElevation(6 * density);
 
         TextView label = new TextView(activity);
-        label.setText(message);
+        label.setText("Restart " + activity.getApplicationInfo().loadLabel(activity.getPackageManager()) + " to apply the change");
         label.setTextSize(14);
         label.setTextColor(text);
         bar.addView(label, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));

@@ -254,6 +254,6 @@ public final class FakhSettings {
         final Activity activity = current.get();
         if (activity == null) return;
         // Clear of the glass navigation bar.
-        RestartBar.show(activity, "Restart to apply the change", Math.round(56 * activity.getResources().getDisplayMetrics().density));
+        RestartBar.show(activity, Math.round(56 * activity.getResources().getDisplayMetrics().density));
     }
 }
