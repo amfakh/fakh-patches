@@ -1,3 +1,9 @@
+## [1.15.4](https://github.com/amfakh/fakh-patches/compare/v1.15.3...v1.15.4) (2026-11-09)
+
+### Updated App Support
+
+* **Smart Life:** add support for `7.12.6`, next to `7.12.3` ([7c54ade](https://github.com/amfakh/fakh-patches/commit/7c54ade4def91916090cc68033f4b5da26e60986))
+
 ## [1.15.3](https://github.com/amfakh/fakh-patches/compare/v1.15.2...v1.15.3) (2026-11-08)
 
 ### Bug Fixes
