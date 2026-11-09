@@ -39,6 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import app.fakh.extension.shared.TabSheet;
+
 /**
  * Fakh Patches settings screen, laid out like LinkedIn's own settings pages (Account preferences and the like):
  * one page with a titled section per category, plus search across all settings.
@@ -412,7 +414,7 @@ public final class SettingsActivity extends Activity {
     private View restartBanner;
     private FrameLayout rootView;
     /** The bottom sheet on screen, or null. */
-    private View sheetLayer;
+    private TabSheet sheet;
 
     /**
      * Colors the buttons of a dialog shown over LinkedIn's own screens, whose theme makes button text transparent.
@@ -492,8 +494,8 @@ public final class SettingsActivity extends Activity {
     @Override
     @SuppressWarnings("deprecation")
     public void onBackPressed() {
-        if (sheetLayer != null) {
-            closeSheet();
+        if (sheet != null) {
+            sheet.close();
         } else if (searching) {
             setSearching(false);
         } else {
@@ -960,86 +962,15 @@ public final class SettingsActivity extends Activity {
 
     /** A bottom sheet with one check row per choice. Tapping the dimmed area or going back closes it. */
     private void showSheet(String title, String hint, List<Item> choices) {
-        if (sheetLayer != null) return;
-        FrameLayout scrim = new FrameLayout(this);
-        scrim.setBackgroundColor(0x66000000);
-        scrim.setClickable(true);
-        // Above the restart banner, whose elevation puts it over later siblings.
-        scrim.setElevation(dp(16));
-        scrim.setOnClickListener(v -> closeSheet());
-
-        LinearLayout sheet = new LinearLayout(this);
-        sheet.setOrientation(LinearLayout.VERTICAL);
-        sheet.setClickable(true);
-        sheet.setPadding(0, dp(12), 0, dp(16));
-        GradientDrawable shape = new GradientDrawable();
-        shape.setColor(background);
-        float radius = dp(28);
-        shape.setCornerRadii(new float[]{radius, radius, radius, radius, 0, 0, 0, 0});
-        sheet.setBackground(shape);
-
-        View handle = new View(this);
-        handle.setBackground(rounded((textSecondary & 0x00FFFFFF) | 0x66000000, 2));
-        LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(dp(32), dp(4));
-        handleParams.gravity = Gravity.CENTER_HORIZONTAL;
-        handleParams.bottomMargin = dp(16);
-        sheet.addView(handle, handleParams);
-
-        TextView titleView = text(title, 20, textPrimary, true);
-        titleView.setPadding(dp(24), 0, dp(24), 0);
-        sheet.addView(titleView);
-        if (hint != null) {
-            TextView hintView = text(hint, 14, textSecondary, false);
-            hintView.setPadding(dp(24), dp(4), dp(24), 0);
-            sheet.addView(hintView);
-        }
-
+        if (sheet != null) return;
         LinearLayout rows = new LinearLayout(this);
         rows.setOrientation(LinearLayout.VERTICAL);
-        rows.setPadding(0, dp(8), 0, 0);
         for (Item choice : choices) rows.addView(toggleRow(choice, null));
-        MaxHeightScrollView scrollRows = new MaxHeightScrollView(this, getResources().getDisplayMetrics().heightPixels * 6 / 10);
-        scrollRows.addView(rows);
-        sheet.addView(scrollRows);
-
-        scrim.addView(sheet, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
-        rootView.addView(scrim, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        sheetLayer = scrim;
-
-        scrim.setAlpha(0f);
-        scrim.animate().alpha(1f).setDuration(180).start();
-        sheet.setTranslationY(dp(480));
-        sheet.animate().translationY(0f).setDuration(240)
-                .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
-    }
-
-    private void closeSheet() {
-        View layer = sheetLayer;
-        if (layer == null) return;
-        sheetLayer = null;
-        View sheet = ((ViewGroup) layer).getChildAt(0);
-        layer.animate().alpha(0f).setDuration(160).start();
-        sheet.animate().translationY(sheet.getHeight()).setDuration(200)
-                .withEndAction(() -> rootView.removeView(layer)).start();
-        // The row that opened the sheet shows how many choices are on.
-        refresh();
-    }
-
-    /** A scroll view that stops growing at a height, so a long list scrolls inside its sheet. */
-    private static final class MaxHeightScrollView extends ScrollView {
-        private final int maxHeight;
-
-        MaxHeightScrollView(Context context, int maxHeight) {
-            super(context);
-            this.maxHeight = maxHeight;
-        }
-
-        @Override
-        protected void onMeasure(int widthSpec, int heightSpec) {
-            super.onMeasure(widthSpec, View.MeasureSpec.makeMeasureSpec(maxHeight, View.MeasureSpec.AT_MOST));
-        }
+        // The row that opened the sheet shows how many choices are on, so it is refreshed when the sheet is gone.
+        sheet = TabSheet.show(this, rootView, title, hint, background, textPrimary, textSecondary, rows, () -> {
+            sheet = null;
+            refresh();
+        });
     }
 
     // endregion

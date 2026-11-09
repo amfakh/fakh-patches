@@ -3,7 +3,6 @@ package app.fakh.extension.shared;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -15,7 +14,6 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -102,19 +100,6 @@ public final class GlassCapsule extends Drawable {
     /** The position of the pill along the bar, which slides when the app selects another tab. */
     public SlidingPill slider() {
         return slider;
-    }
-
-    /**
-     * The accent of the selected tab: the wallpaper's when {@code dynamic} is on (Android 12 and up), else the
-     * app's own color for the current theme.
-     */
-    public static int accent(Context context, boolean dynamic, int light, int dark) {
-        boolean night = (context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                == Configuration.UI_MODE_NIGHT_YES;
-        if (dynamic && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            return context.getColor(night ? android.R.color.system_accent1_200 : android.R.color.system_accent1_600);
-        }
-        return night ? dark : light;
     }
 
     /** For a bar made of Views: gives the icon and label of the selected tab the accent. */

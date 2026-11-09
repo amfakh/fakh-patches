@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import app.fakh.extension.shared.GlassTabs;
+import app.fakh.extension.shared.AppRuntime;
 
 /**
  * The Fakh Patches rows of Settings that open one of GitHub's own choice sheets, the ones its Theme and Language rows
@@ -63,7 +64,7 @@ final class ChoiceSheets {
 
     /** The multi-choice sheet: a check per tab of the bar, checked while the tab is shown; Home is checked and disabled. */
     private static void openTabs(Object settings) throws ReflectiveOperationException {
-        Context context = MaterialYou.application();
+        Context context = AppRuntime.application();
         if (context == null || NavigationBar.allTabs.isEmpty()) return;
         ArrayList<Object> items = new ArrayList<>();
         ArrayList<String> selected = new ArrayList<>();
@@ -102,7 +103,7 @@ final class ChoiceSheets {
      */
     static void chosen(String key, Bundle result) {
         try {
-            Context context = MaterialYou.application();
+            Context context = AppRuntime.application();
             if (context == null) return;
             SharedPreferences.Editor edit = MaterialYou.prefs(context).edit();
             if (NAV_POSITION.equals(key)) {

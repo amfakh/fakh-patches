@@ -99,7 +99,7 @@ public final class GlassNavigationBar {
         Selection(View bar) {
             this.bar = bar;
             this.density = bar.getResources().getDisplayMetrics().density;
-            this.accent = GlassCapsule.accent(bar.getContext(), MaterialYou.materialYou(bar.getContext()), 0xFF1868DB, 0xFF669DF1);
+            this.accent = app.fakh.extension.shared.MaterialYou.accent(bar.getContext(), MaterialYou.materialYou(bar.getContext()), 0xFF1868DB, 0xFF669DF1);
         }
 
         /** Replaces the bar's background with the capsule. */

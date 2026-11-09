@@ -19,6 +19,9 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 import app.fakh.extension.shared.GlassTabs;
+import app.fakh.extension.shared.AppRuntime;
+import app.fakh.extension.shared.RestartBar;
+import app.fakh.extension.shared.TabSheet;
 
 /**
  * The Fakh Patches category of Jira's Settings: a card of switch rows between the Language/Theme card and the Quick
@@ -32,7 +35,6 @@ public final class FakhSettings {
     /** Number of the first switch that belongs to a tab, and the number of the row that opens the tab sheet. */
     private static final int FIRST_TAB = 4;
     private static final int TABS_ROW = 4;
-    private static final String SHEET_TAG = "fakh_tabs_sheet";
 
     private static WeakReference<Activity> current = new WeakReference<>(null);
     /** A Compose state that counts the switches flipped, so the rows are drawn again when one is. */
@@ -137,7 +139,7 @@ public final class FakhSettings {
                 for (Method row : rowType.getDeclaredMethods()) {
                     Class<?>[] types = row.getParameterTypes();
                     if (!row.getName().equals("e") || types.length != 8 || types[0] != String.class || types[1] != boolean.class) continue;
-                    Context context = MaterialYou.application();
+                    Context context = AppRuntime.application();
                     if (context == null) return null;
                     // Reading the state makes this row draw again when a switch is flipped.
                     readVersion();
@@ -177,7 +179,7 @@ public final class FakhSettings {
             @Override
             public Object invoke(Object proxy, Method method, Object[] args) {
                 if (args == null || args.length != 1 || !(args[0] instanceof Boolean)) return MaterialYou.objectMethod(proxy, method, args);
-                Context context = MaterialYou.application();
+                Context context = AppRuntime.application();
                 if (context == null) return null;
                 SharedPreferences prefs = MaterialYou.prefs(context);
                 prefs.edit().putBoolean(MaterialYou.KEYS[which], !prefs.getBoolean(MaterialYou.KEYS[which], MaterialYou.DEFAULTS[which])).commit();
@@ -190,7 +192,7 @@ public final class FakhSettings {
 
     /** The row that opens the tab sheet: the app's selectable row, with a summary of the tabs shown. */
     private static void tabsRow(Object composer) throws ReflectiveOperationException {
-        Context context = MaterialYou.application();
+        Context context = AppRuntime.application();
         if (context == null) return;
         ClassLoader loader = composer.getClass().getClassLoader();
         Class<?> rowType = Class.forName("com.atlassian.jira.feature.settings.impl.SelectableRowKt", true, loader);
@@ -222,185 +224,36 @@ public final class FakhSettings {
         final Activity activity = current.get();
         if (activity == null) return;
         final ViewGroup root = activity.findViewById(android.R.id.content);
-        if (root == null || root.findViewWithTag(SHEET_TAG) != null) return;
-        final float density = root.getResources().getDisplayMetrics().density;
-        boolean night = (root.getResources().getConfiguration().uiMode & android.content.res.Configuration.UI_MODE_NIGHT_MASK)
-                == android.content.res.Configuration.UI_MODE_NIGHT_YES;
-        boolean dynamic = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S;
-        int surface = dynamic ? activity.getColor(night ? android.R.color.system_neutral1_900 : android.R.color.system_neutral2_50)
-                : (night ? 0xFF2B2930 : 0xFFF7F2FA);
-        final int accent = dynamic ? activity.getColor(night ? android.R.color.system_accent1_200 : android.R.color.system_accent1_600)
-                : (night ? 0xFFD0BCFF : 0xFF6750A4);
-        final int text = night ? 0xFFE6E0E9 : 0xFF1D1B20;
-
-        final FrameLayout scrim = new FrameLayout(activity);
-        scrim.setTag(SHEET_TAG);
-        scrim.setBackgroundColor(0x66000000);
-        scrim.setClickable(true);
-        scrim.setElevation(24 * density);
+        if (root == null) return;
+        int text = app.fakh.extension.shared.MaterialYou.sheetText(activity);
+        int accent = app.fakh.extension.shared.MaterialYou.accent(activity, true, 0xFF6750A4, 0xFFD0BCFF);
         final boolean[] changed = {false};
-        final android.window.OnBackInvokedCallback[] back = {null};
-        final Runnable close = new Runnable() {
-            @Override
-            public void run() {
-                if (scrim.getParent() == null) return;
-                ((ViewGroup) scrim.getParent()).removeView(scrim);
-                if (back[0] != null) activity.getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(back[0]);
-                if (changed[0]) showSnackbar();
-            }
-        };
-        // Back closes the sheet: through the platform dispatcher on Android 13+, and as a key on the sheet before that.
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
-            back[0] = new android.window.OnBackInvokedCallback() {
-                @Override
-                public void onBackInvoked() {
-                    close.run();
-                }
-            };
-            activity.getOnBackInvokedDispatcher().registerOnBackInvokedCallback(android.window.OnBackInvokedDispatcher.PRIORITY_OVERLAY, back[0]);
-        }
-        scrim.setFocusableInTouchMode(true);
-        scrim.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View view, int keyCode, android.view.KeyEvent event) {
-                if (keyCode != android.view.KeyEvent.KEYCODE_BACK) return false;
-                if (event.getAction() == android.view.KeyEvent.ACTION_UP) close.run();
-                return true;
-            }
-        });
-        scrim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                close.run();
-            }
-        });
-
-        LinearLayout sheet = new LinearLayout(activity);
-        sheet.setOrientation(LinearLayout.VERTICAL);
-        sheet.setClickable(true);
-        int pad = Math.round(24 * density);
-        sheet.setPadding(pad, Math.round(12 * density), pad, Math.round(24 * density));
-        GradientDrawable background = new GradientDrawable();
-        background.setColor(surface);
-        float radius = 28 * density;
-        background.setCornerRadii(new float[] {radius, radius, radius, radius, 0, 0, 0, 0});
-        sheet.setBackground(background);
-
-        View handle = new View(activity);
-        GradientDrawable handleShape = new GradientDrawable();
-        handleShape.setColor((text & 0xFFFFFF) | 0x66000000);
-        handleShape.setCornerRadius(2 * density);
-        handle.setBackground(handleShape);
-        LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(Math.round(32 * density), Math.round(4 * density));
-        handleParams.gravity = Gravity.CENTER_HORIZONTAL;
-        handleParams.bottomMargin = Math.round(16 * density);
-        sheet.addView(handle, handleParams);
-
-        TextView title = new TextView(activity);
-        title.setText("Navigation tabs");
-        title.setTextColor(text);
-        title.setTextSize(20);
-        title.setPadding(0, 0, 0, Math.round(8 * density));
-        sheet.addView(title);
-
-        final Context context = MaterialYou.application();
+        final Context context = AppRuntime.application();
+        LinearLayout rows = new LinearLayout(activity);
+        rows.setOrientation(LinearLayout.VERTICAL);
         // Home is always shown: its row is checked and dimmed, and does nothing.
         for (int i = FIRST_TAB - 1; i < MaterialYou.KEYS.length; i++) {
             final int which = i;
-            final boolean fixed = i < FIRST_TAB;
-            LinearLayout line = new LinearLayout(activity);
-            line.setOrientation(LinearLayout.HORIZONTAL);
-            line.setGravity(Gravity.CENTER_VERTICAL);
-            int vertical = Math.round(14 * density);
-            line.setPadding(0, vertical, 0, vertical);
-            TextView label = new TextView(activity);
-            label.setText(fixed ? "Home" : MaterialYou.LABELS[i].replace("Show ", "").replace(" tab", ""));
-            label.setTextColor(text);
-            label.setTextSize(16);
-            line.addView(label, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-            final TextView check = new TextView(activity);
-            check.setText("\u2713");
-            check.setTextColor(accent);
-            check.setTextSize(20);
-            check.setVisibility(fixed || MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[i], MaterialYou.DEFAULTS[i]) ? View.VISIBLE : View.INVISIBLE);
-            line.addView(check);
-            if (fixed) {
-                line.setAlpha(0.38f);
-                sheet.addView(line);
-                continue;
-            }
-            line.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SharedPreferences prefs = MaterialYou.prefs(context);
-                    boolean on = !prefs.getBoolean(MaterialYou.KEYS[which], MaterialYou.DEFAULTS[which]);
-                    prefs.edit().putBoolean(MaterialYou.KEYS[which], on).commit();
-                    check.setVisibility(on ? View.VISIBLE : View.INVISIBLE);
-                    changed[0] = true;
-                    bumpVersion();
-                }
-            });
-            sheet.addView(line);
+            boolean fixed = i < FIRST_TAB;
+            String label = fixed ? "Home" : MaterialYou.LABELS[i].replace("Show ", "").replace(" tab", "");
+            boolean on = fixed || MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[i], MaterialYou.DEFAULTS[i]);
+            rows.addView(TabSheet.checkRow(activity, label, on, !fixed, text, accent, checked -> {
+                MaterialYou.prefs(context).edit().putBoolean(MaterialYou.KEYS[which], checked).commit();
+                changed[0] = true;
+                bumpVersion();
+            }));
         }
-        scrim.addView(sheet, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
-        root.addView(scrim, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        scrim.requestFocus();
-        sheet.setTranslationY(400 * density);
-        sheet.animate().translationY(0).setDuration(220).start();
+        TabSheet.show(activity, root, "Navigation tabs", null, app.fakh.extension.shared.MaterialYou.sheetSurface(activity),
+                text, text, rows, () -> {
+                    if (changed[0]) showSnackbar();
+                });
     }
 
     /** A snackbar at the bottom of the screen that offers to restart the app, which the changes need. */
     private static void showSnackbar() {
         final Activity activity = current.get();
         if (activity == null) return;
-        final ViewGroup root = activity.findViewById(android.R.id.content);
-        if (root == null) return;
-        root.post(new Runnable() {
-            @Override
-            public void run() {
-                final String tag = "fakh_restart_snackbar";
-                if (root.findViewWithTag(tag) != null) return;
-                float density = root.getResources().getDisplayMetrics().density;
-                final LinearLayout bar = new LinearLayout(activity);
-                bar.setTag(tag);
-                bar.setOrientation(LinearLayout.HORIZONTAL);
-                bar.setGravity(Gravity.CENTER_VERTICAL);
-                bar.setPadding(Math.round(16 * density), Math.round(4 * density), Math.round(8 * density), Math.round(4 * density));
-                GradientDrawable background = new GradientDrawable();
-                background.setColor(0xFF2F3033);
-                background.setCornerRadius(4 * density);
-                bar.setBackground(background);
-                bar.setElevation(6 * density);
-                TextView message = new TextView(activity);
-                message.setText("Restart to apply the change");
-                message.setTextColor(0xFFF1F0F4);
-                message.setTextSize(14);
-                bar.addView(message, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-                TextView action = new TextView(activity);
-                action.setText("Restart");
-                action.setTextColor(0xFFD0BCFF);
-                action.setTextSize(14);
-                action.setAllCaps(true);
-                action.setPadding(Math.round(12 * density), Math.round(12 * density), Math.round(12 * density), Math.round(12 * density));
-                action.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        MaterialYou.restart(activity);
-                    }
-                });
-                bar.addView(action);
-                FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-                int side = Math.round(12 * density);
-                params.setMargins(side, 0, side, Math.round(72 * density));
-                root.addView(bar, params);
-                bar.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (bar.getParent() != null) ((ViewGroup) bar.getParent()).removeView(bar);
-                    }
-                }, 10000);
-            }
-        });
+        // Clear of the glass navigation bar.
+        RestartBar.show(activity, "Restart to apply the change", Math.round(56 * activity.getResources().getDisplayMetrics().density));
     }
 }

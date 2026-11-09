@@ -39,7 +39,7 @@ final class GlassNavigationBar {
         Selection selection = new Selection(tabs, density);
         GlassCapsule capsule = new GlassCapsule(color, density, selection);
         // The selected tab takes the accent: the wallpaper's with Material You, LinkedIn blue without.
-        selection.accent = GlassCapsule.accent(bar.getContext(), Settings.materialYou(), 0xFF0A66C2, 0xFF70B5F9);
+        selection.accent = app.fakh.extension.shared.MaterialYou.accent(bar.getContext(), Settings.materialYou(), 0xFF0A66C2, 0xFF70B5F9);
         capsule.setAccent(selection.accent);
         selection.glass = capsule;
         bar.setBackground(capsule);

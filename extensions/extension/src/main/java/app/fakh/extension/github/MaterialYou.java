@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
+import app.fakh.extension.shared.AppRuntime;
+import app.fakh.extension.shared.RestartBar;
 
 /**
  * Material You for GitHub's Compose color schemes, which define their colors in code, and the Material You and
@@ -43,8 +45,6 @@ public final class MaterialYou {
     /** Setting keys, also the keys of their rows in Settings. */
     public static final String MATERIAL_YOU = "fakh_material_you";
     public static final String AMOLED = "fakh_amoled";
-    /** Tag of the restart bar, so a second toggle replaces it instead of stacking. */
-    private static final String RESTART_BAR = "fakh_restart_bar";
 
     // Material 3 surface roles (Android 14), with the neutral tones closest to them on Android 12 and 13.
     private static final boolean ROLES = Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -164,7 +164,7 @@ public final class MaterialYou {
      * @param dark  the dark scheme, of the same class
      */
     public static void schemes(Object light, Object dark) {
-        Context context = application();
+        Context context = AppRuntime.application();
         if (context == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return;
         boolean colors = isMaterialYou(context);
         boolean black = isAmoled(context);
@@ -221,7 +221,7 @@ public final class MaterialYou {
      */
     public static long paletteColor(long packed) {
         if ((packed & 0x3FL) != 0 || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return packed;
-        Context context = application();
+        Context context = AppRuntime.application();
         if (context == null || !isMaterialYou(context)) return packed;
         int argb = (int) (packed >>> 32);
         Integer tone = ACCENTS.get(argb & 0xFFFFFF);
@@ -239,7 +239,7 @@ public final class MaterialYou {
      */
     public static long colorLiteral(long argb) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return argb;
-        Context context = application();
+        Context context = AppRuntime.application();
         if (context == null || !isMaterialYou(context)) return argb;
         Integer tone = ACCENTS.get((int) argb & 0xFFFFFF);
         return tone == null ? argb : context.getColor(tone) & 0xFFFFFFFFL;
@@ -407,47 +407,10 @@ public final class MaterialYou {
         });
     }
 
-    /**
-     * A snackbar-like bar at the bottom of the screen, in the Material 3 inverse surface colors, saying the change
-     * applies after a restart, with a Restart action. It hides itself after a few seconds.
-     */
+    /** Says the change applies after a restart, with a Restart action. */
     static void showRestartBar(Activity activity) {
         ViewGroup root = activity.findViewById(android.R.id.content);
-        if (root == null) return;
-        View old = root.findViewWithTag(RESTART_BAR);
-        if (old != null) root.removeView(old);
-
-        boolean dark = (activity.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                == Configuration.UI_MODE_NIGHT_YES;
-        float density = activity.getResources().getDisplayMetrics().density;
-        LinearLayout bar = new LinearLayout(activity);
-        bar.setTag(RESTART_BAR);
-        bar.setGravity(Gravity.CENTER_VERTICAL);
-        bar.setPadding((int) (16 * density), (int) (6 * density), (int) (8 * density), (int) (6 * density));
-        GradientDrawable background = new GradientDrawable();
-        background.setCornerRadius(4 * density);
-        background.setColor(activity.getColor(dark ? android.R.color.system_neutral1_100 : android.R.color.system_neutral1_800));
-        bar.setBackground(background);
-        bar.setElevation(6 * density);
-
-        TextView message = new TextView(activity);
-        message.setText("Restart GitHub to apply");
-        message.setTextSize(14);
-        message.setTextColor(activity.getColor(dark ? android.R.color.system_neutral1_800 : android.R.color.system_neutral1_50));
-        bar.addView(message, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-
-        Button restart = new Button(activity, null, android.R.attr.borderlessButtonStyle);
-        restart.setText("Restart");
-        restart.setTextColor(activity.getColor(dark ? android.R.color.system_accent1_600 : android.R.color.system_accent1_200));
-        restart.setOnClickListener(v -> restart(activity));
-        bar.addView(restart);
-
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM);
-        int margin = (int) (16 * density);
-        params.setMargins(margin, margin, margin, margin + navigationBarHeight(root));
-        root.addView(bar, params);
-        bar.postDelayed(() -> root.removeView(bar), 6000);
+        if (root != null) RestartBar.show(activity, "Restart GitHub to apply", navigationBarHeight(root));
     }
 
     /** Height of the navigation bar under the content, which edge-to-edge screens draw behind. */
@@ -479,10 +442,7 @@ public final class MaterialYou {
     static boolean flag(String key) {
         if (appContext == null) {
             // Static initializers of the app's classes can run before the first activity exists.
-            try {
-                appContext = (Context) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null);
-            } catch (ReflectiveOperationException ignored) {
-            }
+            appContext = AppRuntime.application();
         }
         return appContext != null && prefs(appContext).getBoolean(key, false);
     }
@@ -492,22 +452,5 @@ public final class MaterialYou {
         return context.getApplicationContext() != null
                 ? context.getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE)
                 : context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-    }
-
-    /** Starts the app over in a fresh process. */
-    private static void restart(Context context) {
-        Intent launch = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-        if (launch == null) return;
-        context.startActivity(Intent.makeRestartActivityTask(launch.getComponent()));
-        Process.killProcess(Process.myPid());
-    }
-
-    /** The app's Application, for the scheme initializers that run without a Context at hand. */
-    static Application application() {
-        try {
-            return (Application) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null);
-        } catch (ReflectiveOperationException e) {
-            return null;
-        }
     }
 }

@@ -17,6 +17,7 @@ import java.util.List;
 import app.fakh.extension.shared.GlassCapsule;
 import app.fakh.extension.shared.GlassTabs;
 import app.fakh.extension.shared.SlidingPill;
+import app.fakh.extension.shared.AppRuntime;
 
 /**
  * Shapes GitHub's bottom bar, a Compose NavigationBar inside the {@code navigation_bar} ComposeView: whether its
@@ -451,7 +452,7 @@ public final class NavigationBar {
      * so it is the one that names a string; 0 when none does.
      */
     static int labelId(Object tab) {
-        Context context = MaterialYou.application();
+        Context context = AppRuntime.application();
         if (context == null) return 0;
         for (Class<?> type = tab.getClass(); type != null && type != Object.class; type = type.getSuperclass()) {
             for (Field field : type.getDeclaredFields()) {
@@ -470,7 +471,7 @@ public final class NavigationBar {
     /** The resource name of a tab's label, such as menu_home, which names its setting across app versions. */
     static String labelName(Object tab) {
         int id = labelId(tab);
-        Context context = MaterialYou.application();
+        Context context = AppRuntime.application();
         return id == 0 || context == null ? String.valueOf(tab) : context.getResources().getResourceEntryName(id);
     }
 }

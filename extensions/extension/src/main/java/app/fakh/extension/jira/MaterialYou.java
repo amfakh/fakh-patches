@@ -14,6 +14,8 @@ import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.fakh.extension.shared.AppRuntime;
+
 /**
  * Material You for Jira's Compose color palettes, which define their colors in code, and the Material You and pitch
  * black switches. The View colors come from the resource patch, under the {@code round} (Material You) and
@@ -107,7 +109,7 @@ public final class MaterialYou {
      */
     public static long paletteColor(long packed) {
         if ((packed & 0x3FL) != 0 || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return packed;
-        Context context = application();
+        Context context = AppRuntime.application();
         if (context == null || !materialYou(context)) return packed;
         int argb = (int) (packed >>> 32);
         int rgb = argb & 0xFFFFFF;
@@ -178,7 +180,7 @@ public final class MaterialYou {
 
     /** Whether the Rovo button and icons are hidden. */
     public static boolean hideRovo() {
-        Context context = application();
+        Context context = AppRuntime.application();
         return context == null || prefs(context).getBoolean(HIDE_ROVO, true);
     }
 
@@ -194,25 +196,8 @@ public final class MaterialYou {
         }
     }
 
-    /** Starts the app over in a fresh process. */
-    static void restart(Context context) {
-        Intent launch = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-        if (launch == null) return;
-        context.startActivity(Intent.makeRestartActivityTask(launch.getComponent()));
-        Process.killProcess(Process.myPid());
-    }
-
     /** An sRGB Compose color: the ARGB value in the high 32 bits, the color space id (sRGB is 0) below. */
     private static long pack(int argb) {
         return (argb & 0xFFFFFFFFL) << 32;
-    }
-
-    /** The app's Application, for static initializers that run without a Context at hand. */
-    static Application application() {
-        try {
-            return (Application) Class.forName("android.app.ActivityThread").getMethod("currentApplication").invoke(null);
-        } catch (ReflectiveOperationException e) {
-            return null;
-        }
     }
 }
