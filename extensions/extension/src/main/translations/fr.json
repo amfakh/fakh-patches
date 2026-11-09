@@ -143,5 +143,8 @@
   "Press and hold text to select and copy it.": "Appuyez longuement sur un texte pour le sélectionner et le copier.",
   "Copy all": "Tout copier",
   "Close": "Fermer",
-  "Text copied": "Texte copié"
+  "Text copied": "Texte copié",
+  "%1$s of %2$s shown": "",
+  "Items in the More tab": "",
+  "Choose which items the More tab lists.": ""
 }

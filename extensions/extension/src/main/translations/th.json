@@ -135,5 +135,8 @@
   "Press and hold text to select and copy it.": "",
   "Copy all": "",
   "Close": "",
-  "Text copied": ""
+  "Text copied": "",
+  "%1$s of %2$s shown": "",
+  "Items in the More tab": "",
+  "Choose which items the More tab lists.": ""
 }

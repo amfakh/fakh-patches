@@ -63,9 +63,11 @@ public final class SettingsActivity extends Activity {
         final ValueRow value;
         /** A checkbox instead of a switch, for one choice of a list. */
         final boolean checkbox;
+        /** For a row that opens a bottom sheet: the choices in the sheet. */
+        final List<Item> choices;
 
         Item(String key, boolean def, String title, String summary, Runnable onChange, ValueRow value,
-                boolean checkbox) {
+                boolean checkbox, List<Item> choices) {
             this.key = key;
             this.def = def;
             this.title = title;
@@ -73,6 +75,7 @@ public final class SettingsActivity extends Activity {
             this.onChange = onChange;
             this.value = value;
             this.checkbox = checkbox;
+            this.choices = choices;
         }
     }
 
@@ -98,17 +101,39 @@ public final class SettingsActivity extends Activity {
         }
 
         Category toggle(String key, boolean def, String title, String summary, Runnable onChange) {
-            items.add(new Item(key, def, title, summary, onChange, null, false));
+            items.add(new Item(key, def, title, summary, onChange, null, false, null));
             return this;
         }
 
         Category check(String key, boolean def, String title) {
-            items.add(new Item(key, def, title, null, null, null, true));
+            items.add(new Item(key, def, title, null, null, null, true, null));
             return this;
         }
 
         Category value(String title, ValueRow value) {
-            items.add(new Item(null, false, title, null, null, value, false));
+            items.add(new Item(null, false, title, null, null, value, false, null));
+            return this;
+        }
+
+        /** A row that opens a bottom sheet with one check row per choice, and says how many are on. */
+        Category sheet(String title, List<Item> choices, Runnable open) {
+            items.add(new Item(null, false, title, null, null, new ValueRow() {
+                public String currentValue() {
+                    int shown = 0;
+                    for (Item choice : choices) {
+                        if (Settings.get(choice.key, choice.def)) shown++;
+                    }
+                    return I18n.f("%1$s of %2$s shown", shown, choices.size());
+                }
+
+                public Runnable onClick() {
+                    return open;
+                }
+
+                public boolean enabled() {
+                    return true;
+                }
+            }, false, choices));
             return this;
         }
 
@@ -128,6 +153,11 @@ public final class SettingsActivity extends Activity {
                 }
             });
         }
+    }
+
+    /** One check row of a bottom sheet. */
+    private static Item choice(String key, boolean def, String title) {
+        return new Item(key, def, title, null, null, null, true, null);
     }
 
     private List<Category> buildCategories() {
@@ -195,6 +225,11 @@ public final class SettingsActivity extends Activity {
 
         if (Settings.isNavigationBarIncluded() || Settings.isGlassNavigationBarIncluded()) {
             Category navigation = new Category("Navigation bar");
+            List<Item> tabs = new ArrayList<>();
+            tabs.add(choice(Settings.SHOW_TAB_JOBS, true, "Jobs"));
+            tabs.add(choice(Settings.SHOW_TAB_NETWORK, true, "Network"));
+            tabs.add(choice(Settings.SHOW_TAB_NOTIFICATIONS, true, "Notifications"));
+            tabs.add(choice(Settings.SHOW_TAB_MORE, Settings.showMoreTab(), "More"));
             if (Settings.isGlassNavigationBarIncluded()) {
                 navigation.toggle(Settings.GLASS_NAVIGATION_BAR, true, "Glass navigation bar",
                         "A floating, translucent navigation bar.");
@@ -203,11 +238,8 @@ public final class SettingsActivity extends Activity {
                 navigation.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels", "Text under the navigation bar icons.")
                         .toggle(Settings.HIDE_TAB_BADGES, false, "Hide notification badges",
                                 "The count on the navigation bar tabs.")
-                        .action("Navigation bar tabs", "Home is always shown.", null)
-                        .check(Settings.SHOW_TAB_JOBS, true, "Jobs")
-                        .check(Settings.SHOW_TAB_NETWORK, true, "Network")
-                        .check(Settings.SHOW_TAB_NOTIFICATIONS, true, "Notifications")
-                        .check(Settings.SHOW_TAB_MORE, Settings.showMoreTab(), "More");
+                        .sheet("Navigation bar tabs", tabs, () -> showSheet("Navigation bar tabs",
+                                "Home is always shown.", tabs));
             }
             categories.add(navigation);
         }
@@ -216,7 +248,10 @@ public final class SettingsActivity extends Activity {
             Category more = new Category("More tab")
                     .toggle(Settings.MOVE_MORE_ITEMS, Settings.moveMoreItems(), "Show in the profile menu",
                             "Also list the items of the More tab in the profile menu.");
-            for (MoreMenu.Item item : MoreMenu.items()) more.check(item.key(), true, item.label);
+            List<Item> moreItems = new ArrayList<>();
+            for (MoreMenu.Item item : MoreMenu.items()) moreItems.add(choice(item.key(), true, item.label));
+            more.sheet("Items in the More tab", moreItems, () -> showSheet("Items in the More tab",
+                    "Choose which items the More tab lists.", moreItems));
             categories.add(more);
             categories.add(new Category("Shortcuts")
                     .toggle(Settings.GAMES_SHORTCUT, true, "Puzzle games shortcut",
@@ -369,6 +404,9 @@ public final class SettingsActivity extends Activity {
     private LinearLayout content;
     private ScrollView scroll;
     private View restartBanner;
+    private FrameLayout rootView;
+    /** The bottom sheet on screen, or null. */
+    private View sheetLayer;
 
     /**
      * Colors the buttons of a dialog shown over LinkedIn's own screens, whose theme makes button text transparent.
@@ -439,6 +477,7 @@ public final class SettingsActivity extends Activity {
         root.addView(column);
         restartBanner = restartBanner();
         root.addView(restartBanner);
+        rootView = root;
         setContentView(root);
 
         render();
@@ -447,7 +486,9 @@ public final class SettingsActivity extends Activity {
     @Override
     @SuppressWarnings("deprecation")
     public void onBackPressed() {
-        if (searching) {
+        if (sheetLayer != null) {
+            closeSheet();
+        } else if (searching) {
             setSearching(false);
         } else {
             super.onBackPressed();
@@ -522,8 +563,12 @@ public final class SettingsActivity extends Activity {
         List<String> names = new ArrayList<>();
         for (Category category : categories) {
             for (Item item : category.items) {
+                StringBuilder choices = new StringBuilder();
+                if (item.choices != null) {
+                    for (Item choice : item.choices) choices.append(' ').append(I18n.tr(choice.title));
+                }
                 String haystack = (I18n.tr(item.title) + " " + (item.summary == null ? "" : I18n.tr(item.summary)) + " "
-                        + I18n.tr(category.title)).toLowerCase(Locale.ROOT);
+                        + I18n.tr(category.title) + choices).toLowerCase(Locale.ROOT);
                 if (q.isEmpty() || haystack.contains(q)) {
                     found.add(item);
                     names.add(category.title);
@@ -892,6 +937,94 @@ public final class SettingsActivity extends Activity {
                 })
                 .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();
+    }
+
+    // endregion
+
+    // region Bottom sheet
+
+    /** A bottom sheet with one check row per choice. Tapping the dimmed area or going back closes it. */
+    private void showSheet(String title, String hint, List<Item> choices) {
+        if (sheetLayer != null) return;
+        FrameLayout scrim = new FrameLayout(this);
+        scrim.setBackgroundColor(0x66000000);
+        scrim.setClickable(true);
+        // Above the restart banner, whose elevation puts it over later siblings.
+        scrim.setElevation(dp(16));
+        scrim.setOnClickListener(v -> closeSheet());
+
+        LinearLayout sheet = new LinearLayout(this);
+        sheet.setOrientation(LinearLayout.VERTICAL);
+        sheet.setClickable(true);
+        sheet.setPadding(0, dp(12), 0, dp(16));
+        GradientDrawable shape = new GradientDrawable();
+        shape.setColor(background);
+        float radius = dp(28);
+        shape.setCornerRadii(new float[]{radius, radius, radius, radius, 0, 0, 0, 0});
+        sheet.setBackground(shape);
+
+        View handle = new View(this);
+        handle.setBackground(rounded((textSecondary & 0x00FFFFFF) | 0x66000000, 2));
+        LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(dp(32), dp(4));
+        handleParams.gravity = Gravity.CENTER_HORIZONTAL;
+        handleParams.bottomMargin = dp(16);
+        sheet.addView(handle, handleParams);
+
+        TextView titleView = text(title, 20, textPrimary, true);
+        titleView.setPadding(dp(24), 0, dp(24), 0);
+        sheet.addView(titleView);
+        if (hint != null) {
+            TextView hintView = text(hint, 14, textSecondary, false);
+            hintView.setPadding(dp(24), dp(4), dp(24), 0);
+            sheet.addView(hintView);
+        }
+
+        LinearLayout rows = new LinearLayout(this);
+        rows.setOrientation(LinearLayout.VERTICAL);
+        rows.setPadding(0, dp(8), 0, 0);
+        for (Item choice : choices) rows.addView(toggleRow(choice, null));
+        MaxHeightScrollView scrollRows = new MaxHeightScrollView(this, getResources().getDisplayMetrics().heightPixels * 6 / 10);
+        scrollRows.addView(rows);
+        sheet.addView(scrollRows);
+
+        scrim.addView(sheet, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
+        rootView.addView(scrim, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        sheetLayer = scrim;
+
+        scrim.setAlpha(0f);
+        scrim.animate().alpha(1f).setDuration(180).start();
+        sheet.setTranslationY(dp(480));
+        sheet.animate().translationY(0f).setDuration(240)
+                .setInterpolator(new android.view.animation.DecelerateInterpolator()).start();
+    }
+
+    private void closeSheet() {
+        View layer = sheetLayer;
+        if (layer == null) return;
+        sheetLayer = null;
+        View sheet = ((ViewGroup) layer).getChildAt(0);
+        layer.animate().alpha(0f).setDuration(160).start();
+        sheet.animate().translationY(sheet.getHeight()).setDuration(200)
+                .withEndAction(() -> rootView.removeView(layer)).start();
+        // The row that opened the sheet shows how many choices are on.
+        refresh();
+    }
+
+    /** A scroll view that stops growing at a height, so a long list scrolls inside its sheet. */
+    private static final class MaxHeightScrollView extends ScrollView {
+        private final int maxHeight;
+
+        MaxHeightScrollView(Context context, int maxHeight) {
+            super(context);
+            this.maxHeight = maxHeight;
+        }
+
+        @Override
+        protected void onMeasure(int widthSpec, int heightSpec) {
+            super.onMeasure(widthSpec, View.MeasureSpec.makeMeasureSpec(maxHeight, View.MeasureSpec.AT_MOST));
+        }
     }
 
     // endregion

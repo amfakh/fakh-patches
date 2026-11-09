@@ -143,5 +143,8 @@
   "Press and hold text to select and copy it.": "Tekan dan tahan teks untuk memilih dan menyalinnya.",
   "Copy all": "Salin semua",
   "Close": "Tutup",
-  "Text copied": "Teks disalin"
+  "Text copied": "Teks disalin",
+  "%1$s of %2$s shown": "%1$s dari %2$s ditampilkan",
+  "Items in the More tab": "Item di tab More",
+  "Choose which items the More tab lists.": "Pilih item yang ditampilkan di tab More."
 }
