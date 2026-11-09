@@ -11,13 +11,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import app.fakh.extension.shared.GlassCapsule;
+import app.fakh.extension.shared.GlassTabs;
 
 /** Draws LinkedIn's bottom bar as a floating, translucent capsule, using the shared {@link GlassCapsule}. */
 final class GlassNavigationBar {
     private static final int SIDE_MARGIN_DP = 12;
     private static final int INNER_PADDING_DP = 14;
-    /** The widest a tab gets, so the capsule stays compact on a wide screen. */
-    private static final int MAX_TAB_DP = 96;
     private static final String ICON = "slim_notification_badge_icon";
     private static final String LABEL = "slim_notification_badge_label";
 
@@ -59,8 +58,7 @@ final class GlassNavigationBar {
         int count = tabs.getChildCount();
         if (count == 0 || barWidth <= 0) return;
         float density = tabs.getResources().getDisplayMetrics().density;
-        int width = Math.min((barWidth - 2 * Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density)) / count,
-                Math.round(MAX_TAB_DP * density));
+        int width = GlassTabs.tabWidth(barWidth - 2 * Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density), count, density);
         for (int i = 0; i < count; i++) {
             View tab = tabs.getChildAt(i);
             ViewGroup.LayoutParams params = tab.getLayoutParams();

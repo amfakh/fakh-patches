@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.fakh.extension.shared.GlassCapsule;
+import app.fakh.extension.shared.GlassTabs;
 import app.fakh.extension.shared.SlidingPill;
 
 /**
@@ -42,8 +43,6 @@ public final class NavigationBar {
     private static final float FILL_ALPHA = 0.85f;
     /** Height of the tabs when they have no label; with a label the bar keeps the height the app gives it. */
     private static final int ICON_ONLY_HEIGHT_DP = 56;
-    /** The widest a tab of the portrait bar gets, so the capsule wraps its tabs instead of filling the screen. */
-    private static final int MAX_TAB_DP = 96;
     /** Space the bar keeps between its tabs. */
     private static final int TAB_GAP_DP = 8;
     /** How many tabs the bar shows, from the tab list; 0 until the app lists them. */
@@ -427,7 +426,7 @@ public final class NavigationBar {
     }
 
     /**
-     * Pads the portrait bar so its tabs are at most {@link #MAX_TAB_DP} wide and centered, as on LinkedIn: the
+     * Pads the portrait bar so its tabs are at most {@link GlassTabs#MAX_TAB_DP} wide and centered, as on LinkedIn: the
      * capsule hugs the padding, so fewer tabs give a shorter capsule. Changes the padding only when it moves, since
      * setting it lays the bar out again.
      */
@@ -435,8 +434,8 @@ public final class NavigationBar {
         int count = tabCount > 0 ? tabCount : tabIcons.size();
         if (count == 0 || bar.getWidth() == 0) return;
         float density = bar.getResources().getDisplayMetrics().density;
-        float content = count * MAX_TAB_DP * density + (count - 1) * TAB_GAP_DP * density;
-        int side = Math.max(Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density), Math.round((bar.getWidth() - content) / 2));
+        int side = GlassTabs.sidePadding(bar.getWidth(), count, Math.round(TAB_GAP_DP * density),
+                Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density), density);
         if (bar.getPaddingLeft() != side || bar.getPaddingRight() != side) {
             bar.setPadding(side, bar.getPaddingTop(), side, bar.getPaddingBottom());
         }

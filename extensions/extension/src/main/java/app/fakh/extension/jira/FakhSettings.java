@@ -18,6 +18,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import app.fakh.extension.shared.GlassTabs;
+
 /**
  * The Fakh Patches category of Jira's Settings: a card of switch rows between the Language/Theme card and the Quick
  * Lock card, built from the app's own composables by reflection so the rows look like its own. Changing a switch
@@ -208,7 +210,7 @@ public final class FakhSettings {
                     return null;
                 }
             });
-            String summary = shown + " of " + (MaterialYou.KEYS.length - FIRST_TAB + 1) + " shown";
+            String summary = GlassTabs.summary(shown, MaterialYou.KEYS.length - FIRST_TAB + 1);
             // Label, selected (no check), click, modifier (default), subtitle, composer, changed, defaults.
             row.invoke(null, "Navigation tabs", false, click, null, summary, composer, 0, 8);
             return;

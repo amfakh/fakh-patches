@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.fakh.extension.shared.GlassTabs;
+
 /**
  * The Fakh Patches rows of Settings that open one of GitHub's own choice sheets, the ones its Theme and Language rows
  * use: the single-choice sheet for the landscape bar position, the multi-choice sheet for the tabs of the bar. The
@@ -91,7 +93,7 @@ final class ChoiceSheets {
         for (Object tab : NavigationBar.allTabs) {
             if (!NavigationBar.hidden(NavigationBar.labelName(tab))) shown++;
         }
-        return shown + " of " + NavigationBar.allTabs.size() + " shown";
+        return GlassTabs.summary(shown, NavigationBar.allTabs.size());
     }
 
     /**
