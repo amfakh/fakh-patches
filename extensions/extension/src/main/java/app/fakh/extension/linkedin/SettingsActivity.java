@@ -121,7 +121,7 @@ public final class SettingsActivity extends Activity {
                 public String currentValue() {
                     int shown = 0;
                     for (Item choice : choices) {
-                        if (Settings.get(choice.key, choice.def)) shown++;
+                        if (choice.key == null || Settings.get(choice.key, choice.def)) shown++;
                     }
                     return I18n.f("%1$s of %2$s shown", shown, choices.size());
                 }
@@ -153,6 +153,11 @@ public final class SettingsActivity extends Activity {
                 }
             });
         }
+    }
+
+    /** A check row of a bottom sheet that is always on and cannot be changed. */
+    private static Item fixed(String title) {
+        return new Item(null, true, title, null, null, null, true, null);
     }
 
     /** One check row of a bottom sheet. */
@@ -226,6 +231,7 @@ public final class SettingsActivity extends Activity {
         if (Settings.isNavigationBarIncluded() || Settings.isGlassNavigationBarIncluded()) {
             Category navigation = new Category("Navigation bar");
             List<Item> tabs = new ArrayList<>();
+            tabs.add(fixed("Home"));
             tabs.add(choice(Settings.SHOW_TAB_JOBS, true, "Jobs"));
             tabs.add(choice(Settings.SHOW_TAB_NETWORK, true, "Network"));
             tabs.add(choice(Settings.SHOW_TAB_NOTIFICATIONS, true, "Notifications"));
@@ -678,6 +684,15 @@ public final class SettingsActivity extends Activity {
             track.setTrackTintList(new ColorStateList(states, new int[]{(accent & 0x00FFFFFF) | 0x80000000,
                     dark ? 0xFF474747 : 0xFFBDBDBD}));
             toggle = track;
+        }
+        if (item.key == null) {
+            // Always on: shown, but not something to change.
+            toggle.setChecked(true);
+            toggle.setEnabled(false);
+            row.setEnabled(false);
+            row.setAlpha(0.45f);
+            row.addView(toggle);
+            return row;
         }
         toggle.setChecked(Settings.get(item.key, item.def));
         toggle.setOnCheckedChangeListener((button, checked) -> {
