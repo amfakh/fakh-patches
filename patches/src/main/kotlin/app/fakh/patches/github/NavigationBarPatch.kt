@@ -260,7 +260,7 @@ val glassNavigationBarPatch = bytecodePatch(
 @Suppress("unused")
 val navigationBarRightPatch = bytecodePatch(
     name = "Navigation bar on the right",
-    description = "Adds a switch to Settings that moves the landscape navigation bar to the right edge.",
+    description = "Adds a setting that moves the landscape navigation bar to the left or right edge.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
@@ -268,5 +268,5 @@ val navigationBarRightPatch = bytecodePatch(
     dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
-    execute { addSwitch("fakh_nav_right", "Navigation bar on the right", false) }
+    execute { addSwitch("fakh_nav_position", "Landscape bar position", null) }
 }

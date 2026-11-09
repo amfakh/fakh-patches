@@ -297,10 +297,9 @@ public final class MaterialYou {
      * @param context the settings screen's context
      * @param key     the switch's key
      */
-    public static void toggled(Context context, String key) {
-        if (NavigationBar.NAV_TABS.equals(key)) {
-            Activity activity = activity(context);
-            if (activity != null) NavigationBar.showTabsSheet(activity);
+    public static void toggled(Context context, String key, Object preference) {
+        if (ChoiceSheets.opens(key)) {
+            ChoiceSheets.open(activity(context), key, preference);
             return;
         }
         SharedPreferences prefs = prefs(context);
@@ -313,6 +312,39 @@ public final class MaterialYou {
         } else if (activity != null) {
             showRestartBar(activity);
         }
+    }
+
+    /** Injected at the start of onCreatePreferences: the Settings fragment that the choice sheets are opened from. */
+    public static void settings(Object fragment) {
+        ChoiceSheets.settings(fragment);
+    }
+
+    /** Injected into each Settings row that opens a sheet: the summary under its title, or null. */
+    public static String summary(String key) {
+        return ChoiceSheets.summary(key);
+    }
+
+    /** Injected into each row of a multi-choice sheet: whether it can be toggled; the Home tab never can. */
+    public static boolean enabled(String value) {
+        return !NavigationBar.HOME_TAB.equals(value);
+    }
+
+    /** Whether the row of the multi-choice sheet that is being drawn can be toggled. */
+    private static boolean rowEnabled = true;
+
+    /** Injected where a choice sheet row is made toggleable: the effective enabled flag of the row, for its checkbox. */
+    public static void rowEnabled(boolean enabled) {
+        rowEnabled = enabled;
+    }
+
+    /** Injected where a choice sheet row draws its checkbox: the flag recorded for the row. */
+    public static boolean rowEnabled() {
+        return rowEnabled;
+    }
+
+    /** Injected before a choice sheet reports its result: what the user chose, for the request key of its row. */
+    public static void chosen(String requestKey, Bundle result) {
+        ChoiceSheets.chosen(requestKey, result);
     }
 
     /** Turns the remembered dark canvas and card fields black, or back to their normal color. */

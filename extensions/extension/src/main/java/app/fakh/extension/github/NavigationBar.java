@@ -2,23 +2,12 @@ package app.fakh.extension.github;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowInsets;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.window.OnBackInvokedCallback;
-import android.window.OnBackInvokedDispatcher;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -39,12 +28,12 @@ public final class NavigationBar {
     public static final String HIDE_LABELS = "fakh_hide_nav_labels";
     private static final float LANDSCAPE_HEIGHT_DP = 272f;
     public static final String NAV_RIGHT = "fakh_nav_right";
-    /** Key of the Settings row that opens the tab sheet, and prefix of the switch that hides each tab. */
-    static final String NAV_TABS = "fakh_nav_tabs";
-    private static final String HIDE_TAB = "fakh_hide_tab_";
-    private static final String TABS_SHEET = "fakh_tabs_sheet";
+    /** Prefix of the switch that hides each tab, which {@link ChoiceSheets} sets from the tab sheet. */
+    static final String HIDE_TAB = "fakh_hide_tab_";
+    /** The name of the label of the Home tab. */
+    static final String HOME_TAB = "menu_home";
     /** Every tab the app lists, before the hidden ones are dropped, for the sheet. */
-    private static List<Object> allTabs = new ArrayList<>();
+    static List<Object> allTabs = new ArrayList<>();
 
     private static final int SIDE_MARGIN_DP = 12;
     private static final int INNER_PADDING_DP = 14;
@@ -430,7 +419,7 @@ public final class NavigationBar {
         allTabs = new ArrayList<>(tabs);
         List<Object> shown = new ArrayList<>();
         for (Object tab : tabs) {
-            if (!MaterialYou.flag(HIDE_TAB + labelName(tab))) shown.add(tab);
+            if (!hidden(labelName(tab))) shown.add(tab);
         }
         List<Object> result = shown.isEmpty() ? tabs : shown;
         tabCount = result.size();
@@ -453,11 +442,16 @@ public final class NavigationBar {
         }
     }
 
+    /** Whether the user switched the tab named [name] off; the Home tab never is, as the app starts on it. */
+    static boolean hidden(String name) {
+        return !HOME_TAB.equals(name) && MaterialYou.flag(HIDE_TAB + name);
+    }
+
     /**
      * The label of a tab, as a string resource id. The tab keeps it in one of its int fields, next to its icons,
      * so it is the one that names a string; 0 when none does.
      */
-    private static int labelId(Object tab) {
+    static int labelId(Object tab) {
         Context context = MaterialYou.application();
         if (context == null) return 0;
         for (Class<?> type = tab.getClass(); type != null && type != Object.class; type = type.getSuperclass()) {
@@ -475,127 +469,9 @@ public final class NavigationBar {
     }
 
     /** The resource name of a tab's label, such as menu_home, which names its setting across app versions. */
-    private static String labelName(Object tab) {
+    static String labelName(Object tab) {
         int id = labelId(tab);
         Context context = MaterialYou.application();
         return id == 0 || context == null ? String.valueOf(tab) : context.getResources().getResourceEntryName(id);
-    }
-
-    /**
-     * A bottom sheet with one check row per tab of the bar, in the Material 3 colors of the theme. A tab can only
-     * be switched off while another one is still shown. Closing it after a change offers the restart the bar needs,
-     * since the app lists its tabs once.
-     */
-    static void showTabsSheet(Activity activity) {
-        ViewGroup root = activity.findViewById(android.R.id.content);
-        if (root == null || root.findViewWithTag(TABS_SHEET) != null || allTabs.isEmpty()) return;
-        float density = root.getResources().getDisplayMetrics().density;
-        boolean night = (root.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-                == Configuration.UI_MODE_NIGHT_YES;
-        int surface = activity.getColor(night ? android.R.color.system_neutral1_900 : android.R.color.system_neutral2_50);
-        int accent = activity.getColor(night ? android.R.color.system_accent1_200 : android.R.color.system_accent1_600);
-        int text = activity.getColor(night ? android.R.color.system_neutral1_100 : android.R.color.system_neutral1_900);
-        SharedPreferences prefs = MaterialYou.prefs(activity);
-
-        FrameLayout scrim = new FrameLayout(activity);
-        scrim.setTag(TABS_SHEET);
-        scrim.setBackgroundColor(0x66000000);
-        scrim.setClickable(true);
-        scrim.setElevation(24 * density);
-        boolean[] changed = {false};
-        OnBackInvokedCallback[] back = {null};
-        Runnable close = () -> {
-            if (scrim.getParent() == null) return;
-            root.removeView(scrim);
-            if (back[0] != null) activity.getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(back[0]);
-            if (changed[0]) MaterialYou.showRestartBar(activity);
-        };
-        // Back closes the sheet: through the platform dispatcher on Android 13 and up, as a key before that.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            back[0] = close::run;
-            activity.getOnBackInvokedDispatcher().registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_OVERLAY, back[0]);
-        }
-        scrim.setFocusableInTouchMode(true);
-        scrim.setOnKeyListener((view, keyCode, event) -> {
-            if (keyCode != KeyEvent.KEYCODE_BACK) return false;
-            if (event.getAction() == KeyEvent.ACTION_UP) close.run();
-            return true;
-        });
-        scrim.setOnClickListener(view -> close.run());
-
-        LinearLayout sheet = new LinearLayout(activity);
-        sheet.setOrientation(LinearLayout.VERTICAL);
-        sheet.setClickable(true);
-        int pad = Math.round(24 * density);
-        sheet.setPadding(pad, Math.round(12 * density), pad, Math.round(24 * density) + navigationBarHeight(root));
-        GradientDrawable background = new GradientDrawable();
-        background.setColor(surface);
-        float radius = 28 * density;
-        background.setCornerRadii(new float[]{radius, radius, radius, radius, 0, 0, 0, 0});
-        sheet.setBackground(background);
-
-        View handle = new View(activity);
-        GradientDrawable handleShape = new GradientDrawable();
-        handleShape.setColor((text & 0xFFFFFF) | 0x66000000);
-        handleShape.setCornerRadius(2 * density);
-        handle.setBackground(handleShape);
-        LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(Math.round(32 * density), Math.round(4 * density));
-        handleParams.gravity = Gravity.CENTER_HORIZONTAL;
-        handleParams.bottomMargin = Math.round(16 * density);
-        sheet.addView(handle, handleParams);
-
-        TextView title = new TextView(activity);
-        title.setText("Navigation bar tabs");
-        title.setTextColor(text);
-        title.setTextSize(20);
-        title.setPadding(0, 0, 0, Math.round(8 * density));
-        sheet.addView(title);
-
-        List<TextView> checks = new ArrayList<>();
-        for (Object tab : allTabs) {
-            String key = HIDE_TAB + labelName(tab);
-            int id = labelId(tab);
-            LinearLayout line = new LinearLayout(activity);
-            line.setGravity(Gravity.CENTER_VERTICAL);
-            int vertical = Math.round(14 * density);
-            line.setPadding(0, vertical, 0, vertical);
-            TextView label = new TextView(activity);
-            label.setText(id == 0 ? labelName(tab) : activity.getString(id));
-            label.setTextColor(text);
-            label.setTextSize(16);
-            line.addView(label, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
-            TextView check = new TextView(activity);
-            check.setText("✓");
-            check.setTextColor(accent);
-            check.setTextSize(20);
-            check.setVisibility(prefs.getBoolean(key, false) ? View.INVISIBLE : View.VISIBLE);
-            checks.add(check);
-            line.addView(check);
-            line.setOnClickListener(view -> {
-                boolean show = check.getVisibility() != View.VISIBLE;
-                if (!show) {
-                    int shown = 0;
-                    for (TextView other : checks) if (other.getVisibility() == View.VISIBLE) shown++;
-                    if (shown <= 1) return;
-                }
-                prefs.edit().putBoolean(key, !show).commit();
-                check.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
-                changed[0] = true;
-            });
-            sheet.addView(line);
-        }
-        scrim.addView(sheet, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
-        root.addView(scrim, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        scrim.requestFocus();
-        sheet.setTranslationY(400 * density);
-        sheet.animate().translationY(0).setDuration(220).start();
-    }
-
-    /** Height of the system navigation bar under the content, which the sheet keeps its rows above. */
-    private static int navigationBarHeight(View root) {
-        WindowInsets insets = root.getRootWindowInsets();
-        return insets == null ? 0 : insets.getInsets(WindowInsets.Type.navigationBars()).bottom;
     }
 }
