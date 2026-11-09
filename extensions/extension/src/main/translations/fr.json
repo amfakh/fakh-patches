@@ -144,7 +144,7 @@
   "Copy all": "Tout copier",
   "Close": "Fermer",
   "Text copied": "Texte copié",
-  "%1$s of %2$s shown": "",
-  "Items in the More tab": "",
-  "Choose which items the More tab lists.": ""
+  "%1$s of %2$s shown": "%1$s sur %2$s affichés",
+  "Items in the More tab": "Éléments de l'onglet Plus",
+  "Choose which items the More tab lists.": "Choisissez les éléments que liste l'onglet Plus."
 }
