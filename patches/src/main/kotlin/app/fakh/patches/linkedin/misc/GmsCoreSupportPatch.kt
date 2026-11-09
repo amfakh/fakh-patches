@@ -20,7 +20,7 @@ private const val CREDENTIAL_PROVIDER_FACTORY = "Landroidx/credentials/Credentia
 @Suppress("unused")
 val gmsCoreSupportPatch = bytecodePatch(
     name = "GmsCore support",
-    description = "Makes \"Continue with Google\" work in patched LinkedIn by signing in through microG RE " +
+    description = "Makes \"Continue with Google\" work by signing in through microG RE " +
         "(GmsCore) instead of Google Play services. Needs microG RE installed and signed in to a Google account.",
     default = false
 ) {

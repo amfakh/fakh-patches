@@ -20,9 +20,9 @@ private const val DODO_SIGNATURE = "7dd6724c683c33fbe5cb0d3332d4e5204a938c14"
 @Suppress("unused")
 val gmsCoreSupportPatch = bytecodePatch(
     name = "GmsCore support",
-    description = "Makes \"Sign in with Google\" work, so your collection and playlists saved to your Google " +
-        "account come back. Signs in through microG RE (GmsCore) instead of Google Play services, so it needs " +
-        "microG RE installed and signed in to a Google account.",
+    description = "Makes \"Sign in with Google\" work by signing in through microG RE (GmsCore) instead of Google Play " +
+        "services, so your collection and playlists saved to your Google account come back. Needs microG RE " +
+        "installed and signed in to a Google account.",
     default = false,
 ) {
     compatibleWith(COMPATIBILITY_DODO)

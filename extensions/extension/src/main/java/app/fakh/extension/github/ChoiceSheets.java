@@ -82,7 +82,7 @@ final class ChoiceSheets {
         ArrayList<Object> items = new ArrayList<>();
         items.add(helper("fakhSingleItem", "left", "Left"));
         items.add(helper("fakhSingleItem", "right", "Right"));
-        helper("fakhShowSingle", settings, "Landscape bar position",
+        helper("fakhShowSingle", settings, "Landscape navigation bar position",
                 MaterialYou.flag(NavigationBar.NAV_RIGHT) ? "right" : "left", NAV_POSITION, items);
     }
 

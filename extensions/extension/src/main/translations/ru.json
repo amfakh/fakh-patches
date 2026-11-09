@@ -64,7 +64,7 @@
   "Open the real address instead of the redirect.": "",
   "Clean share links": "Очищать ссылки при отправке",
   "Strip tracking from LinkedIn links you copy or share.": "",
-  "Block tracking": "Блокировать отслеживание",
+  "Disable analytics": "Отключить аналитику",
   "Stop most analytics events. Turn off if something breaks.": "",
   "Anonymous profile viewing": "",
   "Visit profiles without being listed in Who viewed your profile.": "",

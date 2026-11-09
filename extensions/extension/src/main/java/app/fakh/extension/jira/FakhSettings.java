@@ -214,7 +214,7 @@ public final class FakhSettings {
             });
             String summary = GlassTabs.summary(shown, MaterialYou.KEYS.length - FIRST_TAB + 1);
             // Label, selected (no check), click, modifier (default), subtitle, composer, changed, defaults.
-            row.invoke(null, "Navigation tabs", false, click, null, summary, composer, 0, 8);
+            row.invoke(null, "Navigation bar tabs", false, click, null, summary, composer, 0, 8);
             return;
         }
     }
@@ -243,7 +243,7 @@ public final class FakhSettings {
                 bumpVersion();
             }));
         }
-        TabSheet.show(activity, root, "Navigation tabs", null, app.fakh.extension.shared.MaterialYou.sheetSurface(activity),
+        TabSheet.show(activity, root, "Navigation bar tabs", null, app.fakh.extension.shared.MaterialYou.sheetSurface(activity),
                 text, text, rows, () -> {
                     if (changed[0]) showSnackbar();
                 });

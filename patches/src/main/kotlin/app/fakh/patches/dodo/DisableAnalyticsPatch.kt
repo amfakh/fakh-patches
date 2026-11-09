@@ -16,7 +16,7 @@ private val TRACKER_INITS = mapOf(
 val disableAnalyticsPatch = bytecodePatch(
     name = "Disable analytics",
     description = "Stops Adjust and TikTok from tracking installs and in-app events, and turns off Firebase " +
-        "Analytics, Crashlytics and Sessions, which get every action you take in the app.",
+        "Analytics, Crashlytics, Performance and Sessions, which get every action you take in the app.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_DODO)

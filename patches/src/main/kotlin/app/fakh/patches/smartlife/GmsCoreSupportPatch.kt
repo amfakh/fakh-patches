@@ -42,8 +42,8 @@ private object FrameworkCredentialProviderFingerprint : Fingerprint(
 @Suppress("unused")
 val gmsCoreSupportPatch = bytecodePatch(
     name = "GmsCore support",
-    description = "Makes \"Sign in with Google\" work. Signs in through microG RE (GmsCore) instead of Google " +
-        "Play services, so it needs microG RE installed and signed in to a Google account.",
+    description = "Makes \"Sign in with Google\" work by signing in through microG RE (GmsCore) instead of Google Play " +
+        "services. Needs microG RE installed and signed in to a Google account.",
     default = false,
 ) {
     compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)

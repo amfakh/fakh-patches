@@ -92,7 +92,7 @@ private fun BytecodePatchContext.barCall(): Pair<MutableMethod, RangeCall> {
 @Suppress("unused")
 val navigationBarPatch = bytecodePatch(
     name = "Navigation bar",
-    description = "Adds settings that hide the labels of the navigation bar tabs and choose which tabs it shows.",
+    description = "Adds settings in Fakh Patches that hide the labels of the navigation bar tabs and choose which tabs it shows.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
@@ -144,7 +144,7 @@ val navigationBarPatch = bytecodePatch(
             """,
         )
 
-        addSwitch("fakh_hide_nav_labels", "Hide navigation bar labels", false)
+        addSwitch("fakh_hide_nav_labels", "Hide tab labels", false)
         addSwitch("fakh_nav_tabs", "Navigation bar tabs", null)
     }
 }
@@ -152,7 +152,7 @@ val navigationBarPatch = bytecodePatch(
 @Suppress("unused")
 val glassNavigationBarPatch = bytecodePatch(
     name = "Glass navigation bar",
-    description = "Draws the navigation bar as a floating, translucent capsule (turned on in Fakh Patches).",
+    description = "Draws the navigation bar as a floating, translucent capsule with a sliding selection pill. The switch is in Fakh Patches.",
     default = false,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
@@ -259,8 +259,8 @@ val glassNavigationBarPatch = bytecodePatch(
 
 @Suppress("unused")
 val navigationBarRightPatch = bytecodePatch(
-    name = "Navigation bar on the right",
-    description = "Adds a setting that moves the landscape navigation bar to the left or right edge.",
+    name = "Landscape navigation bar position",
+    description = "Adds a setting in Fakh Patches that moves the landscape navigation bar to the left or right edge.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
@@ -268,5 +268,5 @@ val navigationBarRightPatch = bytecodePatch(
     dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
-    execute { addSwitch("fakh_nav_position", "Landscape bar position", null) }
+    execute { addSwitch("fakh_nav_position", "Landscape navigation bar position", null) }
 }

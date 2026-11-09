@@ -270,7 +270,7 @@ public final class SettingsActivity extends Activity {
                 || Settings.isAmoledBlackIncluded()) {
             Category appearance = new Category("Appearance");
             if (Settings.isRemoveGapsAndDividersIncluded()) {
-                appearance.toggle(Settings.REMOVE_GAPS_AND_DIVIDERS, true, "Remove gaps and dividers",
+                appearance.toggle(Settings.REMOVE_GAPS_AND_DIVIDERS, true, "Hide gaps and dividers",
                         "Flat lists with no gaps or dividers.");
             }
             if (Settings.isMaterialYouIncluded()) {
@@ -358,7 +358,7 @@ public final class SettingsActivity extends Activity {
                         "Strip tracking from LinkedIn links you copy or share.");
             }
             if (Settings.isBlockTrackingIncluded()) {
-                privacy.toggle(Settings.BLOCK_TRACKING, false, "Block tracking",
+                privacy.toggle(Settings.BLOCK_TRACKING, false, "Disable analytics",
                         "Stop most analytics events. Turn off if something breaks.");
             }
             if (Settings.isAnonymousProfileViewingIncluded()) {
@@ -774,9 +774,9 @@ public final class SettingsActivity extends Activity {
                 {"Messaging", Settings.isMessagingIncluded()},
                 {"Open links directly", Settings.isOpenLinksDirectlyIncluded()},
                 {"Sanitize share links", Settings.isSanitizeShareLinksIncluded()},
-                {"Block tracking", Settings.isBlockTrackingIncluded()},
+                {"Disable analytics", Settings.isBlockTrackingIncluded()},
                 {"Anonymous profile viewing", Settings.isAnonymousProfileViewingIncluded()},
-                {"Remove gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
+                {"Hide gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
                 {"Material You", Settings.isMaterialYouIncluded()},
                 {"Pitch black", Settings.isAmoledBlackIncluded()},
                 {"Glass navigation bar", Settings.isGlassNavigationBarIncluded()},

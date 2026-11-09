@@ -9,6 +9,6 @@ public final class GmsCore {
 
     /** Called where the app starts the Google sign-in. */
     public static void require() {
-        GmsCoreCheck.require("Sign in with Google needs microG RE. Install it and sign in to a Google account to get your collection and playlists back.");
+        GmsCoreCheck.require("\"Sign in with Google\" needs microG RE. Install it and sign in to a Google account, then try again.");
     }
 }

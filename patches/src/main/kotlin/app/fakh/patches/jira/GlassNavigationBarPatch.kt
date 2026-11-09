@@ -49,7 +49,7 @@ private val taller = resourcePatch {
 @Suppress("unused")
 val glassNavigationBarPatch = bytecodePatch(
     name = "Glass navigation bar",
-    description = "Makes the bottom bar a floating translucent capsule with a sliding selection pill.",
+    description = "Draws the navigation bar as a floating, translucent capsule with a sliding selection pill.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_JIRA)
