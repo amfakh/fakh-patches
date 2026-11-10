@@ -163,8 +163,25 @@ public final class GlassCapsule extends Drawable {
         }
         canvas.drawRoundRect(rect, radius, radius, fill);
         canvas.drawRoundRect(rect, radius, radius, sheen);
-        if (layout.pill(pillRect)) canvas.drawRoundRect(pillRect, Math.min(pillRect.width(), pillRect.height()) / 2, Math.min(pillRect.width(), pillRect.height()) / 2, pill);
+        boolean pillShown = layout.pill(pillRect);
+        if (pillShown) {
+            float swell = (slider.swell() - 1) / 2;
+            pillRect.inset(-pillRect.width() * swell, -pillRect.height() * swell);
+            // Past its tab at the end of the bar the spring squashes the pill against the capsule instead of leaving it.
+            pillShown = pillRect.intersect(rect);
+        }
+        if (pillShown) canvas.drawRoundRect(pillRect, Math.min(pillRect.width(), pillRect.height()) / 2, Math.min(pillRect.width(), pillRect.height()) / 2, pill);
         canvas.drawRoundRect(rect, radius, radius, edge);
+    }
+
+    /** Whether {@code x}, {@code y}, in the drawable's coordinates, were on the capsule when it was last drawn. */
+    boolean onCapsule(float x, float y) {
+        return rect.contains(x, y);
+    }
+
+    /** The middle of the pill as last drawn, along x or, on a rail, along y. */
+    float pillCenter(boolean vertical) {
+        return vertical ? pillRect.centerY() : pillRect.centerX();
     }
 
     @Override

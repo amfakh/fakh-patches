@@ -17,6 +17,7 @@ import java.util.List;
 import app.fakh.extension.shared.GlassCapsule;
 import app.fakh.extension.shared.GlassTabs;
 import app.fakh.extension.shared.SlidingPill;
+import app.fakh.extension.shared.TabSlide;
 import app.fakh.extension.shared.AppRuntime;
 
 /**
@@ -58,6 +59,8 @@ public final class NavigationBar {
 
     /** The icon composable of each tab of the portrait bar, in the order the tabs first appeared: it stays the same for a tab. */
     private static final java.util.List<Object> tabIcons = new java.util.ArrayList<>();
+    /** The click lambda of each tab, at the index of its icon in {@link #tabIcons}. */
+    private static final java.util.List<Object> tabClicks = new java.util.ArrayList<>();
     /** Whether a tab was drawn since the last time the pill was placed. */
     private static boolean drawn;
     /** Which of the tabs of the portrait bar is selected. */
@@ -109,10 +112,15 @@ public final class NavigationBar {
         if (slider == null || pillBar == null || icon == null || !glass()) return;
         int index = tabIcons.indexOf(icon);
         if (index < 0) {
-            if (tabIcons.size() >= 8) tabIcons.clear();
+            if (tabIcons.size() >= 8) {
+                tabIcons.clear();
+                tabClicks.clear();
+            }
             tabIcons.add(icon);
+            tabClicks.add(onClick);
             index = tabIcons.indexOf(icon);
         }
+        tabClicks.set(index, onClick);
         if (!drawn) pillBar.post(NavigationBar::finishDraw);
         drawn = true;
         if (selected) selectedIndex = index;
@@ -144,24 +152,72 @@ public final class NavigationBar {
      * rail they are stacked in its middle.
      */
     private static void syncPill() {
+        if (slider == null || selectedIndex < 0) return;
+        float[] span = span(selectedIndex);
+        if (span != null) slider.select(span[0], span[1]);
+    }
+
+    /** Where tab {@code index} spans along the bar, or down the rail; null before the bar is laid out. */
+    private static float[] span(int index) {
         View bar = pillBar;
         int count = tabIcons.size();
-        int index = selectedIndex;
-        if (slider == null || bar == null || count == 0 || index < 0) return;
+        if (bar == null || count == 0 || index < 0) return null;
         float density = bar.getResources().getDisplayMetrics().density;
         if (vertical) {
             float step = (RAIL_TAB_DP + RAIL_GAP_DP) * density;
             float top = (bar.getHeight() - count * step + RAIL_GAP_DP * density) / 2 + index * step;
-            slider.select(top, top + RAIL_TAB_DP * density);
-            return;
+            return new float[] {top, top + RAIL_TAB_DP * density};
         }
         float gap = 8 * density;
         float region = bar.getWidth() - bar.getPaddingLeft() - bar.getPaddingRight();
-        if (region <= 0) return;
+        if (region <= 0) return null;
         float width = (region - gap * (count - 1)) / count;
         float left = bar.getPaddingLeft() + index * (width + gap);
-        slider.select(left, left + width);
+        return new float[] {left, left + width};
     }
+
+    /** The tabs for {@link TabSlide}: spans from {@link #span}, opened through their own click lambda. */
+    private static final TabSlide.Tabs SLIDE_TABS = new TabSlide.Tabs() {
+        @Override
+        public int count() {
+            return tabIcons.size();
+        }
+
+        @Override
+        public float start(int index) {
+            float[] span = span(index);
+            return span == null ? 0 : span[0];
+        }
+
+        @Override
+        public float end(int index) {
+            float[] span = span(index);
+            return span == null ? 0 : span[1];
+        }
+
+        @Override
+        public int selected() {
+            return selectedIndex;
+        }
+
+        @Override
+        public void open(int index) {
+            Object click = index < tabClicks.size() ? tabClicks.get(index) : null;
+            if (click == null) return;
+            // A Kotlin () -> Unit, called as a tap on the tab would. R8 renames invoke() along with Kotlin's
+            // Function0, so it is the lambda's one method that takes nothing and returns an Object.
+            for (java.lang.reflect.Method invoke : click.getClass().getDeclaredMethods()) {
+                if (invoke.getParameterTypes().length != 0 || invoke.getReturnType() != Object.class
+                        || Modifier.isStatic(invoke.getModifiers())) continue;
+                try {
+                    invoke.setAccessible(true);
+                    invoke.invoke(click);
+                } catch (ReflectiveOperationException ignored) {
+                }
+                return;
+            }
+        }
+    };
 
     /** The color of the background the landscape rail draws behind itself: none while the bar is glass. */
     public static long railBackground(long color) {
@@ -371,12 +427,14 @@ public final class NavigationBar {
     private static void startPill(View bar, boolean rail) {
         if (indicator != 0) capsule.setPillColor(indicator);
         tabIcons.clear();
+        tabClicks.clear();
         drawn = false;
         selectedIndex = -1;
         vertical = rail;
         slider = capsule.slider();
         pillBar = bar;
         syncPill();
+        TabSlide.install(bar, capsule, rail, SLIDE_TABS);
     }
 
     /**

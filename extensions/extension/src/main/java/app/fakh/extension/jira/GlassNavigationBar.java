@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
 import app.fakh.extension.shared.GlassCapsule;
+import app.fakh.extension.shared.TabSlide;
 
 /**
  * Draws Jira's bottom bar (a Material 3 BottomNavigationView) as a floating, translucent capsule with the shared
@@ -119,6 +120,7 @@ public final class GlassNavigationBar {
             int sides = Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density);
             bar.setPadding(bar.getPaddingLeft() + sides, bar.getPaddingTop(), bar.getPaddingRight() + sides, bar.getPaddingBottom());
             bar.setBackground(glass);
+            if (tabs() != null) TabSlide.install(bar, glass, false, TabSlide.children(tabs(), bar));
         }
 
         /** The row of tabs, which is the bar's first child. */

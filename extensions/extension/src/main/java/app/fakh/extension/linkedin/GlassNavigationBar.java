@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import app.fakh.extension.shared.GlassCapsule;
 import app.fakh.extension.shared.GlassTabs;
+import app.fakh.extension.shared.TabSlide;
 
 /** Draws LinkedIn's bottom bar as a floating, translucent capsule, using the shared {@link GlassCapsule}. */
 final class GlassNavigationBar {
@@ -43,6 +44,7 @@ final class GlassNavigationBar {
         capsule.setAccent(selection.accent);
         selection.glass = capsule;
         bar.setBackground(capsule);
+        TabSlide.install(bar, capsule, false, TabSlide.children(tabs, tabs));
         // On a light theme the app paints both backgrounds again after the bar is shown, so the capsule goes back.
         bar.getViewTreeObserver().addOnPreDrawListener(() -> {
             if (bar.getBackground() != capsule) bar.setBackground(capsule);
