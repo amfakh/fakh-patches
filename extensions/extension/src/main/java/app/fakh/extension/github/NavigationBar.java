@@ -29,6 +29,8 @@ import app.fakh.extension.shared.AppRuntime;
 public final class NavigationBar {
     public static final String GLASS = "fakh_glass_navbar";
     public static final String HIDE_LABELS = "fakh_hide_nav_labels";
+    /** The Liquid Glass switch, on until turned off: the settings row shows it on before it is ever saved. */
+    public static final String LIQUID = "fakh_liquid_glass";
     private static final float LANDSCAPE_HEIGHT_DP = 272f;
     public static final String NAV_RIGHT = "fakh_nav_right";
     /** Prefix of the switch that hides each tab, which {@link ChoiceSheets} sets from the tab sheet. */
@@ -70,8 +72,6 @@ public final class NavigationBar {
     private static View pillBar;
     /** Whether the bar is the landscape rail, whose pill slides from top to bottom. */
     private static boolean vertical;
-    /** The color of the app's own indicator, which the pill takes; 0 until the portrait bar is drawn. */
-    private static int indicator;
 
     /** The color of the page behind the bar, which the capsule takes so it blends in; 0 until it is read. */
     private static int pageColor;
@@ -137,14 +137,21 @@ public final class NavigationBar {
         syncPill();
     }
 
+    /**
+     * Injected before GitHub copies a tab label's text style, whose color would win over the label's content color.
+     * On the glass bar the copy takes an unspecified color instead, so the label shows its content color: the accent
+     * on the selected tab and gray on the others, like the icons.
+     *
+     * @param mask which of the copy's arguments keep the style's own value; bit 0 is the color
+     * @return the mask, with the color taken from the arguments while the bar is glass
+     */
+    public static int labelStyleMask(int mask) {
+        return glass() ? mask & ~1 : mask;
+    }
+
     /** The indicator the app draws behind the selected tab: none where the capsule draws its own pill. */
     public static long indicatorColor(long color) {
-        if (slider == null || !glass()) return color;
-        if (color != 0L && (int) (color >>> 32) != indicator) {
-            indicator = (int) (color >>> 32);
-            if (capsule != null) capsule.setPillColor(indicator);
-        }
-        return 0L;
+        return slider == null || !glass() ? color : 0L;
     }
 
     /**
@@ -278,6 +285,7 @@ public final class NavigationBar {
             }
         }, FILL_ALPHA);
         bar.setBackground(capsule);
+        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, true));
         startPill(bar, false);
         matchPage(activity);
         // The bar floats over the screen like a glass bar should: the screen above it reaches down behind it.
@@ -418,14 +426,19 @@ public final class NavigationBar {
             }
         }, FILL_ALPHA);
         bar.setBackground(capsule);
+        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, true));
         startPill(bar, true);
         bar.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> syncPill());
         matchPage(activity);
     }
 
-    /** Gives a new bar its pill, which takes the color of the app's own indicator once it is known. */
+    /**
+     * Gives a new bar its pill, a wash of the accent as on the other glass bars: the wallpaper's with Material You,
+     * GitHub blue without. The app's own indicator is a pale container color that vanishes on the light capsule.
+     */
     private static void startPill(View bar, boolean rail) {
-        if (indicator != 0) capsule.setPillColor(indicator);
+        capsule.setAccent(app.fakh.extension.shared.MaterialYou.accent(bar.getContext(),
+                MaterialYou.isMaterialYou(bar.getContext()), 0xFF0969DA, 0xFF4493F8));
         tabIcons.clear();
         tabClicks.clear();
         drawn = false;

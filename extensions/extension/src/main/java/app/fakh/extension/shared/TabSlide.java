@@ -181,6 +181,8 @@ public final class TabSlide {
 
     /** Follows {@code event} and answers whether it is kept from the app, which {@code inner} passes touches to. */
     private boolean onTouch(MotionEvent event, Window.Callback inner) {
+        // Any touch on the screen may move what's behind the bar, so a Liquid Glass backdrop follows it for a while.
+        capsule.stir();
         int action = event.getActionMasked();
         float along = vertical ? event.getRawY() : event.getRawX();
         float across = vertical ? event.getRawX() : event.getRawY();

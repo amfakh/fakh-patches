@@ -44,6 +44,7 @@ final class GlassNavigationBar {
         capsule.setAccent(selection.accent);
         selection.glass = capsule;
         bar.setBackground(capsule);
+        capsule.setLiquid(Settings.liquidGlass());
         TabSlide.install(bar, capsule, false, TabSlide.children(tabs, tabs));
         // On a light theme the app paints both backgrounds again after the bar is shown, so the capsule goes back.
         bar.getViewTreeObserver().addOnPreDrawListener(() -> {

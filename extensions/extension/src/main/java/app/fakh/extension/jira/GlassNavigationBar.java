@@ -120,6 +120,7 @@ public final class GlassNavigationBar {
             int sides = Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density);
             bar.setPadding(bar.getPaddingLeft() + sides, bar.getPaddingTop(), bar.getPaddingRight() + sides, bar.getPaddingBottom());
             bar.setBackground(glass);
+            glass.setLiquid(MaterialYou.liquidGlass(bar.getContext()));
             if (tabs() != null) TabSlide.install(bar, glass, false, TabSlide.children(tabs(), bar));
         }
 

@@ -242,6 +242,8 @@ public final class SettingsActivity extends Activity {
             if (Settings.isGlassNavigationBarIncluded()) {
                 navigation.toggle(Settings.GLASS_NAVIGATION_BAR, true, "Glass navigation bar",
                         "A floating, translucent navigation bar.");
+                navigation.toggle(Settings.LIQUID_GLASS, true, "Liquid Glass",
+                        "Blurs what's behind the bar and bends it at the edges. Turn it off on a slower phone.");
             }
             if (Settings.isNavigationBarIncluded()) {
                 navigation.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels", "Text under the navigation bar icons.")

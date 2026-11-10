@@ -428,7 +428,7 @@ public final class MaterialYou {
         return null;
     }
 
-    private static boolean isMaterialYou(Context context) {
+    static boolean isMaterialYou(Context context) {
         if (materialYou == null) materialYou = prefs(context).getBoolean(MATERIAL_YOU, true);
         return materialYou;
     }

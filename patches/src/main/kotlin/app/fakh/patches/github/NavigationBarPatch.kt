@@ -7,8 +7,10 @@ import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
+import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
@@ -19,6 +21,8 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.dexlib2.iface.reference.TypeReference
+import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
+import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val NAVIGATION_BAR = "Lapp/fakh/extension/github/NavigationBar;"
 
@@ -253,7 +257,9 @@ val glassNavigationBarPatch = bytecodePatch(
                 move-result-wide v$register
             """,
         )
+        tintLabels(colors)
         addSwitch("fakh_glass_navbar", "Glass navigation bar", false)
+        addSwitch("fakh_liquid_glass", "Liquid Glass", true)
     }
 }
 
@@ -269,4 +275,87 @@ val navigationBarRightPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute { addSwitch("fakh_nav_position", "Landscape navigation bar position", null) }
+}
+
+/**
+ * Gives the tab labels the colors of the tab icons while the bar is glass: the accent on the selected tab and gray on
+ * the others. Material 3 hands the label those colors as its content color, but the label's text style still carries
+ * the color of GitHub's theme, which wins over the content color. The label's composable is the one that reads the
+ * item colors' text fields (the 2nd and 5th colors the constructor stores, in Material 3's order) and no icon field;
+ * just before that read it copies the style. The copy now gets the same text color the read picks, through a method
+ * added to the item colors, and [NAVIGATION_BAR]'s labelStyleMask lets it use that color only while the bar is glass.
+ */
+private fun BytecodePatchContext.tintLabels(colors: String) {
+    val stored = mutableClassDefBy(colors).methods.first { it.name == "<init>" }.implementation!!.instructions
+        .filter { it.opcode == Opcode.IPUT_WIDE }
+        .sortedBy { (it as TwoRegisterInstruction).registerA }
+        .map { ((it as ReferenceInstruction).reference as FieldReference).name }
+    if (stored.size < 5) throw PatchException("Item colors have ${stored.size} color fields")
+    val texts = setOf(stored[1], stored[4])
+    val icons = setOf(stored[0], stored[3])
+    val targets = mutableListOf<Pair<String, Method>>()
+    classDefForEach { classDef ->
+        if (classDef.type == colors) return@classDefForEach
+        for (method in classDef.methods) {
+            val fields = method.implementation?.instructions?.mapNotNull {
+                ((it as? ReferenceInstruction)?.reference as? FieldReference)?.takeIf { field -> field.definingClass == colors }?.name
+            } ?: continue
+            if (fields.any { it in texts } && fields.none { it in icons }) targets += classDef.type to method
+        }
+    }
+    if (targets.size != 1) throw PatchException("Tab label composable not found: ${targets.map { it.first }}")
+    val (type, found) = targets.single()
+    val label = mutableClassDefBy(type).methods.first {
+        it.name == found.name && it.parameterTypes == found.parameterTypes && it.returnType == found.returnType
+    }
+    val instructions = label.implementation!!.instructions.toList()
+    val read = instructions.indexOfFirst {
+        it.opcode == Opcode.IGET_WIDE && ((it as ReferenceInstruction).reference as FieldReference).let { field ->
+            field.definingClass == colors && field.name in texts
+        }
+    }
+    // The style copy: a static call that takes a style and returns one of the same type.
+    val copy = (read - 1 downTo 0).firstOrNull { index ->
+        val reference = (instructions[index] as? ReferenceInstruction)?.reference as? MethodReference
+        instructions[index].opcode == Opcode.INVOKE_STATIC_RANGE && reference != null &&
+            reference.parameterTypes.firstOrNull()?.toString() == reference.returnType &&
+            reference.parameterTypes.getOrNull(1)?.toString() == "J"
+    } ?: throw PatchException("Tab label style copy not found")
+    val range = instructions[copy] as RegisterRangeInstruction
+    val color = range.startRegister + 1
+    val mask = range.startRegister + range.registerCount - 1
+    // The read sits right after the branch on whether the tab is selected, which reads one text field when it is
+    // and the other when it isn't. A method added to the item colors makes the same pick for the copy.
+    val branch = instructions[read - 1]
+    if (branch.opcode != Opcode.IF_EQZ) throw PatchException("Tab label color branch not found")
+    val selected = (branch as OneRegisterInstruction).registerA
+    val owner = (instructions[read] as TwoRegisterInstruction).registerB
+    val selectedText = ((instructions[read] as ReferenceInstruction).reference as FieldReference).name
+    val otherText = texts.single { it != selectedText }
+    val holder = mutableClassDefBy(colors)
+    holder.methods.add(
+        ImmutableMethod(colors, "fakhLabelColor", listOf(ImmutableMethodParameter("Z", null, null)), "J",
+            AccessFlags.PUBLIC.value or AccessFlags.FINAL.value, null, null, MutableMethodImplementation(4)).toMutable().apply {
+            addInstructions(
+                0,
+                """
+                    if-eqz p1, :unselected
+                    iget-wide v0, p0, $colors->$selectedText:J
+                    return-wide v0
+                    :unselected
+                    iget-wide v0, p0, $colors->$otherText:J
+                    return-wide v0
+                """,
+            )
+        },
+    )
+    label.addInstructions(
+        copy,
+        """
+            invoke-virtual { v$owner, v$selected }, $colors->fakhLabelColor(Z)J
+            move-result-wide v$color
+            invoke-static/range { v$mask .. v$mask }, $NAVIGATION_BAR->labelStyleMask(I)I
+            move-result v$mask
+        """,
+    )
 }
