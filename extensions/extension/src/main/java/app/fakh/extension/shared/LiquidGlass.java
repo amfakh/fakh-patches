@@ -29,6 +29,8 @@ final class LiquidGlass {
     /** How much the middle of the lens magnifies, and how much more its rim bends the backdrop. */
     private static final float CENTER_MAGNIFY = 0.10f;
     private static final float RIM_BEND = 0.14f;
+    /** How deep the lens's curved edge reaches in, as a share of the pill's half height; the middle stays flat. */
+    private static final float LENS_BAND = 0.6f;
     /** How deep the capsule's mirrored rim reaches in, as a share of its half height. */
     private static final float RIM_BAND = 0.42f;
 
@@ -46,8 +48,9 @@ final class LiquidGlass {
             + "  float d = length(max(q, float2(0.0))) + min(max(q.x, q.y), 0.0) - radius;\n"
             + "  float inside = clamp(0.5 - d, 0.0, 1.0);\n"
             + "  if (inside <= 0.0) return half4(0.0);\n"
-            + "  float depth = clamp(-d / max(1.0, min(hs.x, hs.y)), 0.0, 1.0);\n"
-            + "  float bend = (1.0 - depth) * (1.0 - depth);\n"
+            // A quarter circle across the outer band: flat and clear inside it, bending ever harder toward the edge.
+            + "  float edge = 1.0 - clamp(-d / max(1.0, " + LENS_BAND + " * min(hs.x, hs.y)), 0.0, 1.0);\n"
+            + "  float bend = 1.0 - sqrt(1.0 - edge * edge);\n"
             + "  float2 source = mid + (p - mid) * (1.0 - center - rim * bend);\n"
             + "  return content.eval(source) * inside;\n"
             + "}\n";
