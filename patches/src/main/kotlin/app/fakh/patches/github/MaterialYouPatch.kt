@@ -232,7 +232,7 @@ private fun BytecodePatchContext.composePalettes(holders: Collection<MutableClas
 }
 
 /** AppCompatActivity, which R8 renamed: the class overriding both attachBaseContext and getMenuInflater. */
-private fun BytecodePatchContext.appCompatActivity(): MutableClass {
+internal fun BytecodePatchContext.appCompatActivity(): MutableClass {
     var found: MutableClass? = null
     classDefForEach { classDef ->
         if (classDef.methods.none { it.name == "attachBaseContext" } ||

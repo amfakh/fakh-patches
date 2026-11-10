@@ -1,11 +1,13 @@
 package app.fakh.extension.github;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.RectF;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -229,6 +231,50 @@ public final class NavigationBar {
     /** The color of the background the landscape rail draws behind itself: none while the bar is glass. */
     public static long railBackground(long color) {
         return glass() ? 0L : color;
+    }
+
+    /** Whether the activities are watched for their bottom bar. */
+    private static boolean watching;
+
+    /**
+     * Injected at the start of every activity's attachBaseContext by the glass and landscape position patches: from
+     * then on each activity that comes to the front has its bottom bar shaped by {@link #install}.
+     *
+     * @param base the activity's base context, which reaches the application
+     */
+    public static void watch(Context base) {
+        if (watching || !(base.getApplicationContext() instanceof Application)) return;
+        watching = true;
+        ((Application) base.getApplicationContext()).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
+            @Override
+            public void onActivityResumed(Activity activity) {
+                install(activity);
+            }
+
+            @Override
+            public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+            }
+
+            @Override
+            public void onActivityStarted(Activity activity) {
+            }
+
+            @Override
+            public void onActivityPaused(Activity activity) {
+            }
+
+            @Override
+            public void onActivityStopped(Activity activity) {
+            }
+
+            @Override
+            public void onActivitySaveInstanceState(Activity activity, Bundle outState) {
+            }
+
+            @Override
+            public void onActivityDestroyed(Activity activity) {
+            }
+        });
     }
 
     /** Called when an activity comes to the front: gives its bottom bar the capsule. */

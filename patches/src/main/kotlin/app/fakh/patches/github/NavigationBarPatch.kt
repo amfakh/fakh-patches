@@ -258,6 +258,7 @@ val glassNavigationBarPatch = bytecodePatch(
             """,
         )
         tintLabels(colors)
+        watchActivities()
         addSwitch("fakh_glass_navbar", "Glass navigation bar", false)
         addSwitch("fakh_liquid_glass", "Liquid Glass", true)
     }
@@ -274,7 +275,10 @@ val navigationBarRightPatch = bytecodePatch(
     dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
-    execute { addSwitch("fakh_nav_position", "Landscape navigation bar position", null) }
+    execute {
+        watchActivities()
+        addSwitch("fakh_nav_position", "Landscape navigation bar position", null)
+    }
 }
 
 /**
@@ -357,5 +361,16 @@ private fun BytecodePatchContext.tintLabels(colors: String) {
             invoke-static/range { v$mask .. v$mask }, $NAVIGATION_BAR->labelStyleMask(I)I
             move-result v$mask
         """,
+    )
+}
+
+/**
+ * Has every activity's bottom bar shaped once it comes to the front, through [NAVIGATION_BAR]'s watch at the start of
+ * attachBaseContext. Both the glass and the landscape position patches need it, and neither leans on Material You.
+ */
+private fun BytecodePatchContext.watchActivities() {
+    appCompatActivity().methods.first { it.name == "attachBaseContext" }.addInstructions(
+        0,
+        "invoke-static/range { p1 .. p1 }, $NAVIGATION_BAR->watch(Landroid/content/Context;)V",
     )
 }

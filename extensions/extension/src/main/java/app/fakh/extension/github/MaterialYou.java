@@ -380,7 +380,6 @@ public final class MaterialYou {
 
             @Override
             public void onActivityResumed(Activity activity) {
-                NavigationBar.install(activity);
                 Boolean black = CREATED_BLACK.get(activity);
                 if (black != null && black != isAmoled(activity)) activity.recreate();
             }
