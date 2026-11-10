@@ -1,3 +1,18 @@
+## [1.17.0](https://github.com/amfakh/fakh-patches/compare/v1.16.0...v1.17.0) (2026-11-10)
+
+### New Features
+
+* **LinkedIn, Jira, GitHub:** slide a finger along the glass navigation bar to move the pill across the tabs, with a haptic tick for each tab, and let go to open the tab under it ([9ac9f4c](https://github.com/amfakh/fakh-patches/commit/9ac9f4c18b5a16121817e62fa92a48aad2624a9e))
+* **LinkedIn, Jira, GitHub:** the selection pill springs to the new tab and swells a little as it moves ([9ac9f4c](https://github.com/amfakh/fakh-patches/commit/9ac9f4c18b5a16121817e62fa92a48aad2624a9e))
+* **LinkedIn, Jira, GitHub:** a Liquid Glass switch, on by default, blurs what's behind the glass navigation bar and bends it at the edges (Android 12 and newer), with a raised pill and a white rim ([47b7312](https://github.com/amfakh/fakh-patches/commit/47b73120ba3cdaa4275ed4d0069b48424ec3d62a))
+* **GitHub:** the glass navigation bar's pill takes your accent color and the tab labels follow the icons, accent on the selected tab and gray on the others ([47b7312](https://github.com/amfakh/fakh-patches/commit/47b73120ba3cdaa4275ed4d0069b48424ec3d62a))
+* **LinkedIn, Jira, GitHub:** without Material You the glass navigation bar's pill is neutral gray instead of following the wallpaper ([ecd6f16](https://github.com/amfakh/fakh-patches/commit/ecd6f165eac3c07c05184ce5dbd043d3dd9e5c75))
+
+### Bug Fixes
+
+* **GitHub:** stop the glass navigation bar crashing the app on screens with images, such as Explore ([bbf835f](https://github.com/amfakh/fakh-patches/commit/bbf835f422adfc7cb39374e619a95c6a042335f0))
+* **GitHub:** the glass navigation bar and the landscape navigation bar position work without the Material You patch ([aafb6ec](https://github.com/amfakh/fakh-patches/commit/aafb6ec78a793201be3020e25eee66a1cac6b89f))
+
 ## [1.16.0](https://github.com/amfakh/fakh-patches/compare/v1.15.4...v1.16.0) (2026-11-09)
 
 ### New Features
