@@ -156,7 +156,7 @@ val navigationBarPatch = bytecodePatch(
 @Suppress("unused")
 val glassNavigationBarPatch = bytecodePatch(
     name = "Glass navigation bar",
-    description = "Draws the navigation bar as a floating, translucent capsule with a sliding selection pill. The switch is in Fakh Patches.",
+    description = "Draws the navigation bar as a floating, translucent capsule with a sliding selection pill. Slide a finger along it to switch tabs. Liquid Glass blurs what's behind it. The switch is in Fakh Patches.",
     default = false,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
