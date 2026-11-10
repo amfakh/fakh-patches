@@ -427,8 +427,14 @@ public final class MaterialYou {
         return null;
     }
 
+    /** Whether the Material You patch is in; the patch makes this return true. */
+    static boolean isMaterialYouIncluded() {
+        return false;
+    }
+
+    /** Whether Material You is patched in and its switch is on. Without the patch the glass bar's pill stays neutral. */
     static boolean isMaterialYou(Context context) {
-        if (materialYou == null) materialYou = prefs(context).getBoolean(MATERIAL_YOU, true);
+        if (materialYou == null) materialYou = isMaterialYouIncluded() && prefs(context).getBoolean(MATERIAL_YOU, true);
         return materialYou;
     }
 

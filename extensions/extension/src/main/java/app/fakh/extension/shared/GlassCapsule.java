@@ -22,7 +22,8 @@ import android.widget.TextView;
 /**
  * A floating, translucent capsule for the bottom bar of any app, in the style of Morphe's glass navigation bar. The
  * app supplies where the capsule and its selection pill sit through {@link Layout}, and tells {@link #slider()}
- * which tab is selected so the pill slides to it. The pill is a pale wash of the app's accent.
+ * which tab is selected so the pill slides to it. The pill is a pale wash of the accent from {@link #setAccent}, or
+ * neutral gray without one.
  */
 public final class GlassCapsule extends Drawable {
     private static final float DEFAULT_FILL_ALPHA = 0.85f;

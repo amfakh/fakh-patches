@@ -130,9 +130,17 @@ public final class MaterialYou {
         return pack(0xFF000000 | (context.getColor(DARK_SURFACES.get(DARK_CANVAS)) & 0xFFFFFF));
     }
 
-    /** Whether the Material You switch is on. Read when the palettes are built, so a change applies after a restart. */
+    /** Whether the Material You patch is in; the patch makes this return true. */
+    static boolean isMaterialYouIncluded() {
+        return false;
+    }
+
+    /**
+     * Whether Material You is patched in and its switch is on. Read when the palettes are built, so a change applies
+     * after a restart. Without the patch the glass bar's pill stays neutral.
+     */
     static boolean materialYou(Context context) {
-        return prefs(context).getBoolean(MATERIAL_YOU, true);
+        return isMaterialYouIncluded() && prefs(context).getBoolean(MATERIAL_YOU, true);
     }
 
     /** Whether the pitch black switch is on. Read when the palettes are built, so a change applies after a restart. */

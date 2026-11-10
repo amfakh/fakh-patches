@@ -479,12 +479,13 @@ public final class NavigationBar {
     }
 
     /**
-     * Gives a new bar its pill, a wash of the accent as on the other glass bars: the wallpaper's with Material You,
-     * GitHub blue without. The app's own indicator is a pale container color that vanishes on the light capsule.
+     * Gives a new bar its pill, as on the other glass bars: a wash of the wallpaper's accent with Material You, and
+     * neutral gray without it. The app's own indicator is a pale container color that vanishes on the light capsule.
      */
     private static void startPill(View bar, boolean rail) {
-        capsule.setAccent(app.fakh.extension.shared.MaterialYou.accent(bar.getContext(),
-                MaterialYou.isMaterialYou(bar.getContext()), 0xFF0969DA, 0xFF4493F8));
+        if (app.fakh.extension.shared.MaterialYou.wallpaper(MaterialYou.isMaterialYou(bar.getContext()))) {
+            capsule.setAccent(app.fakh.extension.shared.MaterialYou.accent(bar.getContext(), true, 0, 0));
+        }
         tabIcons.clear();
         tabClicks.clear();
         drawn = false;

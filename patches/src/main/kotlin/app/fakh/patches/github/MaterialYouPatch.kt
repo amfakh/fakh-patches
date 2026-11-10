@@ -268,6 +268,14 @@ val materialYouPatch = bytecodePatch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        // The extension's accent follows the wallpaper only where this patch is in.
+        mutableClassDefBy(EXTENSION).methods.first { it.name == "isMaterialYouIncluded" }.addInstructions(
+            0,
+            """
+                const/4 v0, 0x1
+                return v0
+            """,
+        )
         // Compose: rewrite the light and dark scheme together once their holder has built them, before the theme
         // or anything derived reads them.
         val holders = composeSchemeHolders()

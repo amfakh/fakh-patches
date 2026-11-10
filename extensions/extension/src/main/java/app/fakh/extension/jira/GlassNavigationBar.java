@@ -106,7 +106,8 @@ public final class GlassNavigationBar {
         /** Replaces the bar's background with the capsule. */
         void attach() {
             glass = new GlassCapsule(surface(bar.getContext()), density, this, FILL_ALPHA);
-            glass.setAccent(accent);
+            // The pill takes the accent's wash with Material You, and stays neutral gray without it.
+            if (app.fakh.extension.shared.MaterialYou.wallpaper(MaterialYou.materialYou(bar.getContext()))) glass.setAccent(accent);
             GlassCapsule.clearSystemBar(bar.getContext());
             bar.setElevation(0);
             // The screen animates layout changes of its children (animateLayoutChanges), so every time the library
