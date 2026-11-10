@@ -1,3 +1,9 @@
+## [1.17.2](https://github.com/amfakh/fakh-patches/compare/v1.17.1...v1.17.2) (2026-11-11)
+
+### New Features
+
+* **LinkedIn:** add Always show navigation bar, a switch in Fakh Patches (off by default) that keeps the navigation bar on screen while you scroll instead of sliding it away ([965abd4](https://github.com/amfakh/fakh-patches/commit/965abd429c05c592ba9b8c883be77336af29424c))
+
 ## [1.17.1](https://github.com/amfakh/fakh-patches/compare/v1.17.0...v1.17.1) (2026-11-11)
 
 ### New Features

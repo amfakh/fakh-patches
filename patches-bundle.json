@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-10T17:02:50",
-  "description": "## [1.17.1](https://github.com/amfakh/fakh-patches/compare/v1.17.0...v1.17.1) (2026-11-11)\n\n### New Features\n\n* **LinkedIn, Jira, GitHub:** the glass navigation bar turns solid when Reduce transparency and blur or High contrast fonts is on in the phone's accessibility settings ([a611962](https://github.com/amfakh/fakh-patches/commit/a61196277cd8a7f2cd33ee7ad742442619a59292))\n* **LinkedIn, Jira, GitHub:** with Liquid Glass, the pill stays clear in the middle and bends what's behind it at its edges, like a curved piece of glass ([d9f5be5](https://github.com/amfakh/fakh-patches/commit/d9f5be509a0387e900d0676bbb2e8be5be97350a))\n",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.17.1/patches-1.17.1.mpp",
+  "created_at": "2026-11-10T17:34:28",
+  "description": "## [1.17.2](https://github.com/amfakh/fakh-patches/compare/v1.17.1...v1.17.2) (2026-11-11)\n\n### New Features\n\n* **LinkedIn:** add Always show navigation bar, a switch in Fakh Patches (off by default) that keeps the navigation bar on screen while you scroll instead of sliding it away ([965abd4](https://github.com/amfakh/fakh-patches/commit/965abd429c05c592ba9b8c883be77336af29424c))\n",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.17.2/patches-1.17.2.mpp",
   "signature_download_url": "",
-  "version": "1.17.1",
+  "version": "1.17.2",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }
