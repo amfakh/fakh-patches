@@ -1,6 +1,7 @@
 package app.fakh.extension.shared;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.graphics.Canvas;
@@ -15,6 +16,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -174,6 +176,7 @@ public final class GlassCapsule extends Drawable {
             }
         }
         View bar = getCallback() instanceof View ? (View) getCallback() : null;
+        boolean solid = bar != null && solid(bar.getContext());
         if (glass != null && bar != null && bar != watched) {
             watched = bar;
             // A screen loads what's behind the bar for a moment after it opens.
@@ -182,14 +185,17 @@ public final class GlassCapsule extends Drawable {
             // is drawn again whenever one of them changed; from the pre-draw pass that lands in the frame being drawn.
             bar.getViewTreeObserver().addOnPreDrawListener(() -> {
                 if (glass != null && bar.getBackground() == this && SystemClock.uptimeMillis() < stirredUntil
-                        && LiquidGlass.behindChanged(bar)) {
+                        && !solid(bar.getContext()) && LiquidGlass.behindChanged(bar)) {
                     bar.invalidate();
                 }
                 return true;
             });
         }
-        boolean blurred = glass != null && bar != null && glass.backdrop(canvas, bar, base, rect, radius);
-        if (blurred) {
+        boolean blurred = glass != null && bar != null && !solid && glass.backdrop(canvas, bar, base, rect, radius);
+        if (solid) {
+            tint.setColor(base);
+            canvas.drawRoundRect(rect, radius, radius, tint);
+        } else if (blurred) {
             glass.rim(canvas, rect, radius, getBounds().width(), getBounds().height());
             // Over the blur the tint is lighter, so what's behind shows through it.
             tint.setColor(Color.argb(light ? 0xA6 : 0x70, Color.red(base), Color.green(base), Color.blue(base)));
@@ -212,6 +218,16 @@ public final class GlassCapsule extends Drawable {
             if (glass != null) bubble(canvas, corner);
         }
         canvas.drawRoundRect(rect, radius, radius, edge);
+    }
+
+    /**
+     * Whether the phone asks for solid surfaces, through Samsung's Reduce transparency and blur or High contrast
+     * fonts: the capsule is then opaque, with nothing of the screen behind it showing through.
+     */
+    private static boolean solid(Context context) {
+        ContentResolver resolver = context.getContentResolver();
+        return Settings.Global.getInt(resolver, "accessibility_reduce_transparency", 0) == 1
+                || Settings.Secure.getInt(resolver, "high_text_contrast_enabled", 0) == 1;
     }
 
     /**
