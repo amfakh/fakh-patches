@@ -394,14 +394,21 @@ public final class NavigationBar {
                 if (host.getWidth() == 0 || host.getHeight() == 0) return;
                 host.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 host.postDelayed(() -> {
-                    android.graphics.Bitmap bitmap = android.graphics.Bitmap.createBitmap(
-                            host.getWidth(), host.getHeight(), android.graphics.Bitmap.Config.ARGB_8888);
-                    host.draw(new android.graphics.Canvas(bitmap));
-                    int color = bitmap.getPixel(2, bitmap.getHeight() / 2);
-                    if (Color.alpha(color) == 255 && capsule != null) {
-                        pageColor = color;
-                        capsule.setColor(color);
-                    }
+                    if (!host.isAttachedToWindow()) return;
+                    // One pixel copied from what the window shows: drawing the page into a software canvas throws
+                    // on the hardware bitmaps some pages hold, such as avatars on Explore.
+                    int[] place = new int[2];
+                    host.getLocationInWindow(place);
+                    int x = place[0] + 2;
+                    int y = place[1] + host.getHeight() / 2;
+                    android.graphics.Bitmap pixel = android.graphics.Bitmap.createBitmap(1, 1, android.graphics.Bitmap.Config.ARGB_8888);
+                    android.view.PixelCopy.request(activity.getWindow(), new android.graphics.Rect(x, y, x + 1, y + 1), pixel, result -> {
+                        int color = pixel.getPixel(0, 0);
+                        if (result == android.view.PixelCopy.SUCCESS && Color.alpha(color) == 255 && capsule != null) {
+                            pageColor = color;
+                            capsule.setColor(color);
+                        }
+                    }, host.getHandler());
                 }, 600);
             }
         });
