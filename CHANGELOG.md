@@ -1,3 +1,10 @@
+## [1.17.1](https://github.com/amfakh/fakh-patches/compare/v1.17.0...v1.17.1) (2026-11-11)
+
+### New Features
+
+* **LinkedIn, Jira, GitHub:** the glass navigation bar turns solid when Reduce transparency and blur or High contrast fonts is on in the phone's accessibility settings ([a611962](https://github.com/amfakh/fakh-patches/commit/a61196277cd8a7f2cd33ee7ad742442619a59292))
+* **LinkedIn, Jira, GitHub:** with Liquid Glass, the pill stays clear in the middle and bends what's behind it at its edges, like a curved piece of glass ([d9f5be5](https://github.com/amfakh/fakh-patches/commit/d9f5be509a0387e900d0676bbb2e8be5be97350a))
+
 ## [1.17.0](https://github.com/amfakh/fakh-patches/compare/v1.16.0...v1.17.0) (2026-11-10)
 
 ### New Features
