@@ -1,3 +1,15 @@
+## [1.18.0](https://github.com/amfakh/fakh-patches/compare/v1.17.2...v1.18.0) (2026-11-11)
+
+### New Features
+
+* **LinkedIn, Jira, GitHub:** the glass navigation bar's pill covers the whole tab, icon and label, a little wider than the tab with a thin rim of the capsule all around ([40840e4](https://github.com/amfakh/fakh-patches/commit/40840e4d585e51e7584606a723dbda1dca857d26))
+* **Jira, GitHub:** the glass navigation bar is 56dp tall, with the labels closer to their icons ([40840e4](https://github.com/amfakh/fakh-patches/commit/40840e4d585e51e7584606a723dbda1dca857d26))
+* **LinkedIn, Jira, GitHub:** pressing a tab of the glass navigation bar shows no ripple, as the pill already marks it ([457b72e](https://github.com/amfakh/fakh-patches/commit/457b72e6be3944d28391df231d8df0bfbc28987b))
+
+### Bug Fixes
+
+* **LinkedIn, Jira, GitHub:** the glass navigation bar's pill runs a little past the new tab and swells as it moves, instead of stopping short ([f96a28f](https://github.com/amfakh/fakh-patches/commit/f96a28ff3bdd6b901df28b07225c38040fd67e02))
+
 ## [1.17.2](https://github.com/amfakh/fakh-patches/compare/v1.17.1...v1.17.2) (2026-11-11)
 
 ### New Features
