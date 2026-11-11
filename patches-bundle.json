@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-11T01:52:22",
-  "description": "## [1.18.0](https://github.com/amfakh/fakh-patches/compare/v1.17.2...v1.18.0) (2026-11-11)\n\n### New Features\n\n* **LinkedIn, Jira, GitHub:** the glass navigation bar's pill covers the whole tab, icon and label, a little wider than the tab with a thin rim of the capsule all around ([40840e4](https://github.com/amfakh/fakh-patches/commit/40840e4d585e51e7584606a723dbda1dca857d26))\n* **Jira, GitHub:** the glass navigation bar is 56dp tall, with the labels closer to their icons ([40840e4](https://github.com/amfakh/fakh-patches/commit/40840e4d585e51e7584606a723dbda1dca857d26))\n* **LinkedIn, Jira, GitHub:** pressing a tab of the glass navigation bar shows no ripple, as the pill already marks it ([457b72e](https://github.com/amfakh/fakh-patches/commit/457b72e6be3944d28391df231d8df0bfbc28987b))\n\n### Bug Fixes\n\n* **LinkedIn, Jira, GitHub:** the glass navigation bar's pill runs a little past the new tab and swells as it moves, instead of stopping short ([f96a28f](https://github.com/amfakh/fakh-patches/commit/f96a28ff3bdd6b901df28b07225c38040fd67e02))\n",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.18.0/patches-1.18.0.mpp",
+  "created_at": "2026-11-11T02:56:30",
+  "description": "## [1.18.1](https://github.com/amfakh/fakh-patches/compare/v1.18.0...v1.18.1) (2026-11-11)\n\n### Performance Improvements\n\n* **LinkedIn, GitHub, IDN, Smart Life, Tuya Smart, BARDI Smart Home, KOMPAS.com:** patching takes up to 3 times less time, and the patched app comes out the same as before ([c130002](https://github.com/amfakh/fakh-patches/commit/c1300022e1647863a3c5ee7b3a61f3f8e342906f))\n* **Jira:** adding the Fakh Patches rows to Settings no longer reads the code of every class, so patching is faster ([c130002](https://github.com/amfakh/fakh-patches/commit/c1300022e1647863a3c5ee7b3a61f3f8e342906f))\n",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.18.1/patches-1.18.1.mpp",
   "signature_download_url": "",
-  "version": "1.18.0",
+  "version": "1.18.1",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }

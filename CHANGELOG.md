@@ -1,3 +1,10 @@
+## [1.18.1](https://github.com/amfakh/fakh-patches/compare/v1.18.0...v1.18.1) (2026-11-11)
+
+### Performance Improvements
+
+* **LinkedIn, GitHub, IDN, Smart Life, Tuya Smart, BARDI Smart Home, KOMPAS.com:** patching takes up to 3 times less time, and the patched app comes out the same as before ([c130002](https://github.com/amfakh/fakh-patches/commit/c1300022e1647863a3c5ee7b3a61f3f8e342906f))
+* **Jira:** adding the Fakh Patches rows to Settings no longer reads the code of every class, so patching is faster ([c130002](https://github.com/amfakh/fakh-patches/commit/c1300022e1647863a3c5ee7b3a61f3f8e342906f))
+
 ## [1.18.0](https://github.com/amfakh/fakh-patches/compare/v1.17.2...v1.18.0) (2026-11-11)
 
 ### New Features
