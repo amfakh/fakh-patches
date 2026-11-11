@@ -124,13 +124,15 @@ public final class SlidingPill {
         swellFrom = swell;
         progress = 0;
         elapsed = 0;
-        // With the phone's animations off the animator ends at once and the pill lands in one frame.
+        // The animator runs linearly, as the clock of the spring: its interpolated fraction would already be the
+        // spring's way, past 1 at the overshoot. With the phone's animations off it ends at once and the pill lands
+        // in one frame.
         slide = ValueAnimator.ofFloat(0, 1).setDuration(SPRING_MS);
-        slide.setInterpolator(t -> springAt((long) (t * SPRING_MS)));
+        slide.setInterpolator(null);
         slide.addUpdateListener(a -> {
-            progress = (float) a.getAnimatedValue();
-            elapsed = (long) (a.getAnimatedFraction() * SPRING_MS);
-            if (a.getAnimatedFraction() >= 1) progress = 1;
+            float time = (float) a.getAnimatedValue();
+            elapsed = time >= 1 ? SPRING_MS : (long) (time * SPRING_MS);
+            progress = springAt(elapsed);
             redraw.run();
         });
         slide.start();
