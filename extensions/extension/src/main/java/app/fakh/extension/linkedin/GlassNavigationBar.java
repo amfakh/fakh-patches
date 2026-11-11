@@ -1,12 +1,9 @@
 package app.fakh.extension.linkedin;
 
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -57,7 +54,7 @@ final class GlassNavigationBar {
         });
     }
 
-    /** Gives the tabs equal shares of the capsule, and a ripple that stays inside the tab. */
+    /** Gives the tabs equal shares of the capsule, and no press ripple: the pill already shows the tab. */
     static void arrangeTabs(ViewGroup tabs, int barWidth) {
         int count = tabs.getChildCount();
         if (count == 0 || barWidth <= 0) return;
@@ -70,21 +67,7 @@ final class GlassNavigationBar {
                 params.width = width;
                 tab.setLayoutParams(params);
             }
-            if (!(tab.getBackground() instanceof TabRipple)) tab.setBackground(new TabRipple());
-        }
-    }
-
-    /** A ripple that stays inside its tab, as a pill, where LinkedIn's own one spreads past the capsule. */
-    private static final class TabRipple extends RippleDrawable {
-        TabRipple() {
-            super(ColorStateList.valueOf(0x33808080), null, mask());
-        }
-
-        private static Drawable mask() {
-            GradientDrawable mask = new GradientDrawable();
-            mask.setColor(Color.WHITE);
-            mask.setCornerRadius(Float.MAX_VALUE);
-            return mask;
+            if (tab.getBackground() != null) tab.setBackground(null);
         }
     }
 

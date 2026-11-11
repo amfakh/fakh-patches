@@ -160,6 +160,7 @@ public final class GlassNavigationBar {
             int large = id(bar, "navigation_bar_item_large_label_view");
             int small = id(bar, "navigation_bar_item_small_label_view");
             int indicator = id(bar, "navigation_bar_item_active_indicator_view");
+            int iconContainer = id(bar, "navigation_bar_item_icon_container");
             int now = -1;
             for (int i = 0; i < tabs.getChildCount(); i++) {
                 View tab = tabs.getChildAt(i);
@@ -175,6 +176,11 @@ public final class GlassNavigationBar {
                     own.setBackground(null);
                     own.setAlpha(0f);
                 }
+                // No press ripple, as the pill already shows the tab: the library puts it on the icon's container,
+                // or on the tab itself when the indicator is off.
+                View container = tab.findViewById(iconContainer);
+                if (container != null && container.getForeground() != null) container.setForeground(null);
+                if (tab.getBackground() != null) tab.setBackground(null);
                 if (tab.isSelected()) now = i;
                 for (int label : new int[] {large, small}) {
                     View text = tab.findViewById(label);

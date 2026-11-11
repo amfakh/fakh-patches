@@ -156,6 +156,11 @@ public final class NavigationBar {
         return slider == null || !glass() ? color : 0L;
     }
 
+    /** The ripple a pressed tab shows behind its icon, or none on the glass bar, where the pill marks the tab. */
+    public static Object tabIndication(Object indication) {
+        return slider == null || !glass() ? indication : null;
+    }
+
     /**
      * Moves the pill to the selected tab: on the portrait bar the tabs share its padded width, 8dp apart; on the
      * rail they are stacked in its middle.

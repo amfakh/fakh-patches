@@ -258,6 +258,7 @@ val glassNavigationBarPatch = bytecodePatch(
             """,
         )
         tintLabels(colors)
+        removeTabRipple()
         watchActivities()
         addSwitch("fakh_glass_navbar", "Glass navigation bar", false)
         addSwitch("fakh_liquid_glass", "Liquid Glass", true)
@@ -279,6 +280,63 @@ val navigationBarRightPatch = bytecodePatch(
         watchActivities()
         addSwitch("fakh_nav_position", "Landscape navigation bar position", null)
     }
+}
+
+/**
+ * Takes the press ripple off the tabs while the bar is glass, where the pill already shows the tab. Material 3 draws it
+ * in a box tagged "indicatorRipple": the box's modifier gets indication(interactionSource, ripple(bounded, radius,
+ * color)), the ripple built by a static call taking (Z, F, J) just before. [NAVIGATION_BAR]'s tabIndication turns that
+ * indication into null, which Compose draws as nothing.
+ */
+private fun BytecodePatchContext.removeTabRipple() {
+    val found = mutableListOf<Pair<String, String>>()
+    classDefForEach { classDef ->
+        for (method in classDef.methods) {
+            if (method.implementation?.instructions?.any {
+                    it.opcode == Opcode.CONST_STRING &&
+                        ((it as ReferenceInstruction).reference as StringReference).string == "indicatorRipple"
+                } == true && method.indicationCall() != null) {
+                found += classDef.type to method.name
+            }
+        }
+    }
+    if (found.size != 1) throw PatchException("Tab ripple not found: $found")
+    val method = mutableClassDefBy(found.single().first).methods.first {
+        it.name == found.single().second && it.indicationCall() != null
+    }
+    val (index, type) = method.indicationCall()!!
+    val register = (method.implementation!!.instructions[index] as FiveRegisterInstruction).registerE
+    method.addInstructions(
+        index,
+        """
+            invoke-static/range { v$register .. v$register }, $NAVIGATION_BAR->tabIndication(Ljava/lang/Object;)Ljava/lang/Object;
+            move-result-object v$register
+            check-cast v$register, $type
+        """,
+    )
+}
+
+/**
+ * In a method that tags a box "indicatorRipple": the index of the first three-argument static call after the ripple is
+ * built (a static call taking Z, F, J), and the type of its last argument, the indication. Null when there is none.
+ */
+private fun Method.indicationCall(): Pair<Int, String>? {
+    var tagged = false
+    var ripple = false
+    implementation!!.instructions.forEachIndexed { index, instruction ->
+        val reference = (instruction as? ReferenceInstruction)?.reference
+        if (instruction.opcode == Opcode.CONST_STRING && (reference as? StringReference)?.string == "indicatorRipple") {
+            tagged = true
+        } else if (tagged && instruction.opcode == Opcode.INVOKE_STATIC && reference is MethodReference) {
+            val parameters = reference.parameterTypes.map(CharSequence::toString)
+            if (!ripple) {
+                ripple = parameters == listOf("Z", "F", "J")
+            } else if (parameters.size == 3 && parameters.all { it.startsWith("L") }) {
+                return index to parameters[2]
+            }
+        }
+    }
+    return null
 }
 
 /**
