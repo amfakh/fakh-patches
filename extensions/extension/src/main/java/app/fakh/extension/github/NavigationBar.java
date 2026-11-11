@@ -43,21 +43,21 @@ public final class NavigationBar {
     static List<Object> allTabs = new ArrayList<>();
 
     private static final int SIDE_MARGIN_DP = 12;
-    private static final int INNER_PADDING_DP = 14;
+    private static final int INNER_PADDING_DP = 8;
     private static final int VERTICAL_MARGIN_DP = 6;
     /** Opaque enough to hide the text behind the bar, as on LinkedIn. */
     private static final float FILL_ALPHA = 0.85f;
-    /** Height of the tabs when they have no label; with a label the bar keeps the height the app gives it. */
+    /** Height of the tabs without and with a label, lower than Material 3's 80dp so the pill isn't a tall block. */
     private static final int ICON_ONLY_HEIGHT_DP = 56;
+    private static final int LABELED_HEIGHT_DP = 56;
     /** Space the bar keeps between its tabs. */
     private static final int TAB_GAP_DP = 8;
     /** How many tabs the bar shows, from the tab list; 0 until the app lists them. */
     private static int tabCount;
-    private static final int PILL_WIDTH_DP = 64;
-    private static final int PILL_HEIGHT_DP = 32;
-    /** Where the pill starts below the top of a tab that has a label. */
-    private static final int LABEL_PILL_TOP_DP = 12;
-    /** The rail's tabs are 56dp squares, 4dp apart, centered in the rail; its pill is 56dp by 32dp. */
+    /** How far the pill stays in from the capsule's edges, and how far past its tab it reaches on either side. */
+    private static final int PILL_INSET_DP = 4;
+    private static final int PILL_GROW_DP = 4;
+    /** The rail's tabs are 56dp squares, 4dp apart, centered in the rail. */
     private static final int RAIL_TAB_DP = 56;
     private static final int RAIL_GAP_DP = 4;
 
@@ -154,6 +154,14 @@ public final class NavigationBar {
     /** The indicator the app draws behind the selected tab: none where the capsule draws its own pill. */
     public static long indicatorColor(long color) {
         return slider == null || !glass() ? color : 0L;
+    }
+
+    /**
+     * The space Material 3 puts between a tab's icon indicator and its label, in dp: none on the glass bar, whose pill
+     * holds both and is too low for Material's 4dp on top of the indicator's own.
+     */
+    public static float labelGap(float gap) {
+        return slider == null || !glass() ? gap : 0f;
     }
 
     /** The ripple a pressed tab shows behind its icon, or none on the glass bar, where the pill marks the tab. */
@@ -304,14 +312,15 @@ public final class NavigationBar {
         int side = Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density);
         int vertical = Math.round(VERTICAL_MARGIN_DP * density);
         bar.setPadding(side, vertical, side, vertical);
-        if (MaterialYou.flag(HIDE_LABELS)) {
-            // The tabs are at least 80dp tall; a bar that is shorter clamps them.
-            ViewGroup.LayoutParams params = bar.getLayoutParams();
-            params.height = Math.round(ICON_ONLY_HEIGHT_DP * density) + 2 * vertical;
-            bar.setLayoutParams(params);
-        }
+        // The tabs are at least 80dp tall; a bar that is shorter clamps them and centers the icon and label.
+        ViewGroup.LayoutParams size = bar.getLayoutParams();
+        size.height = Math.round((MaterialYou.flag(HIDE_LABELS) ? ICON_ONLY_HEIGHT_DP : LABELED_HEIGHT_DP) * density)
+                + 2 * vertical;
+        bar.setLayoutParams(size);
         GlassCapsule.clearSystemBar(activity);
         capsule = new GlassCapsule(barColor, density, new GlassCapsule.Layout() {
+            private final RectF shape = new RectF();
+
             @Override
             public boolean capsule(RectF out) {
                 // The padding of the bar is the margin around the tabs, so the capsule hugs them.
@@ -323,15 +332,12 @@ public final class NavigationBar {
 
             @Override
             public boolean pill(RectF out) {
-                if (slider == null || !slider.has()) return false;
-                // As the app's own indicator: 64dp by 32dp around the icon, which sits at the top of a tab with a
-                // label and in the middle of one without.
-                float center = (slider.start() + slider.end()) / 2;
-                float half = Math.min(PILL_WIDTH_DP * density, slider.end() - slider.start()) / 2;
-                float top = MaterialYou.flag(HIDE_LABELS)
-                        ? (bar.getPaddingTop() + bar.getHeight() - bar.getPaddingBottom() - PILL_HEIGHT_DP * density) / 2
-                        : bar.getPaddingTop() + LABEL_PILL_TOP_DP * density;
-                out.set(center - half, top, center + half, top + PILL_HEIGHT_DP * density);
+                if (slider == null || !slider.has() || !capsule(shape)) return false;
+                // The whole tab, icon and label, a little wider than the tab, with a thin rim of the capsule all around.
+                float inset = PILL_INSET_DP * density;
+                float grow = PILL_GROW_DP * density;
+                out.set(Math.max(shape.left + inset, slider.start() - grow), shape.top + inset,
+                        Math.min(shape.right - inset, slider.end() + grow), shape.bottom - inset);
                 return true;
             }
         }, FILL_ALPHA);
@@ -458,6 +464,8 @@ public final class NavigationBar {
         bar.setPadding(0, 0, 0, 0);
         GlassCapsule.clearSystemBar(activity);
         capsule = new GlassCapsule(barColor, density, new GlassCapsule.Layout() {
+            private final RectF shape = new RectF();
+
             @Override
             public boolean capsule(RectF out) {
                 float height = Math.min(bar.getHeight() - 2 * VERTICAL_MARGIN_DP * density, LANDSCAPE_HEIGHT_DP * density);
@@ -468,11 +476,12 @@ public final class NavigationBar {
 
             @Override
             public boolean pill(RectF out) {
-                if (slider == null || !slider.has()) return false;
-                float center = (slider.start() + slider.end()) / 2;
-                float half = RAIL_TAB_DP * density / 2;
-                float x = bar.getWidth() / 2f;
-                out.set(x - half, center - PILL_HEIGHT_DP * density / 2, x + half, center + PILL_HEIGHT_DP * density / 2);
+                if (slider == null || !slider.has() || !capsule(shape)) return false;
+                // The whole tab, a little taller than it, with a thin rim of the capsule all around.
+                float inset = PILL_INSET_DP * density;
+                float grow = PILL_GROW_DP * density;
+                out.set(shape.left + inset, Math.max(shape.top + inset, slider.start() - grow),
+                        shape.right - inset, Math.min(shape.bottom - inset, slider.end() + grow));
                 return true;
             }
         }, FILL_ALPHA);

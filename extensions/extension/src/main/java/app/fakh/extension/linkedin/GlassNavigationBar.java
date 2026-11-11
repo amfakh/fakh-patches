@@ -14,7 +14,10 @@ import app.fakh.extension.shared.TabSlide;
 /** Draws LinkedIn's bottom bar as a floating, translucent capsule, using the shared {@link GlassCapsule}. */
 final class GlassNavigationBar {
     private static final int SIDE_MARGIN_DP = 12;
-    private static final int INNER_PADDING_DP = 14;
+    private static final int INNER_PADDING_DP = 7;
+    /** How far the pill stays in from the capsule's edges, and how far past its tab it reaches on either side. */
+    private static final int PILL_INSET_DP = 4;
+    private static final int PILL_GROW_DP = 4;
     private static final String ICON = "slim_notification_badge_icon";
     private static final String LABEL = "slim_notification_badge_label";
 
@@ -83,6 +86,9 @@ final class GlassNavigationBar {
         private int selected = -1;
         /** Left edge of the tabs in the bar, set by {@link #capsule} for {@link #pill}. */
         private float left;
+        /** The capsule's edges, set by {@link #capsule}, which the pill stays inside. */
+        private float capsuleLeft;
+        private float capsuleRight;
 
         Selection(ViewGroup tabs, float density) {
             this.tabs = tabs;
@@ -126,17 +132,21 @@ final class GlassNavigationBar {
             float padding = INNER_PADDING_DP * density;
             out.set(left + tabs.getChildAt(0).getLeft() - padding, top,
                     left + tabs.getChildAt(count - 1).getRight() + padding, top + tabs.getHeight());
+            capsuleLeft = out.left;
+            capsuleRight = out.right;
             return true;
         }
 
         @Override
         public boolean pill(RectF out) {
             if (selected < 0 || selected >= tabs.getChildCount() || !glass.slider().has()) return false;
-            // A pill behind the selected tab, inset from the capsule so a thin rim of it stays around the pill.
-            float inset = 5 * density;
+            // A pill a little wider than the selected tab, with a thin rim of the capsule all around it.
+            float inset = PILL_INSET_DP * density;
+            float grow = PILL_GROW_DP * density;
             View row = (View) tabs.getParent();
             float top = row.getTop() + tabs.getTop();
-            out.set(left + glass.slider().start() + inset, top + inset, left + glass.slider().end() - inset, top + tabs.getHeight() - inset);
+            out.set(Math.max(capsuleLeft + inset, left + glass.slider().start() - grow), top + inset,
+                    Math.min(capsuleRight - inset, left + glass.slider().end() + grow), top + tabs.getHeight() - inset);
             return true;
         }
     }

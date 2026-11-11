@@ -13,6 +13,7 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -259,6 +260,7 @@ val glassNavigationBarPatch = bytecodePatch(
         )
         tintLabels(colors)
         removeTabRipple()
+        tightenTabLabel()
         watchActivities()
         addSwitch("fakh_glass_navbar", "Glass navigation bar", false)
         addSwitch("fakh_liquid_glass", "Liquid Glass", true)
@@ -312,6 +314,42 @@ private fun BytecodePatchContext.removeTabRipple() {
             invoke-static/range { v$register .. v$register }, $NAVIGATION_BAR->tabIndication(Ljava/lang/Object;)Ljava/lang/Object;
             move-result-object v$register
             check-cast v$register, $type
+        """,
+    )
+}
+
+/**
+ * Moves the label of a tab up to its icon while the bar is glass, so icon and label fit the lower glass bar. Material 3
+ * lays out a tab with the measure policy that looks its children up by the tags "indicatorRipple" and "label" and,
+ * without a label, makes the tab 80dp tall (an 80f constant). With a label, the first 4f constant after that is the
+ * space between the icon's indicator and the label, used both for the tab's content height and for the label's top;
+ * [NAVIGATION_BAR]'s labelGap turns it into 0.
+ */
+private fun BytecodePatchContext.tightenTabLabel() {
+    fun Method.gapIndex(): Int? {
+        val instructions = implementation?.instructions?.toList() ?: return null
+        fun literal(index: Int) = (instructions[index] as? NarrowLiteralInstruction)
+            ?.takeIf { instructions[index].opcode == Opcode.CONST_HIGH16 }?.narrowLiteral
+        val strings = instructions.mapNotNull { ((it as? ReferenceInstruction)?.reference as? StringReference)?.string }
+        if ("indicatorRipple" !in strings || "label" !in strings) return null
+        val tall = instructions.indices.firstOrNull { literal(it) == 80f.toRawBits() } ?: return null
+        return (tall + 1 until instructions.size).firstOrNull { literal(it) == 4f.toRawBits() }
+    }
+    val found = mutableListOf<Pair<String, String>>()
+    classDefForEach { classDef ->
+        for (method in classDef.methods) if (method.gapIndex() != null) found += classDef.type to method.name
+    }
+    if (found.size != 1) throw PatchException("Tab label gap not found: $found")
+    val method = mutableClassDefBy(found.single().first).methods.first {
+        it.name == found.single().second && it.gapIndex() != null
+    }
+    val index = method.gapIndex()!!
+    val register = (method.implementation!!.instructions[index] as OneRegisterInstruction).registerA
+    method.addInstructions(
+        index + 1,
+        """
+            invoke-static/range { v$register .. v$register }, $NAVIGATION_BAR->labelGap(F)F
+            move-result v$register
         """,
     )
 }
