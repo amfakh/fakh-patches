@@ -3,6 +3,7 @@ package app.fakh.patches.github
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
@@ -223,7 +224,7 @@ val glassNavigationBarPatch = bytecodePatch(
         // The indicator is a box colored by the 'indicator' field of the item colors, read right after its tag.
         val colors = tab.parameters[10]
         val found = mutableListOf<Pair<String, String>>()
-        classDefForEach { classDef ->
+        classDefByStrings("indicator").distinctBy { it.type }.forEach { classDef ->
             for (method in classDef.methods) {
                 val implementation = method.implementation ?: continue
                 var tagged = false
@@ -292,7 +293,7 @@ val navigationBarRightPatch = bytecodePatch(
  */
 private fun BytecodePatchContext.removeTabRipple() {
     val found = mutableListOf<Pair<String, String>>()
-    classDefForEach { classDef ->
+    classDefByStrings("indicatorRipple").distinctBy { it.type }.forEach { classDef ->
         for (method in classDef.methods) {
             if (method.implementation?.instructions?.any {
                     it.opcode == Opcode.CONST_STRING &&
@@ -336,7 +337,7 @@ private fun BytecodePatchContext.tightenTabLabel() {
         return (tall + 1 until instructions.size).firstOrNull { literal(it) == 4f.toRawBits() }
     }
     val found = mutableListOf<Pair<String, String>>()
-    classDefForEach { classDef ->
+    classDefByStrings("indicatorRipple").distinctBy { it.type }.forEach { classDef ->
         for (method in classDef.methods) if (method.gapIndex() != null) found += classDef.type to method.name
     }
     if (found.size != 1) throw PatchException("Tab label gap not found: $found")
@@ -394,8 +395,10 @@ private fun BytecodePatchContext.tintLabels(colors: String) {
     val texts = setOf(stored[1], stored[4])
     val icons = setOf(stored[0], stored[3])
     val targets = mutableListOf<Pair<String, Method>>()
-    classDefForEach { classDef ->
-        if (classDef.type == colors) return@classDefForEach
+    // Only classes that read a field of the item colors, found through the patcher's index.
+    Fingerprint(filters = listOf(fieldAccess(definingClass = colors))).matchAllOrNull().orEmpty()
+        .map { it.originalClassDef }.distinctBy { it.type }.forEach { classDef ->
+        if (classDef.type == colors) return@forEach
         for (method in classDef.methods) {
             val fields = method.implementation?.instructions?.mapNotNull {
                 ((it as? ReferenceInstruction)?.reference as? FieldReference)?.takeIf { field -> field.definingClass == colors }?.name

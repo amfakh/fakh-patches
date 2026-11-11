@@ -1,7 +1,9 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
+import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.literal
 import app.morphe.patcher.patch.BytecodePatchContext
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.ResourcePatchContext
@@ -313,13 +315,15 @@ val materialYouPatch = bytecodePatch(
         }
 
         // Blue color literals in code (switch tracks), passed as plain ARGB longs instead of read from a palette.
+        // The patcher's literal index finds the classes that hold them, a scan of every method takes half a second.
         var literalCount = 0
-        classDefForEach { classDef ->
-            if (classDef.type.startsWith("Lapp/fakh/")) return@classDefForEach
+        COLOR_LITERALS.flatMap { Fingerprint(filters = listOf(literal(it))).matchAllOrNull().orEmpty() }
+            .map { it.originalClassDef }.distinctBy { it.type }.forEach { classDef ->
+            if (classDef.type.startsWith("Lapp/fakh/")) return@forEach
             val methods = classDef.methods.filter { method ->
                 method.implementation?.instructions?.any { it.isColorLiteral() } == true
             }
-            if (methods.isEmpty()) return@classDefForEach
+            if (methods.isEmpty()) return@forEach
             val mutable = mutableClassDefBy(classDef)
             methods.forEach { method ->
                 val target = mutable.methods.first {
