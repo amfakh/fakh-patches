@@ -1,4 +1,4 @@
-package app.fakh.patches.dodo.shared
+package app.fakh.patches.shared
 
 import org.w3c.dom.Document
 import org.w3c.dom.Element
