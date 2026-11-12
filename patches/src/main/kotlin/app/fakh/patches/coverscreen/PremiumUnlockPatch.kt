@@ -129,8 +129,8 @@ private val adSdksManifestPatch = resourcePatch {
 val premiumUnlockPatch = bytecodePatch(
     name = "Premium unlock",
     description = "Unlocks Pro on your phone (every premium feature, no ads), keeps the trial from expiring, " +
-        "stops the Play license check from closing the app, and keeps the ad SDK from starting so it cannot " +
-        "load ads or track in the background.",
+        "stops the Play license check from closing the app, and stops the ad SDKs from starting so they cannot " +
+        "load ads in the background.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_COVERSCREEN)
