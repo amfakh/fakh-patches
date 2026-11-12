@@ -1,3 +1,9 @@
+## [1.19.1](https://github.com/amfakh/fakh-patches/compare/v1.19.0...v1.19.1) (2026-11-12)
+
+### Bug Fixes
+
+* **CoverScreen OS:** the cover screen no longer crashes when it opens, and its first-run setup finishes instead of ending in "Setup took too long" ([a061c6e](https://github.com/amfakh/fakh-patches/commit/a061c6e564d308284eb543efb48f9de6c6359d2e))
+
 ## [1.19.0](https://github.com/amfakh/fakh-patches/compare/v1.18.1...v1.19.0) (2026-11-12)
 
 ### New Features
