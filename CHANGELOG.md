@@ -1,3 +1,9 @@
+## [1.20.0](https://github.com/amfakh/fakh-patches/compare/v1.19.1...v1.20.0) (2026-11-12)
+
+### New Features
+
+* **CoverScreen OS:** add Disable analytics, which turns off Firebase Analytics, Crashlytics, Performance and Sessions, stops the GIF keyboard from sending your advertising ID, device model, carrier and screen size with its ad requests, and removes the ad ID and ad services permissions ([6b940fb](https://github.com/amfakh/fakh-patches/commit/6b940fb9a5426fe85b2e37df46ed62861ed85bb5))
+
 ## [1.19.1](https://github.com/amfakh/fakh-patches/compare/v1.19.0...v1.19.1) (2026-11-12)
 
 ### Bug Fixes
