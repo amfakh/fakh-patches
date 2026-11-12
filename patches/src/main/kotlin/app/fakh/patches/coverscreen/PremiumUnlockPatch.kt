@@ -4,19 +4,9 @@ import app.fakh.patches.coverscreen.shared.Constants.COMPATIBILITY_COVERSCREEN
 import app.fakh.patches.shared.disableProviders
 import app.fakh.patches.shared.pairip.pairipLicenseCheckPatch
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.fieldAccess
-import app.morphe.patcher.methodCall
-import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.removeInstructions
-import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.resourcePatch
-import com.android.tools.smali.dexlib2.Opcode
-import com.android.tools.smali.dexlib2.iface.ClassDef
-import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 
 /**
  * The Pro state lives on the Room entity `apps.ijp.coverscreenos.db.OSProperties`
@@ -182,114 +172,11 @@ val premiumUnlockPatch = bytecodePatch(
             """,
         )
 
-        // `CoverOSEngine.d3` is the engine's "cover engaged" flag (`a0` sets it,
-        // `l2` clears it), not a license flag. Two byte-identical getters read it
-        // through a StateFlow: the manager getter (`vr2.x()` in 244, a different
-        // class name in other builds, so match the shape) and
-        // `CoverFirstRunSetup.e()`. Both are forced true; a single fingerprint
-        // cannot tell them apart (same body, different classes). Their effect on
-        // the ads and the timeout picker has not been isolated on a device.
-        var licensedGetters = 0
-        // Only classes that read `d3`, found through the patcher's index.
-        Fingerprint(
-            filters = listOf(fieldAccess(definingClass = "Lapps/ijp/coverscreenos/CoverOSEngine;", name = "d3")),
-        ).matchAllOrNull().orEmpty().map { it.originalClassDef }.distinctBy { it.type }.forEach { classDef ->
-            val method = classDef.methods.singleOrNull { candidate ->
-                val impl = candidate.implementation ?: return@singleOrNull false
-                candidate.returnType == "Z" && candidate.parameters.isEmpty() &&
-                    run {
-                        val refs = impl.instructions
-                            .mapNotNull { ins -> (ins as? ReferenceInstruction)?.reference?.toString() }
-                            .toList()
-                        refs.any { r -> r.startsWith("Lkotlinx/coroutines/flow/StateFlow;->getValue") } &&
-                            refs.any { r -> r.startsWith("Lapps/ijp/coverscreenos/CoverOSEngine;->d3:Z") } &&
-                            impl.instructions.count() < 20
-                    }
-            }
-            if (method != null) {
-                mutableClassDefBy(classDef).methods.single {
-                    it.name == method.name && it.returnType == "Z" && it.parameters.isEmpty()
-                }.addInstructions(
-                    0,
-                    """
-                        const/4 v0, 0x1
-                        return v0
-                    """,
-                )
-                licensedGetters++
-            }
-        }
-        if (licensedGetters != 2) throw PatchException("Expected 2 licensed getters (manager + CoverFirstRunSetup.e), found $licensedGetters")
-
-        // The `pq2` holder keeps two "cover engaged" flows, recomputed from
-        // `u || x() || engine.M()` and `engine.S0()`-style checks, which `ny3`
-        // and the engine consumers read. Seed the two `StateFlowKt.a(Boolean.FALSE)`
-        // constructions that back them with TRUE. The same FALSE register also
-        // seeds a third flow that must stay FALSE, so the first seed is skipped.
-        var licensedFlowHolder: ClassDef? = null
-        // Only classes whose static initializer builds a StateFlow, found through the patcher's index.
-        Fingerprint(
-            name = "<clinit>",
-            filters = listOf(methodCall(definingClass = "Lkotlinx/coroutines/flow/StateFlowKt;", name = "a")),
-        ).matchAllOrNull().orEmpty().map { it.originalClassDef }.distinctBy { it.type }.forEach { classDef ->
-            val clinit = classDef.methods.firstOrNull { it.name == "<clinit>" } ?: return@forEach
-            val refs = clinit.implementation?.instructions
-                ?.mapNotNull { ins -> (ins as? ReferenceInstruction)?.reference?.toString() }
-                ?.toList() ?: return@forEach
-            val mutableFlowFields = classDef.fields.count { it.type == "Lkotlinx/coroutines/flow/MutableStateFlow;" }
-            val readOnlyFlowFields = classDef.fields.count { it.type == "Lkotlinx/coroutines/flow/StateFlow;" }
-            if (mutableFlowFields >= 4 && readOnlyFlowFields >= 4 &&
-                refs.count { it.startsWith("Lkotlinx/coroutines/flow/StateFlowKt;->a(") } >= 3 &&
-                refs.any { it.startsWith("Lkotlinx/coroutines/flow/FlowKt;->b(") }
-            ) {
-                licensedFlowHolder = classDef
-            }
-        }
-        val flowHolder = licensedFlowHolder ?: throw PatchException("Engine-state flow holder class not found")
-        val flowClinit = mutableClassDefBy(flowHolder).methods.first { it.name == "<clinit>" }
-        val flowInsns = flowClinit.implementation!!.instructions.toList()
-        val falseSince = HashMap<Int, Int>()
-        val flowSeeds = mutableListOf<Pair<Int, Int>>() // invoke index to seed register
-        flowInsns.forEachIndexed { idx, ins ->
-            when (ins.opcode) {
-                Opcode.SGET_OBJECT -> {
-                    val ref = (ins as ReferenceInstruction).reference.toString()
-                    if (ref.startsWith("Ljava/lang/Boolean;->FALSE")) {
-                        falseSince[(ins as OneRegisterInstruction).registerA] = idx
-                    }
-                }
-                Opcode.INVOKE_STATIC -> {
-                    val ref = (ins as ReferenceInstruction).reference.toString()
-                    if (ref.startsWith("Lkotlinx/coroutines/flow/StateFlowKt;->a(")) {
-                        val reg = (ins as FiveRegisterInstruction).registerC
-                        if (falseSince.containsKey(reg)) {
-                            flowSeeds += idx to reg
-                        }
-                    }
-                }
-                else -> {}
-            }
-        }
-        if (flowSeeds.size != 3) throw PatchException("Expected 3 Boolean-seeded StateFlow constructions in clinit, found ${flowSeeds.size}")
-        // Skip the first seed (engine liveness, must stay FALSE); flip the rest.
-        flowSeeds.drop(1).sortedByDescending { it.first }.forEach { (idx, reg) ->
-            flowClinit.addInstruction(idx, "sget-object v$reg, Ljava/lang/Boolean;->TRUE:Ljava/lang/Boolean;")
-        }
-
         // The timeout dialog (`lz3`) reads `az5.a` off a StateFlow to pick its
         // text and to show or hide its second button. Force `a` true for every
         // instance; the class is a plain data holder with exactly three
         // consumers (the dialog, one flow mapper and one flow producer).
-        val az5Init = az5HolderFingerprint.method
-        az5Init.removeInstructions(0, az5Init.implementation!!.instructions.count())
-        az5Init.addInstructions(
-            0,
-            """
-                const/4 v0, 0x1
-                iput-boolean v0, p0, Laz5;->a:Z
-                iput-boolean p2, p0, Laz5;->b:Z
-                return-void
-            """,
-        )
+        // The constructor has no locals, so v0 is `this`: overwrite the parameter instead.
+        az5HolderFingerprint.method.addInstructions(0, "const/4 p1, 0x1")
     }
 }
