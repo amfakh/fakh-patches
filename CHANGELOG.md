@@ -1,3 +1,9 @@
+## [1.19.0](https://github.com/amfakh/fakh-patches/compare/v1.18.1...v1.19.0) (2026-11-12)
+
+### New Features
+
+* **CoverScreen OS:** add Premium unlock, which turns on Pro with every premium feature, no ads and no payment screen, and keeps the trial from expiring, for `CSOS_9.0.1_BETA` ([e926491](https://github.com/amfakh/fakh-patches/commit/e9264913978d29af0489eafc529d10a4409a39c4))
+
 ## [1.18.1](https://github.com/amfakh/fakh-patches/compare/v1.18.0...v1.18.1) (2026-11-11)
 
 ### Performance Improvements
