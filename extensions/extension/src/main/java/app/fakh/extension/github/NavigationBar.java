@@ -343,6 +343,7 @@ public final class NavigationBar {
         }, FILL_ALPHA);
         bar.setBackground(capsule);
         capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, true));
+        capsule.setBevel(true);
         startPill(bar, false);
         matchPage(activity);
         // The bar floats over the screen like a glass bar should: the screen above it reaches down behind it.
@@ -487,6 +488,7 @@ public final class NavigationBar {
         }, FILL_ALPHA);
         bar.setBackground(capsule);
         capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, true));
+        capsule.setBevel(true);
         startPill(bar, true);
         bar.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> syncPill());
         matchPage(activity);
