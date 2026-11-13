@@ -353,7 +353,7 @@ public final class NavigationBar {
             }
         }, FILL_ALPHA);
         bar.setBackground(capsule);
-        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, true));
+        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, false));
         capsule.setBevel(true);
         startPill(bar, false);
         matchPage(activity);
@@ -498,7 +498,7 @@ public final class NavigationBar {
             }
         }, FILL_ALPHA);
         bar.setBackground(capsule);
-        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, true));
+        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, false));
         capsule.setBevel(true);
         startPill(bar, true);
         bar.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> syncPill());

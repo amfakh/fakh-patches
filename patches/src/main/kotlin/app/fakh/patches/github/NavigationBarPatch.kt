@@ -281,7 +281,7 @@ val glassNavigationBarPatch = bytecodePatch(
         tightenTabLabel()
         watchActivities()
         addSwitch("fakh_glass_navbar", "Glass navigation bar", false)
-        addSwitch("fakh_liquid_glass", "Liquid Glass", true)
+        addSwitch("fakh_liquid_glass", "Liquid Glass", false)
     }
 }
 
