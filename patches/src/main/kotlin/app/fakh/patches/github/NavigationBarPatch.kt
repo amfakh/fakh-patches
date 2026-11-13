@@ -180,6 +180,23 @@ val glassNavigationBarPatch = bytecodePatch(
                 """,
             )
         }
+        // Above the bar the app draws a divider, a line over a strip of the page color, which would cross the top of
+        // the capsule: Divider(modifier, background: J, line: J, indent: F, vertical: Z, composer, changed, defaults).
+        // Its colors are passed as 0 with their defaults bit set, so the defaults bits of both colors are cleared.
+        portrait.first.let { method ->
+            val divider = method.rangeCall {
+                it.size == 8 && it[1] == "J" && it[2] == "J" && it[3] == "F" && it[4] == "Z" && it[6] == "I" && it[7] == "I"
+            } ?: throw PatchException("Bar divider call not found")
+            if (divider.index > portrait.second.index) throw PatchException("Bar divider call is after the bar")
+            val defaults = divider.start + 9
+            method.addInstructions(
+                divider.index,
+                """
+                    invoke-static/range { v$defaults .. v$defaults }, $NAVIGATION_BAR->dividerDefaults(I)I
+                    move-result v$defaults
+                """,
+            )
+        }
         // The rail also gets a background of its own: a modifier built from a (int, long) constructor just before the call.
         rail?.let { (method, call) ->
             val instructions = method.implementation!!.instructions.toList()
