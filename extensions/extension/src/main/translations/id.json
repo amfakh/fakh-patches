@@ -164,5 +164,20 @@
   "// GitHub": "",
   "Left": "Kiri",
   "Right": "Kanan",
-  "Landscape navigation bar position": "Posisi bilah navigasi saat lanskap"
+  "Landscape navigation bar position": "Posisi bilah navigasi saat lanskap",
+  "// Smart Life": "",
+  "Dark Device Panels": "Panel perangkat gelap",
+  "Hide Plus button": "Sembunyikan tombol Plus",
+  "Hide Recommended for you": "Sembunyikan Rekomendasi untuk Anda",
+  "Hide AI ask bar": "Sembunyikan bar tanya AI",
+  "Hide Explore tab": "Sembunyikan tab Jelajahi",
+  "Hide Mall tab": "Sembunyikan tab Mall",
+  "Hide Rewards Hub": "Sembunyikan Rewards Hub",
+  "Hide My Orders": "Sembunyikan Pesanan Saya",
+  "Hide Tuya AI Web Version": "Sembunyikan Tuya AI versi web",
+  "Hide Me banner": "Sembunyikan banner Saya",
+  "Hide App Mall": "Sembunyikan App Mall",
+  "Me": "Saya",
+  "Ads": "Iklan",
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Paksa tema gelap di panel kontrol perangkat yang tidak punya mode gelap. Berlaku saat panel dibuka, dan hanya saat mode gelap."
 }

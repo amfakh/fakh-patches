@@ -164,5 +164,20 @@
   "// GitHub": "",
   "Left": "左",
   "Right": "右",
-  "Landscape navigation bar position": "横向き時のナビゲーションバーの位置"
+  "Landscape navigation bar position": "横向き時のナビゲーションバーの位置",
+  "// Smart Life": "",
+  "Dark Device Panels": "デバイスパネルをダーク表示",
+  "Hide Plus button": "Plusボタンを非表示",
+  "Hide Recommended for you": "「あなたへのおすすめ」を非表示",
+  "Hide AI ask bar": "AI質問バーを非表示",
+  "Hide Explore tab": "「探す」タブを非表示",
+  "Hide Mall tab": "「モール」タブを非表示",
+  "Hide Rewards Hub": "Rewards Hubを非表示",
+  "Hide My Orders": "「注文履歴」を非表示",
+  "Hide Tuya AI Web Version": "Tuya AI Web版を非表示",
+  "Hide Me banner": "「マイページ」のバナーを非表示",
+  "Hide App Mall": "アプリモールを非表示",
+  "Me": "マイページ",
+  "Ads": "広告",
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "ダークモードのないデバイス操作パネルを強制的にダーク表示にします。パネルを開いたときに適用され、ダークモードのときだけ有効です。"
 }

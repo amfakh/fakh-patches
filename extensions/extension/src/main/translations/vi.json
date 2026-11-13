@@ -164,5 +164,20 @@
   "// GitHub": "",
   "Left": "Trái",
   "Right": "Phải",
-  "Landscape navigation bar position": "Vị trí thanh điều hướng khi xoay ngang"
+  "Landscape navigation bar position": "Vị trí thanh điều hướng khi xoay ngang",
+  "// Smart Life": "",
+  "Dark Device Panels": "Bảng điều khiển thiết bị tối",
+  "Hide Plus button": "Ẩn nút Plus",
+  "Hide Recommended for you": "Ẩn Đề xuất cho bạn",
+  "Hide AI ask bar": "Ẩn thanh hỏi AI",
+  "Hide Explore tab": "Ẩn thẻ Khám phá",
+  "Hide Mall tab": "Ẩn thẻ Cửa hàng",
+  "Hide Rewards Hub": "Ẩn Rewards Hub",
+  "Hide My Orders": "Ẩn Đơn hàng của tôi",
+  "Hide Tuya AI Web Version": "Ẩn Tuya AI bản web",
+  "Hide Me banner": "Ẩn biểu ngữ trang Tôi",
+  "Hide App Mall": "Ẩn cửa hàng ứng dụng",
+  "Me": "Tôi",
+  "Ads": "Quảng cáo",
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Buộc chế độ tối trong các bảng điều khiển thiết bị không có chế độ tối. Áp dụng khi mở bảng, và chỉ khi đang ở chế độ tối."
 }

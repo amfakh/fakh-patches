@@ -164,5 +164,20 @@
   "// GitHub": "",
   "Left": "ซ้าย",
   "Right": "ขวา",
-  "Landscape navigation bar position": "ตำแหน่งแถบนำทางในแนวนอน"
+  "Landscape navigation bar position": "ตำแหน่งแถบนำทางในแนวนอน",
+  "// Smart Life": "",
+  "Dark Device Panels": "แผงอุปกรณ์โหมดมืด",
+  "Hide Plus button": "ซ่อนปุ่ม Plus",
+  "Hide Recommended for you": "ซ่อน แนะนำสำหรับคุณ",
+  "Hide AI ask bar": "ซ่อนแถบถาม AI",
+  "Hide Explore tab": "ซ่อนแท็บสำรวจ",
+  "Hide Mall tab": "ซ่อนแท็บร้านค้า",
+  "Hide Rewards Hub": "ซ่อน Rewards Hub",
+  "Hide My Orders": "ซ่อนคำสั่งซื้อของฉัน",
+  "Hide Tuya AI Web Version": "ซ่อน Tuya AI เวอร์ชันเว็บ",
+  "Hide Me banner": "ซ่อนแบนเนอร์หน้าฉัน",
+  "Hide App Mall": "ซ่อนร้านแอป",
+  "Me": "ฉัน",
+  "Ads": "โฆษณา",
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "บังคับโหมดมืดในแผงควบคุมอุปกรณ์ที่ไม่มีโหมดมืด มีผลเมื่อเปิดแผง และเฉพาะเมื่ออยู่ในโหมดมืดเท่านั้น"
 }

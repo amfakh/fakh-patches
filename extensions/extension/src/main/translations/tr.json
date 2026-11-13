@@ -164,5 +164,20 @@
   "// GitHub": "",
   "Left": "Sol",
   "Right": "Sağ",
-  "Landscape navigation bar position": "Yatay modda gezinme çubuğunun konumu"
+  "Landscape navigation bar position": "Yatay modda gezinme çubuğunun konumu",
+  "// Smart Life": "",
+  "Dark Device Panels": "Koyu cihaz panelleri",
+  "Hide Plus button": "Plus düğmesini gizle",
+  "Hide Recommended for you": "“Senin için önerilenler”i gizle",
+  "Hide AI ask bar": "Yapay zekâ soru çubuğunu gizle",
+  "Hide Explore tab": "Keşfet sekmesini gizle",
+  "Hide Mall tab": "Mağaza sekmesini gizle",
+  "Hide Rewards Hub": "Rewards Hub’ı gizle",
+  "Hide My Orders": "Siparişlerim’i gizle",
+  "Hide Tuya AI Web Version": "Tuya AI web sürümünü gizle",
+  "Hide Me banner": "Ben bannerını gizle",
+  "Hide App Mall": "Uygulama mağazasını gizle",
+  "Me": "Ben",
+  "Ads": "Reklamlar",
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Koyu modu olmayan cihaz kontrol panellerinde koyu temayı zorlar. Bir panel açıldığında ve yalnızca koyu modda geçerlidir."
 }

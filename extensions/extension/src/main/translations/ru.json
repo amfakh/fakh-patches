@@ -164,5 +164,20 @@
   "// GitHub": "",
   "Left": "Слева",
   "Right": "Справа",
-  "Landscape navigation bar position": "Положение панели навигации в альбомной ориентации"
+  "Landscape navigation bar position": "Положение панели навигации в альбомной ориентации",
+  "// Smart Life": "",
+  "Dark Device Panels": "Тёмные панели устройств",
+  "Hide Plus button": "Скрыть кнопку Plus",
+  "Hide Recommended for you": "Скрыть «Рекомендуем вам»",
+  "Hide AI ask bar": "Скрыть строку вопросов к ИИ",
+  "Hide Explore tab": "Скрыть вкладку «Обзор»",
+  "Hide Mall tab": "Скрыть вкладку «Магазин»",
+  "Hide Rewards Hub": "Скрыть Rewards Hub",
+  "Hide My Orders": "Скрыть «Мои заказы»",
+  "Hide Tuya AI Web Version": "Скрыть веб-версию Tuya AI",
+  "Hide Me banner": "Скрыть баннер в разделе «Я»",
+  "Hide App Mall": "Скрыть магазин приложений",
+  "Me": "Я",
+  "Ads": "Реклама",
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Принудительно включает тёмную тему в панелях управления устройствами, у которых её нет. Применяется при открытии панели и только в тёмном режиме."
 }

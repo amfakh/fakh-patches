@@ -164,5 +164,20 @@
   "// GitHub": "",
   "Left": "Izquierda",
   "Right": "Derecha",
-  "Landscape navigation bar position": "Posición de la barra de navegación en horizontal"
+  "Landscape navigation bar position": "Posición de la barra de navegación en horizontal",
+  "// Smart Life": "",
+  "Dark Device Panels": "Paneles de dispositivos oscuros",
+  "Hide Plus button": "Ocultar botón Plus",
+  "Hide Recommended for you": "Ocultar «Recomendado para ti»",
+  "Hide AI ask bar": "Ocultar barra de preguntas de IA",
+  "Hide Explore tab": "Ocultar pestaña Explorar",
+  "Hide Mall tab": "Ocultar pestaña Tienda",
+  "Hide Rewards Hub": "Ocultar Rewards Hub",
+  "Hide My Orders": "Ocultar Mis pedidos",
+  "Hide Tuya AI Web Version": "Ocultar Tuya AI versión web",
+  "Hide Me banner": "Ocultar banner de Yo",
+  "Hide App Mall": "Ocultar tienda de apps",
+  "Me": "Yo",
+  "Ads": "Anuncios",
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Fuerza el modo oscuro en los paneles de control de dispositivos que no lo tienen. Se aplica al abrir un panel y solo en modo oscuro."
 }

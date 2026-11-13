@@ -30,10 +30,11 @@ public final class RestartBar {
         if (old != null) root.removeView(old);
         boolean night = MaterialYou.night(activity);
         float density = activity.getResources().getDisplayMetrics().density;
-        // The Material 3 inverse surface: light text on a dark bar, and the reverse in the dark theme.
-        int surface = night ? 0xFFE6E0E9 : 0xFF322F35;
-        int text = night ? 0xFF322F35 : 0xFFF5EFF7;
-        int action = night ? 0xFF6750A4 : 0xFFD0BCFF;
+        // A dark bar with light text in both themes: the Material 3 inverse surface in the light theme, and its
+        // highest surface container in the dark one, so the bar never lights up a dark screen.
+        int surface = night ? 0xFF36343B : 0xFF322F35;
+        int text = night ? 0xFFE6E0E9 : 0xFFF5EFF7;
+        int action = 0xFFD0BCFF;
 
         LinearLayout bar = new LinearLayout(activity);
         bar.setTag(TAG);
