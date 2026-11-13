@@ -46,6 +46,7 @@ public final class GlassNavigationBar {
      * @param view the FoldableBottomNav being built
      */
     public static void install(final View view) {
+        if (!MaterialYou.glassNavigationBar()) return;
         view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             private Selection selection;
 

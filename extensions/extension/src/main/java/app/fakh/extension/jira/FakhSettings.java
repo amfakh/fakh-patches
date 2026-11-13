@@ -34,8 +34,11 @@ public final class FakhSettings {
     private static final int ROW_KEY = 0x46414B30;
     private static final int CARD_KEY = 0x46414B3F;
     /** Number of the first switch that belongs to a tab, and the number of the row that opens the tab sheet. */
-    private static final int FIRST_TAB = 5;
-    private static final int TABS_ROW = 5;
+    private static final int FIRST_TAB = 6;
+    private static final int TABS_ROW = 6;
+    /** The rows of the glass bar's own switches, shown only where its patch is in. */
+    private static final int GLASS_BAR_ROW = 4;
+    private static final int BLUR_ROW = 5;
 
     private static WeakReference<Activity> current = new WeakReference<>(null);
     /** A Compose state that counts the switches flipped, so the rows are drawn again when one is. */
@@ -123,6 +126,7 @@ public final class FakhSettings {
             Constructor<?> create = wrapper.getConstructor(int.class, boolean.class, Object.class);
             if (add == null) return;
             for (int which = 0; which <= TABS_ROW; which++) {
+                if ((which == GLASS_BAR_ROW || which == BLUR_ROW) && !MaterialYou.isGlassNavigationBarIncluded()) continue;
                 Object content = create.newInstance(ROW_KEY + which, true, row(lambdaType, rowType, which));
                 // Scope, modifier (default), click (none), content, defaults.
                 add.invoke(null, scope, null, null, content, 7);
