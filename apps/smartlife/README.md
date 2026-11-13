@@ -24,7 +24,7 @@ of them.
 | Layout | Hide Me banner | BARDI | Removes the "Enjoy Your Smart Life" banner and its ad slot from the Me tab. |
 | Layout | Hide App Mall | BARDI | Removes the "App Mall" row from the Me tab. |
 | Theme | Glass navigation bar | all | Draws the navigation bar as a floating, translucent capsule with a sliding selection pill, in the app's own colors, and the Home page scrolls behind it. The AI ask bar floats above it as glass too. Slide a finger along it to switch tabs. |
-| Theme | Glass cards | Smart Life, Tuya Smart | Draws the cards on the Home tab as glass in the app's own colors, and gives the weather card a glass edge over its weather background. |
+| Theme | Glass cards | all | Draws the cards on the Home tab as glass in the app's own colors, and gives the weather card a glass edge over its weather background. |
 | Theme | Dark device panels | Smart Life, Tuya Smart | Darkens device control panels that have no dark mode of their own while the phone is in dark mode, using Android's automatic dark theme. The Dark Device Panels switch on the Fakh Patches page turns it off when a panel looks wrong. Off by default. |
 | Privacy | Hide ads | Smart Life, Tuya Smart | Removes the ad banners and the AdMob ad entry. |
 | Privacy | Disable analytics | Smart Life, Tuya Smart | Stops AppsFlyer from tracking installs and in-app events, and turns off Firebase Analytics, Crashlytics, Performance and Sessions. Tuya's own usage statistics stay on. |

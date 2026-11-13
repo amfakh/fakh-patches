@@ -103,7 +103,7 @@ val glassCardsPatch = bytecodePatch(
     name = "Glass cards",
     description = "Draws the cards on the Home tab as glass in the app's own colors, and gives the weather card a glass edge over its weather background.",
 ) {
-    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART)
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
     category("Theme")
     extendWith("extensions/extension.mpe")
     dependsOn(liquidGlassSwitchPatch, settingsSwitchesPatch)
