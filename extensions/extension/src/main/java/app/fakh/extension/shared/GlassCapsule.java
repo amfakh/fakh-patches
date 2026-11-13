@@ -277,7 +277,8 @@ public final class GlassCapsule extends Drawable {
             float corner = Math.min(pillRect.width(), pillRect.height()) / 2;
             if (blurred) glass.lens(canvas, pillRect, corner, getBounds().width(), getBounds().height());
             canvas.drawRoundRect(pillRect, corner, corner, pill);
-            if (glass != null) bubble(canvas, corner);
+            // The raised pill needs no backdrop, so bevelled glass has it without Liquid Glass too.
+            if (glass != null || bevel) bubble(canvas, corner);
         }
         if (bevel && light) hairline(canvas, radius);
         else if (bevel) specular(canvas, radius);
