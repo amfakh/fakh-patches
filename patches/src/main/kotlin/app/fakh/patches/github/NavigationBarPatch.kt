@@ -280,8 +280,13 @@ val glassNavigationBarPatch = bytecodePatch(
         removeTabRipple()
         tightenTabLabel()
         watchActivities()
-        addSwitch("fakh_glass_navbar", "Glass navigation bar", false)
-        addSwitch("fakh_liquid_glass", "Liquid Glass", false)
+        addSwitch("fakh_glass_navbar", "Liquid Glass navigation bar", false)
+        addSwitch(
+            "fakh_liquid_glass",
+            "Background blur",
+            false,
+            "Blurs what's behind the glass. Uses more battery and might stutter.",
+        )
     }
 }
 

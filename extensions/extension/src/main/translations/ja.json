@@ -133,9 +133,8 @@
   "Puzzle games shortcut": "パズルゲームのショートカット",
   "Add it to the menu of the LinkedIn app icon.": "LinkedInアプリアイコンのメニューに追加します。",
   "Glass navigation bar": "ガラス調ナビゲーションバー",
-  "A floating, translucent navigation bar.": "浮いたような半透明のナビゲーションバー。",
   "Liquid Glass": "Liquid Glass",
-  "Blurs what's behind the bar and bends it at the edges. Turn it off on a slower phone.": "バーの背後をぼかし、縁で屈折させます。動作の遅いスマホではオフにしてください。",
+  "Blurs what's behind the glass. Uses more battery and might stutter.": "ガラスの後ろにあるものをぼかします。バッテリーを多く使い、カクつくことがあります。",
   "Always show navigation bar": "ナビゲーションバーを常に表示",
   "Keeps the navigation bar on screen while you scroll.": "スクロール中もナビゲーションバーを画面に表示したままにします。",
   "Text under the navigation bar icons.": "ナビゲーションバーのアイコンの下のテキスト。",
@@ -179,5 +178,8 @@
   "Hide App Mall": "アプリモールを非表示",
   "Me": "マイページ",
   "Ads": "広告",
-  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "ダークモードのないデバイス操作パネルを強制的にダーク表示にします。パネルを開いたときに適用され、ダークモードのときだけ有効です。"
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "ダークモードのないデバイス操作パネルを強制的にダーク表示にします。パネルを開いたときに適用され、ダークモードのときだけ有効です。",
+  "Background blur": "背景のぼかし",
+  "Liquid Glass navigation bar": "Liquid Glass ナビゲーションバー",
+  "A floating, translucent navigation bar.": "浮いたような半透明のナビゲーションバー。"
 }

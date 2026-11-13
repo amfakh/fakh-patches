@@ -149,8 +149,11 @@ public final class FakhSettings {
                         break;
                     }
                     boolean selected = MaterialYou.prefs(context).getBoolean(MaterialYou.KEYS[which], MaterialYou.DEFAULTS[which]);
-                    // Label, checked, onChange, subtitle (none), enabled (default), composer, changed, defaults.
-                    row.invoke(null, I18n.tr(MaterialYou.LABELS[which]), selected, toggle(types[2], which), null, false, args[0], 0, 24);
+                    String subtitle = MaterialYou.SUBTITLES[which];
+                    // Label, checked, onChange, subtitle, enabled (default), composer, changed, defaults: the subtitle's
+                    // bit (8) is set when the row has none.
+                    row.invoke(null, I18n.tr(MaterialYou.LABELS[which]), selected, toggle(types[2], which),
+                            subtitle == null ? null : I18n.tr(subtitle), false, args[0], 0, subtitle == null ? 24 : 16);
                     break;
                 }
                 return null;

@@ -133,9 +133,8 @@
   "Puzzle games shortcut": "ทางลัดเกมปริศนา",
   "Add it to the menu of the LinkedIn app icon.": "เพิ่มลงในเมนูของไอคอนแอป LinkedIn",
   "Glass navigation bar": "แถบนำทางแบบกระจก",
-  "A floating, translucent navigation bar.": "แถบนำทางโปร่งแสงที่ลอยอยู่",
   "Liquid Glass": "Liquid Glass",
-  "Blurs what's behind the bar and bends it at the edges. Turn it off on a slower phone.": "เบลอสิ่งที่อยู่หลังแถบและหักเหที่ขอบ ปิดไว้หากโทรศัพท์ทำงานช้า",
+  "Blurs what's behind the glass. Uses more battery and might stutter.": "เบลอสิ่งที่อยู่ด้านหลังกระจก ใช้แบตเตอรี่มากขึ้นและอาจกระตุก",
   "Always show navigation bar": "แสดงแถบนำทางตลอดเวลา",
   "Keeps the navigation bar on screen while you scroll.": "แถบนำทางจะยังอยู่บนหน้าจอขณะเลื่อน",
   "Text under the navigation bar icons.": "ข้อความใต้ไอคอนของแถบนำทาง",
@@ -179,5 +178,8 @@
   "Hide App Mall": "ซ่อนร้านแอป",
   "Me": "ฉัน",
   "Ads": "โฆษณา",
-  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "บังคับโหมดมืดในแผงควบคุมอุปกรณ์ที่ไม่มีโหมดมืด มีผลเมื่อเปิดแผง และเฉพาะเมื่ออยู่ในโหมดมืดเท่านั้น"
+  "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "บังคับโหมดมืดในแผงควบคุมอุปกรณ์ที่ไม่มีโหมดมืด มีผลเมื่อเปิดแผง และเฉพาะเมื่ออยู่ในโหมดมืดเท่านั้น",
+  "Background blur": "เบลอพื้นหลัง",
+  "Liquid Glass navigation bar": "แถบนำทาง Liquid Glass",
+  "A floating, translucent navigation bar.": "แถบนำทางโปร่งแสงที่ลอยอยู่"
 }
