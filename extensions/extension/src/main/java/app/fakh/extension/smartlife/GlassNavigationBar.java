@@ -35,13 +35,23 @@ public final class GlassNavigationBar {
     }
 
     /**
-     * Injected after the tab host adds a tab; only the first call installs the capsule.
+     * Injected after the tab host adds a tab; only the first call installs the capsule, or the label hiding when the
+     * glass is off.
      *
      * @param host the app's tab host
      */
     public static void install(TabHost host) {
-        if (!Switches.liquidGlass(host.getContext())) return;
         TabWidget widget = host.getTabWidget();
+        if (!Switches.liquidGlass(host.getContext())) {
+            // The labels switch does not depend on the glass: the plain bar loses its labels too.
+            if (widget != null && Switches.hideTabLabels()) {
+                widget.getViewTreeObserver().addOnPreDrawListener(() -> {
+                    hideLabels(widget);
+                    return true;
+                });
+            }
+            return;
+        }
         if (widget == null || widget.getBackground() instanceof GlassCapsule) return;
         Context context = host.getContext();
         float density = context.getResources().getDisplayMetrics().density;
