@@ -1,6 +1,6 @@
 # GitHub
 
-Patches for the GitHub app (`com.github.android`, versions `1.282.0` and `1.283.0`, APKM from APKMirror).
+Patches for the GitHub app (`com.github.android`, versions `1.282.0`, `1.283.0` and `1.284.0`, APKM from APKMirror).
 
 ## Patches
 
@@ -35,5 +35,5 @@ java -jar morphe-desktop-1.19.1-all.jar patch -p patches/build/libs/patches-<ver
 
 ## Getting the APK
 
-Download the `1.283.0` APKM from APKMirror; `1.282.0` works too. Morphe Manager looks the app up on APKMirror itself,
+Download the `1.284.0` APKM from APKMirror; `1.282.0` and `1.283.0` work too. Morphe Manager looks the app up on APKMirror itself,
 so it can take you to that page.

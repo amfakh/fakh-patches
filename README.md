@@ -18,7 +18,7 @@ Each app has its own README with the full patch list.
 | detikcom | `org.detikcom.rss` | `7.14.1` | APK from APKMirror | [apps/detik](apps/detik/README.md) |
 | DoDo Music | `com.dundunstudio.autoplay` | `2.0.14`, `2.0.17` | XAPK from APKPure | [apps/dodo](apps/dodo/README.md) |
 | FlipSide | `com.dinoster.flipside` | `1.6` | APKS from APKCube | [apps/flipside](apps/flipside/README.md) |
-| GitHub | `com.github.android` | `1.282.0`, `1.283.0` | APKM from APKMirror | [apps/github](apps/github/README.md) |
+| GitHub | `com.github.android` | `1.282.0`, `1.283.0`, `1.284.0` | APKM from APKMirror | [apps/github](apps/github/README.md) |
 | IDN | `com.idntimes.idntimes` | `6.69.1` | XAPK or APKS from APKPure or APKCube | [apps/idn](apps/idn/README.md) |
 | Jira | `com.atlassian.android.jira.core` | `2026.21.2` | APKM from APKMirror | [apps/jira](apps/jira/README.md) |
 | KOMPAS.com | `com.ertanto.kompas.official` | `9.8.4` | XAPK from APKPure | [apps/kompas](apps/kompas/README.md) |
