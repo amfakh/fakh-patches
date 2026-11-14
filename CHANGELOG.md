@@ -1,3 +1,31 @@
+## [1.22.0](https://github.com/amfakh/fakh-patches/compare/v1.21.0...v1.22.0) (2026-11-14)
+
+### New Features
+
+* **Smart Life:** add a Hide tab labels switch to the Liquid Glass navigation bar, off by default, that removes the text under the icons ([bd8b6ee](https://github.com/amfakh/fakh-patches/commit/bd8b6ee3ce6c8df62be659f7c2b30d88f2752185))
+* **Tuya Smart:** add a Hide tab labels switch to the Liquid Glass navigation bar, off by default, that removes the text under the icons ([bd8b6ee](https://github.com/amfakh/fakh-patches/commit/bd8b6ee3ce6c8df62be659f7c2b30d88f2752185))
+* **BARDI Smart Home:** add a Hide tab labels switch to the Liquid Glass navigation bar, off by default, that removes the text under the icons ([bd8b6ee](https://github.com/amfakh/fakh-patches/commit/bd8b6ee3ce6c8df62be659f7c2b30d88f2752185))
+* **LinkedIn:** turn on Glass navigation bar, Hide gaps and dividers, Material You and Pitch black in Morphe by default, with Background blur and Pitch black off in the app ([63aef82](https://github.com/amfakh/fakh-patches/commit/63aef82a8875499cc775c32f4696c5a457d2e82d))
+* **GitHub:** turn on Glass navigation bar in Morphe by default, with the Liquid Glass navigation bar switch on in the app ([63aef82](https://github.com/amfakh/fakh-patches/commit/63aef82a8875499cc775c32f4696c5a457d2e82d))
+* **Jira:** Background blur is off by default ([63aef82](https://github.com/amfakh/fakh-patches/commit/63aef82a8875499cc775c32f4696c5a457d2e82d))
+* **LinkedIn:** Disable analytics and Anonymous profile viewing are on in the app by default ([e2dff51](https://github.com/amfakh/fakh-patches/commit/e2dff51afccc3a32fa95857e6a72fcb168e98f33))
+
+### Bug Fixes
+
+* **Smart Life:** fix patching failing on this app in v1.21.0 ([3b78e8e](https://github.com/amfakh/fakh-patches/commit/3b78e8ed8fb71745c74a45234cf3b6a8b822b04d))
+* **Tuya Smart:** fix patching failing on this app in v1.21.0 ([3b78e8e](https://github.com/amfakh/fakh-patches/commit/3b78e8ed8fb71745c74a45234cf3b6a8b822b04d))
+* **BARDI Smart Home:** fix patching failing on this app in v1.21.0 ([3b78e8e](https://github.com/amfakh/fakh-patches/commit/3b78e8ed8fb71745c74a45234cf3b6a8b822b04d))
+* **DoDo Music:** fix patching failing on this app in v1.21.0 ([3b78e8e](https://github.com/amfakh/fakh-patches/commit/3b78e8ed8fb71745c74a45234cf3b6a8b822b04d))
+* **KOMPAS.com:** fix patching failing on this app in v1.21.0 ([3b78e8e](https://github.com/amfakh/fakh-patches/commit/3b78e8ed8fb71745c74a45234cf3b6a8b822b04d))
+* **Smart Life:** keep the camera card on the Home tab rounded with Liquid Glass on, with the glass edge over it ([556379d](https://github.com/amfakh/fakh-patches/commit/556379dfeb607220155b0725b003dad36c86e25b))
+* **Tuya Smart:** keep the camera card on the Home tab rounded with Liquid Glass on, with the glass edge over it ([556379d](https://github.com/amfakh/fakh-patches/commit/556379dfeb607220155b0725b003dad36c86e25b))
+* **BARDI Smart Home:** keep the camera card on the Home tab rounded with Liquid Glass on, with the glass edge over it ([556379d](https://github.com/amfakh/fakh-patches/commit/556379dfeb607220155b0725b003dad36c86e25b))
+
+### Updated App Support
+
+* **CoverScreen OS:** add support for `CSOS_9.0.2_BETA`, in place of `CSOS_9.0.1_BETA` ([d93ad4c](https://github.com/amfakh/fakh-patches/commit/d93ad4cfc821a12d7b01b590ccc51957290b8c2a))
+* **GitHub:** add support for `1.284.0`, next to `1.283.0` ([3d4d172](https://github.com/amfakh/fakh-patches/commit/3d4d172a74e0e3f31fe8c38a691ffb34e3b35180))
+
 ## [1.21.0](https://github.com/amfakh/fakh-patches/compare/v1.20.0...v1.21.0) (2026-11-14)
 
 ### New Features
