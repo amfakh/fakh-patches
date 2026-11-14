@@ -136,6 +136,16 @@ public final class MaterialYou {
         return pack(0xFF000000 | (context.getColor(DARK_SURFACES.get(DARK_CANVAS)) & 0xFFFFFF));
     }
 
+    /** The canvas of Jira's pages, behind their cards, as the palettes color it. */
+    static int canvas(Context context) {
+        return (int) (paletteColor(pack(app.fakh.extension.shared.MaterialYou.night(context) ? 0xFF000000 | DARK_CANVAS : 0xFFF8F8F8)) >>> 32);
+    }
+
+    /** The cards of Jira's pages, as the palettes color them. */
+    static int card(Context context) {
+        return (int) (paletteColor(pack(app.fakh.extension.shared.MaterialYou.night(context) ? 0xFF000000 | DARK_CARD : 0xFFFFFFFF)) >>> 32);
+    }
+
     /** Whether the Material You patch is in; the patch makes this return true. */
     static boolean isMaterialYouIncluded() {
         return false;
