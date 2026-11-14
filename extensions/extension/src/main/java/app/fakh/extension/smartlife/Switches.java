@@ -77,14 +77,15 @@ public final class Switches {
     }
 
     /**
-     * Whether the switch {@code key} is on: on until turned off (off until turned on for the tab labels), and off when
-     * its patch is not in the app. Asked by the patches' code before it hides or changes anything.
+     * Whether the switch {@code key} is on: on until turned off (off until turned on for the tab labels and the dark
+     * panels), and off when its patch is not in the app. Asked by the patches' code before it hides or changes
+     * anything.
      *
      * @param key the switch's key
      * @return the switch's state
      */
     public static boolean on(String key) {
-        return present(key) && prefs().getBoolean(key, !HIDE_TAB_LABELS.equals(key));
+        return present(key) && prefs().getBoolean(key, !HIDE_TAB_LABELS.equals(key) && !DARK_PANELS.equals(key));
     }
 
     /** Whether the patch of the switch {@code key} is in the app. */
