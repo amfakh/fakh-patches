@@ -4,7 +4,7 @@ Patches for the LinkedIn app (`com.linkedin.android`, versions `4.1.1264`, `4.1.
 
 ## Patches
 
-Every patch is on by default except Material You, Pitch black, Hide gaps and dividers, and GmsCore support.
+Every patch is on by default except GmsCore support.
 Morphe Manager groups them by category.
 
 | Category | Patch | Default | What it does |

@@ -243,7 +243,7 @@ public final class SettingsActivity extends Activity {
             if (Settings.isGlassNavigationBarIncluded()) {
                 navigation.toggle(Settings.GLASS_NAVIGATION_BAR, true, "Liquid Glass navigation bar",
                         "A floating, translucent navigation bar.");
-                navigation.toggle(Settings.LIQUID_GLASS, true, "Background blur",
+                navigation.toggle(Settings.LIQUID_GLASS, false, "Background blur",
                         "Blurs what's behind the glass. Uses more battery and might stutter.");
             }
             if (Settings.isAlwaysShowNavigationBarIncluded()) {
@@ -286,7 +286,7 @@ public final class SettingsActivity extends Activity {
                         "Colors from your wallpaper across the app.");
             }
             if (Settings.isAmoledBlackIncluded()) {
-                appearance.toggle(Settings.PITCH_BLACK, true, "Pitch black",
+                appearance.toggle(Settings.PITCH_BLACK, false, "Pitch black",
                         "Black backgrounds in dark mode.");
             }
             categories.add(appearance);
