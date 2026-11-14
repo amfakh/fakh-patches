@@ -1,3 +1,11 @@
+## [1.22.3](https://github.com/amfakh/fakh-patches/compare/v1.22.2...v1.22.3) (2026-11-14)
+
+### Bug Fixes
+
+* **Smart Life:** Dark device panels is now selected by default in Morphe, but panels stay as they are until you turn on the Dark Device Panels switch on the Fakh Patches page; if you used it before without touching that switch, turn it on again ([12acb56](https://github.com/amfakh/fakh-patches/commit/12acb56b48cd89b31b32f9a54762790875c28773))
+* **Tuya Smart:** Dark device panels is now selected by default in Morphe, but panels stay as they are until you turn on the Dark Device Panels switch on the Fakh Patches page; if you used it before without touching that switch, turn it on again ([12acb56](https://github.com/amfakh/fakh-patches/commit/12acb56b48cd89b31b32f9a54762790875c28773))
+* **BARDI Smart Home:** Dark device panels is now selected by default in Morphe, but panels stay as they are until you turn on the Dark Device Panels switch on the Fakh Patches page; if you used it before without touching that switch, turn it on again ([12acb56](https://github.com/amfakh/fakh-patches/commit/12acb56b48cd89b31b32f9a54762790875c28773))
+
 ## [1.22.2](https://github.com/amfakh/fakh-patches/compare/v1.22.1...v1.22.2) (2026-11-14)
 
 ### Bug Fixes
