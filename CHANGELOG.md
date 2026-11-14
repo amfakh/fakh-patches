@@ -1,3 +1,15 @@
+## [1.22.2](https://github.com/amfakh/fakh-patches/compare/v1.22.1...v1.22.2) (2026-11-14)
+
+### Bug Fixes
+
+* **KOMPAS.com:** GmsCore support now gets push notifications, since Firebase no longer refuses the patched app's push registration ([7fb76f1](https://github.com/amfakh/fakh-patches/commit/7fb76f19d89adbee706a67b447f0444ce04cf09e))
+* **LinkedIn:** GmsCore support now gets push notifications, since Firebase no longer refuses the patched app's push registration ([7fb76f1](https://github.com/amfakh/fakh-patches/commit/7fb76f19d89adbee706a67b447f0444ce04cf09e))
+* **DoDo Music:** GmsCore support now gets push notifications, since Firebase no longer refuses the patched app's push registration ([7fb76f1](https://github.com/amfakh/fakh-patches/commit/7fb76f19d89adbee706a67b447f0444ce04cf09e))
+* **Smart Life:** GmsCore support now gets push notifications, since Firebase no longer refuses the patched app's push registration ([7fb76f1](https://github.com/amfakh/fakh-patches/commit/7fb76f19d89adbee706a67b447f0444ce04cf09e))
+* **Tuya Smart:** GmsCore support now gets push notifications, since Firebase no longer refuses the patched app's push registration ([7fb76f1](https://github.com/amfakh/fakh-patches/commit/7fb76f19d89adbee706a67b447f0444ce04cf09e))
+* **BARDI Smart Home:** GmsCore support now gets push notifications, since Firebase no longer refuses the patched app's push registration ([7fb76f1](https://github.com/amfakh/fakh-patches/commit/7fb76f19d89adbee706a67b447f0444ce04cf09e))
+* **BARDI Smart Home:** add Dark device panels, which Smart Life and Tuya Smart already had ([4fa6fa0](https://github.com/amfakh/fakh-patches/commit/4fa6fa0ae1c73250b8539555fd94d2e77c23078e))
+
 ## [1.22.1](https://github.com/amfakh/fakh-patches/compare/v1.22.0...v1.22.1) (2026-11-14)
 
 ### Bug Fixes
