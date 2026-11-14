@@ -1,5 +1,6 @@
 package app.fakh.patches.smartlife
 
+import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_BARDI
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_SMARTLIFE
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_TUYA_SMART
 import app.morphe.patcher.Fingerprint
@@ -49,7 +50,7 @@ val darkPanelsPatch = bytecodePatch(
         "mode, using Android's automatic dark theme. Its switch in Settings turns it off.",
     default = false,
 ) {
-    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART)
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
     category("Theme")
     extendWith("extensions/extension.mpe")
     dependsOn(forceDarkThemePatch, settingsSwitchesPatch)
