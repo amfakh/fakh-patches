@@ -2,9 +2,9 @@
 
 ### New Features
 
-* **Smart Life:** add Glass navigation bar, a floating translucent capsule with a sliding selection pill, and Glass cards for the Home tab ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
-* **Tuya Smart:** add Glass navigation bar, a floating translucent capsule with a sliding selection pill, and Glass cards for the Home tab ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
-* **BARDI Smart Home:** add Glass navigation bar, a floating translucent capsule with a sliding selection pill, and Glass cards for the Home tab ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
+* **Smart Life:** add Liquid Glass to the whole app: the Glass navigation bar (a floating capsule with a sliding selection pill that bends what is behind it), the AI ask bar and the cards on the Home tab, all as glass, with a Liquid Glass switch in Settings ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
+* **Tuya Smart:** add Liquid Glass to the whole app: the Glass navigation bar (a floating capsule with a sliding selection pill that bends what is behind it), the AI ask bar and the cards on the Home tab, all as glass, with a Liquid Glass switch in Settings ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
+* **BARDI Smart Home:** add Liquid Glass to the whole app: the Glass navigation bar (a floating capsule with a sliding selection pill that bends what is behind it), the AI ask bar and the cards on the Home tab, all as glass, with a Liquid Glass switch in Settings ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
 * **Smart Life:** add Dark device panels, which darkens device control panels that have no dark mode of their own, and a Fakh Patches row in Settings with a switch for each patch ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
 * **Tuya Smart:** add Dark device panels, which darkens device control panels that have no dark mode of their own, and a Fakh Patches row in Settings with a switch for each patch ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
 * **BARDI Smart Home:** add a Fakh Patches row in Settings with a switch for each patch ([1db7a73](https://github.com/amfakh/fakh-patches/commit/1db7a73d03cf4e968d07f03cbb284544618c466f))
