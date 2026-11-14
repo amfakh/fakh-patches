@@ -288,7 +288,7 @@ public final class Settings {
 
     /** Off by default. */
     static boolean blockTracking() {
-        return isBlockTrackingIncluded() && get(BLOCK_TRACKING, false);
+        return isBlockTrackingIncluded() && get(BLOCK_TRACKING, true);
     }
 
     public static boolean isAnonymousProfileViewingIncluded() {
@@ -297,7 +297,7 @@ public final class Settings {
 
     /** Off by default. */
     static boolean anonymousProfileViewing() {
-        return isAnonymousProfileViewingIncluded() && get(ANONYMOUS_PROFILE_VIEWING, false);
+        return isAnonymousProfileViewingIncluded() && get(ANONYMOUS_PROFILE_VIEWING, true);
     }
 
     public static boolean isSwipeTabsIncluded() {

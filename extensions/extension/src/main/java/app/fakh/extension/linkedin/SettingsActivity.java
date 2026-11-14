@@ -366,11 +366,11 @@ public final class SettingsActivity extends Activity {
                         "Strip tracking from LinkedIn links you copy or share.");
             }
             if (Settings.isBlockTrackingIncluded()) {
-                privacy.toggle(Settings.BLOCK_TRACKING, false, "Disable analytics",
+                privacy.toggle(Settings.BLOCK_TRACKING, true, "Disable analytics",
                         "Stop most analytics events. Turn off if something breaks.");
             }
             if (Settings.isAnonymousProfileViewingIncluded()) {
-                privacy.toggle(Settings.ANONYMOUS_PROFILE_VIEWING, false, "Anonymous profile viewing",
+                privacy.toggle(Settings.ANONYMOUS_PROFILE_VIEWING, true, "Anonymous profile viewing",
                         "Visit profiles without being listed in Who viewed your profile.");
             }
             categories.add(privacy);
