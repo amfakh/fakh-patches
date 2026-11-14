@@ -47,7 +47,7 @@ val darkPanelsPatch = bytecodePatch(
     name = "Dark device panels",
     description = "Darkens device control panels that have no dark mode of their own while the phone is in dark " +
         "mode, using Android's automatic dark theme. Its switch in Settings turns it off.",
-    default = true,
+    default = false,
 ) {
     compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART)
     category("Theme")
