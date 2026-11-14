@@ -78,6 +78,8 @@ public final class FakhPatchesActivity extends ComponentActivity {
         scroll.addView(content);
         page.addView(scroll, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1));
         setContentView(page);
+        // Like the notification settings: the page opens and closes with no transition.
+        overridePendingTransition(0, 0);
 
         if (MaterialYou.isMaterialYouIncluded()) section("Appearance", new int[] {0, 1});
         section("Navigation bar", MaterialYou.isGlassNavigationBarIncluded() ? new int[] {4, 5, 3} : new int[] {3});
@@ -141,6 +143,9 @@ public final class FakhPatchesActivity extends ComponentActivity {
         final View view = (View) viewClass.getConstructor(Context.class).newInstance(this);
         final Method setContent = viewClass.getMethod("setContent", function2);
         final Object[] render = new Object[1];
+        final Object[] lambda = new Object[1];
+        // The first frame shows every switch off; the next one turns on the ones that are, so they slide on.
+        final boolean[] settled = {false};
         Runnable show = () -> {
             try {
                 final Object inner = Proxy.newProxyInstance(loader, new Class<?>[] {function2}, new InvocationHandler() {
@@ -183,15 +188,17 @@ public final class FakhPatchesActivity extends ComponentActivity {
                                                     }
                                                     MaterialYou.prefs(FakhPatchesActivity.this).edit()
                                                             .putBoolean(MaterialYou.KEYS[which], (Boolean) value[0]).commit();
-                                                    RestartBar.show(FakhPatchesActivity.this, 0);
-                                                    view.post((Runnable) render[0]);
+                                                    RestartBar.show(FakhPatchesActivity.this, 0, MaterialYou.materialYou(FakhPatchesActivity.this));
+                                                    // Redrawn in place, so the switch slides instead of starting in its new state.
+                                                    if (lambda[0] != null) FakhSettings.invalidate(lambda[0]);
+                                                    else view.post((Runnable) render[0]);
                                                     return null;
                                                 }
                                             });
                                             String subtitle = MaterialYou.SUBTITLES[which];
                                             switchMethod.invoke(null, I18n.tr(MaterialYou.LABELS[which]),
-                                                    MaterialYou.prefs(FakhPatchesActivity.this).getBoolean(MaterialYou.KEYS[which],
-                                                            MaterialYou.DEFAULTS[which]),
+                                                    settled[0] && MaterialYou.prefs(FakhPatchesActivity.this)
+                                                            .getBoolean(MaterialYou.KEYS[which], MaterialYou.DEFAULTS[which]),
                                                     change, subtitle == null ? null : I18n.tr(subtitle), true, composer[0], 0, 0);
                                             return null;
                                         }
@@ -207,12 +214,15 @@ public final class FakhPatchesActivity extends ComponentActivity {
                         return null;
                     }
                 });
+                // The theme's content is a composable lambda of its own, so a change can redraw just it.
+                lambda[0] = Class.forName("ta4", true, loader).getConstructor(int.class, boolean.class, Object.class)
+                        .newInstance(0x5fa7, true, inner);
                 // The screens of the app sit in its theme; every color, shape and size of it is the default.
                 setContent.invoke(view, Proxy.newProxyInstance(loader, new Class<?>[] {function2}, new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         if (args == null || args.length != 2) return MaterialYou.objectMethod(proxy, method, args);
-                        themeMethod.invoke(themeInstance, null, false, null, null, null, null, inner, args[0], 0, 0x3f);
+                        themeMethod.invoke(themeInstance, null, false, null, null, null, null, lambda[0], args[0], 0, 0x3f);
                         return null;
                     }
                 }));
@@ -222,7 +232,27 @@ public final class FakhPatchesActivity extends ComponentActivity {
         };
         render[0] = show;
         show.run();
+        // Counted from when the card is on screen, so its first frame is the off one.
+        view.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View attached) {
+                attached.removeOnAttachStateChangeListener(this);
+                attached.postDelayed(() -> {
+                    settled[0] = true;
+                    if (lambda[0] != null) FakhSettings.invalidate(lambda[0]);
+                }, 60);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View detached) {}
+        });
         return view;
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(0, 0);
     }
 
     /** The back arrow and the page title, like the top of Jira's Account screen. */

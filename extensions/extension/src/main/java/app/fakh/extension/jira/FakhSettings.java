@@ -200,7 +200,7 @@ public final class FakhSettings {
                 open[0] = false;
                 view.post(() -> host.removeView(view));
                 if (changed[0]) {
-                    RestartBar.show(activity, 0);
+                    RestartBar.show(activity, 0, MaterialYou.materialYou(activity));
                     closed.run();
                 }
                 return null;
@@ -262,7 +262,7 @@ public final class FakhSettings {
      * Redraws where a composable lambda is drawn, as its update does: invalidates the recompose scopes it keeps (one,
      * and a list once it is drawn in more than one place).
      */
-    private static void invalidate(Object lambda) {
+    static void invalidate(Object lambda) {
         try {
             for (java.lang.reflect.Field field : lambda.getClass().getDeclaredFields()) {
                 field.setAccessible(true);

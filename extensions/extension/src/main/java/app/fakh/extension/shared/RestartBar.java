@@ -24,6 +24,17 @@ public final class RestartBar {
      * @param bottom   extra space under the bar, such as the height of the navigation bar, in pixels
      */
     public static void show(Activity activity, int bottom) {
+        show(activity, bottom, false);
+    }
+
+    /**
+     * Like {@link #show(Activity, int)}, with the Restart action in the wallpaper's accent when its colors apply.
+     *
+     * @param activity the activity to show it in
+     * @param bottom   extra space under the bar, in pixels
+     * @param dynamic  whether the user turned Material You on
+     */
+    public static void show(Activity activity, int bottom, boolean dynamic) {
         ViewGroup root = activity.findViewById(android.R.id.content);
         if (root == null) return;
         View old = root.findViewWithTag(TAG);
@@ -34,7 +45,8 @@ public final class RestartBar {
         // highest surface container in the dark one, so the bar never lights up a dark screen.
         int surface = night ? 0xFF36343B : 0xFF322F35;
         int text = night ? 0xFFE6E0E9 : 0xFFF5EFF7;
-        int action = 0xFFD0BCFF;
+        // The inverse primary of a dark bar is the wallpaper's tone 80, in both themes.
+        int action = MaterialYou.wallpaper(dynamic) ? activity.getColor(android.R.color.system_accent1_200) : 0xFF8AB4F8;
 
         LinearLayout bar = new LinearLayout(activity);
         bar.setTag(TAG);
