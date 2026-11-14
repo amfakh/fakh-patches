@@ -72,10 +72,12 @@ public final class GlassNavigationBar {
         // plus a gap, so it doesn't cover the capsule's top edge. The app adds it after the tabs.
         int aiBar = context.getResources().getIdentifier("hometab_hey_entry_host", "id", context.getPackageName());
         float lift = -(BOTTOM_MARGIN_DP + AI_BAR_GAP_DP) * density;
+        boolean hideLabels = Switches.hideTabLabels();
         widget.getViewTreeObserver().addOnPreDrawListener(() -> {
             if (widget.getBackground() != capsule) widget.setBackground(capsule);
             selection.arrange();
             selection.refresh();
+            if (hideLabels) hideLabels(widget);
             View ask = aiBar == 0 ? null : widget.getRootView().findViewById(aiBar);
             if (ask != null) {
                 if (ask.getTranslationY() != lift) ask.setTranslationY(lift);
@@ -83,6 +85,21 @@ public final class GlassNavigationBar {
             }
             return true;
         });
+    }
+
+    /** Hides the text under each tab's icon and centers the icon in the tab. */
+    private static void hideLabels(TabWidget widget) {
+        Context context = widget.getContext();
+        int title = context.getResources().getIdentifier("title", "id", context.getPackageName());
+        int icon = context.getResources().getIdentifier("icon", "id", context.getPackageName());
+        for (int i = 0; i < widget.getChildCount(); i++) {
+            View tab = widget.getChildAt(i);
+            View label = tab.findViewById(title);
+            View image = tab.findViewById(icon);
+            if (label == null || image == null) continue;
+            label.setVisibility(View.GONE);
+            image.setTranslationY((tab.getHeight() - image.getHeight()) / 2f - image.getTop());
+        }
     }
 
     /**
