@@ -1,3 +1,9 @@
+## [2.2.4](https://github.com/amfakh/fakh-patches/compare/v2.2.3...v2.2.4) (2026-11-17)
+
+### Updated App Support
+
+* **CoverScreen OS:** add support for `CSOS_9.0.3_BETA`, replacing `CSOS_9.0.2_BETA` ([91fd2ce](https://github.com/amfakh/fakh-patches/commit/91fd2cec93d655e5fceee638b63abc04cfc07316))
+
 ## [2.2.3](https://github.com/amfakh/fakh-patches/compare/v2.2.2...v2.2.3) (2026-11-17)
 
 ### Bug Fixes
