@@ -271,8 +271,8 @@ public final class SettingsActivity extends Activity {
             topBar.add(choice(Settings.SHOW_TOP_BAR_MESSAGING, true, "Messaging"));
             categories.add(new Category("Top bar").sheet("Top bar buttons", topBar,
                     () -> showSheet("Top bar buttons", "Choose which buttons the top bar shows.", topBar, Arrays.asList(
-                            tabIcon(new String[]{"POST", null, null, IconDrawable.POST_TAB_OUTLINE}),
-                            tabIcon(new String[]{"MESSAGING", null, null, IconDrawable.CHAT_TAB_OUTLINE})))));
+                            stockIcon("POST", IconDrawable.POST_TAB_OUTLINE),
+                            stockIcon("MESSAGING", IconDrawable.CHAT_TAB_OUTLINE)))));
         }
 
         if (Settings.isVideoTabIncluded()) {
@@ -288,7 +288,7 @@ public final class SettingsActivity extends Activity {
             for (MoreMenu.Item item : MoreMenu.items()) moreItems.add(choice(item.key(), true, item.label));
             more.sheet("Items in the More tab", moreItems, () -> {
                 List<Drawable> icons = new ArrayList<>();
-                for (MoreMenu.Item item : MoreMenu.items()) icons.add(new IconDrawable(MoreMenu.icon(item.id), textPrimary));
+                for (MoreMenu.Item item : MoreMenu.items()) icons.add(moreIcon(item.id));
                 showSheet("Items in the More tab", "Choose which items the More tab lists.", moreItems, icons);
             });
             categories.add(more);
@@ -1020,6 +1020,34 @@ public final class SettingsActivity extends Activity {
                     sheet = null;
                     refresh();
                 });
+    }
+
+    /** The icon of a More tab item: LinkedIn's own, as the app draws it. */
+    private Drawable moreIcon(String id) {
+        String name = "voyagerIcNav" + Character.toUpperCase(id.charAt(0)) + id.substring(1) + "Selector24dp";
+        return themedIcon(name, MoreMenu.icon(id));
+    }
+
+    /** LinkedIn's icon of a top bar button, which the Material icons switch does not change. */
+    private Drawable stockIcon(String tab, String material) {
+        int resource = NavigationBar.stockIcon(this, tab);
+        return resource == 0 ? new IconDrawable(material, textPrimary) : tinted(resource);
+    }
+
+    /** The icon a theme attribute of the app points to, or the Material one when the theme has none. */
+    private Drawable themedIcon(String attrName, String material) {
+        int attr = getResources().getIdentifier(attrName, "attr", getPackageName());
+        TypedValue value = new TypedValue();
+        if (attr != 0 && NavigationBar.appTheme(this).resolveAttribute(attr, value, true) && value.resourceId != 0) {
+            return tinted(value.resourceId);
+        }
+        return new IconDrawable(material, textPrimary);
+    }
+
+    private Drawable tinted(int resource) {
+        Drawable drawable = getResources().getDrawable(resource, getTheme()).mutate();
+        drawable.setTint(textPrimary);
+        return drawable;
     }
 
     /** The tab's icon as the navigation bar draws it: Material, or LinkedIn's own once the bar has drawn that. */

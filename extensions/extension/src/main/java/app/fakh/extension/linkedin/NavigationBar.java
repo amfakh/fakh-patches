@@ -334,11 +334,11 @@ public final class NavigationBar {
     private static final Map<String, String> STOCK_ATTRS = new HashMap<>();
 
     static {
-        STOCK_ATTRS.put("post", "voyagerIcNavComposeLarge32dp");
+        STOCK_ATTRS.put("post", "voyagerIcNavPostOutline24dp");
         STOCK_ATTRS.put("messaging", "voyagerIcNavMessagingInactiveLarge32dp");
         STOCK_ATTRS.put("news", "voyagerIcNavNewsSelector24dp");
         STOCK_ATTRS.put("video", "voyagerIcNavVideoSelector24dp");
-        STOCK_ATTRS.put("more", "voyagerIcNavOverflowInactiveLarge32dp");
+        STOCK_ATTRS.put("more", "voyagerIcNavMoreSelector24dp");
     }
 
     /**
@@ -352,7 +352,26 @@ public final class NavigationBar {
         String name = STOCK_ATTRS.get(key);
         int attr = name == null ? 0 : context.getResources().getIdentifier(name, "attr", context.getPackageName());
         TypedValue value = new TypedValue();
-        return attr != 0 && context.getTheme().resolveAttribute(attr, value, true) ? value.resourceId : 0;
+        return attr != 0 && appTheme(context).resolveAttribute(attr, value, true) ? value.resourceId : 0;
+    }
+
+    /**
+     * The theme of the app's main activity, where the icon attributes have values; the theme of the settings screen
+     * has none for them.
+     */
+    static android.content.res.Resources.Theme appTheme(Context context) {
+        try {
+            android.content.Intent launch = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
+            int style = context.getPackageManager().getActivityInfo(launch.getComponent(), 0).theme;
+            if (style != 0) {
+                android.content.res.Resources.Theme theme = context.getResources().newTheme();
+                theme.applyStyle(style, true);
+                return theme;
+            }
+        } catch (Throwable t) {
+            Diagnostics.error("app theme failed", t);
+        }
+        return context.getTheme();
     }
 
     static View child(View parent, String name) {
