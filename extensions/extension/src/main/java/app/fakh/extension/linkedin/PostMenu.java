@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Adds Copy text, Download photos and videos, and Save document as PDF to the ⋯ menu of feed posts.
+ * Adds Copy text and Download media (photos, videos and documents) to the ⋯ menu of feed posts.
  * <p>
  * The menu is a server driven page (feed-control-menu-page) with one row per item (feed-control-menu-save, ...).
  * The Save row is copied with its label replaced and its tap action (the component's triggers) replaced by a
@@ -94,7 +94,7 @@ final class PostMenu {
 
     /** Called with the payload of every feed post (feed-full-update). */
     static void remember(byte[] payload) {
-        if (payload == null || (!Settings.postMenu() && !Settings.downloadMedia())) return;
+        if (payload == null || !Settings.postMenu()) return;
         long signature = signature(payload);
         synchronized (remembered) {
             if (remembered.containsKey(signature)) return;
@@ -127,7 +127,7 @@ final class PostMenu {
 
     /** Called with the payload of every comment (comment-container): remembers its text by the comment's id. */
     static void rememberComment(byte[] payload) {
-        if (payload == null || !Settings.postMenu()) return;
+        if (payload == null || !Settings.copyText()) return;
         try {
             for (String s : ProtoScanner.scan(payload).strings) {
                 Matcher m = COMMENT_REFERENCE.matcher(s);
@@ -152,7 +152,7 @@ final class PostMenu {
     /** Called with every SDUI component before it is transformed; returns it, or a copy with the items added. */
     static Object inject(Object component, byte[] bytes) {
         try {
-            if (Settings.postMenu() && bytes != null && ProtoEdit.contains(bytes, COMMENT_TEMPLATE)
+            if (Settings.copyText() && bytes != null && ProtoEdit.contains(bytes, COMMENT_TEMPLATE)
                     && ProtoEdit.contains(bytes, COMMENT_LAST_ROW) && !ProtoEdit.contains(bytes, SCHEME + "://")) {
                 return injectComment(component, bytes);
             }
@@ -174,14 +174,11 @@ final class PostMenu {
                 post = posts.get(urn);
             }
             List<String[]> items = new ArrayList<>();
-            if (post != null && post.text != null) {
+            if (Settings.copyText() && post != null && post.text != null) {
                 items.add(new String[]{"copy", I18n.tr("Copy text"), "fakh-post-copy-text"});
             }
-            if (post != null && !post.media.isEmpty()) {
-                items.add(new String[]{"download", I18n.tr("Download photos and videos"), "fakh-post-download"});
-            }
-            if (post != null && document(post) != null) {
-                items.add(new String[]{"pdf", I18n.tr("Save document as PDF"), "fakh-post-pdf"});
+            if (Settings.downloadMedia() && post != null && (!post.media.isEmpty() || document(post) != null)) {
+                items.add(new String[]{"download", I18n.tr("Download media"), "fakh-post-download"});
             }
             if (items.isEmpty()) return component;
             byte[] edited = addRows(bytes, urn, items, TEMPLATE, ROW_MARKER, PAGE, null);
@@ -372,6 +369,7 @@ final class PostMenu {
                 showCopy(post.text);
                 break;
             case "download":
+                // Photos and videos go to the download manager; a document is saved as a PDF.
                 int started = 0;
                 boolean allVideos = true;
                 for (MediaItem item : post.media) {
@@ -379,13 +377,11 @@ final class PostMenu {
                     allVideos &= item.video;
                 }
                 if (started > 0) Downloads.toastStarted(activity, started, allVideos);
-                break;
-            case "pdf":
                 DocumentPdf.Doc doc = document(post);
-                if (doc == null) {
-                    Downloads.toast(activity, "Open the document once, then try again");
-                } else {
+                if (doc != null) {
                     DocumentPdf.save(activity, doc);
+                } else if (post.media.isEmpty()) {
+                    Downloads.toast(activity, "Open the document once, then try again");
                 }
                 break;
             default:
@@ -399,20 +395,6 @@ final class PostMenu {
             Activity front = SduiMediaDownload.frontActivity();
             if (front != null && !front.isFinishing()) CopyText.show(front, text);
         }, 400);
-    }
-
-    /** The media of the remembered post with a video whose asset id one of [identifiers] contains, or none. */
-    static List<MediaItem> mediaFor(List<String> identifiers) {
-        synchronized (posts) {
-            for (Post post : posts.values()) {
-                for (MediaItem item : post.media) {
-                    for (String identifier : identifiers) {
-                        if (item.video && identifier.contains(item.assetId)) return post.media;
-                    }
-                }
-            }
-        }
-        return new ArrayList<>();
     }
 
     private static DocumentPdf.Doc document(Post post) {

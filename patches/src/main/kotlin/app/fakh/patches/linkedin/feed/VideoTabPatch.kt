@@ -22,7 +22,7 @@ private object SetPlayWhenReadyFingerprint : Fingerprint(
 @Suppress("unused")
 val videoTabPatch = patch(
     name = "Video tab",
-    description = "Adds a download button, the video's time and auto scroll to the Video tab. " +
+    description = "Shows the video's time above the seek bar and can go to the next video when one ends. " +
         "Adds switches in Fakh Patches.",
     default = true
 ) {

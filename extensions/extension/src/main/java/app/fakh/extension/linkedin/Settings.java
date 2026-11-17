@@ -45,7 +45,7 @@ public final class Settings {
     static final String SWIPE_TABS = "swipe_tabs";
     static final String KEEP_FEED = "keep_feed";
     static final String VIEWER_TAP_TO_HIDE = "viewer_tap_to_hide";
-    static final String POST_MENU = "post_menu";
+    static final String COPY_TEXT = "copy_text";
     static final String GLASS_NAVIGATION_BAR = "glass_navigation_bar";
     static final String LIQUID_GLASS = "liquid_glass";
     static final String ALWAYS_SHOW_NAVIGATION_BAR = "always_show_navigation_bar";
@@ -66,7 +66,6 @@ public final class Settings {
     static final String PITCH_BLACK = "pitch_black";
     static final String MATERIAL_TAB_ICONS = "material_tab_icons";
     static final String DARK_APP_ICON = "dark_app_icon";
-    static final String VIDEO_TAB_DOWNLOAD = "video_tab_download";
     static final String VIDEO_TAB_TIME = "video_tab_time";
     static final String VIDEO_TAB_AUTO_SCROLL = "video_tab_auto_scroll";
     static final String HIDE_MORE_TAB = "hide_more_tab";
@@ -269,10 +268,6 @@ public final class Settings {
         return false;
     }
 
-    static boolean videoTabDownload() {
-        return isVideoTabIncluded() && get(VIDEO_TAB_DOWNLOAD, true);
-    }
-
     static boolean videoTabTime() {
         return isVideoTabIncluded() && get(VIDEO_TAB_TIME, true);
     }
@@ -412,8 +407,17 @@ public final class Settings {
         return false;
     }
 
+    /** Whether any item is added to the ⋯ menus: the shared hooks are in, and Copy text or Download media is on. */
     static boolean postMenu() {
-        return isPostMenuIncluded() && get(POST_MENU, true);
+        return isPostMenuIncluded() && (copyText() || downloadMedia());
+    }
+
+    public static boolean isCopyTextIncluded() {
+        return false;
+    }
+
+    static boolean copyText() {
+        return isCopyTextIncluded() && get(COPY_TEXT, true);
     }
 
     public static boolean isMessagingIncluded() {

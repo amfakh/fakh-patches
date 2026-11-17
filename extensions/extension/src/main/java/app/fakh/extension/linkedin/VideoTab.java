@@ -10,33 +10,26 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.WeakHashMap;
 
 /**
- * Extras of the Video tab (a server driven pager of videos): a download button for the video on screen, its time
- * above the seek bar, and moving on to the next video when one ends.
+ * Extras of the Video tab (a server driven pager of videos): the time of the video above the seek bar, and moving on
+ * to the next video when one ends.
  * <p>
  * The video on screen is the one whose player was last told to play (SimpleMediaPlayer.setPlayWhenReady), since the
- * tab prepares the next videos ahead but plays only the visible one. Its asset id, found in the player's media,
- * picks the post the Video tab sent for it (PostMenu), which holds the video's MP4 link.
+ * tab prepares the next videos ahead but plays only the visible one.
  */
 @SuppressWarnings("unused")
 public final class VideoTab {
     static final String SCREEN = "com.linkedin.sdui.flagshipnav.media.VideoTab";
-    private static final String DOWNLOAD_TAG = "fakh_video_tab_download";
     private static final String TIME_TAG = "fakh_video_tab_time";
     private static final long POLL_MS = 250;
 
@@ -106,9 +99,6 @@ public final class VideoTab {
         }
         ViewGroup content = activity.findViewById(android.R.id.content);
         if (content == null) return;
-        if (Settings.videoTabDownload() && content.findViewWithTag(DOWNLOAD_TAG) == null) {
-            content.addView(downloadButton(activity));
-        }
         if (Settings.videoTabTime() && content.findViewWithTag(TIME_TAG) == null) {
             content.addView(timeView(activity));
         }
@@ -132,22 +122,8 @@ public final class VideoTab {
         main.removeCallbacks(VideoTab::poll);
         ViewGroup content = activity.findViewById(android.R.id.content);
         if (content == null) return;
-        for (String tag : new String[]{DOWNLOAD_TAG, TIME_TAG}) {
-            View view = content.findViewWithTag(tag);
-            if (view != null) content.removeView(view);
-        }
-    }
-
-    private static View downloadButton(Activity activity) {
-        ImageButton button = Downloads.createButton(activity);
-        button.setTag(DOWNLOAD_TAG);
-        int size = Downloads.dp(activity, 48);
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(size, size, Gravity.TOP | Gravity.END);
-        params.topMargin = Downloads.dp(activity, 40);
-        params.setMarginEnd(Downloads.dp(activity, 8));
-        button.setLayoutParams(params);
-        button.setOnClickListener(v -> download(activity));
-        return button;
+        View view = content.findViewWithTag(TIME_TAG);
+        if (view != null) content.removeView(view);
     }
 
     /** The time of the video, right above the end of the seek bar. */
@@ -235,55 +211,6 @@ public final class VideoTab {
                 page.dispatchTouchEvent(event);
                 event.recycle();
             }, down + i * 16L);
-        }
-    }
-
-    // endregion
-
-    // region Download
-
-    private static void download(Activity activity) {
-        List<MediaItem> media = PostMenu.mediaFor(identifiers(playing.get()));
-        if (media.isEmpty()) {
-            Downloads.toast(activity, "Media not found");
-            return;
-        }
-        for (MediaItem item : media) Downloads.enqueue(activity, item.url, item.assetId, item.video);
-        Downloads.toastStarted(activity, media.size(), true);
-    }
-
-    /** The strings held by the player's current media and its key, a few levels deep, to find its asset id in. */
-    private static List<String> identifiers(Object player) {
-        List<String> found = new ArrayList<>();
-        if (player == null) return found;
-        Object key = Reflect.get(player, "currentMediaKey");
-        if (key != null) found.add(key.toString());
-        try {
-            collect(player.getClass().getMethod("getActiveMedia").invoke(player), found, 0);
-        } catch (Throwable t) {
-            Diagnostics.error("video tab media failed", t);
-        }
-        return found;
-    }
-
-    private static void collect(Object value, List<String> found, int depth) throws IllegalAccessException {
-        if (value == null || depth > 4) return;
-        if (value instanceof CharSequence || value instanceof android.net.Uri) {
-            found.add(value.toString());
-            return;
-        }
-        if (value instanceof Iterable) {
-            for (Object item : (Iterable<?>) value) collect(item, found, depth + 1);
-            return;
-        }
-        String type = value.getClass().getName();
-        if (type.startsWith("java.") || type.startsWith("android.") || value.getClass().isPrimitive()) return;
-        for (Class<?> c = value.getClass(); c != null && c != Object.class; c = c.getSuperclass()) {
-            for (Field field : c.getDeclaredFields()) {
-                if (Modifier.isStatic(field.getModifiers()) || field.getType().isPrimitive()) continue;
-                field.setAccessible(true);
-                collect(field.get(value), found, depth + 1);
-            }
         }
     }
 

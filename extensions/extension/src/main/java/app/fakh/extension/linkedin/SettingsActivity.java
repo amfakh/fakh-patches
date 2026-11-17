@@ -200,7 +200,7 @@ public final class SettingsActivity extends Activity {
                 || Settings.isExpandPostsIncluded() || Settings.isSwipeTabsIncluded()
                 || Settings.isKeepFeedIncluded()
                 || Settings.isViewerTapToHideIncluded()
-                || Settings.isPostMenuIncluded()) {
+                || Settings.isCopyTextIncluded()) {
             Category feed = new Category("Feed");
             if (Settings.isDisableDoubleTapLikeIncluded()) {
                 feed.toggle(Settings.DISABLE_DOUBLE_TAP_LIKE, true, "Turn off double-tap to like",
@@ -214,12 +214,12 @@ public final class SettingsActivity extends Activity {
                 feed.toggle(Settings.KEEP_FEED, true, "Keep feed on reopen",
                         "Stay where you were when you come back. Pull down or tap \"New posts\" for new posts.");
             }
-            if (Settings.isPostMenuIncluded()) {
-                feed.toggle(Settings.POST_MENU, true, "Post menu items",
-                        "Copy text, Download photos and videos, and Save document as PDF in the ⋯ menu of posts. Copy text is also in comments.");
+            if (Settings.isCopyTextIncluded()) {
+                feed.toggle(Settings.COPY_TEXT, true, "Copy text",
+                        "Adds Copy text to the ⋯ menu of posts and comments.");
             }
             if (Settings.isViewerTapToHideIncluded()) {
-                feed.toggle(Settings.VIEWER_TAP_TO_HIDE, true, "Tap to hide in viewers",
+                feed.toggle(Settings.VIEWER_TAP_TO_HIDE, true, "Tap to hide controls in viewers",
                         "Tap a video or document in full screen to hide its caption and buttons.");
             }
             if (Settings.isExpandPostsIncluded()) {
@@ -276,7 +276,6 @@ public final class SettingsActivity extends Activity {
 
         if (Settings.isVideoTabIncluded()) {
             categories.add(new Category("Video tab")
-                    .toggle(Settings.VIDEO_TAB_DOWNLOAD, true, "Download button", "Saves the video on screen.")
                     .toggle(Settings.VIDEO_TAB_TIME, true, "Show video time", "Above the seek bar.")
                     .toggle(Settings.VIDEO_TAB_AUTO_SCROLL, false, "Auto scroll",
                             "Goes to the next video when one ends."));
@@ -321,7 +320,7 @@ public final class SettingsActivity extends Activity {
         if (Settings.isDownloadMediaIncluded()) {
             categories.add(new Category("Download")
                     .toggle(Settings.DOWNLOAD_MEDIA, true, "Download button",
-                            "On photos, videos, profile photos, and banners.")
+                            "On photos, videos, profile photos, and banners, and in the ⋯ menu of posts.")
                     .value("Save location", new ValueRow() {
                         public String currentValue() {
                             return Settings.downloadSplitByType()
@@ -804,8 +803,8 @@ public final class SettingsActivity extends Activity {
                 {"Expand posts", Settings.isExpandPostsIncluded()},
                 {"Swipe between tabs", Settings.isSwipeTabsIncluded()},
                 {"Keep feed on reopen", Settings.isKeepFeedIncluded()},
-                {"Post menu items", Settings.isPostMenuIncluded()},
-                {"Tap to hide in viewers", Settings.isViewerTapToHideIncluded()},
+                {"Copy text", Settings.isCopyTextIncluded()},
+                {"Tap to hide controls in viewers", Settings.isViewerTapToHideIncluded()},
                 {"Video tab", Settings.isVideoTabIncluded()},
                 {"Download media", Settings.isDownloadMediaIncluded()},
                 {"Messaging", Settings.isMessagingIncluded()},

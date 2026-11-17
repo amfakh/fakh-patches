@@ -103,7 +103,7 @@ public final class DocumentPdf {
     public static void onDocument(Object documentAsset, Object source, int navigablePages, boolean fullScreen) {
         try {
             if (source == null) return;
-            if (!Settings.postMenu()) return;
+            if (!Settings.downloadMedia()) return;
             Doc doc = read(source, navigablePages);
             if (doc == null) return;
             byId.put(doc.id, doc);

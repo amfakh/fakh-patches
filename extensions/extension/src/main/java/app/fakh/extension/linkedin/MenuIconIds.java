@@ -67,9 +67,6 @@ final class MenuIconIds {
             case "download":
                 // Download (the V2 family has none; ids are global, so the V1 one is used).
                 return small ? 561 : 136;
-            case "pdf":
-                // Document / File outline.
-                return v2 ? (small ? 1300 : 1299) : (small ? 454 : 455);
             default:
                 return 0;
         }

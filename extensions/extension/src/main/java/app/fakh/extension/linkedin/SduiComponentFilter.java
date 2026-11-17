@@ -121,11 +121,11 @@ public final class SduiComponentFilter {
                 }
                 case "feed-update-screen-container":
                     // A post of the Video tab: remembered for Post menu items and its download button.
-                    if (Settings.postMenu() || Settings.downloadMedia()) PostMenu.remember(payload(component));
+                    if (Settings.postMenu()) PostMenu.remember(payload(component));
                     return false;
                 case "comment-container":
                     // A comment: remembered for Copy text in its \u22ef menu.
-                    if (Settings.postMenu()) PostMenu.rememberComment(payload(component));
+                    if (Settings.copyText()) PostMenu.rememberComment(payload(component));
                     return false;
                 case "job-card":
                     return hidePromotedJob(component);
