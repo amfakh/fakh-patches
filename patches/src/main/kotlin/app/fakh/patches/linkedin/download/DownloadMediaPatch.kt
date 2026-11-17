@@ -14,7 +14,7 @@ private const val EXTENSION_CLASS = "$EXTENSION_PACKAGE/DownloadMediaPatch;"
 @Suppress("unused")
 val downloadMediaPatch = patch(
     name = "Download media",
-    description = "Adds download buttons to the full screen viewers and Download media to the ⋯ menu of " +
+    description = "Adds download buttons to profile photos and banners and Download media to the ⋯ menu of " +
         "posts. Adds a switch in Fakh Patches.",
     default = true
 ) {

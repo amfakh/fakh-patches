@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @SuppressWarnings("unused")
 public final class SduiComponentFilter {
-    private static final String MEDIA_SCREEN_PREFIX = "com.linkedin.sdui.impl.mediaproduct.screens.";
     private static final String PROFILE_MEDIA_PREFIX = "com.linkedin.sdui.impl.profile.destinations.";
 
     /** Social count buttons of 4.1.1264: the count is a format string in the button, filled in from state. */
@@ -171,7 +170,7 @@ public final class SduiComponentFilter {
                 return hide(true, "premium upsell: " + viewName);
             }
 
-            if (screenName.startsWith(MEDIA_SCREEN_PREFIX) || screenName.startsWith(PROFILE_MEDIA_PREFIX)) {
+            if (screenName.startsWith(PROFILE_MEDIA_PREFIX)) {
                 collectMedia(component, screenName);
             }
             return false;
