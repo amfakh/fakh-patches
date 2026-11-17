@@ -1,3 +1,25 @@
+## [2.2.0](https://github.com/amfakh/fakh-patches/compare/v2.1.0...v2.2.0) (2026-11-17)
+
+### New Features
+
+* **LinkedIn:** add Disable screenshot share sheet ([164d675](https://github.com/amfakh/fakh-patches/commit/164d675c8423a7f4ba28d1ead9a5de76882d33e8))
+* **LinkedIn:** add Hide top bar buttons ([164d675](https://github.com/amfakh/fakh-patches/commit/164d675c8423a7f4ba28d1ead9a5de76882d33e8))
+* **LinkedIn:** add Video tab with video time and auto scroll ([96d4d2b](https://github.com/amfakh/fakh-patches/commit/96d4d2b1ef3884986f3095f486bbb97dd40135c3))
+* **LinkedIn:** add tab sorting to Navigation bar ([96d4d2b](https://github.com/amfakh/fakh-patches/commit/96d4d2b1ef3884986f3095f486bbb97dd40135c3))
+* **LinkedIn:** add Messaging to the Navigation bar tabs ([5457395](https://github.com/amfakh/fakh-patches/commit/545739542a2b7d2e1a609349a16a51d26c4e0332))
+* **LinkedIn:** Material icons shows LinkedIn's own Messaging icon when off ([5457395](https://github.com/amfakh/fakh-patches/commit/545739542a2b7d2e1a609349a16a51d26c4e0332))
+* **LinkedIn:** add Copy text as its own patch for posts and comments ([56916a7](https://github.com/amfakh/fakh-patches/commit/56916a78afc9b561628068f0541b7dcf9c416f3e))
+* **LinkedIn:** save document PDFs with a notification ([606284e](https://github.com/amfakh/fakh-patches/commit/606284e8b40b921c82a7fbc20c9bbe3223201cab))
+* **LinkedIn:** export and import settings as a file ([1e65013](https://github.com/amfakh/fakh-patches/commit/1e6501304b55e621deaba1618b3575f59e1fdbf0))
+
+### Bug Fixes
+
+* **LinkedIn:** stop swiping tabs while the profile menu is open ([5457395](https://github.com/amfakh/fakh-patches/commit/545739542a2b7d2e1a609349a16a51d26c4e0332))
+* **LinkedIn:** Download media only on profile photos and banners, with the banner button staying visible ([d6ddb7e](https://github.com/amfakh/fakh-patches/commit/d6ddb7e7fd441e7ba39192d089ebcc6999ec1e89))
+* **LinkedIn:** shorten setting descriptions and follow the device language ([1e65013](https://github.com/amfakh/fakh-patches/commit/1e6501304b55e621deaba1618b3575f59e1fdbf0))
+* **LinkedIn:** split Post menu items into Copy text and Download media, select them again ([56916a7](https://github.com/amfakh/fakh-patches/commit/56916a78afc9b561628068f0541b7dcf9c416f3e))
+* **LinkedIn:** rename Tap to hide in viewers to Tap to hide controls in viewers, select it again ([56916a7](https://github.com/amfakh/fakh-patches/commit/56916a78afc9b561628068f0541b7dcf9c416f3e))
+
 ## [2.1.0](https://github.com/amfakh/fakh-patches/compare/v2.0.0...v2.1.0) (2026-11-17)
 
 ### New Features
