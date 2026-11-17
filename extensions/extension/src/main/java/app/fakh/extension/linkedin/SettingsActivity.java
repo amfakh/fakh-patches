@@ -270,7 +270,9 @@ public final class SettingsActivity extends Activity {
             topBar.add(choice(Settings.SHOW_TOP_BAR_POST, true, "Post"));
             topBar.add(choice(Settings.SHOW_TOP_BAR_MESSAGING, true, "Messaging"));
             categories.add(new Category("Top bar").sheet("Top bar buttons", topBar,
-                    () -> showSheet("Top bar buttons", "Choose which buttons the top bar shows.", topBar)));
+                    () -> showSheet("Top bar buttons", "Choose which buttons the top bar shows.", topBar, Arrays.asList(
+                            tabIcon(new String[]{"POST", null, null, IconDrawable.POST_TAB_OUTLINE}),
+                            tabIcon(new String[]{"MESSAGING", null, null, IconDrawable.CHAT_TAB_OUTLINE})))));
         }
 
         if (Settings.isVideoTabIncluded()) {
@@ -284,8 +286,11 @@ public final class SettingsActivity extends Activity {
                     .toggle(Settings.MOVE_MORE_ITEMS, Settings.moveMoreItems(), "Show item in profile menu", null);
             List<Item> moreItems = new ArrayList<>();
             for (MoreMenu.Item item : MoreMenu.items()) moreItems.add(choice(item.key(), true, item.label));
-            more.sheet("Items in the More tab", moreItems, () -> showSheet("Items in the More tab",
-                    "Choose which items the More tab lists.", moreItems));
+            more.sheet("Items in the More tab", moreItems, () -> {
+                List<Drawable> icons = new ArrayList<>();
+                for (MoreMenu.Item item : MoreMenu.items()) icons.add(new IconDrawable(MoreMenu.icon(item.id), textPrimary));
+                showSheet("Items in the More tab", "Choose which items the More tab lists.", moreItems, icons);
+            });
             categories.add(more);
             categories.add(new Category("Shortcuts")
                     .toggle(Settings.GAMES_SHORTCUT, true, "Puzzle games shortcut", null, () -> GamesShortcut.update(this)));
@@ -1019,7 +1024,7 @@ public final class SettingsActivity extends Activity {
 
     /** The tab's icon as the navigation bar draws it: Material, or LinkedIn's own once the bar has drawn that. */
     private Drawable tabIcon(String[] spec) {
-        int stock = NavigationBar.stockIcon(spec[0]);
+        int stock = NavigationBar.stockIcon(this, spec[0]);
         if (!Settings.materialTabIcons() && stock != 0) {
             try {
                 Drawable drawable = getResources().getDrawable(stock, null).mutate();
@@ -1103,11 +1108,20 @@ public final class SettingsActivity extends Activity {
         }
     }
 
-    private void showSheet(String title, String hint, List<Item> choices) {
+    /** A sheet of check rows, each with the icon of the same position in {@code icons}. */
+    private void showSheet(String title, String hint, List<Item> choices, List<Drawable> icons) {
         if (sheet != null) return;
         LinearLayout rows = new LinearLayout(this);
         rows.setOrientation(LinearLayout.VERTICAL);
-        for (Item choice : choices) rows.addView(toggleRow(choice, null));
+        for (int i = 0; i < choices.size(); i++) {
+            LinearLayout row = (LinearLayout) toggleRow(choices.get(i), null);
+            ImageView icon = new ImageView(this);
+            icon.setImageDrawable(icons.get(i));
+            LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dp(24), dp(24));
+            iconParams.setMarginEnd(dp(16));
+            row.addView(icon, 0, iconParams);
+            rows.addView(row);
+        }
         // The row that opened the sheet shows how many choices are on, so it is refreshed when the sheet is gone.
         sheet = TabSheet.show(this, rootView, title, hint, background, textPrimary, textSecondary, rows, () -> {
             sheet = null;

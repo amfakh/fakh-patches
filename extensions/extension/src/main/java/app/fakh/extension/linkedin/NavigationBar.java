@@ -1,6 +1,7 @@
 package app.fakh.extension.linkedin;
 
 import android.graphics.drawable.StateListDrawable;
+import android.content.Context;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -329,10 +330,29 @@ public final class NavigationBar {
         }
     }
 
-    /** LinkedIn's icon resource of a tab, by its HomeTabInfo constant, or 0 before the bar has drawn it. */
-    static int stockIcon(String tab) {
-        Integer resource = STOCK_ICONS.get("tab_" + tab.toLowerCase(java.util.Locale.ROOT));
-        return resource == null ? 0 : resource;
+    /** The theme attributes of the icons of the tabs the bar may not have drawn yet, by HomeTabInfo constant. */
+    private static final Map<String, String> STOCK_ATTRS = new HashMap<>();
+
+    static {
+        STOCK_ATTRS.put("post", "voyagerIcNavComposeLarge32dp");
+        STOCK_ATTRS.put("messaging", "voyagerIcNavMessagingInactiveLarge32dp");
+        STOCK_ATTRS.put("news", "voyagerIcNavNewsSelector24dp");
+        STOCK_ATTRS.put("video", "voyagerIcNavVideoSelector24dp");
+        STOCK_ATTRS.put("more", "voyagerIcNavOverflowInactiveLarge32dp");
+    }
+
+    /**
+     * LinkedIn's icon resource of a tab, by its HomeTabInfo constant: the one the bar drew, or, for a tab the bar has
+     * not drawn (it is hidden), the one its theme attribute resolves to. 0 when there is none.
+     */
+    static int stockIcon(Context context, String tab) {
+        String key = tab.toLowerCase(java.util.Locale.ROOT);
+        Integer resource = STOCK_ICONS.get("tab_" + key);
+        if (resource != null) return resource;
+        String name = STOCK_ATTRS.get(key);
+        int attr = name == null ? 0 : context.getResources().getIdentifier(name, "attr", context.getPackageName());
+        TypedValue value = new TypedValue();
+        return attr != 0 && context.getTheme().resolveAttribute(attr, value, true) ? value.resourceId : 0;
     }
 
     static View child(View parent, String name) {
