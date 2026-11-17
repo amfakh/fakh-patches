@@ -57,6 +57,9 @@ public final class Settings {
     static final String SHOW_TAB_POST = "show_tab_post";
     static final String SHOW_TAB_VIDEO = "show_tab_video";
     static final String SHOW_TAB_NEWS = "show_tab_news";
+    static final String NO_SCREENSHOT_SHARE = "no_screenshot_share";
+    static final String SHOW_TOP_BAR_POST = "show_top_bar_post";
+    static final String SHOW_TOP_BAR_MESSAGING = "show_top_bar_messaging";
     /** HomeTabInfo constants of the tabs after Home, in the order the user sorted them; empty for LinkedIn's order. */
     static final String TAB_ORDER = "tab_order";
     /** The optional tabs (Post, Video, News) LinkedIn last offered, each followed by a comma (NavigationBar). */
@@ -242,6 +245,27 @@ public final class Settings {
     /** Whether LinkedIn offered the optional tab, named by its constant in HomeTabInfo, the last time it built the bar. */
     static boolean tabOffered(String tab) {
         return getString(OFFERED_TABS, "").contains(tab + ",");
+    }
+
+    public static boolean isScreenshotShareIncluded() {
+        return false;
+    }
+
+    /** Called by UpdateScreenCaptureManagerImpl.register: true when the Share sheet must not open on a screenshot. */
+    public static boolean blockScreenshotShare() {
+        return isScreenshotShareIncluded() && get(NO_SCREENSHOT_SHARE, true);
+    }
+
+    public static boolean isTopBarButtonsIncluded() {
+        return false;
+    }
+
+    static boolean hideTopBarPost() {
+        return isTopBarButtonsIncluded() && !get(SHOW_TOP_BAR_POST, true);
+    }
+
+    static boolean hideTopBarMessaging() {
+        return isTopBarButtonsIncluded() && !get(SHOW_TOP_BAR_MESSAGING, true);
     }
 
     static boolean materialYou() {

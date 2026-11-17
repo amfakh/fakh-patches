@@ -200,7 +200,7 @@ public final class SettingsActivity extends Activity {
                 || Settings.isExpandPostsIncluded() || Settings.isSwipeTabsIncluded()
                 || Settings.isKeepFeedIncluded()
                 || Settings.isViewerTapToHideIncluded()
-                || Settings.isCopyTextIncluded()) {
+                || Settings.isCopyTextIncluded() || Settings.isScreenshotShareIncluded()) {
             Category feed = new Category("Feed");
             if (Settings.isDisableDoubleTapLikeIncluded()) {
                 feed.toggle(Settings.DISABLE_DOUBLE_TAP_LIKE, true, "Turn off double-tap to like",
@@ -213,6 +213,10 @@ public final class SettingsActivity extends Activity {
             if (Settings.isKeepFeedIncluded()) {
                 feed.toggle(Settings.KEEP_FEED, true, "Keep feed on reopen",
                         "Stay where you were when you come back. Pull down or tap \"New posts\" for new posts.");
+            }
+            if (Settings.isScreenshotShareIncluded()) {
+                feed.toggle(Settings.NO_SCREENSHOT_SHARE, true, "Turn off screenshot share sheet",
+                        "The Share sheet won't open when you take a screenshot of a post.");
             }
             if (Settings.isCopyTextIncluded()) {
                 feed.toggle(Settings.COPY_TEXT, true, "Copy text",
@@ -272,6 +276,14 @@ public final class SettingsActivity extends Activity {
                         .sheet("Navigation bar tabs", tabs, () -> showTabsSheet(tabSpecs, tabs));
             }
             categories.add(navigation);
+        }
+
+        if (Settings.isTopBarButtonsIncluded()) {
+            List<Item> topBar = new ArrayList<>();
+            topBar.add(choice(Settings.SHOW_TOP_BAR_POST, true, "Post"));
+            topBar.add(choice(Settings.SHOW_TOP_BAR_MESSAGING, true, "Messaging"));
+            categories.add(new Category("Top bar").sheet("Top bar buttons", topBar,
+                    () -> showSheet("Top bar buttons", "Choose which buttons the top bar shows.", topBar)));
         }
 
         if (Settings.isVideoTabIncluded()) {
@@ -804,6 +816,8 @@ public final class SettingsActivity extends Activity {
                 {"Swipe between tabs", Settings.isSwipeTabsIncluded()},
                 {"Keep feed on reopen", Settings.isKeepFeedIncluded()},
                 {"Copy text", Settings.isCopyTextIncluded()},
+                {"Disable screenshot share sheet", Settings.isScreenshotShareIncluded()},
+                {"Hide top bar buttons", Settings.isTopBarButtonsIncluded()},
                 {"Tap to hide controls in viewers", Settings.isViewerTapToHideIncluded()},
                 {"Video tab", Settings.isVideoTabIncluded()},
                 {"Download media", Settings.isDownloadMediaIncluded()},

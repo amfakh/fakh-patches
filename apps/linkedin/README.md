@@ -16,6 +16,7 @@ Morphe Manager groups them by category.
 | Feature | More tab | On | Hides items of the More tab (Puzzle games, Groups, Events, Newsletters), or lists them at the bottom of the profile menu. Adds a Puzzle games shortcut to the LinkedIn app icon, with its own switch. |
 | Feature | Swipe between tabs | On | Swipe sideways to go to the next or previous tab of the navigation bar, with a slide animation. On My Network it first switches between Grow and Catch up. Does not act where something under the finger can scroll sideways. |
 | Feature | Always show navigation bar | On | Adds a switch in Fakh Patches, off by default, that keeps the navigation bar on screen while you scroll instead of sliding it away. |
+| Feature | Hide top bar buttons | On | Adds a Top bar buttons sheet in Fakh Patches to hide the Post and Messaging buttons of the top bar. |
 | Feature | Navigation bar | On | Adds switches in Fakh Patches to show or hide the More, Jobs, Network and Notifications tabs of the navigation bar (and Post, Video and News, which can be added even when LinkedIn leaves them out), its notification badges and its tab labels. The tabs can be sorted in the same sheet (Home stays first). |
 | Feature | GmsCore support | Off | Makes "Continue with Google" work by signing in through [microG RE](https://github.com/MorpheApp/microg-RE) instead of Google Play services. Needs microG RE installed and signed in to a Google account. |
 | Feed | Hide suggested posts | On | Removes "Suggested" posts from people outside your network. |
@@ -23,6 +24,7 @@ Morphe Manager groups them by category.
 | Feed | Disable double-tap like | On | Double tapping a post or photo no longer likes it. |
 | Feed | Expand posts | On | Adds a switch in Fakh Patches that shows posts expanded by default. Tapping the text collapses them. Starts off. |
 | Feed | Copy text | On | Adds Copy text to the ⋯ menu of posts and comments, with its own icon. Adds a switch in Fakh Patches. |
+| Feed | Disable screenshot share sheet | On | Stops the Share sheet from opening when you take a screenshot of a post. Adds a switch in Fakh Patches. |
 | Feed | Keep feed on reopen | On | Keeps your place in the feed when you come back to LinkedIn instead of reloading it. Pull down or tap "New posts" to load new posts. |
 | Feed | Tap to hide controls in viewers | On | Tap a video or document in full screen to hide its caption and buttons, like photos. |
 | Feed | Video tab | On | Shows the video's time above the seek bar and can go to the next video when one ends. Adds switches in Fakh Patches. |
