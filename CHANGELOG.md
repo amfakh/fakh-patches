@@ -1,3 +1,10 @@
+## [2.2.3](https://github.com/amfakh/fakh-patches/compare/v2.2.2...v2.2.3) (2026-11-17)
+
+### Bug Fixes
+
+* **LinkedIn:** show LinkedIn's own Post, News, Messaging and More icons in the Navigation bar tabs sheet ([a0ea0df](https://github.com/amfakh/fakh-patches/commit/a0ea0dfd75b67e252d9ab9c61b565522e6cfbd66))
+* **LinkedIn:** Top bar buttons and Items in the More tab sheets show LinkedIn's own icons, whatever Material icons is set to ([a0ea0df](https://github.com/amfakh/fakh-patches/commit/a0ea0dfd75b67e252d9ab9c61b565522e6cfbd66))
+
 ## [2.2.2](https://github.com/amfakh/fakh-patches/compare/v2.2.1...v2.2.2) (2026-11-17)
 
 ### New Features
