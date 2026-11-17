@@ -58,7 +58,7 @@ private object DocumentPlayerFingerprint : Fingerprint(
 val postMenuPatch = patch(
     name = "Post menu items",
     description = "Adds Copy text, Download photos and videos, and Save document as PDF to the ⋯ menu of posts. " +
-        "Adds a switch in Fakh Patches.",
+        "Copy text is also in comments. Adds a switch in Fakh Patches.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)

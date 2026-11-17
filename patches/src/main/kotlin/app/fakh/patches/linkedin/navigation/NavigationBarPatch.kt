@@ -76,8 +76,8 @@ internal val navigationHooksPatch = patch {
 @Suppress("unused")
 val navigationBarPatch = patch(
     name = "Navigation bar",
-    description = "Adds options in Fakh Patches to hide the More, Jobs, Network and Notifications tabs " +
-        "of the navigation bar (and Post, Video and News where LinkedIn shows them), its count badges and its labels.",
+    description = "Lets you choose the navigation bar tabs, including Post, Video and News, and hide its " +
+        "count badges and labels. In Fakh Patches.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)
@@ -89,8 +89,7 @@ val navigationBarPatch = patch(
 @Suppress("unused")
 val swipeTabsPatch = patch(
     name = "Swipe between tabs",
-    description = "Swipe sideways to go to the next or previous tab of the navigation bar. On My Network it " +
-        "first switches between Grow and Catch up.",
+    description = "Swipe sideways to switch tabs of the navigation bar.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)

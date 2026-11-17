@@ -5,8 +5,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
@@ -20,6 +22,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -36,6 +39,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -194,7 +198,7 @@ public final class SettingsActivity extends Activity {
 
         if (Settings.isFeedFiltersIncluded() || Settings.isDisableDoubleTapLikeIncluded()
                 || Settings.isExpandPostsIncluded() || Settings.isSwipeTabsIncluded()
-                || Settings.isCopyTextIncluded() || Settings.isKeepFeedIncluded()
+                || Settings.isKeepFeedIncluded()
                 || Settings.isViewerTapToHideIncluded()
                 || Settings.isPostMenuIncluded()) {
             Category feed = new Category("Feed");
@@ -206,17 +210,13 @@ public final class SettingsActivity extends Activity {
                 feed.toggle(Settings.SWIPE_TABS, true, "Swipe between tabs",
                         "Swipe sideways to go to the next or previous tab of the navigation bar.");
             }
-            if (Settings.isCopyTextIncluded()) {
-                feed.toggle(Settings.COPY_TEXT, true, "Copy text",
-                        "Press and hold text to select and copy it.");
-            }
             if (Settings.isKeepFeedIncluded()) {
                 feed.toggle(Settings.KEEP_FEED, true, "Keep feed on reopen",
                         "Stay where you were when you come back. Pull down or tap \"New posts\" for new posts.");
             }
             if (Settings.isPostMenuIncluded()) {
                 feed.toggle(Settings.POST_MENU, true, "Post menu items",
-                        "Copy text, Download photos and videos, and Save document as PDF in the ⋯ menu of posts.");
+                        "Copy text, Download photos and videos, and Save document as PDF in the ⋯ menu of posts. Copy text is also in comments.");
             }
             if (Settings.isViewerTapToHideIncluded()) {
                 feed.toggle(Settings.VIEWER_TAP_TO_HIDE, true, "Tap to hide in viewers",
@@ -246,22 +246,20 @@ public final class SettingsActivity extends Activity {
         }
 
         if (Settings.isNavigationBarIncluded() || Settings.isGlassNavigationBarIncluded()
-                || Settings.isAlwaysShowNavigationBarIncluded()) {
+                || Settings.isAlwaysShowNavigationBarIncluded() || Settings.isMaterialTabIconsIncluded()) {
             Category navigation = new Category("Navigation bar");
+            List<String[]> tabSpecs = orderedTabs();
             List<Item> tabs = new ArrayList<>();
-            tabs.add(fixed("Home"));
-            tabs.add(choice(Settings.SHOW_TAB_JOBS, true, "Jobs"));
-            tabs.add(choice(Settings.SHOW_TAB_NETWORK, true, "Network"));
-            tabs.add(choice(Settings.SHOW_TAB_NOTIFICATIONS, true, "Notifications"));
-            if (Settings.tabOffered("POST")) tabs.add(choice(Settings.SHOW_TAB_POST, true, "Post"));
-            if (Settings.tabOffered("VIDEO")) tabs.add(choice(Settings.SHOW_TAB_VIDEO, true, "Video"));
-            if (Settings.tabOffered("NEWS")) tabs.add(choice(Settings.SHOW_TAB_NEWS, true, "News"));
-            tabs.add(choice(Settings.SHOW_TAB_MORE, Settings.showMoreTab(), "More"));
+            for (String[] tab : tabSpecs) tabs.add(tab[1] == null ? fixed(tab[2]) : choice(tab[1], tabDefault(tab[0]), tab[2]));
             if (Settings.isGlassNavigationBarIncluded()) {
                 navigation.toggle(Settings.GLASS_NAVIGATION_BAR, true, "Liquid Glass navigation bar",
                         "A floating, translucent navigation bar.");
                 navigation.toggle(Settings.LIQUID_GLASS, false, "Background blur",
                         "Blurs what's behind the glass. Uses more battery and might stutter.");
+            }
+            if (Settings.isMaterialTabIconsIncluded()) {
+                navigation.toggle(Settings.MATERIAL_TAB_ICONS, false, "Material icons",
+                        "Filled when selected, outlined otherwise.");
             }
             if (Settings.isAlwaysShowNavigationBarIncluded()) {
                 navigation.toggle(Settings.ALWAYS_SHOW_NAVIGATION_BAR, false, "Always show navigation bar",
@@ -271,10 +269,17 @@ public final class SettingsActivity extends Activity {
                 navigation.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels", "Text under the navigation bar icons.")
                         .toggle(Settings.HIDE_TAB_BADGES, false, "Hide notification badges",
                                 "The count on the navigation bar tabs.")
-                        .sheet("Navigation bar tabs", tabs, () -> showSheet("Navigation bar tabs",
-                                "Home is always shown.", tabs));
+                        .sheet("Navigation bar tabs", tabs, () -> showTabsSheet(tabSpecs, tabs));
             }
             categories.add(navigation);
+        }
+
+        if (Settings.isVideoTabIncluded()) {
+            categories.add(new Category("Video tab")
+                    .toggle(Settings.VIDEO_TAB_DOWNLOAD, true, "Download button", "Saves the video on screen.")
+                    .toggle(Settings.VIDEO_TAB_TIME, true, "Show video time", "Above the seek bar.")
+                    .toggle(Settings.VIDEO_TAB_AUTO_SCROLL, false, "Auto scroll",
+                            "Goes to the next video when one ends."));
         }
 
         if (Settings.isMoreMenuIncluded()) {
@@ -292,7 +297,7 @@ public final class SettingsActivity extends Activity {
         }
 
         if (Settings.isRemoveGapsAndDividersIncluded() || Settings.isMaterialYouIncluded()
-                || Settings.isAmoledBlackIncluded()) {
+                || Settings.isAmoledBlackIncluded() || Settings.isDarkAppIconIncluded()) {
             Category appearance = new Category("Appearance");
             if (Settings.isRemoveGapsAndDividersIncluded()) {
                 appearance.toggle(Settings.REMOVE_GAPS_AND_DIVIDERS, true, "Hide gaps and dividers",
@@ -305,6 +310,10 @@ public final class SettingsActivity extends Activity {
             if (Settings.isAmoledBlackIncluded()) {
                 appearance.toggle(Settings.PITCH_BLACK, false, "Pitch black",
                         "Black backgrounds in dark mode.");
+            }
+            if (Settings.isDarkAppIconIncluded()) {
+                appearance.toggle(Settings.DARK_APP_ICON, false, "Dark app icon",
+                        "Black icon with the white \"in\".", this::applyAppIcon);
             }
             categories.add(appearance);
         }
@@ -794,10 +803,10 @@ public final class SettingsActivity extends Activity {
                 {"Disable double-tap like", Settings.isDisableDoubleTapLikeIncluded()},
                 {"Expand posts", Settings.isExpandPostsIncluded()},
                 {"Swipe between tabs", Settings.isSwipeTabsIncluded()},
-                {"Copy text", Settings.isCopyTextIncluded()},
                 {"Keep feed on reopen", Settings.isKeepFeedIncluded()},
                 {"Post menu items", Settings.isPostMenuIncluded()},
                 {"Tap to hide in viewers", Settings.isViewerTapToHideIncluded()},
+                {"Video tab", Settings.isVideoTabIncluded()},
                 {"Download media", Settings.isDownloadMediaIncluded()},
                 {"Messaging", Settings.isMessagingIncluded()},
                 {"Open links directly", Settings.isOpenLinksDirectlyIncluded()},
@@ -807,7 +816,9 @@ public final class SettingsActivity extends Activity {
                 {"Hide gaps and dividers", Settings.isRemoveGapsAndDividersIncluded()},
                 {"Material You", Settings.isMaterialYouIncluded()},
                 {"Pitch black", Settings.isAmoledBlackIncluded()},
+                {"Dark app icon", Settings.isDarkAppIconIncluded()},
                 {"Glass navigation bar", Settings.isGlassNavigationBarIncluded()},
+                {"Material icons in the navigation bar", Settings.isMaterialTabIconsIncluded()},
                 {"Navigation bar", Settings.isNavigationBarIncluded()},
                 {"Always show navigation bar", Settings.isAlwaysShowNavigationBarIncluded()},
                 {"More tab", Settings.isMoreMenuIncluded()},
@@ -990,6 +1001,163 @@ public final class SettingsActivity extends Activity {
     // region Bottom sheet
 
     /** A bottom sheet with one check row per choice. Tapping the dimmed area or going back closes it. */
+    /**
+     * The tabs of the navigation bar: HomeTabInfo constant, the switch that shows it (null for Home, which is always
+     * shown), its name, and its icon in the sheet.
+     */
+    private static final String[][] TABS = {
+            {"FEED", null, "Home", IconDrawable.HOME_OUTLINE},
+            {"JOBS", Settings.SHOW_TAB_JOBS, "Jobs", IconDrawable.WORK_OUTLINE},
+            {"RELATIONSHIPS", Settings.SHOW_TAB_NETWORK, "Network", IconDrawable.PEOPLE_OUTLINE},
+            {"NOTIFICATIONS", Settings.SHOW_TAB_NOTIFICATIONS, "Notifications", IconDrawable.BELL_OUTLINE},
+            {"POST", Settings.SHOW_TAB_POST, "Post", IconDrawable.POST_TAB_OUTLINE},
+            {"VIDEO", Settings.SHOW_TAB_VIDEO, "Video", IconDrawable.PLAY_OUTLINE},
+            {"NEWS", Settings.SHOW_TAB_NEWS, "News", IconDrawable.ARTICLE_TAB_OUTLINE},
+            {"MORE", Settings.SHOW_TAB_MORE, "More", IconDrawable.APPS_TAB},
+    };
+
+    private static boolean tabDefault(String tab) {
+        switch (tab) {
+            case "POST":
+            case "VIDEO":
+            case "NEWS":
+                return Settings.tabOffered(tab);
+            case "MORE":
+                return Settings.showMoreTab();
+            default:
+                return true;
+        }
+    }
+
+    /** {@link #TABS} in the order the user sorted them, Home first. */
+    private static List<String[]> orderedTabs() {
+        List<String> order = Settings.tabOrder();
+        List<String[]> tabs = new ArrayList<>(Arrays.asList(TABS));
+        tabs.sort((a, b) -> Integer.compare(rank(order, a[0]), rank(order, b[0])));
+        return tabs;
+    }
+
+    private static int rank(List<String> order, String tab) {
+        if (tab.equals("FEED")) return -1;
+        int index = order.indexOf(tab);
+        return index < 0 ? order.size() : index;
+    }
+
+    /**
+     * The sheet of navigation bar tabs: a row per tab with its icon and check box, and a handle to drag it to another
+     * place. Home stays first. The order is saved when a row is dropped.
+     */
+    private void showTabsSheet(List<String[]> specs, List<Item> choices) {
+        if (sheet != null) return;
+        LinearLayout rows = new LinearLayout(this);
+        rows.setOrientation(LinearLayout.VERTICAL);
+        for (int i = 0; i < specs.size(); i++) {
+            String[] spec = specs.get(i);
+            LinearLayout row = (LinearLayout) toggleRow(choices.get(i), null);
+            row.setTag(spec[0]);
+            ImageView icon = new ImageView(this);
+            icon.setImageDrawable(tabIcon(spec));
+            LinearLayout.LayoutParams iconParams = new LinearLayout.LayoutParams(dp(24), dp(24));
+            iconParams.setMarginEnd(dp(16));
+            row.addView(icon, 0, iconParams);
+            ImageView handle = new ImageView(this);
+            LinearLayout.LayoutParams handleParams = new LinearLayout.LayoutParams(dp(24), dp(24));
+            handleParams.setMarginStart(dp(12));
+            if (spec[1] != null) {
+                handle.setImageDrawable(new IconDrawable(IconDrawable.DRAG_HANDLE, textSecondary));
+                handle.setOnTouchListener(new RowDrag(rows, row));
+            }
+            row.addView(handle, handleParams);
+            rows.addView(row);
+        }
+        sheet = TabSheet.show(this, rootView, "Navigation bar tabs", "Home is always shown first. Drag ≡ to sort.",
+                background, textPrimary, textSecondary, rows, () -> {
+                    sheet = null;
+                    refresh();
+                });
+    }
+
+    /** The tab's icon as the navigation bar draws it: Material, or LinkedIn's own once the bar has drawn that. */
+    private Drawable tabIcon(String[] spec) {
+        int stock = NavigationBar.stockIcon(spec[0]);
+        if (!Settings.materialTabIcons() && stock != 0) {
+            try {
+                Drawable drawable = getResources().getDrawable(stock, null).mutate();
+                drawable.setTint(textPrimary);
+                return drawable;
+            } catch (Throwable t) {
+                Diagnostics.error("tab icon failed", t);
+            }
+        }
+        return new IconDrawable(spec[3], textPrimary);
+    }
+
+    /**
+     * Drags a row of the tabs sheet by its handle. The rows it passes slide out of its way while it moves, and on
+     * release it is moved to that place and the order is saved. Views are only moved on release, since removing the
+     * touched row from its parent would cancel the drag.
+     */
+    private final class RowDrag implements View.OnTouchListener {
+        private final LinearLayout rows;
+        private final View row;
+        private float startY;
+        private int target;
+
+        RowDrag(LinearLayout rows, View row) {
+            this.rows = rows;
+            this.row = row;
+        }
+
+        @Override
+        public boolean onTouch(View handle, MotionEvent event) {
+            int index = rows.indexOfChild(row);
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    handle.getParent().requestDisallowInterceptTouchEvent(true);
+                    startY = event.getRawY();
+                    target = index;
+                    row.setBackgroundColor(background);
+                    row.setElevation(dp(4));
+                    return true;
+                case MotionEvent.ACTION_MOVE: {
+                    float dy = event.getRawY() - startY;
+                    row.setTranslationY(dy);
+                    // The first row is Home, which stays where it is.
+                    target = Math.max(1, Math.min(rows.getChildCount() - 1,
+                            index + Math.round(dy / Math.max(1, row.getHeight()))));
+                    for (int i = 1; i < rows.getChildCount(); i++) {
+                        View other = rows.getChildAt(i);
+                        if (other == row) continue;
+                        float shift = 0;
+                        if (i > index && i <= target) shift = -row.getHeight();
+                        if (i < index && i >= target) shift = row.getHeight();
+                        other.setTranslationY(shift);
+                    }
+                    return true;
+                }
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    for (int i = 0; i < rows.getChildCount(); i++) rows.getChildAt(i).setTranslationY(0);
+                    row.setElevation(0);
+                    row.setBackground(ripple(false));
+                    if (target != index) {
+                        rows.removeView(row);
+                        rows.addView(row, target);
+                        StringBuilder order = new StringBuilder();
+                        for (int i = 1; i < rows.getChildCount(); i++) {
+                            if (order.length() > 0) order.append(',');
+                            order.append(rows.getChildAt(i).getTag());
+                        }
+                        Settings.setString(Settings.TAB_ORDER, order.toString());
+                        showRestartBanner();
+                    }
+                    return true;
+                default:
+                    return false;
+            }
+        }
+    }
+
     private void showSheet(String title, String hint, List<Item> choices) {
         if (sheet != null) return;
         LinearLayout rows = new LinearLayout(this);
@@ -1081,6 +1249,21 @@ public final class SettingsActivity extends Activity {
     private int dialogTheme() {
         return dark ? android.R.style.Theme_DeviceDefault_Dialog_Alert
                 : android.R.style.Theme_DeviceDefault_Light_Dialog_Alert;
+    }
+
+    /**
+     * Shows the dark or the stock launcher icon. The dark one is LinkedIn's own unused test icon alias, recolored by
+     * the patch. The new entry is turned on before the old one is turned off, so the launcher never has none.
+     */
+    private void applyAppIcon() {
+        boolean dark = Settings.darkAppIcon();
+        PackageManager manager = getPackageManager();
+        ComponentName darkIcon = new ComponentName(this, "com.linkedin.android.authenticator.AATestDefaultActivityAlias");
+        ComponentName stockIcon = new ComponentName(this, "com.linkedin.android.authenticator.LaunchActivityDefault");
+        manager.setComponentEnabledSetting(dark ? darkIcon : stockIcon, PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+        manager.setComponentEnabledSetting(dark ? stockIcon : darkIcon, PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
+                PackageManager.DONT_KILL_APP);
     }
 
     private void restartApp() {

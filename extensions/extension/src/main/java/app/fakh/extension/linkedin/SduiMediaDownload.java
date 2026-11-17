@@ -77,10 +77,13 @@ public final class SduiMediaDownload {
             resumedIsMedia = screen.startsWith(MEDIA_SCREEN_PREFIX)
                     || screen.startsWith(PROFILE_PHOTO_SCREEN_PREFIX) || screen.equals(PROFILE_COVER_SCREEN)
                     || screen.equals(PROFILE_BACKGROUND_SCREEN);
+            // The Video tab has its own button, for the video on screen (VideoTab).
+            if (screen.equals(VideoTab.SCREEN)) resumedIsMedia = false;
 
             Activity activity = activity(fragment);
             if (activity == null) return;
             HomeTabShortcut.attach(activity);
+            VideoTab.onScreen(activity, screen, fragment);
             removeView(activity, DOWNLOAD_TAG);
             if (!resumedIsMedia || !Settings.downloadMedia()) return;
 
@@ -101,6 +104,7 @@ public final class SduiMediaDownload {
             resumedIsMedia = false;
             Activity activity = activity(fragment);
             if (activity == null) return;
+            VideoTab.hide(activity);
             removeView(activity, DOWNLOAD_TAG);
         } catch (Throwable t) {
             Diagnostics.error("onFragmentPaused failed", t);
@@ -302,6 +306,11 @@ public final class SduiMediaDownload {
             allVideos &= item.video;
         }
         if (started > 0) Downloads.toastStarted(activity, started, allVideos);
+    }
+
+    /** LinkedIn's activity of the SDUI screen in front, or null. */
+    static Activity frontActivity() {
+        return resumedFragment == null ? null : activity(resumedFragment);
     }
 
     private static Activity activity(Object fragment) {

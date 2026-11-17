@@ -165,8 +165,7 @@ private fun appCompatActivity(): MutableClass {
 @Suppress("unused")
 val materialYouPatch = patch(
     name = "Material You",
-    description = "Uses your wallpaper's colors (Android 12+): the accent color instead of Jira blue and tinted " +
-        "surfaces, in light and dark mode.",
+    description = "Uses your wallpaper's colors (Android 12+) in light and dark mode.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_JIRA)

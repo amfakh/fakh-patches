@@ -6,6 +6,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Feature switches, stored in the app's own SharedPreferences.
  *
@@ -39,7 +43,6 @@ public final class Settings {
     static final String ANONYMOUS_PROFILE_VIEWING = "anonymous_profile_viewing";
     static final String DISABLE_DOUBLE_TAP_LIKE = "disable_double_tap_like";
     static final String SWIPE_TABS = "swipe_tabs";
-    static final String COPY_TEXT = "copy_text";
     static final String KEEP_FEED = "keep_feed";
     static final String VIEWER_TAP_TO_HIDE = "viewer_tap_to_hide";
     static final String POST_MENU = "post_menu";
@@ -54,11 +57,18 @@ public final class Settings {
     static final String SHOW_TAB_POST = "show_tab_post";
     static final String SHOW_TAB_VIDEO = "show_tab_video";
     static final String SHOW_TAB_NEWS = "show_tab_news";
+    /** HomeTabInfo constants of the tabs after Home, in the order the user sorted them; empty for LinkedIn's order. */
+    static final String TAB_ORDER = "tab_order";
     /** The optional tabs (Post, Video, News) LinkedIn last offered, each followed by a comma (NavigationBar). */
     static final String OFFERED_TABS = "offered_tabs";
     static final String REMOVE_GAPS_AND_DIVIDERS = "remove_gaps_and_dividers";
     static final String MATERIAL_YOU = "material_you";
     static final String PITCH_BLACK = "pitch_black";
+    static final String MATERIAL_TAB_ICONS = "material_tab_icons";
+    static final String DARK_APP_ICON = "dark_app_icon";
+    static final String VIDEO_TAB_DOWNLOAD = "video_tab_download";
+    static final String VIDEO_TAB_TIME = "video_tab_time";
+    static final String VIDEO_TAB_AUTO_SCROLL = "video_tab_auto_scroll";
     static final String HIDE_MORE_TAB = "hide_more_tab";
     static final String SHOW_TAB_MORE = "show_tab_more";
     static final String MOVE_MORE_ITEMS = "move_more_items";
@@ -197,14 +207,37 @@ public final class Settings {
             case "NOTIFICATIONS":
                 return isNavigationBarIncluded() && !get(SHOW_TAB_NOTIFICATIONS, true);
             case "POST":
-                return isNavigationBarIncluded() && !get(SHOW_TAB_POST, true);
             case "VIDEO":
-                return isNavigationBarIncluded() && !get(SHOW_TAB_VIDEO, true);
             case "NEWS":
-                return isNavigationBarIncluded() && !get(SHOW_TAB_NEWS, true);
+                return isNavigationBarIncluded() && !optionalTabShown(tab);
             default:
                 return false;
         }
+    }
+
+    /**
+     * Whether the bar shows Post, Video or News. LinkedIn gives these only to some accounts; one it did not give is
+     * off until it is turned on, and is then added to the bar.
+     */
+    static boolean optionalTabShown(String tab) {
+        return get(optionalTabKey(tab), tabOffered(tab));
+    }
+
+    private static String optionalTabKey(String tab) {
+        switch (tab) {
+            case "POST":
+                return SHOW_TAB_POST;
+            case "VIDEO":
+                return SHOW_TAB_VIDEO;
+            default:
+                return SHOW_TAB_NEWS;
+        }
+    }
+
+    /** The tab order the user picked, as HomeTabInfo constants, or an empty list for LinkedIn's own order. */
+    static List<String> tabOrder() {
+        String order = getString(TAB_ORDER, "");
+        return order.isEmpty() ? Collections.emptyList() : Arrays.asList(order.split(","));
     }
 
     /** Whether LinkedIn offered the optional tab, named by its constant in HomeTabInfo, the last time it built the bar. */
@@ -222,6 +255,38 @@ public final class Settings {
 
     static boolean pitchBlack() {
         return isAmoledBlackIncluded() && get(PITCH_BLACK, false);
+    }
+
+    public static boolean isMaterialTabIconsIncluded() {
+        return false;
+    }
+
+    static boolean materialTabIcons() {
+        return isMaterialTabIconsIncluded() && get(MATERIAL_TAB_ICONS, false);
+    }
+
+    public static boolean isVideoTabIncluded() {
+        return false;
+    }
+
+    static boolean videoTabDownload() {
+        return isVideoTabIncluded() && get(VIDEO_TAB_DOWNLOAD, true);
+    }
+
+    static boolean videoTabTime() {
+        return isVideoTabIncluded() && get(VIDEO_TAB_TIME, true);
+    }
+
+    static boolean videoTabAutoScroll() {
+        return isVideoTabIncluded() && get(VIDEO_TAB_AUTO_SCROLL, false);
+    }
+
+    public static boolean isDarkAppIconIncluded() {
+        return false;
+    }
+
+    static boolean darkAppIcon() {
+        return isDarkAppIconIncluded() && get(DARK_APP_ICON, false);
     }
 
     public static boolean isMoreMenuIncluded() {
@@ -325,14 +390,6 @@ public final class Settings {
 
     static boolean swipeTabs() {
         return isSwipeTabsIncluded() && get(SWIPE_TABS, true);
-    }
-
-    public static boolean isCopyTextIncluded() {
-        return false;
-    }
-
-    static boolean copyText() {
-        return isCopyTextIncluded() && get(COPY_TEXT, true);
     }
 
     public static boolean isKeepFeedIncluded() {
