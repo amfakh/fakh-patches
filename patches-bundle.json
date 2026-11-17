@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-16T02:44:31",
-  "description": "## [1.22.4](https://github.com/amfakh/fakh-patches/compare/v1.22.3...v1.22.4) (2026-11-16)\n\n### Bug Fixes\n\n* **IDN:** add `Fix server error after idle` for the first open after a long break ([c743086](https://github.com/amfakh/fakh-patches/commit/c743086e581bdbcaf48f294c86d96ae58460db78))\n\n### Updated App Support\n\n* **LinkedIn:** add support for `4.1.1272`, next to `4.1.1270` ([7c7796e](https://github.com/amfakh/fakh-patches/commit/7c7796ea97784849e9b2f1fd61a80fb9642d8974))\n",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.22.4/patches-1.22.4.mpp",
+  "created_at": "2026-11-17T03:00:12",
+  "description": "## [1.22.5](https://github.com/amfakh/fakh-patches/compare/v1.22.4...v1.22.5) (2026-11-17)\n\n### Updated App Support\n\n* **Tuya Smart:** add support for `7.13.0` and `7.13.3`, next to `7.12.3` and `7.12.6` ([bc1f9f1](https://github.com/amfakh/fakh-patches/commit/bc1f9f11f6e5964c9fdf93723c12626f6ac94cf1))\n",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v1.22.5/patches-1.22.5.mpp",
   "signature_download_url": "",
-  "version": "1.22.4",
+  "version": "1.22.5",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }

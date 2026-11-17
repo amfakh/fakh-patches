@@ -1,3 +1,9 @@
+## [1.22.5](https://github.com/amfakh/fakh-patches/compare/v1.22.4...v1.22.5) (2026-11-17)
+
+### Updated App Support
+
+* **Tuya Smart:** add support for `7.13.0` and `7.13.3`, next to `7.12.3` and `7.12.6` ([bc1f9f1](https://github.com/amfakh/fakh-patches/commit/bc1f9f11f6e5964c9fdf93723c12626f6ac94cf1))
+
 ## [1.22.4](https://github.com/amfakh/fakh-patches/compare/v1.22.3...v1.22.4) (2026-11-16)
 
 ### Bug Fixes
