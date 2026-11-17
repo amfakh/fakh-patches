@@ -1042,6 +1042,8 @@ public final class SettingsActivity extends Activity {
         private final View row;
         private float startY;
         private int target;
+        /** Removing the touched row makes the view system cancel the touch, which must not move the row again. */
+        private boolean moving;
 
         RowDrag(LinearLayout rows, View row) {
             this.rows = rows;
@@ -1077,12 +1079,15 @@ public final class SettingsActivity extends Activity {
                 }
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
+                    if (moving) return true;
                     for (int i = 0; i < rows.getChildCount(); i++) rows.getChildAt(i).setTranslationY(0);
                     row.setElevation(0);
                     row.setBackground(ripple(false));
                     if (target != index) {
+                        moving = true;
                         rows.removeView(row);
                         rows.addView(row, target);
+                        moving = false;
                         StringBuilder order = new StringBuilder();
                         for (int i = 1; i < rows.getChildCount(); i++) {
                             if (order.length() > 0) order.append(',');
