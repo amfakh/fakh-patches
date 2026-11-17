@@ -97,7 +97,7 @@ internal val navigationHooksPatch = patch {
 @Suppress("unused")
 val navigationBarPatch = patch(
     name = "Navigation bar",
-    description = "Lets you choose the navigation bar tabs, including Post, Video and News, and hide its " +
+    description = "Lets you choose the navigation bar tabs, including Post, Video, News and Messaging, and hide its " +
         "count badges and labels. In Fakh Patches.",
     default = true
 ) {
@@ -122,7 +122,7 @@ val swipeTabsPatch = patch(
 @Suppress("unused")
 val glassNavigationBarPatch = patch(
     name = "Glass navigation bar",
-    description = "Draws the navigation bar as a floating, translucent capsule with a sliding selection pill. Slide a finger along it to switch tabs. Liquid Glass blurs what's behind it.",
+    description = "Draws the navigation bar as a floating, translucent capsule with a sliding selection pill. Slide a finger along it to switch tabs. Adds a Background blur switch in Fakh Patches.",
     default = true
 ) {
     compatibleWith(COMPATIBILITY_LINKEDIN)

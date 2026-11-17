@@ -12,7 +12,7 @@ Morphe Manager groups them by category.
 | Ads | Hide ads | On | Removes promoted (sponsored) posts from the feed. |
 | Ads | Hide promoted jobs | On | Removes promoted job listings from the Jobs tab and job search. |
 | Ads | Hide Premium upsells | On | Removes Premium and AI upsell cards and banners, including on profiles and the profile menu. |
-| Feature | Download media | On | Download buttons on full screen photos and videos, profile photos and banners, and Download media in the ⋯ menu of posts (photos, videos, or a document as PDF). Adds a switch in Fakh Patches. |
+| Feature | Download media | On | Download buttons on profile photos and banners, and Download media in the ⋯ menu of posts (photos, videos, or a document as PDF). Adds a switch in Fakh Patches. |
 | Feature | More tab | On | Hides items of the More tab (Puzzle games, Groups, Events, Newsletters), or lists them at the bottom of the profile menu. Adds a Puzzle games shortcut to the LinkedIn app icon, with its own switch. |
 | Feature | Swipe between tabs | On | Swipe sideways to go to the next or previous tab of the navigation bar, with a slide animation. On My Network it first switches between Grow and Catch up. Does not act where something under the finger can scroll sideways. |
 | Feature | Always show navigation bar | On | Adds a switch in Fakh Patches, off by default, that keeps the navigation bar on screen while you scroll instead of sliding it away. |
