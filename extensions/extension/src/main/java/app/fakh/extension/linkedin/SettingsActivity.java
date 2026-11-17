@@ -44,7 +44,6 @@ import java.util.List;
 import java.util.Locale;
 
 import app.fakh.extension.shared.TabSheet;
-import app.fakh.extension.shared.Translations;
 
 /**
  * Fakh Patches settings screen, laid out like LinkedIn's own settings pages (Account preferences and the like):
@@ -179,11 +178,10 @@ public final class SettingsActivity extends Activity {
                 || Settings.isHideSuggestedIncluded() || Settings.isHidePremiumIncluded()) {
             Category ads = new Category("Ads & promotions");
             if (Settings.isHideAdsIncluded()) {
-                ads.toggle(Settings.HIDE_ADS, true, "Hide ads", "Promoted posts in your feed.");
+                ads.toggle(Settings.HIDE_ADS, true, "Hide ads", null);
             }
             if (Settings.isHidePromotedJobsIncluded()) {
-                ads.toggle(Settings.HIDE_PROMOTED_JOBS, true, "Hide promoted jobs",
-                        "Promoted jobs in Jobs and search.");
+                ads.toggle(Settings.HIDE_PROMOTED_JOBS, true, "Hide promoted jobs", null);
             }
             if (Settings.isHideSuggestedIncluded()) {
                 ads.toggle(Settings.HIDE_SUGGESTED, true, "Hide suggested posts",
@@ -203,48 +201,40 @@ public final class SettingsActivity extends Activity {
                 || Settings.isCopyTextIncluded() || Settings.isScreenshotShareIncluded()) {
             Category feed = new Category("Feed");
             if (Settings.isDisableDoubleTapLikeIncluded()) {
-                feed.toggle(Settings.DISABLE_DOUBLE_TAP_LIKE, true, "Turn off double-tap to like",
-                        "Double-tapping a post or photo won't like it.");
+                feed.toggle(Settings.DISABLE_DOUBLE_TAP_LIKE, true, "Turn off double-tap to like", null);
             }
             if (Settings.isSwipeTabsIncluded()) {
-                feed.toggle(Settings.SWIPE_TABS, true, "Swipe between tabs",
-                        "Swipe sideways to go to the next or previous tab of the navigation bar.");
+                feed.toggle(Settings.SWIPE_TABS, true, "Swipe between tabs", null);
             }
             if (Settings.isKeepFeedIncluded()) {
-                feed.toggle(Settings.KEEP_FEED, true, "Keep feed on reopen",
-                        "Stay where you were when you come back. Pull down or tap \"New posts\" for new posts.");
+                feed.toggle(Settings.KEEP_FEED, true, "Keep feed position on reopen", null);
             }
             if (Settings.isScreenshotShareIncluded()) {
-                feed.toggle(Settings.NO_SCREENSHOT_SHARE, true, "Turn off screenshot share sheet",
-                        "The Share sheet won't open when you take a screenshot of a post.");
+                feed.toggle(Settings.NO_SCREENSHOT_SHARE, true, "Turn off screenshot share sheet", null);
             }
             if (Settings.isCopyTextIncluded()) {
                 feed.toggle(Settings.COPY_TEXT, true, "Copy text",
                         "Adds Copy text to the ⋯ menu of posts and comments.");
             }
             if (Settings.isViewerTapToHideIncluded()) {
-                feed.toggle(Settings.VIEWER_TAP_TO_HIDE, true, "Tap to hide controls in viewers",
-                        "Tap a video or document in full screen to hide its caption and buttons.");
+                feed.toggle(Settings.VIEWER_TAP_TO_HIDE, true, "Tap to hide controls in viewers", null);
             }
             if (Settings.isExpandPostsIncluded()) {
-                feed.toggle(Settings.EXPAND_POSTS, false, "Expand posts by default", "Posts start expanded. Tap the text to collapse.");
+                feed.toggle(Settings.EXPAND_POSTS, false, "Expand posts by default", "Tap the text to collapse.");
             }
             if (Settings.isFeedFiltersIncluded()) {
                 feed.toggle(Settings.FOCUS_MODE, false, "Hide engagement counts", "Hide like, comment, and repost counts.")
                         .toggle(Settings.HIDE_CELEBRATIONS, false, "Hide celebration posts",
                                 "Work anniversaries and new jobs.")
-                        .toggle(Settings.HIDE_FEED_JOBS, false, "Hide job posts",
-                                "Job cards in your feed.")
+                        .toggle(Settings.HIDE_FEED_JOBS, false, "Hide job posts", null)
                         .toggle(Settings.HIDE_REPOSTS, false, "Hide network activity",
-                                "Posts shown because someone you know liked, commented on, or reposted them.")
-                        .toggle(Settings.HIDE_VIDEO_POSTS, false, "Hide video posts", "Posts with a video.")
+                                "Likes, comments and reposts of people you know.")
+                        .toggle(Settings.HIDE_VIDEO_POSTS, false, "Hide video posts", null)
                         .toggle(Settings.HIDE_RECOMMENDATIONS, false, "Hide \"Recommended for you\"",
                                 "Lists of people and pages to follow.")
-                        .toggle(Settings.HIDE_GAMES, false, "Hide puzzle games", "Game cards in search.")
-                        .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Hide the \"New posts\" button",
-                                "The button at the top of the feed.")
-                        .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"Show translation\"",
-                                "Shown below posts in other languages.");
+                        .toggle(Settings.HIDE_GAMES, false, "Hide puzzle games", null)
+                        .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Hide the \"New posts\" button", null)
+                        .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"Show translation\"", null);
             }
             categories.add(feed);
         }
@@ -262,17 +252,14 @@ public final class SettingsActivity extends Activity {
                         "Blurs what's behind the glass. Uses more battery and might stutter.");
             }
             if (Settings.isMaterialTabIconsIncluded()) {
-                navigation.toggle(Settings.MATERIAL_TAB_ICONS, false, "Material icons",
-                        "Filled when selected, outlined otherwise.");
+                navigation.toggle(Settings.MATERIAL_TAB_ICONS, false, "Material icons", null);
             }
             if (Settings.isAlwaysShowNavigationBarIncluded()) {
-                navigation.toggle(Settings.ALWAYS_SHOW_NAVIGATION_BAR, false, "Always show navigation bar",
-                        "Keeps the navigation bar on screen while you scroll.");
+                navigation.toggle(Settings.ALWAYS_SHOW_NAVIGATION_BAR, false, "Always show navigation bar", null);
             }
             if (Settings.isNavigationBarIncluded()) {
-                navigation.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels", "Text under the navigation bar icons.")
-                        .toggle(Settings.HIDE_TAB_BADGES, false, "Hide notification badges",
-                                "The count on the navigation bar tabs.")
+                navigation.toggle(Settings.HIDE_TAB_LABELS, false, "Hide tab labels", null)
+                        .toggle(Settings.HIDE_TAB_BADGES, false, "Hide notification badges", null)
                         .sheet("Navigation bar tabs", tabs, () -> showTabsSheet(tabSpecs, tabs));
             }
             categories.add(navigation);
@@ -288,51 +275,44 @@ public final class SettingsActivity extends Activity {
 
         if (Settings.isVideoTabIncluded()) {
             categories.add(new Category("Video tab")
-                    .toggle(Settings.VIDEO_TAB_TIME, true, "Show video time", "Above the seek bar.")
-                    .toggle(Settings.VIDEO_TAB_AUTO_SCROLL, false, "Auto scroll",
-                            "Goes to the next video when one ends."));
+                    .toggle(Settings.VIDEO_TAB_TIME, true, "Show video time", null)
+                    .toggle(Settings.VIDEO_TAB_AUTO_SCROLL, false, "Auto scroll", null));
         }
 
         if (Settings.isMoreMenuIncluded()) {
             Category more = new Category("More tab")
-                    .toggle(Settings.MOVE_MORE_ITEMS, Settings.moveMoreItems(), "Show in the profile menu",
-                            "Also list the items of the More tab in the profile menu.");
+                    .toggle(Settings.MOVE_MORE_ITEMS, Settings.moveMoreItems(), "Show item in profile menu", null);
             List<Item> moreItems = new ArrayList<>();
             for (MoreMenu.Item item : MoreMenu.items()) moreItems.add(choice(item.key(), true, item.label));
             more.sheet("Items in the More tab", moreItems, () -> showSheet("Items in the More tab",
                     "Choose which items the More tab lists.", moreItems));
             categories.add(more);
             categories.add(new Category("Shortcuts")
-                    .toggle(Settings.GAMES_SHORTCUT, true, "Puzzle games shortcut",
-                            "Add it to the menu of the LinkedIn app icon.", () -> GamesShortcut.update(this)));
+                    .toggle(Settings.GAMES_SHORTCUT, true, "Puzzle games shortcut", null, () -> GamesShortcut.update(this)));
         }
 
         if (Settings.isRemoveGapsAndDividersIncluded() || Settings.isMaterialYouIncluded()
                 || Settings.isAmoledBlackIncluded() || Settings.isDarkAppIconIncluded()) {
             Category appearance = new Category("Appearance");
             if (Settings.isRemoveGapsAndDividersIncluded()) {
-                appearance.toggle(Settings.REMOVE_GAPS_AND_DIVIDERS, true, "Hide gaps and dividers",
-                        "Flat lists with no gaps or dividers.");
+                appearance.toggle(Settings.REMOVE_GAPS_AND_DIVIDERS, true, "Hide gaps and dividers", null);
             }
             if (Settings.isMaterialYouIncluded()) {
-                appearance.toggle(Settings.MATERIAL_YOU, true, "Material You",
-                        "Colors from your wallpaper across the app.");
+                appearance.toggle(Settings.MATERIAL_YOU, true, "Material You", null);
             }
             if (Settings.isAmoledBlackIncluded()) {
-                appearance.toggle(Settings.PITCH_BLACK, false, "Pitch black",
-                        "Black backgrounds in dark mode.");
+                appearance.toggle(Settings.PITCH_BLACK, false, "Pitch black", null);
             }
             if (Settings.isDarkAppIconIncluded()) {
-                appearance.toggle(Settings.DARK_APP_ICON, false, "Dark app icon",
-                        "Black icon with the white \"in\".", this::applyAppIcon);
+                appearance.toggle(Settings.DARK_APP_ICON, false, "Dark app icon", null, this::applyAppIcon);
             }
             categories.add(appearance);
         }
 
         if (Settings.isDownloadMediaIncluded()) {
             categories.add(new Category("Download")
-                    .toggle(Settings.DOWNLOAD_MEDIA, true, "Download button",
-                            "On photos, videos, profile photos, and banners, and in the ⋯ menu of posts.")
+                    .toggle(Settings.DOWNLOAD_MEDIA, true, "Download media",
+                            "On profile photos and banners, and in the ⋯ menu of posts.")
                     .value("Save location", new ValueRow() {
                         public String currentValue() {
                             return Settings.downloadSplitByType()
@@ -383,8 +363,7 @@ public final class SettingsActivity extends Activity {
 
         if (Settings.isMessagingIncluded()) {
             categories.add(new Category("Chat")
-                    .toggle(Settings.HIDE_SPONSORED_MESSAGES, true, "Hide sponsored messages",
-                            "Sponsored InMail and ads in your inbox.")
+                    .toggle(Settings.HIDE_SPONSORED_MESSAGES, true, "Hide sponsored messages", null)
                     .toggle(Settings.GHOST_MODE, false, "Ghost mode",
                             "Don't send typing or seen status. Mark chats as read from the chat list."));
         }
@@ -414,26 +393,12 @@ public final class SettingsActivity extends Activity {
         }
 
         categories.add(new Category("Other")
-                .value("Language", new ValueRow() {
-                    public String currentValue() {
-                        return languageNames()[languageIndex()];
-                    }
-
-                    public Runnable onClick() {
-                        return SettingsActivity.this::chooseLanguage;
-                    }
-
-                    public boolean enabled() {
-                        return true;
-                    }
-                })
-                .action("Export settings", "Copy a backup to the clipboard.", this::exportSettings)
-                .action("Import settings", "Restore a backup from the clipboard.", this::importSettings)
-                .action("Reset to defaults", "Reset all Fakh Patches settings.", this::resetSettings)
-                .toggle(Settings.DEBUG_LOGGING, false, "Diagnostic logging",
-                        "Log more detail for bug reports.")
-                .action("Copy diagnostic report", "App, device, and log details for a bug report. Links and IDs are removed.", this::copyDiagnosticReport)
-                .action("Clear diagnostic log", "Delete the saved log.", this::clearDiagnosticLog));
+                .action("Export settings", null, this::exportSettings)
+                .action("Import settings", null, this::importSettings)
+                .action("Reset to defaults", null, this::resetSettings)
+                .toggle(Settings.DEBUG_LOGGING, false, "Diagnostic logging", null)
+                .action("Copy diagnostic report", null, this::copyDiagnosticReport)
+                .action("Clear diagnostic log", null, this::clearDiagnosticLog));
         return categories;
     }
 
@@ -841,48 +806,6 @@ public final class SettingsActivity extends Activity {
 
     // endregion
 
-    // region Language
-
-    /** "auto" followed by every language that has a translation file. */
-    private static String[] languageCodes() {
-        List<String> codes = new ArrayList<>();
-        codes.add(I18n.LANGUAGE_AUTO);
-        codes.addAll(Translations.LANGUAGES.keySet());
-        return codes.toArray(new String[0]);
-    }
-
-    /** Language names are shown in their own language; only the automatic entry is translated. */
-    private static String[] languageNames() {
-        String[] codes = languageCodes();
-        String[] names = new String[codes.length];
-        names[0] = I18n.tr("Automatic (device language)");
-        for (int i = 1; i < codes.length; i++) names[i] = Translations.LANGUAGES.get(codes[i]);
-        return names;
-    }
-
-    private int languageIndex() {
-        String current = Settings.language();
-        String[] codes = languageCodes();
-        for (int i = 0; i < codes.length; i++) if (codes[i].equals(current)) return i;
-        return 0;
-    }
-
-    private void chooseLanguage() {
-        String[] codes = languageCodes();
-        new AlertDialog.Builder(this, dialogTheme())
-                .setTitle(I18n.tr("Language"))
-                .setSingleChoiceItems(languageNames(), languageIndex(), (dialog, which) -> {
-                    Settings.setString(Settings.LANGUAGE, codes[which]);
-                    dialog.dismiss();
-                    // Rebuild the screen so every text uses the new language.
-                    recreate();
-                })
-                .setNegativeButton(I18n.tr("Cancel"), null)
-                .show();
-    }
-
-    // endregion
-
     // region Backup
 
     private void copyDiagnosticReport() {
@@ -900,45 +823,47 @@ public final class SettingsActivity extends Activity {
         Downloads.toast(this, "Diagnostic log cleared");
     }
 
+    private static final int REQUEST_EXPORT = 7101;
+    private static final int REQUEST_IMPORT = 7102;
+
     private void exportSettings() {
-        try {
-            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-            clipboard.setPrimaryClip(ClipData.newPlainText(BRAND, Settings.exportJson()));
-            Downloads.toast(this, "Settings copied to the clipboard");
-        } catch (Exception e) {
-            Downloads.toast(this, I18n.f("Export failed: %1$s", e.getMessage()));
-        }
+        startActivityForResult(new Intent(Intent.ACTION_CREATE_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("application/json")
+                .putExtra(Intent.EXTRA_TITLE, "fakh-patches-settings.json"), REQUEST_EXPORT);
     }
 
     private void importSettings() {
-        EditText input = new EditText(this);
-        input.setHint(I18n.tr("Paste a settings backup here"));
-        input.setMinLines(4);
-        input.setGravity(Gravity.TOP);
-        ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        ClipData clip = clipboard.getPrimaryClip();
-        if (clip != null && clip.getItemCount() > 0 && clip.getItemAt(0).getText() != null) {
-            input.setText(clip.getItemAt(0).getText());
-        }
-        LinearLayout box = new LinearLayout(this);
-        box.setPadding(dp(24), dp(8), dp(24), 0);
-        box.addView(input, matchWidth());
+        startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT)
+                .addCategory(Intent.CATEGORY_OPENABLE)
+                .setType("*/*"), REQUEST_IMPORT);
+    }
 
-        new AlertDialog.Builder(this, dialogTheme())
-                .setTitle(I18n.tr("Import settings"))
-                .setView(box)
-                .setPositiveButton(I18n.tr("Import"), (dialog, which) -> {
-                    try {
-                        int count = Settings.importJson(input.getText().toString());
-                        Downloads.toast(this, I18n.f("%1$s settings imported", count));
-                        refresh();
-                        showRestartBanner();
-                    } catch (Exception e) {
-                        Downloads.toast(this, "Invalid backup");
-                    }
-                })
-                .setNegativeButton(I18n.tr("Cancel"), null)
-                .show();
+    @Override
+    protected void onActivityResult(int request, int result, Intent data) {
+        super.onActivityResult(request, result, data);
+        if (result != RESULT_OK || data == null || data.getData() == null) return;
+        Uri uri = data.getData();
+        if (request == REQUEST_EXPORT) {
+            try (java.io.OutputStream out = getContentResolver().openOutputStream(uri)) {
+                out.write(Settings.exportJson().getBytes(java.nio.charset.StandardCharsets.UTF_8));
+                Downloads.toast(this, "Settings saved");
+            } catch (Exception e) {
+                Downloads.toast(this, I18n.f("Export failed: %1$s", e.getMessage()));
+            }
+        } else if (request == REQUEST_IMPORT) {
+            try (java.io.InputStream in = getContentResolver().openInputStream(uri)) {
+                java.io.ByteArrayOutputStream bytes = new java.io.ByteArrayOutputStream();
+                byte[] buffer = new byte[8192];
+                for (int n; (n = in.read(buffer)) > 0; ) bytes.write(buffer, 0, n);
+                String text = bytes.toString("UTF-8");
+                Downloads.toast(this, I18n.f("%1$s settings imported", Settings.importJson(text)));
+                refresh();
+                showRestartBanner();
+            } catch (Exception e) {
+                Downloads.toast(this, "Invalid backup");
+            }
+        }
     }
 
     private void resetSettings() {

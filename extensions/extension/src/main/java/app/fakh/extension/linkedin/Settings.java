@@ -90,7 +90,6 @@ public final class Settings {
     static final String[] DOWNLOAD_BASE_DIRS = {"Download", "Pictures", "Movies", "DCIM"};
     static final String DEFAULT_DOWNLOAD_FOLDER = "LinkedIn";
     static final String DEBUG_LOGGING = "debug_logging";
-    static final String LANGUAGE = "language";
 
     private static SharedPreferences prefs;
 
@@ -540,11 +539,6 @@ public final class Settings {
         String value = getString(DOWNLOAD_BASE_DIR, DOWNLOAD_BASE_DIRS[0]);
         for (String dir : DOWNLOAD_BASE_DIRS) if (dir.equals(value)) return dir;
         return DOWNLOAD_BASE_DIRS[0];
-    }
-
-    /** I18n.LANGUAGE_AUTO or a language code from Translations.LANGUAGES. */
-    static String language() {
-        return getString(LANGUAGE, I18n.LANGUAGE_AUTO);
     }
 
     static String downloadFolder() {
