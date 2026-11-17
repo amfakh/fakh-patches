@@ -1,3 +1,9 @@
+## [2.2.1](https://github.com/amfakh/fakh-patches/compare/v2.2.0...v2.2.1) (2026-11-17)
+
+### Bug Fixes
+
+* **LinkedIn:** fix the crash when sorting the Navigation bar tabs ([7154ec3](https://github.com/amfakh/fakh-patches/commit/7154ec325aa6d6d801bea2a738060ab8acb1ff42))
+
 ## [2.2.0](https://github.com/amfakh/fakh-patches/compare/v2.1.0...v2.2.0) (2026-11-17)
 
 ### New Features
