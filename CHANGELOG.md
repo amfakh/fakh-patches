@@ -1,3 +1,9 @@
+## [2.0.0](https://github.com/amfakh/fakh-patches/compare/v1.22.5...v2.0.0) (2026-11-17)
+
+### Breaking Changes
+
+* the bundle is built for Morphe patcher 2.3.0 and needs Morphe Manager 2.5.0 or newer, older Managers (2.0 to 2.4) cannot load it ([2a3a543](https://github.com/amfakh/fakh-patches/commit/2a3a5434ff0db9a80d6b6f97398a79eafd3c8d5e))
+
 ## [1.22.5](https://github.com/amfakh/fakh-patches/compare/v1.22.4...v1.22.5) (2026-11-17)
 
 ### Updated App Support
