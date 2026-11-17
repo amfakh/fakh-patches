@@ -57,6 +57,7 @@ public final class Settings {
     static final String SHOW_TAB_POST = "show_tab_post";
     static final String SHOW_TAB_VIDEO = "show_tab_video";
     static final String SHOW_TAB_NEWS = "show_tab_news";
+    static final String SHOW_TAB_MESSAGING = "show_tab_messaging";
     static final String NO_SCREENSHOT_SHARE = "no_screenshot_share";
     static final String SHOW_TOP_BAR_POST = "show_top_bar_post";
     static final String SHOW_TOP_BAR_MESSAGING = "show_top_bar_messaging";
@@ -211,6 +212,7 @@ public final class Settings {
             case "POST":
             case "VIDEO":
             case "NEWS":
+            case "MESSAGING":
                 return isNavigationBarIncluded() && !optionalTabShown(tab);
             default:
                 return false;
@@ -231,6 +233,8 @@ public final class Settings {
                 return SHOW_TAB_POST;
             case "VIDEO":
                 return SHOW_TAB_VIDEO;
+            case "MESSAGING":
+                return SHOW_TAB_MESSAGING;
             default:
                 return SHOW_TAB_NEWS;
         }

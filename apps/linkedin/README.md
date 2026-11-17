@@ -17,7 +17,7 @@ Morphe Manager groups them by category.
 | Feature | Swipe between tabs | On | Swipe sideways to go to the next or previous tab of the navigation bar, with a slide animation. On My Network it first switches between Grow and Catch up. Does not act where something under the finger can scroll sideways. |
 | Feature | Always show navigation bar | On | Adds a switch in Fakh Patches, off by default, that keeps the navigation bar on screen while you scroll instead of sliding it away. |
 | Feature | Hide top bar buttons | On | Adds a Top bar buttons sheet in Fakh Patches to hide the Post and Messaging buttons of the top bar. |
-| Feature | Navigation bar | On | Adds switches in Fakh Patches to show or hide the More, Jobs, Network and Notifications tabs of the navigation bar (and Post, Video and News, which can be added even when LinkedIn leaves them out), its notification badges and its tab labels. The tabs can be sorted in the same sheet (Home stays first). |
+| Feature | Navigation bar | On | Adds switches in Fakh Patches to show or hide the More, Jobs, Network and Notifications tabs of the navigation bar (and Post, Video, News and Messaging, which can be added even when LinkedIn leaves them out), its notification badges and its tab labels. The tabs can be sorted in the same sheet (Home stays first). |
 | Feature | GmsCore support | Off | Makes "Continue with Google" work by signing in through [microG RE](https://github.com/MorpheApp/microg-RE) instead of Google Play services. Needs microG RE installed and signed in to a Google account. |
 | Feed | Hide suggested posts | On | Removes "Suggested" posts from people outside your network. |
 | Feed | Feed filters | On | Adds filters you can turn on in Fakh Patches: engagement counts, celebrations, job cards, network activity (likes, comments, reposts), video posts, "Recommended for you", puzzle games, the "New posts" pill and "Show translation". All start off. |
@@ -36,7 +36,7 @@ Morphe Manager groups them by category.
 | Theme | Material You | On | Wallpaper colors (Android 12+) instead of LinkedIn blue for accents, backgrounds, cards, bars and borders. Some screens drawn by LinkedIn's servers keep their own colors. |
 | Theme | Pitch black | On | Replaces the gray backgrounds of dark mode with black, and cards with a slightly lighter black. Works with or without Material You. |
 | Theme | Dark app icon | On | Black app icon with the white "in". Off until you turn it on in Fakh Patches. |
-| Theme | Material icons in the navigation bar | On | Material icons for the Home, My Network, Notifications, Jobs and Video tabs, filled when selected. Off until you turn it on in Fakh Patches. |
+| Theme | Material icons in the navigation bar | On | Material icons for the Home, My Network, Notifications, Jobs, Video and Messaging tabs, filled when selected. Off until you turn it on in Fakh Patches. |
 | Theme | Hide gaps and dividers | On | Removes the gray gaps between posts and the dividers between list items, so the feed and lists are one flat surface. |
 | Theme | Glass navigation bar | On | Draws the navigation bar as a floating, translucent capsule with a sliding selection pill, in the style of the glass navigation bar of [Morphe Patches](https://github.com/MorpheApp/morphe-patches). Slide a finger along the bar to switch tabs, with a haptic tick for each tab. The **Background blur** switch (off by default) blurs what's behind the bar and bends it at the edges on Android 12 and newer. The pill takes the wallpaper accent with Material You and stays neutral gray without it. |
 

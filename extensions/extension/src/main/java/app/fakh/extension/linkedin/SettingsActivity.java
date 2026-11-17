@@ -1026,6 +1026,7 @@ public final class SettingsActivity extends Activity {
             {"POST", Settings.SHOW_TAB_POST, "Post", IconDrawable.POST_TAB_OUTLINE},
             {"VIDEO", Settings.SHOW_TAB_VIDEO, "Video", IconDrawable.PLAY_OUTLINE},
             {"NEWS", Settings.SHOW_TAB_NEWS, "News", IconDrawable.ARTICLE_TAB_OUTLINE},
+            {"MESSAGING", Settings.SHOW_TAB_MESSAGING, "Messaging", IconDrawable.CHAT_TAB_OUTLINE},
             {"MORE", Settings.SHOW_TAB_MORE, "More", IconDrawable.APPS_TAB},
     };
 
@@ -1034,6 +1035,7 @@ public final class SettingsActivity extends Activity {
             case "POST":
             case "VIDEO":
             case "NEWS":
+            case "MESSAGING":
                 return Settings.tabOffered(tab);
             case "MORE":
                 return Settings.showMoreTab();

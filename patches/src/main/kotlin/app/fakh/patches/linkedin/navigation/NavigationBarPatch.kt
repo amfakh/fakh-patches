@@ -34,6 +34,14 @@ private object TabsSizedFingerprint : Fingerprint(
     parameters = emptyList(),
 )
 
+/** SlimBottomBar.onClick(View): a tap on one of the tabs of the bottom bar. */
+private object TabClickFingerprint : Fingerprint(
+    definingClass = "Lcom/linkedin/android/home/bottomnav/SlimBottomBar;",
+    name = "onClick",
+    returnType = "V",
+    parameters = listOf("Landroid/view/View;"),
+)
+
 /**
  * The only two hooks into the bottom bar, shared by every patch that changes it: the filter that decides which tabs
  * it has (the More tab is one of them) and the point where its tabs have been sized.
@@ -61,6 +69,19 @@ internal val navigationHooksPatch = patch {
                 )
             }
         }
+
+        // The Messaging tab is a screen of its own in LinkedIn, not a fragment of the home pager: a tap on it opens
+        // that screen the way the button of the top bar does, and the selection stays where it was.
+        TabClickFingerprint.method.addInstructionsWithLabels(
+            0,
+            """
+                invoke-static { p0, p1 }, $EXTENSION_CLASS->interceptTabClick(Landroid/view/View;Landroid/view/View;)Z
+                move-result v0
+                if-eqz v0, :click
+                return-void
+            """,
+            ExternalLabel("click", TabClickFingerprint.method.getInstruction(0)),
+        )
 
         // The method reuses the register of the bar before it returns, so the bar is taken at the start.
         TabsSizedFingerprint.method.apply {

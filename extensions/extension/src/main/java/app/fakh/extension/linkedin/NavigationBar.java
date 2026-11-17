@@ -1,6 +1,7 @@
 package app.fakh.extension.linkedin;
 
 import android.graphics.drawable.StateListDrawable;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,9 +23,9 @@ import java.util.WeakHashMap;
 public final class NavigationBar {
     /** HomeTabInfo constants that can be hidden. Home always stays: it is the screen the app opens on. */
     private static final String[] HIDEABLE_TABS = {"MORE", "JOBS", "RELATIONSHIPS", "NOTIFICATIONS", "POST", "VIDEO",
-            "NEWS"};
+            "NEWS", "MESSAGING"};
     /** Tabs only some accounts get. Turned on in the settings, they are added when LinkedIn leaves them out. */
-    private static final String[] OPTIONAL_TABS = {"POST", "VIDEO", "NEWS"};
+    private static final String[] OPTIONAL_TABS = {"POST", "VIDEO", "NEWS", "MESSAGING"};
     private static final String[] BADGE_VIEWS = {
             "slim_notification_badge_determinate_frame_layout_next",
             "slim_notification_badge_determinate_frame_layout_current",
@@ -44,6 +45,7 @@ public final class NavigationBar {
         MATERIAL_ICONS.put("tab_video", new String[]{IconDrawable.PLAY, IconDrawable.PLAY_OUTLINE});
         MATERIAL_ICONS.put("tab_post", new String[]{IconDrawable.POST_TAB, IconDrawable.POST_TAB_OUTLINE});
         MATERIAL_ICONS.put("tab_news", new String[]{IconDrawable.ARTICLE_TAB, IconDrawable.ARTICLE_TAB_OUTLINE});
+        MATERIAL_ICONS.put("tab_messaging", new String[]{IconDrawable.CHAT_TAB, IconDrawable.CHAT_TAB_OUTLINE});
         MATERIAL_ICONS.put("tab_newsletters", new String[]{IconDrawable.ARTICLE_TAB, IconDrawable.ARTICLE_TAB_OUTLINE});
         MATERIAL_ICONS.put("tab_more", new String[]{IconDrawable.APPS_TAB, IconDrawable.APPS_TAB});
         MATERIAL_ICONS.put("tab_games", new String[]{IconDrawable.PUZZLE_TAB, IconDrawable.PUZZLE_TAB_OUTLINE});
@@ -170,7 +172,7 @@ public final class NavigationBar {
                     SwipeTabs.install(bar, tabs, new SwipeTabs.Host() {
                         @Override
                         public boolean enabled() {
-                            return Settings.swipeTabs();
+                            return Settings.swipeTabs() && !profileMenuOpen(bar);
                         }
 
                         @Override
@@ -200,6 +202,23 @@ public final class NavigationBar {
         } catch (Throwable t) {
             Diagnostics.error("onTabsSized failed", t);
         }
+    }
+
+    /**
+     * Whether the profile menu (the drawer opened from the profile photo) is open or opening. The drawer layout keeps
+     * its panel off screen while closed, so any panel after the content that is on screen means it is showing.
+     */
+    private static boolean profileMenuOpen(View bar) {
+        View drawer = child(bar.getRootView(), "home_drawer_layout");
+        if (!(drawer instanceof ViewGroup)) return false;
+        ViewGroup layout = (ViewGroup) drawer;
+        for (int i = 1; i < layout.getChildCount(); i++) {
+            View panel = layout.getChildAt(i);
+            if (panel.getVisibility() == View.VISIBLE && panel.getRight() > 0 && panel.getLeft() < layout.getWidth()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static void arrange(View bar, ViewGroup tabs) {
@@ -255,14 +274,30 @@ public final class NavigationBar {
      */
     public static boolean setTabIcon(View tab, int resource) {
         try {
-            if (resource == 0 || tab.getId() == View.NO_ID) return false;
+            if (tab.getId() == View.NO_ID) return false;
             // By the tab's view id (tab_feed, tab_post, ...), set before its icon.
             String name = tab.getResources().getResourceEntryName(tab.getId());
-            STOCK_ICONS.put(name, resource);
-            if (!Settings.materialTabIcons()) return false;
-            String[] icons = MATERIAL_ICONS.get(name);
             View icon = child(tab, "slim_notification_badge_icon");
-            if (icons == null || !(icon instanceof ImageView)) return false;
+            // LinkedIn gives the Messaging tab a drawable where the others have a theme attribute, so it resolves
+            // to nothing and the tab would have no icon at all.
+            boolean unresolved = resource == 0 && name.equals("tab_messaging");
+            if (unresolved) {
+                // The same icon as the Messaging button of the top bar.
+                int attr = tab.getResources().getIdentifier("voyagerIcNavMessagingInactiveLarge32dp", "attr",
+                        tab.getContext().getPackageName());
+                TypedValue value = new TypedValue();
+                if (attr != 0 && tab.getContext().getTheme().resolveAttribute(attr, value, true)) {
+                    resource = value.resourceId;
+                }
+            }
+            if (resource == 0) return false;
+            STOCK_ICONS.put(name, resource);
+            String[] icons = Settings.materialTabIcons() ? MATERIAL_ICONS.get(name) : null;
+            if (icons == null || !(icon instanceof ImageView)) {
+                if (!unresolved || !(icon instanceof ImageView)) return false;
+                ((ImageView) icon).setImageResource(resource);
+                return true;
+            }
             int size = Downloads.dp(tab.getContext(), 24);
             StateListDrawable drawable = new StateListDrawable();
             drawable.addState(new int[]{android.R.attr.state_selected},
@@ -272,6 +307,24 @@ public final class NavigationBar {
             return true;
         } catch (Throwable t) {
             Diagnostics.error("setTabIcon failed", t);
+            return false;
+        }
+    }
+
+    /**
+     * Injected at the start of SlimBottomBar.onClick(View). The Messaging tab opens the conversations the way the
+     * top bar button does and leaves the selection alone; returns true when the tap was handled.
+     */
+    public static boolean interceptTabClick(View bar, View tab) {
+        try {
+            if (tab.getId() == View.NO_ID
+                    || !tab.getResources().getResourceEntryName(tab.getId()).equals("tab_messaging")) {
+                return false;
+            }
+            View button = child(tab.getRootView(), "home_messaging");
+            return button != null && button.performClick();
+        } catch (Throwable t) {
+            Diagnostics.error("interceptTabClick failed", t);
             return false;
         }
     }
