@@ -8,9 +8,21 @@ import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.proxy.mutableTypes.MutableClass
+import app.morphe.patcher.Fingerprint
 import com.android.tools.smali.dexlib2.Opcode
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
+import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 
 private const val EXTENSION = "Lapp/fakh/extension/jira/MaterialYou;"
+
+/** The class of the floating Rovo button, found by its name since R8 keeps it. */
+private val rovoFabFingerprint = Fingerprint(
+    returnType = "V",
+    custom = { method, classDef ->
+        classDef.type.endsWith("/rovochat/RovoChatFloatingActionButtonKt;") && method.parameterTypes.size == 7
+    },
+)
 
 /** The Theme choices are built by a lambda that casts the screen's current theme, of this type. */
 
@@ -201,6 +213,34 @@ val materialYouPatch = patch(
                 .reversed()
                 .forEach { (index, _) -> initializer.addInstructions(index, smali) }
         }
+
+        // The floating Rovo button: its container and icon take accent tones. Both are arguments (the 4th and 5th) of the
+        // button's Material component, which the button's composable calls once per code path.
+        val rovoButton = mutableClassDefBy(rovoFabFingerprint.classDef.type).methods.first {
+            it.returnType == "V" && it.parameterTypes.size == 9
+        }
+        rovoButton.implementation!!.instructions.withIndex()
+            .filter { (_, instruction) ->
+                instruction.opcode == Opcode.INVOKE_STATIC_RANGE &&
+                    ((instruction as ReferenceInstruction).reference as MethodReference).parameterTypes.map(CharSequence::toString)
+                        .let { it.size == 10 && it[3] == "J" && it[4] == "J" }
+            }
+            .reversed()
+            .forEach { (index, instruction) ->
+                val start = (instruction as RegisterRangeInstruction).startRegister
+                rovoButton.addInstructions(
+                    index,
+                    """
+                        invoke-static/range { v${start + 3} .. v${start + 4} }, $EXTENSION->rovoContainer(J)J
+                        move-result-wide v${start + 3}
+                        invoke-static/range { v${start + 5} .. v${start + 6} }, $EXTENSION->rovoContent(J)J
+                        move-result-wide v${start + 5}
+                    """,
+                )
+            }
+        if (rovoButton.implementation!!.instructions.none {
+                it.opcode == Opcode.INVOKE_STATIC_RANGE && (it as ReferenceInstruction).reference.toString().contains("rovoContainer")
+            }) throw PatchException("The Rovo button's colors not found")
 
         // Views: every activity picks the Material You and pitch black colors through its base context.
         appCompatActivity().methods.first { it.name == "attachBaseContext" }.addInstructions(

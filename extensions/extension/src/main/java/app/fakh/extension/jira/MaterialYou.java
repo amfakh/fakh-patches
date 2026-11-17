@@ -131,6 +131,35 @@ public final class MaterialYou {
         return pack((argb & 0xFF000000) | (context.getColor(tone) & 0xFFFFFF));
     }
 
+    /**
+     * Injected before the Rovo button is drawn: the container of the button in a wallpaper accent tone, dark in dark
+     * mode and light in light mode.
+     *
+     * @param packed the button's container color, packed
+     * @return the accent tone, or {@code packed} while Material You is off
+     */
+    public static long rovoContainer(long packed) {
+        return rovoTone(packed, android.R.color.system_accent1_800, android.R.color.system_accent1_200);
+    }
+
+    /**
+     * Injected before the Rovo button is drawn: the color of its icon, the accent tone that reads on
+     * {@link #rovoContainer}.
+     *
+     * @param packed the button's icon color, packed
+     * @return the accent tone, or {@code packed} while Material You is off
+     */
+    public static long rovoContent(long packed) {
+        return rovoTone(packed, android.R.color.system_accent1_100, android.R.color.system_accent1_900);
+    }
+
+    /** The color of a tone in the theme's mode, packed, or {@code packed} without the wallpaper's colors. */
+    private static long rovoTone(long packed, int dark, int light) {
+        Context context = AppRuntime.application();
+        if (context == null || !app.fakh.extension.shared.MaterialYou.wallpaper(materialYou(context))) return packed;
+        return pack(context.getColor(app.fakh.extension.shared.MaterialYou.night(context) ? dark : light));
+    }
+
     /** The dark surface role, packed. */
     private static long surfaceDark(Context context) {
         return pack(0xFF000000 | (context.getColor(DARK_SURFACES.get(DARK_CANVAS)) & 0xFFFFFF));

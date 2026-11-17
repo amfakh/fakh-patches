@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 
+import java.lang.ref.WeakReference;
+
 import app.fakh.extension.shared.GlassCapsule;
 import app.fakh.extension.shared.TabSlide;
 
@@ -39,7 +41,29 @@ public final class GlassNavigationBar {
     /** NavigationBarView.LABEL_VISIBILITY_UNLABELED: no tab shows its label. */
     private static final int LABEL_VISIBILITY_UNLABELED = 2;
 
+    /** The bar installed last, which a page's Rovo button rises above. */
+    private static WeakReference<Selection> current = new WeakReference<>(null);
+    /**
+     * The last distance measured. A new bar (after a theme or orientation change) is not laid out yet when the page
+     * places the button, so the button keeps the last distance until the new bar can be measured.
+     */
+    private static float lastLift;
+
     private GlassNavigationBar() {
+    }
+
+    /**
+     * Called by the Rovo button of a page (Home, ...) before it is placed. The page's scaffold puts the button 16dp
+     * above the window's bottom, which is behind the capsule now that the pages get no room for the bar, so it is
+     * padded up by the distance from the window's bottom to the capsule's top.
+     *
+     * @return that distance in dp, or 0 while no glass bar is on screen
+     */
+    public static float rovoLift() {
+        Selection selection = current.get();
+        float lift = selection == null ? 0f : selection.lift();
+        if (lift > 0f) lastLift = lift;
+        return selection == null ? 0f : lastLift;
     }
 
     /**
@@ -116,6 +140,8 @@ public final class GlassNavigationBar {
         private float spanRight;
         /** The capsule as {@link #pill} last asked for it, which the pill stays inside. */
         private final RectF capsuleRect = new RectF();
+        /** The capsule as {@link #lift} last asked for it. */
+        private final RectF liftRect = new RectF();
         /** True when the tabs put the label beside the icon, as the bar does in landscape. */
         private boolean sideBySide;
 
@@ -125,8 +151,17 @@ public final class GlassNavigationBar {
             this.accent = app.fakh.extension.shared.MaterialYou.accent(bar.getContext(), MaterialYou.materialYou(bar.getContext()), 0xFF1868DB, 0xFF669DF1);
         }
 
+        /** The distance in dp from the bottom of the bar's window to the top of the capsule, or 0 while it is hidden. */
+        float lift() {
+            if (!bar.isShown() || bar.getWindowVisibility() != View.VISIBLE || !capsule(liftRect)) return 0f;
+            int[] at = new int[2];
+            bar.getLocationInWindow(at);
+            return Math.max(0f, (bar.getRootView().getHeight() - at[1] - liftRect.top) / density);
+        }
+
         /** Replaces the bar's background with the capsule. */
         void attach() {
+            current = new WeakReference<>(this);
             glass = new GlassCapsule(surface(bar.getContext()), density, this, FILL_ALPHA);
             // The pill takes the accent's wash with Material You, and stays neutral gray without it.
             if (app.fakh.extension.shared.MaterialYou.wallpaper(MaterialYou.materialYou(bar.getContext()))) glass.setAccent(accent);
