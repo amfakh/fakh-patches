@@ -130,6 +130,14 @@ val sduiComponentFilterPatch = patch {
     }
 }
 
+/** AndroidComposeView.dispatchTouchEvent(MotionEvent): every touch that enters a Compose screen. */
+object ComposeTouchFingerprint : Fingerprint(
+    definingClass = "Landroidx/compose/ui/platform/AndroidComposeView;",
+    name = "dispatchTouchEvent",
+    returnType = "Z",
+    parameters = listOf("Landroid/view/MotionEvent;"),
+)
+
 /** Version of this patch bundle, from the manifest the build writes into the .mpp (Version attribute). */
 /** Version of this patch bundle, read from the manifest of the .mpp. */
 fun bundleVersion(): String {

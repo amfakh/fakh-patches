@@ -64,6 +64,27 @@ val glassNavigationBarPatch = patch(
     }
 }
 
+@Suppress("unused")
+val swipeTabsPatch = patch(
+    name = "Swipe between tabs",
+    description = "Swipe sideways to go to the next or previous tab of the navigation bar. Where Scene shows " +
+        "Automation and Tap-to-Run as tabs, it switches between them first.",
+) {
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
+    category("Feature")
+    extendWith("extensions/extension.mpe")
+    dependsOn(switchRow("fakh_swipe_tabs"), settingsSwitchesPatch)
+
+    execute {
+        // p0 is only read. The glass bar's call at the returns stays valid: this one goes in at the start, where
+        // the tab host's widget already exists.
+        AddTabFingerprint.method.addInstructions(
+            0,
+            "invoke-static { p0 }, Lapp/fakh/extension/smartlife/Switches;->swipeTabs(Landroid/widget/TabHost;)V",
+        )
+    }
+}
+
 /** The interfaces of the cards of the Device Management page. */
 private val MANAGEMENT_CARD_INTERFACES = setOf(
     "Lcom/thingclips/smart/home/adv/api/ui/IDeviceUIItemView;",
