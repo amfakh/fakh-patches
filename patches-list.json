@@ -460,12 +460,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "CSOS_9.0.2_BETA",
+              "version": "CSOS_9.0.3_BETA",
               "versionCodes": {
-                "ARM64_V8A": 245,
-                "ARMEABI_V7A": 245,
-                "X86_64": 245,
-                "X86": 245
+                "ARM64_V8A": 246,
+                "ARMEABI_V7A": 246,
+                "X86_64": 246,
+                "X86": 246
               },
               "isExperimental": false,
               "minSdk": null,
@@ -4051,12 +4051,12 @@
           "formFactor": "MOBILE",
           "targets": [
             {
-              "version": "CSOS_9.0.2_BETA",
+              "version": "CSOS_9.0.3_BETA",
               "versionCodes": {
-                "ARM64_V8A": 245,
-                "ARMEABI_V7A": 245,
-                "X86_64": 245,
-                "X86": 245
+                "ARM64_V8A": 246,
+                "ARMEABI_V7A": 246,
+                "X86_64": 246,
+                "X86": 246
               },
               "isExperimental": false,
               "minSdk": null,
