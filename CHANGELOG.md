@@ -2,15 +2,15 @@
 
 ### Bug Fixes
 
-* **LinkedIn:** show LinkedIn's own Post, News, Messaging and More icons in the Navigation bar tabs sheet ([a0ea0df](https://github.com/amfakh/fakh-patches/commit/a0ea0dfd75b67e252d9ab9c61b565522e6cfbd66))
-* **LinkedIn:** Top bar buttons and Items in the More tab sheets show LinkedIn's own icons, whatever Material icons is set to ([a0ea0df](https://github.com/amfakh/fakh-patches/commit/a0ea0dfd75b67e252d9ab9c61b565522e6cfbd66))
+* **LinkedIn:** show LinkedIn's own icons in the Navigation bar tabs sheet ([a0ea0df](https://github.com/amfakh/fakh-patches/commit/a0ea0dfd75b67e252d9ab9c61b565522e6cfbd66))
+* **LinkedIn:** show LinkedIn's own icons in the Top bar and More tab sheets ([a0ea0df](https://github.com/amfakh/fakh-patches/commit/a0ea0dfd75b67e252d9ab9c61b565522e6cfbd66))
 
 ## [2.2.2](https://github.com/amfakh/fakh-patches/compare/v2.2.1...v2.2.2) (2026-11-17)
 
 ### New Features
 
-* **LinkedIn:** show LinkedIn's own icon for every tab in the Navigation bar tabs sheet ([01c093c](https://github.com/amfakh/fakh-patches/commit/01c093c7f6897ff65897d3af225f8121d736a0e9))
-* **LinkedIn:** add icons to the Top bar buttons and Items in the More tab sheets ([01c093c](https://github.com/amfakh/fakh-patches/commit/01c093c7f6897ff65897d3af225f8121d736a0e9))
+* **LinkedIn:** show LinkedIn's own tab icons in the tabs sheet ([01c093c](https://github.com/amfakh/fakh-patches/commit/01c093c7f6897ff65897d3af225f8121d736a0e9))
+* **LinkedIn:** add icons to the Top bar and More tab sheets ([01c093c](https://github.com/amfakh/fakh-patches/commit/01c093c7f6897ff65897d3af225f8121d736a0e9))
 
 ## [2.2.1](https://github.com/amfakh/fakh-patches/compare/v2.2.0...v2.2.1) (2026-11-17)
 
@@ -35,9 +35,9 @@
 ### Bug Fixes
 
 * **LinkedIn:** stop swiping tabs while the profile menu is open ([5457395](https://github.com/amfakh/fakh-patches/commit/545739542a2b7d2e1a609349a16a51d26c4e0332))
-* **LinkedIn:** Download media only on profile photos and banners, with the banner button staying visible ([d6ddb7e](https://github.com/amfakh/fakh-patches/commit/d6ddb7e7fd441e7ba39192d089ebcc6999ec1e89))
+* **LinkedIn:** Download media only on profile photos and banners ([d6ddb7e](https://github.com/amfakh/fakh-patches/commit/d6ddb7e7fd441e7ba39192d089ebcc6999ec1e89))
 * **LinkedIn:** shorten setting descriptions and follow the device language ([1e65013](https://github.com/amfakh/fakh-patches/commit/1e6501304b55e621deaba1618b3575f59e1fdbf0))
-* **LinkedIn:** split Post menu items into Copy text and Download media, select them again ([56916a7](https://github.com/amfakh/fakh-patches/commit/56916a78afc9b561628068f0541b7dcf9c416f3e))
+* **LinkedIn:** split Post menu items into Copy text and Download media, select again ([56916a7](https://github.com/amfakh/fakh-patches/commit/56916a78afc9b561628068f0541b7dcf9c416f3e))
 * **LinkedIn:** rename Tap to hide in viewers to Tap to hide controls in viewers, select it again ([56916a7](https://github.com/amfakh/fakh-patches/commit/56916a78afc9b561628068f0541b7dcf9c416f3e))
 
 ## [2.1.0](https://github.com/amfakh/fakh-patches/compare/v2.0.0...v2.1.0) (2026-11-17)
