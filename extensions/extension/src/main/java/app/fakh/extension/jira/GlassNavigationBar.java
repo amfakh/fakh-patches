@@ -2,6 +2,7 @@ package app.fakh.extension.jira;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.util.TypedValue;
 import android.view.View;
@@ -50,6 +51,51 @@ public final class GlassNavigationBar {
     private static float lastLift;
 
     private GlassNavigationBar() {
+    }
+
+    /** The glass behind the Rovo button, and the fill color it was made with: the bar's, so the two match. */
+    private static GlassCapsule rovoGlass;
+    private static int rovoGlassColor;
+    /** The surface color of the bar installed last, which the Rovo button's fill takes. */
+    private static int barSurface;
+    /** The button's square, in the coordinates of the canvas the button is drawn on. */
+    private static final RectF ROVO_BOX = new RectF();
+
+    /**
+     * Called as the Rovo button is drawn, before its icon: draws the button's body as a circle with the bar's fill,
+     * rim and sheen, without the blur. Nothing is drawn unless the button has no container of its own.
+     *
+     * @param canvas the canvas of the button's draw node
+     * @param size   the node's size, packed as Compose does: the width's float bits above the height's
+     */
+    public static void drawRovo(Canvas canvas, long size) {
+        if (!MaterialYou.rovoFlat()) return;
+        Context context = app.fakh.extension.shared.AppRuntime.application();
+        int color = barSurface != 0 ? barSurface
+                : app.fakh.extension.shared.MaterialYou.night(context) ? 0xFF1F1F1F : 0xFFFFFFFF;
+        if (rovoGlass == null || rovoGlassColor != color) {
+            rovoGlassColor = color;
+            rovoGlass = new GlassCapsule(color, context.getResources().getDisplayMetrics().density,
+                    new GlassCapsule.Layout() {
+                        @Override
+                        public boolean capsule(RectF out) {
+                            out.set(ROVO_BOX);
+                            return true;
+                        }
+
+                        @Override
+                        public boolean pill(RectF out) {
+                            return false;
+                        }
+                    }, FILL_ALPHA);
+            rovoGlass.setBevel(true);
+        }
+        float width = Float.intBitsToFloat((int) (size >>> 32));
+        float height = Float.intBitsToFloat((int) size);
+        // The node is the button plus a gap at its end; the button is a square of the node's height.
+        ROVO_BOX.set(0, 0, Math.min(width, height), height);
+        rovoGlass.setBounds(0, 0, Math.round(width), Math.round(height));
+        rovoGlass.draw(canvas);
     }
 
     /**
@@ -162,7 +208,8 @@ public final class GlassNavigationBar {
         /** Replaces the bar's background with the capsule. */
         void attach() {
             current = new WeakReference<>(this);
-            glass = new GlassCapsule(surface(bar.getContext()), density, this, FILL_ALPHA);
+            barSurface = surface(bar.getContext());
+            glass = new GlassCapsule(barSurface, density, this, FILL_ALPHA);
             // The pill takes the accent's wash with Material You, and stays neutral gray without it.
             if (app.fakh.extension.shared.MaterialYou.wallpaper(MaterialYou.materialYou(bar.getContext()))) glass.setAccent(accent);
             GlassCapsule.clearSystemBar(bar.getContext());
