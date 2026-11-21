@@ -1,3 +1,9 @@
+## [2.5.1](https://github.com/amfakh/fakh-patches/compare/v2.5.0...v2.5.1) (2026-11-21)
+
+### Bug Fixes
+
+* **Muslim Pro:** fix `Hide ads` failing to patch in Morphe Manager ([c999ba8](https://github.com/amfakh/fakh-patches/commit/c999ba847175ae4919fa01119d8e631d1e295453))
+
 ## [2.5.0](https://github.com/amfakh/fakh-patches/compare/v2.4.0...v2.5.0) (2026-11-21)
 
 ### New Features
