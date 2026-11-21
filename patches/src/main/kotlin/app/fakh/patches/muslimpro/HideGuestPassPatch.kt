@@ -35,8 +35,8 @@ private object ProfileOptionsFingerprint : Fingerprint(
 )
 
 @Suppress("unused")
-val hideReferralPatch = patch(
-    name = "Hide Bagikan Berkah",
+val hideGuestPassPatch = patch(
+    name = "Hide Guest Pass",
     description = "Removes the gift icon in the header and the invite section and row in the profile.",
     default = true,
 ) {
