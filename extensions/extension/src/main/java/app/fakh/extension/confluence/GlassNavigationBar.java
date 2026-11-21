@@ -52,8 +52,11 @@ public final class GlassNavigationBar {
     private static final String CREATE = "create-action-button";
     /** Test id of the row of buttons that floats at the bottom of a page. */
     private static final String FOOTER = "footerButtonsContainer";
+    /** How often the floating pills are looked for as frames draw, in ms: the mini player comes and goes without a layout. */
+    private static final long PILL_LOOK_MS = 100;
+    /** How long after launch the bar is looked for before every frame, in ms. */
+    private static final long LAUNCH_LOOK_MS = 10_000;
     /** Test id of the mini player's content; its parent is the pressable that paints the pill. */
-    private static final long PLAYER_LOOK_MS = 250;
     private static final String PLAYER = "audioMiniPlayer";
 
     private final Activity activity;
@@ -67,12 +70,9 @@ public final class GlassNavigationBar {
     private WeakReference<View> create = new WeakReference<>(null);
     private View glassed;
     /** The page's floating button row, and the capsule that is its background. */
-    private WeakReference<View> footer = new WeakReference<>(null);
-    private GlassCapsule footerGlass;
-    /** The mini player, and the capsule that is its background. */
-    private WeakReference<View> player = new WeakReference<>(null);
-    private GlassCapsule playerGlass;
-    private long playerLookedAt;
+    private final java.util.WeakHashMap<View, GlassCapsule> pills = new java.util.WeakHashMap<>();
+    private long pillsLookedAt;
+    private final long startedAt = SystemClock.uptimeMillis();
     /**
      * The views stretched down behind the bar, with the bottom React Native gave them, the stretched one, and for a
      * list the height of its content when it was last nudged.
@@ -139,8 +139,7 @@ public final class GlassNavigationBar {
         }
         View button = create.get();
         if (button == null || !button.isAttachedToWindow()) create = new WeakReference<>(findTag(decor, CREATE));
-        View buttons = footer.get();
-        if (buttons == null || !buttons.isShown()) footer = new WeakReference<>(findTag(decor, FOOTER));
+        collectPills(decor);
         if (row != null && row.getHeight() > 0 && !onChat()) findScrolls(decor, row);
     }
 
@@ -268,18 +267,21 @@ public final class GlassNavigationBar {
 
     /** Puts the glass back on the bar and the Create button, and moves the pill to the focused tab. */
     private void frame() {
-        View buttons = footer.get();
-        if (buttons != null) footerGlass = glassPill(buttons, footerGlass);
-        View mini = player.get();
         long now = SystemClock.uptimeMillis();
-        // The mini player appears and goes without the window laying out, so it is looked for as frames draw.
-        if ((mini == null || !mini.isShown()) && now - playerLookedAt > PLAYER_LOOK_MS) {
-            playerLookedAt = now;
-            View content = findTag((ViewGroup) activity.getWindow().getDecorView(), PLAYER);
-            mini = content != null && content.getParent() instanceof View ? (View) content.getParent() : null;
-            player = new WeakReference<>(mini);
+        // React Native places its views without a layout pass of the window, so right after launch the bar is looked
+        // for before every draw: one frame of the app's own bar would show otherwise.
+        ViewGroup mounted = bar.get();
+        if ((mounted == null || !mounted.isAttachedToWindow()) && now - startedAt < LAUNCH_LOOK_MS) {
+            lookUp((ViewGroup) activity.getWindow().getDecorView());
         }
-        if (mini != null && mini.isShown()) playerGlass = glassPill(mini, playerGlass);
+        if (now - pillsLookedAt > PILL_LOOK_MS) {
+            pillsLookedAt = now;
+            collectPills((ViewGroup) activity.getWindow().getDecorView());
+        }
+        // Every one, shown or not: a page keeps the one below it mounted, and a new one shows before it is looked for.
+        for (java.util.Map.Entry<View, GlassCapsule> pill : new ArrayList<>(pills.entrySet())) {
+            if (pill.getKey().isAttachedToWindow()) pill.setValue(glassPill(pill.getKey(), pill.getValue()));
+        }
         ViewGroup row = bar.get();
         if (row == null || capsule == null) return;
         boolean nowNight = app.fakh.extension.shared.MaterialYou.night(activity);
@@ -550,6 +552,17 @@ public final class GlassNavigationBar {
             }
         }
         return null;
+    }
+
+    /** Finds the floating pills under {@code group}: the page's button row and the pressable of the mini player. */
+    private void collectPills(ViewGroup group) {
+        for (int i = 0; i < group.getChildCount(); i++) {
+            View child = group.getChildAt(i);
+            String id = tag(child);
+            if (FOOTER.equals(id)) pills.putIfAbsent(child, null);
+            else if (PLAYER.equals(id) && child.getParent() instanceof View) pills.putIfAbsent((View) child.getParent(), null);
+            if (child instanceof ViewGroup) collectPills((ViewGroup) child);
+        }
     }
 
     /** The first view with this test id under {@code group} that is on screen: a page keeps the ones below it mounted. */
