@@ -47,16 +47,16 @@ private val adSdkManifestPatch = patch {
  */
 private val adStripLayoutPatch = patch {
     execute {
-        document("res/layout/aBK.xml").use { layout ->
-            val root = layout.documentElement
-            if (root.tagName != "FrameLayout" || root.getAttribute("android:tag") != "layout/ad_view_layout_0") {
-                throw PatchException("Muslim Pro: ad strip layout not found at res/layout/aBK.xml.")
+        // Layouts are decoded on demand, so decode them all before reading or editing any of them.
+        val layouts = decode("res/layout*/*.xml")
+        layouts.single { resourceFile(it).readText().contains("layout/ad_view_layout_0") }.let { path ->
+            document(path).use { layout ->
+                layout.documentElement.setAttribute("android:layout_height", "1.0dip")
+                layout.documentElement.setAttribute("android:background", "@android:color/transparent")
             }
-            root.setAttribute("android:layout_height", "1.0dip")
-            root.setAttribute("android:background", "@android:color/transparent")
         }
         var strips = 0
-        decode("res/layout*/*.xml").filter { Regex("""<include[^>]*@id/id_0x7f0b00be""").containsMatchIn(resourceFile(it).readText()) }.forEach { path ->
+        layouts.filter { Regex("""<include[^>]*@id/id_0x7f0b00be""").containsMatchIn(resourceFile(it).readText()) }.forEach { path ->
             document(path).use { layout ->
                 val views = layout.getElementsByTagName("*")
                 for (i in 0 until views.length) {
