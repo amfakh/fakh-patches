@@ -1,3 +1,9 @@
+## [2.5.0](https://github.com/amfakh/fakh-patches/compare/v2.4.0...v2.5.0) (2026-11-21)
+
+### New Features
+
+* **Muslim Pro:** add support for `17.11` with Premium unlock, Hide ads, Material You and Disable analytics ([619646b](https://github.com/amfakh/fakh-patches/commit/619646ba81b4467b747905232b74562294d1b9b5))
+
 ## [2.4.0](https://github.com/amfakh/fakh-patches/compare/v2.3.2...v2.4.0) (2026-11-21)
 
 ### New Features
