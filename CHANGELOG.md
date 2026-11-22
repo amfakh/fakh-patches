@@ -1,3 +1,9 @@
+## [2.5.2](https://github.com/amfakh/fakh-patches/compare/v2.5.1...v2.5.2) (2026-11-22)
+
+### Updated App Support
+
+* **GitHub:** add support for `1.285.0`, next to `1.284.0` ([8191b11](https://github.com/amfakh/fakh-patches/commit/8191b11b833258d899ec6ac455b17381a560b098))
+
 ## [2.5.1](https://github.com/amfakh/fakh-patches/compare/v2.5.0...v2.5.1) (2026-11-21)
 
 ### Bug Fixes
