@@ -23,7 +23,7 @@ Each app has its own README with the full patch list.
 | IDN | `com.idntimes.idntimes` | `6.69.1` | XAPK or APKS from APKPure or APKCube | [apps/idn](apps/idn/README.md) |
 | Jira | `com.atlassian.android.jira.core` | `2026.22.0`, `2026.22.1` | APKM from APKMirror | [apps/jira](apps/jira/README.md) |
 | KOMPAS.com | `com.ertanto.kompas.official` | `9.8.7` | XAPK from APKPure | [apps/kompas](apps/kompas/README.md) |
-| LinkedIn | `com.linkedin.android` | `4.1.1264`, `4.1.1267`, `4.1.1269`, `4.1.1270`, `4.1.1272`, `4.1.1275`, `4.1.1276` | APKM from APKMirror | [apps/linkedin](apps/linkedin/README.md) |
+| LinkedIn | `com.linkedin.android` | `4.1.1264`, `4.1.1267`, `4.1.1269`, `4.1.1270`, `4.1.1272`, `4.1.1275`, `4.1.1276`, `4.1.1278` | APKM from APKMirror | [apps/linkedin](apps/linkedin/README.md) |
 | Muslim Pro | `com.bitsmedia.android.muslimpro` | `17.11` | APKS from APKCube | [apps/muslimpro](apps/muslimpro/README.md) |
 | Radio Indonesia | `com.appmind.radios.id` | `4.2.30` | XAPK from APKPure | [apps/radio](apps/radio/README.md) |
 | Smart Life | `com.tuya.smartlife` | `7.12.3-877`, `7.12.6-880` | XAPK from APKPure, APKM from APKMirror | [apps/smartlife](apps/smartlife/README.md) |
