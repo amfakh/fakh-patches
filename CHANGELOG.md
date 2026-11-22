@@ -3,6 +3,7 @@
 ### Updated App Support
 
 * **GitHub:** add support for `1.285.0`, next to `1.284.0` ([8191b11](https://github.com/amfakh/fakh-patches/commit/8191b11b833258d899ec6ac455b17381a560b098))
+* **LinkedIn:** add support for `4.1.1278`, next to `4.1.1276` ([1ec6f14](https://github.com/amfakh/fakh-patches/commit/1ec6f14900f44e09b371129995a2b4756edac503))
 
 ## [2.5.1](https://github.com/amfakh/fakh-patches/compare/v2.5.0...v2.5.1) (2026-11-21)
 
