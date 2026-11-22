@@ -1,3 +1,10 @@
+## [2.5.3](https://github.com/amfakh/fakh-patches/compare/v2.5.2...v2.5.3) (2026-11-22)
+
+### Updated App Support
+
+* **GitHub:** add build numbers `953` to `956` for `1.282.0` to `1.285.0` ([cea9456](https://github.com/amfakh/fakh-patches/commit/cea94566fa24ba67f14134648faab60717b500f1))
+* **LinkedIn:** add build numbers `217200` to `218600` for `4.1.1264` to `4.1.1278` ([4b15d00](https://github.com/amfakh/fakh-patches/commit/4b15d00eaf40fe0ed14ce04fe122f7b721f706f1))
+
 ## [2.5.2](https://github.com/amfakh/fakh-patches/compare/v2.5.1...v2.5.2) (2026-11-22)
 
 ### Updated App Support
