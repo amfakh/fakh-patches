@@ -1,3 +1,9 @@
+## [2.8.0](https://github.com/amfakh/fakh-patches/compare/v2.7.0...v2.8.0) (2026-11-23)
+
+### New Features
+
+* **Warung Life Simulator:** add support for `1.2` with Hide ads, Clone and GmsCore support ([5bdc23e](https://github.com/amfakh/fakh-patches/commit/5bdc23e2b097a461b5f16b246249105062fc25bf))
+
 ## [2.7.0](https://github.com/amfakh/fakh-patches/compare/v2.6.0...v2.7.0) (2026-11-23)
 
 ### New Features
