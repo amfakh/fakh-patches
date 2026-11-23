@@ -286,8 +286,7 @@ final class PostMenu {
                 kept.add(field);
             }
         }
-        MenuIconIds.Result icons = new MenuIconIds.Result();
-        byte[] built = MenuIconIds.swap(ProtoEdit.write(kept), icon, icons);
+        byte[] built = MenuIconIds.swap(ProtoEdit.write(kept), icon);
         row.data = relabel(built, label, viewName, template);
         return row;
     }
