@@ -1,3 +1,12 @@
+## [2.10.0](https://github.com/amfakh/fakh-patches/compare/v2.9.0...v2.10.0) (2026-11-24)
+
+### New Features
+
+* **Mazii: Japanese Dictionary:** add support for `6.8.64` with Premium unlock, GmsCore support, Disable analytics and Disable Play license check ([f067492](https://github.com/amfakh/fakh-patches/commit/f0674928a1572760ebaaa29e82651cad10a0f345))
+* **Todaii: Learn Japanese N5-N1:** add support for `5.6.0` with Premium unlock, GmsCore support and Disable analytics ([926525a](https://github.com/amfakh/fakh-patches/commit/926525a39076aba5452ddcf2263070b79382e5f1))
+* **Todaii Super:** add support for `1.1.5` with Premium unlock, GmsCore support and Disable analytics ([f8979ee](https://github.com/amfakh/fakh-patches/commit/f8979eeb6f7608fe7df24658816b6a235624855a))
+* **Todaii: Learn German A1-C1:** add support for `2.8.2` with Premium unlock, GmsCore support and Disable analytics ([a54209c](https://github.com/amfakh/fakh-patches/commit/a54209c61c552871dcfb489b0363563d9fd44b04))
+
 ## [2.9.0](https://github.com/amfakh/fakh-patches/compare/v2.8.0...v2.9.0) (2026-11-23)
 
 ### New Features
