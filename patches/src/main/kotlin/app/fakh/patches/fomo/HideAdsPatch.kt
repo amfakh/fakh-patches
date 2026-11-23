@@ -40,10 +40,24 @@ private const val FEED_SELECTOR_PATTERN = """
     D4 ?? ?? ?? ?? ?? ??
 """
 
+// The salary summary upsell ("Mau liat summary?") is the `UnlockSalarySummaryInternalPromo`
+// component. Its render returns null for a subscriber and the upsell card for everyone
+// else, decided by one `JmpTrue` on `hasFomoPlusSubscription()`. That jump becomes
+// unconditional, so the card is never drawn; nothing is unlocked.
+
+private const val SUMMARY_UPSELL_PATTERN = """
+    34 ?? ??  3B ?? ?? ??  45 ?? ?? ?? @@hasFomoPlusSubscription  93 ??  6C ?? ?? ??  B0 ?? ??
+    3B ?? ?? ??  44 ?? ?? ?? @jsx  3B ?? ?? ??  44 ?? ?? ?? @default
+    01 ?? ?? ?? ?? ??  01 ?? ?? ?? ?? ??  02 ?? ?? ?? ?? ?? ?? ?? ?? ??
+    52 ?? ?? ??  52 ?? ?? ??  6F ?? ?? ?? ?? ??  76 ??  94 ??  76 ??
+"""
+
+private const val SUMMARY_UPSELL_JUMP_AT = 19
+
 @Suppress("unused")
 val fomoHideAdsPatch = rawResourcePatch(
     name = "Hide ads",
-    description = "Hides the FOMO+ upsell cards and banners and the sponsored posts in the home feed.",
+    description = "Hides the FOMO+ upsell cards and banners.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_FOMO)
@@ -84,6 +98,14 @@ val fomoHideAdsPatch = rawResourcePatch(
             out[at] = OP_JMP.toByte()
             out[at + 1] = (match.size - at).toByte()
             out
+        }
+
+        bundle.rewrite("salary summary upsell", SUMMARY_UPSELL_PATTERN) { match ->
+            // JmpTrue (3 bytes) becomes Jmp (2 bytes, same offset) plus one dead byte.
+            match.copyOf().also {
+                it[SUMMARY_UPSELL_JUMP_AT] = OP_JMP.toByte()
+                it[SUMMARY_UPSELL_JUMP_AT + 2] = 0
+            }
         }
 
         bundle.seal()
