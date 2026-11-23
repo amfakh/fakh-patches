@@ -17,7 +17,7 @@ object Constants {
 
     // The switches of Fakh Patches, in the order the dialog lists them.
     val HIDE_ADS = Feature("hide_ads", "Hide ads", "Ads")
-    val MATERIAL_YOU = Feature("material_you", "Material You", "Theme")
-    val PITCH_BLACK = Feature("pitch_black", "Pitch black", "Theme", dependsOn = MATERIAL_YOU)
-    val HIDE_POST_DIVIDER = Feature("hide_post_divider", "Hide gaps and dividers", "Theme")
+    val MATERIAL_YOU = Feature("material_you", "Material You", "Appearance")
+    val PITCH_BLACK = Feature("pitch_black", "Pitch black", "Appearance", dependsOn = MATERIAL_YOU)
+    val HIDE_POST_DIVIDER = Feature("hide_post_divider", "Hide gaps and dividers", "Appearance")
 }

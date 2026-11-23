@@ -25,5 +25,5 @@ object Constants {
         "fakh_liquid_glass", "Background blur", "Navigation bar", dependsOn = GLASS_NAVBAR, default = false,
         description = "Blurs what's behind the glass. Uses more battery and might stutter.",
     )
-    val NAV_RIGHT = Feature("fakh_nav_right", "Landscape navigation bar on the right", "Navigation bar", default = false)
+    val NAV_RIGHT = Feature("fakh_nav_right", "Landscape navigation bar position", "Navigation bar", default = false)
 }
