@@ -1,7 +1,11 @@
 package app.fakh.patches.fomo
 
 import app.fakh.patches.fomo.shared.Constants.COMPATIBILITY_FOMO
+import app.fakh.patches.shared.Feature
+import app.fakh.patches.shared.register
 import app.morphe.patcher.patch.bytecodePatch
+
+private val PITCH_BLACK = Feature("pitch_black", "Pitch black", "Theme", dependsOn = MATERIAL_YOU)
 
 @Suppress("unused")
 val fomoPitchBlackPatch = bytecodePatch(
@@ -13,6 +17,6 @@ val fomoPitchBlackPatch = bytecodePatch(
     dependsOn(colorHooksPatch, fomoMaterialYouPatch)
 
     execute {
-        returnTrue("isPitchBlackIncluded")
+        register(PITCH_BLACK)
     }
 }

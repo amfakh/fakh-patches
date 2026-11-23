@@ -1,6 +1,7 @@
 package app.fakh.patches.fomo
 
 import app.fakh.patches.fomo.shared.Constants.COMPATIBILITY_FOMO
+import app.fakh.patches.shared.featuresPatch
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -16,10 +17,10 @@ private object MainActivityCreateFingerprint : Fingerprint(
     parameters = listOf("Landroid/os/Bundle;"),
 )
 
-/** The Fakh Patches row in Settings that holds the switches of the theme patches. */
+/** The Fakh Patches row in Settings that opens the switches of the applied patches. */
 internal val settingsPatch = bytecodePatch {
     compatibleWith(COMPATIBILITY_FOMO)
-    dependsOn(answerDecoyTextPatch)
+    dependsOn(answerDecoyTextPatch, featuresPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
@@ -47,7 +48,6 @@ internal val hideAdsSwitchPatch = bytecodePatch {
     dependsOn(settingsPatch)
 
     execute {
-        returnTrue("isHideAdsIncluded", SETTINGS)
         // The fourth argument is the name of the bundle in the assets.
         ReactHostFingerprint.method.addInstructions(
             0,

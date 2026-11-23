@@ -1,12 +1,13 @@
 package app.fakh.patches.fomo
 
 import app.fakh.patches.fomo.shared.Constants.COMPATIBILITY_FOMO
+import app.fakh.patches.shared.Feature
+import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.bytecodePatch
-import app.morphe.patcher.patch.mutableClassDefBy
 import com.android.tools.smali.dexlib2.Opcode
 
 private const val EXTENSION = "Lapp/fakh/extension/fomo/MaterialYou;"
@@ -35,18 +36,9 @@ private val spanFingerprints = listOf("ReactForegroundColorSpan", "ReactBackgrou
     Fingerprint(definingClass = "Lcom/facebook/react/views/text/internal/span/$it;", name = "<init>", parameters = listOf("I"))
 }
 
-/** Makes the extension's [name] flag return true. */
-internal fun returnTrue(name: String, owner: String = EXTENSION) {
-    mutableClassDefBy(owner).methods.first { it.name == name }.addInstructions(
-        0,
-        """
-            const/4 v0, 0x1
-            return v0
-        """,
-    )
-}
+internal val MATERIAL_YOU = Feature("material_you", "Material You", "Theme")
 
-/** The color hooks both theme patches share; what they change is decided by the flags of the extension. */
+/** The color hooks the theme patches share; what they change is decided by the features that are on. */
 internal val colorHooksPatch = bytecodePatch {
     extendWith("extensions/extension.mpe")
     dependsOn(settingsPatch)
@@ -96,6 +88,6 @@ val fomoMaterialYouPatch = bytecodePatch(
     dependsOn(colorHooksPatch)
 
     execute {
-        returnTrue("isMaterialYouIncluded")
+        register(MATERIAL_YOU)
     }
 }

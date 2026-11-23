@@ -4,26 +4,13 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 
+import app.fakh.extension.shared.Features;
+
 /**
  * Recolors FOMO's dark palette with the wallpaper colors. React Native converts every color prop through
  * {@code ColorPropConverter.getColor}, so the patch routes its result through {@link #remap}.
  */
 public final class MaterialYou {
-    /** The Material You patch rewrites this to return true. */
-    static boolean isMaterialYouIncluded() {
-        return false;
-    }
-
-    /** The Hide post divider patch rewrites this to return true. */
-    static boolean isHidePostDividerIncluded() {
-        return false;
-    }
-
-    /** The Pitch black patch rewrites this to return true. */
-    static boolean isPitchBlackIncluded() {
-        return false;
-    }
-
     private static final int[] CARD = {0x2A2A2A, 0x303030, 0x2E2E2E, 0x212121};
     private static final int[] BORDER = {0x494949, 0x4A4A4A, 0x434343};
     private static final int[] ACCENT_STRONG = {0x09436C, 0x0A5991, 0x0C43A2};
@@ -31,15 +18,15 @@ public final class MaterialYou {
 
     /** Whether the patch is in the app and its switch in Fakh Patches is on. */
     private static boolean materialYou() {
-        return isMaterialYouIncluded() && FomoSettings.get(FomoSettings.MATERIAL_YOU);
+        return Features.on(FomoSettings.MATERIAL_YOU);
     }
 
     private static boolean pitchBlack() {
-        return isPitchBlackIncluded() && materialYou() && FomoSettings.get(FomoSettings.PITCH_BLACK);
+        return Features.on(FomoSettings.PITCH_BLACK);
     }
 
     private static boolean hidePostDivider() {
-        return isHidePostDividerIncluded() && FomoSettings.get(FomoSettings.HIDE_POST_DIVIDER);
+        return Features.on(FomoSettings.HIDE_POST_DIVIDER);
     }
 
     /** Any context, for the text spans, which are built without one. */

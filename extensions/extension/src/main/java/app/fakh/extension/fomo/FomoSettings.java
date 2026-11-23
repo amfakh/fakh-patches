@@ -1,30 +1,25 @@
 package app.fakh.extension.fomo;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import app.fakh.extension.shared.AppRuntime;
-import app.fakh.extension.shared.I18n;
-import app.fakh.extension.shared.RestartBar;
+import app.fakh.extension.shared.Features;
+import app.fakh.extension.shared.FeaturesDialog;
 
 /**
  * The Fakh Patches switches of FOMO, as a row at the bottom of the Settings screen ("Pengaturan"). Settings is a React
- * Native screen, so the row is a native view laid over it: it shows while the screen is up, and opens a dialog with one
- * switch for each theme patch in the app. Theme colors are read once, so a change applies after a restart.
+ * Native screen, so the row is a native view laid over it: it shows while the screen is up, and opens the dialog with
+ * the switches of the applied patches. Theme colors are read once, so a change applies after a restart.
  */
 public final class FomoSettings {
     static final String MATERIAL_YOU = "material_you";
@@ -35,28 +30,12 @@ public final class FomoSettings {
     private static final String TAG = "fakh_patches_row";
     private static final long DEBOUNCE_MS = 250;
 
-    private static SharedPreferences prefs;
     private static final List<java.lang.ref.WeakReference<View>> shifted = new ArrayList<>();
     /** How far the rows of Settings are slid down, in pixels. */
     private static int applied;
     private static final Handler HANDLER = new Handler(Looper.getMainLooper());
 
     private FomoSettings() {
-    }
-
-    /** The saved state of a switch; every switch is on until the user turns it off. */
-    static boolean get(String key) {
-        if (prefs == null) {
-            Context context = AppRuntime.application();
-            if (context == null) return true;
-            prefs = context.getSharedPreferences("fakh_patches", Context.MODE_PRIVATE);
-        }
-        return prefs.getBoolean(key, true);
-    }
-
-    /** The Hide ads patch rewrites this to return true. */
-    static boolean isHideAdsIncluded() {
-        return false;
     }
 
     /**
@@ -66,7 +45,7 @@ public final class FomoSettings {
      * @param asset the name of the bundle in the assets
      */
     public static String bundleAsset(String asset) {
-        return isHideAdsIncluded() && !get(HIDE_ADS) ? asset + ".original" : asset;
+        return Features.has(HIDE_ADS) && !Features.on(HIDE_ADS) ? asset + ".original" : asset;
     }
 
     /**
@@ -173,7 +152,7 @@ public final class FomoSettings {
             made.setGravity(Gravity.CENTER_VERTICAL);
             made.setTextSize(android.util.TypedValue.COMPLEX_UNIT_PX, style.getTextSize());
             made.setTextColor(style.getTextColors());
-            made.setOnClickListener(v -> showDialog(activity));
+            made.setOnClickListener(v -> FeaturesDialog.show(activity, each -> tint(activity, each)));
             root.addView(made, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
             row = made;
         }
@@ -235,70 +214,16 @@ public final class FomoSettings {
         }
     }
 
-    /** The dialog with a switch for each patch of the theme that is in the app. */
-    private static void showDialog(Activity activity) {
-        float density = activity.getResources().getDisplayMetrics().density;
-        int pad = Math.round(24 * density);
-        LinearLayout list = new LinearLayout(activity);
-        list.setOrientation(LinearLayout.VERTICAL);
-        list.setPadding(pad, Math.round(8 * density), pad, 0);
-        boolean[] changed = {false};
-        List<Switch> switches = new ArrayList<>();
-        Switch ads = addSwitch(activity, list, isHideAdsIncluded(), "Hide ads", HIDE_ADS, changed, null);
-        Switch materialYou = addSwitch(activity, list, MaterialYou.isMaterialYouIncluded(), "Material You", MATERIAL_YOU, changed, null);
-        Switch pitchBlack = addSwitch(activity, list, MaterialYou.isPitchBlackIncluded(), "Pitch black", PITCH_BLACK, changed, null);
-        Switch divider = addSwitch(activity, list, MaterialYou.isHidePostDividerIncluded(), "Hide gaps and dividers", HIDE_POST_DIVIDER, changed, null);
-        for (Switch each : new Switch[] {ads, materialYou, pitchBlack, divider}) {
-            if (each != null) switches.add(each);
-        }
-        if (materialYou != null && pitchBlack != null) {
-            // Pitch black recolors on top of Material You, so it needs it.
-            pitchBlack.setEnabled(materialYou.isChecked());
-            materialYou.setOnCheckedChangeListener((button, on) -> {
-                prefs.edit().putBoolean(MATERIAL_YOU, on).commit();
-                pitchBlack.setEnabled(on);
-                for (Switch each : switches) tint(activity, each);
-                changed[0] = true;
-            });
-        }
-        new AlertDialog.Builder(activity, android.R.style.Theme_DeviceDefault_Dialog_Alert)
-                .setTitle("Fakh Patches")
-                .setView(list)
-                .setOnDismissListener(d -> {
-                    if (changed[0]) RestartBar.show(activity, 0, true);
-                })
-                .show();
-    }
-
     /**
      * Colors a switch with the wallpaper accent while Material You is on, and with the app's blue while it is off, as
      * the app itself would draw it.
      */
     static void tint(Activity activity, Switch row) {
-        boolean dynamic = MaterialYou.isMaterialYouIncluded() && get(MATERIAL_YOU);
+        boolean dynamic = Features.on(MATERIAL_YOU);
         int thumb = dynamic ? activity.getColor(android.R.color.system_accent1_200) : 0xFF3A90F7;
         int track = dynamic ? activity.getColor(android.R.color.system_accent1_700) : 0xFF0C43A2;
         int[][] states = {{android.R.attr.state_checked}, {}};
         row.setThumbTintList(new android.content.res.ColorStateList(states, new int[] {thumb, 0xFF9E9E9E}));
         row.setTrackTintList(new android.content.res.ColorStateList(states, new int[] {track, 0xFF424242}));
-    }
-
-    /** One switch row; null when its patch is not in the app. */
-    private static Switch addSwitch(Activity activity, LinearLayout list, boolean included, String english, String key,
-                                    boolean[] changed, Runnable unused) {
-        if (!included) return null;
-        get(key); // makes sure prefs is loaded
-        Switch row = new Switch(activity);
-        row.setText(I18n.tr(english));
-        row.setTextSize(16);
-        row.setMinHeight(Math.round(56 * activity.getResources().getDisplayMetrics().density));
-        row.setChecked(prefs.getBoolean(key, true));
-        row.setOnCheckedChangeListener((button, on) -> {
-            prefs.edit().putBoolean(key, on).commit();
-            changed[0] = true;
-        });
-        tint(activity, row);
-        list.addView(row);
-        return row;
     }
 }

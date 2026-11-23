@@ -5,6 +5,8 @@ import app.fakh.patches.fomo.shared.HermesBundle
 import app.fakh.patches.fomo.shared.HermesBundle.Companion.OP_JMP
 import app.fakh.patches.fomo.shared.HermesBundle.Companion.OP_JSTRICT_EQUAL_LONG
 import app.fakh.patches.fomo.shared.HermesBundle.Companion.OP_LOAD_CONST_STRING
+import app.fakh.patches.shared.Feature
+import app.fakh.patches.shared.register
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.rawResourcePatch
 import java.nio.ByteBuffer
@@ -54,6 +56,8 @@ private const val SUMMARY_UPSELL_PATTERN = """
 
 private const val SUMMARY_UPSELL_JUMP_AT = 19
 
+private val HIDE_ADS = Feature("hide_ads", "Hide ads", "Ads")
+
 @Suppress("unused")
 val fomoHideAdsPatch = rawResourcePatch(
     name = "Hide ads",
@@ -65,6 +69,7 @@ val fomoHideAdsPatch = rawResourcePatch(
     dependsOn(hideAdsSwitchPatch)
 
     execute {
+        register(HIDE_ADS)
         val bundleFile = get("assets/index.android.bundle")
         if (!bundleFile.exists()) {
             throw PatchException("FOMO: assets/index.android.bundle not found.")
