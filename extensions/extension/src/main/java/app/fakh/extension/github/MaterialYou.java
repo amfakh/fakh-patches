@@ -324,29 +324,6 @@ public final class MaterialYou {
         return ChoiceSheets.summary(key);
     }
 
-    /** Injected into each row of a multi-choice sheet: whether it can be toggled; the Home tab never can. */
-    public static boolean enabled(String value) {
-        return !NavigationBar.HOME_TAB.equals(value);
-    }
-
-    /** Whether the row of the multi-choice sheet that is being drawn can be toggled. */
-    private static boolean rowEnabled = true;
-
-    /** Injected where a choice sheet row is made toggleable: the effective enabled flag of the row, for its checkbox. */
-    public static void rowEnabled(boolean enabled) {
-        rowEnabled = enabled;
-    }
-
-    /** Injected where a choice sheet row draws its checkbox: the flag recorded for the row. */
-    public static boolean rowEnabled() {
-        return rowEnabled;
-    }
-
-    /** Injected before a choice sheet reports its result: what the user chose, for the request key of its row. */
-    public static void chosen(String requestKey, Bundle result) {
-        ChoiceSheets.chosen(requestKey, result);
-    }
-
     /** Turns the remembered dark canvas and card fields black, or back to their normal color. */
     private static void setAmoled(boolean on) {
         amoled = on;

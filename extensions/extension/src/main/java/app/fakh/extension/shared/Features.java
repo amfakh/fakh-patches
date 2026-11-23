@@ -136,6 +136,23 @@ public final class Features {
         return store == null ? fallback : store.getBoolean(key, fallback);
     }
 
+    /**
+     * A text saved in the switches' file under a key that is not a feature, such as the order of a list setting.
+     *
+     * @param key the key it is saved under
+     * @param fallback the text until one is saved, or while the app has no context yet
+     */
+    public static String text(String key, String fallback) {
+        SharedPreferences store = prefs();
+        return store == null ? fallback : store.getString(key, fallback);
+    }
+
+    /** Saves a text under a key that is not a feature; committed at once, since a restart may follow right after. */
+    public static void setText(String key, String value) {
+        SharedPreferences store = prefs();
+        if (store != null) store.edit().putString(key, value).commit();
+    }
+
     /** Saves a switch; committed at once, since a restart may follow right after. */
     public static void set(String id, boolean on) {
         SharedPreferences store = prefs();

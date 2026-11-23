@@ -13,20 +13,27 @@ import app.fakh.patches.github.shared.Constants.NAV_RIGHT
 import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
+import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.fieldAccess
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
+import app.morphe.patcher.patch.resourceFile
+import app.morphe.patcher.patch.classDefBy
 import app.morphe.patcher.patch.classDefByStrings
 import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
+import app.morphe.patcher.util.smali.ExternalLabel
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.NarrowLiteralInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.OffsetInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
@@ -39,6 +46,7 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val NAVIGATION_BAR = "Lapp/fakh/extension/github/NavigationBar;"
+private const val EXTRA_TAB = "Lapp/fakh/extension/github/ExtraTab;"
 
 /**
  * The method that draws one tab of the portrait bottom bar, which tags it "BottomNavigationItem_<label>". The tag is
@@ -97,6 +105,164 @@ private fun railCall(portrait: RangeCall): Pair<MutableMethod, RangeCall>? {
     return method to method.rangeCall { it == portrait.parameters }!!
 }
 
+/**
+ * Makes the instances of [EXTRA_TAB], one per kind of tab, tabs of the app. A tab is a singleton subclass of
+ * [tabType], built from its label, its two icons, an optional accessibility label and the routes it is selected for,
+ * and it gives the route a tap opens through the type's one (Z)Object method. The extension class extends Object, so
+ * it gets the tab type as its superclass, a constructor that takes the kind and passes that kind's values to the
+ * type's, and that route method, which calls its own.
+ *
+ * The app's own code knows only its four tabs and throws for any other where it switches over them; those places are
+ * patched below.
+ */
+private fun addExtraTabs(tabType: String) {
+    val routeMethod = classDefBy(tabType).methods.singleOrNull {
+        !AccessFlags.STATIC.isSet(it.accessFlags) && it.returnType == "Ljava/lang/Object;" &&
+            it.parameterTypes.map(CharSequence::toString) == listOf("Z")
+    } ?: throw PatchException("Tab route method not found")
+    if (classDefBy(tabType).methods.none {
+            it.name == "<init>" && it.parameterTypes.map(CharSequence::toString) ==
+                listOf("I", "I", "I", "Ljava/lang/Integer;", "Ljava/util/List;")
+        }) throw PatchException("Tab constructor not found")
+
+    mutableClassDefBy(EXTRA_TAB).apply {
+        setSuperClass(tabType)
+        methods.removeIf { it.name == "<init>" }
+        methods.add(
+            ImmutableMethod(
+                type, "<init>", listOf(ImmutableMethodParameter("I", null, null)), "V",
+                AccessFlags.PUBLIC.value or AccessFlags.CONSTRUCTOR.value, null, null, MutableMethodImplementation(8),
+            ).toMutable().apply {
+                addInstructions(
+                    0,
+                    """
+                        move-object v0, p0
+                        invoke-static { p1 }, $EXTRA_TAB->label(I)I
+                        move-result v1
+                        invoke-static { p1 }, $EXTRA_TAB->icon(I)I
+                        move-result v2
+                        invoke-static { p1 }, $EXTRA_TAB->selectedIcon(I)I
+                        move-result v3
+                        const/4 v4, 0x0
+                        invoke-static { p1 }, $EXTRA_TAB->routes(I)Ljava/util/List;
+                        move-result-object v5
+                        invoke-direct/range { v0 .. v5 }, $tabType-><init>(IIILjava/lang/Integer;Ljava/util/List;)V
+                        iput p1, p0, $EXTRA_TAB->kind:I
+                        return-void
+                    """,
+                )
+            },
+        )
+        methods.add(
+            ImmutableMethod(
+                type, routeMethod.name, listOf(ImmutableMethodParameter("Z", null, null)), "Ljava/lang/Object;",
+                AccessFlags.PUBLIC.value, null, null, MutableMethodImplementation(3),
+            ).toMutable().apply {
+                addInstructions(
+                    0,
+                    """
+                        invoke-virtual { p0, p1 }, $EXTRA_TAB->route(Z)Ljava/lang/Object;
+                        move-result-object v0
+                        return-object v0
+                    """,
+                )
+            },
+        )
+    }
+    val builtIn = mutableSetOf<String>()
+    classDefForEach { if (it.superclass == tabType && it.type != EXTRA_TAB) builtIn += it.type }
+
+    // The static method that names the screen of a tab returns a name of its own for this tab.
+    val screens = mutableListOf<Pair<String, String>>()
+    classDefForEach { classDef ->
+        for (method in classDef.methods) {
+            if (AccessFlags.STATIC.isSet(method.accessFlags) && method.returnType == "Ljava/lang/String;" &&
+                method.parameterTypes.map(CharSequence::toString) == listOf(tabType) &&
+                method.readsAny(builtIn)) screens += classDef.type to method.name
+        }
+    }
+    if (screens.size != 1) throw PatchException("Tab screen name method not found: $screens")
+    val screen = mutableClassDefBy(screens.single().first).methods.first {
+        it.name == screens.single().second && it.parameterTypes.map(CharSequence::toString) == listOf(tabType)
+    }
+    screen.addInstructionsWithLabels(
+        0,
+        """
+            invoke-static { p0 }, $EXTRA_TAB->key(Ljava/lang/Object;)Ljava/lang/String;
+            move-result-object v0
+            if-eqz v0, :app
+            return-object v0
+        """,
+        ExternalLabel("app", screen.getInstruction(0)),
+    )
+
+    // The static method that tells whether a tab is selected for the screen shown, by the routes of the tab and the
+    // screen's graphs, defers to this tab while its repository list shows.
+    val selection = screen.definingClass.let { type ->
+        mutableClassDefBy(type).methods.singleOrNull {
+            AccessFlags.STATIC.isSet(it.accessFlags) && it.returnType == "Z" && it.parameterTypes.size == 2 &&
+                it.parameterTypes[0].toString() == tabType
+        } ?: throw PatchException("Tab selection method not found")
+    }
+    selection.addInstructionsWithLabels(
+        0,
+        """
+            invoke-static { p0, p1 }, $EXTRA_TAB->selected(Ljava/lang/Object;Ljava/lang/Object;)I
+            move-result v0
+            if-ltz v0, :app
+            return v0
+        """,
+        ExternalLabel("app", selection.getInstruction(0)),
+    )
+
+    // Elsewhere a `when` over the tabs ends in a call that throws when the tab is none of the app's own: where the tab
+    // is saved as the one to start on, and where a tap is logged. That call becomes a nop, so the code after it, a
+    // return, runs instead: the tab is not saved, so the app starts on the last of its own tabs, and is not logged.
+    val throws = mutableListOf<Triple<String, String, Int>>()
+    classDefForEach { classDef ->
+        for (method in classDef.methods) {
+            if (classDef.type == screens.single().first && method.name == screens.single().second) continue
+            method.throwAfterTabWhen(builtIn)?.let { throws += Triple(classDef.type, method.name + method.parameterTypes, it) }
+        }
+    }
+    if (throws.size != 2) throw PatchException("Tab when throws not found: $throws")
+    throws.forEach { (type, signature, index) ->
+        mutableClassDefBy(type).methods.first { it.name + it.parameterTypes == signature }.replaceInstruction(index, "nop")
+    }
+}
+
+/** Whether the method reads a static field of one of [types], such as the singleton of one of the app's tabs. */
+private fun Method.readsAny(types: Set<String>) = implementation?.instructions?.any {
+    it.opcode == Opcode.SGET_OBJECT && ((it as ReferenceInstruction).reference as FieldReference).type in types
+} == true
+
+/**
+ * The index of the call that throws NoWhenBranchMatchedException at the end of a `when` over the tabs: the target of
+ * the `if-eqz` that follows the method's last comparison with one of the [tabs] singletons. Null when there is none.
+ */
+private fun Method.throwAfterTabWhen(tabs: Set<String>): Int? {
+    val instructions = implementation?.instructions?.toList() ?: return null
+    val offsets = instructions.runningFold(0) { offset, instruction -> offset + instruction.codeUnits }
+    instructions.forEachIndexed { index, instruction ->
+        if (instruction.opcode != Opcode.SGET_OBJECT ||
+            ((instruction as ReferenceInstruction).reference as FieldReference).type !in tabs) return@forEachIndexed
+        val branch = (index + 1..minOf(index + 4, instructions.lastIndex)).firstOrNull {
+            instructions[it].opcode == Opcode.IF_EQZ
+        } ?: return@forEachIndexed
+        val target = offsets[branch] + (instructions[branch] as OffsetInstruction).codeOffset
+        val call = offsets.indexOf(target).takeIf { it in instructions.indices } ?: return@forEachIndexed
+        val reference = (instructions[call] as? ReferenceInstruction)?.reference as? MethodReference
+        if (instructions[call].opcode == Opcode.INVOKE_STATIC && reference != null && reference.parameterTypes.isEmpty() &&
+            classDefBy(reference.definingClass).methods.any { method ->
+                method.name == reference.name && method.implementation?.instructions?.any {
+                    ((it as? ReferenceInstruction)?.reference as? TypeReference)?.type == "Lkotlin/NoWhenBranchMatchedException;"
+                } == true
+            }
+        ) return call
+    }
+    return null
+}
+
 /** The method of the bar's class that calls NavigationBar(modifier, containerColor: J, contentColor: J, windowInsets, content, ...). */
 private fun barCall(): Pair<MutableMethod, RangeCall> {
     for (method in mutableClassDefBy(NavigationItemFingerprint.method.definingClass).methods) {
@@ -110,7 +276,8 @@ private fun barCall(): Pair<MutableMethod, RangeCall> {
 @Suppress("unused")
 val navigationBarPatch = patch(
     name = "Navigation bar",
-    description = "Adds settings in Fakh Patches that hide the labels of the navigation bar tabs and choose which tabs it shows.",
+    description = "Adds settings in Fakh Patches that hide the labels of the navigation bar tabs, choose which tabs it " +
+        "shows and in what order, and add Repositories and Stars tabs.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
@@ -149,6 +316,23 @@ val navigationBarPatch = patch(
                     """,
                 )
             }
+
+        // GitHub's tab icons come in pairs, outline and filled, but the repository and star icons have no filled one
+        // at 24dp: these are ic_repo_24 and ic_star_24 without the cut-out that leaves them hollow.
+        mapOf(
+            "repo" to "M4,5.5C4,4.837 4.2634,4.2011 4.7322,3.7322C5.2011,3.2634 5.837,3 6.5,3H19.25C19.4489,3 19.6397,3.079 19.7803,3.2197C19.921,3.3603 20,3.5511 20,3.75V20.25C20,20.4489 19.921,20.6397 19.7803,20.7803C19.6397,20.921 19.4489,21 19.25,21H14.75C14.5511,21 14.3603,20.921 14.2197,20.7803C14.079,20.6397 14,20.4489 14,20.25C14,20.0511 14.079,19.8603 14.2197,19.7197C14.3603,19.579 14.5511,19.5 14.75,19.5H18.5V16.5H6.5C6.2348,16.5 5.9804,16.6054 5.7929,16.7929C5.6054,16.9804 5.5,17.2348 5.5,17.5V18.5C5.4999,18.7403 5.5864,18.9727 5.7436,19.1545C5.9008,19.3363 6.1182,19.4554 6.356,19.49C6.4535,19.5039 6.5473,19.5369 6.6321,19.5871C6.7168,19.6373 6.7909,19.7036 6.85,19.7824C6.9091,19.8612 6.9521,19.9509 6.9765,20.0463C7.001,20.1417 7.0064,20.241 6.9925,20.3385C6.9786,20.436 6.9456,20.5298 6.8954,20.6146C6.8452,20.6993 6.7789,20.7734 6.7001,20.8325C6.6213,20.8916 6.5316,20.9346 6.4362,20.959C6.3408,20.9835 6.2415,20.9889 6.144,20.975C5.5487,20.8894 5.0042,20.592 4.6104,20.1374C4.2166,19.6828 3.9999,19.1014 4,18.5V5.5ZM8,18.25V22.48C8,22.69 8.242,22.806 8.406,22.675L10.344,21.125C10.3883,21.0896 10.4433,21.0704 10.5,21.0704C10.5567,21.0704 10.6117,21.0896 10.656,21.125L12.594,22.675C12.6308,22.7044 12.6751,22.7227 12.7218,22.728C12.7685,22.7334 12.8158,22.7254 12.8582,22.705C12.9006,22.6846 12.9364,22.6527 12.9615,22.6129C12.9866,22.5731 12.9999,22.527 13,22.48V18.25C13,18.1837 12.9737,18.1201 12.9268,18.0732C12.8799,18.0263 12.8163,18 12.75,18H8.25C8.1837,18 8.1201,18.0263 8.0732,18.0732C8.0263,18.1201 8,18.1837 8,18.25Z",
+            "star" to "M12,0.25C12.2855,0.25 12.5462,0.4121 12.6726,0.6681L15.7309,6.8649L22.5695,7.8586C22.852,7.8997 23.0867,8.0975 23.1749,8.3691C23.2631,8.6406 23.1896,8.9386 22.9851,9.1379L18.0367,13.9614L19.2048,20.7724C19.2531,21.0538 19.1374,21.3381 18.9065,21.5059C18.6755,21.6738 18.3693,21.6959 18.1166,21.563L12,18.3473L5.8834,21.563C5.6307,21.6959 5.3245,21.6738 5.0935,21.5059C4.8626,21.3381 4.7469,21.0538 4.7952,20.7724L5.9633,13.9614L1.0149,9.1379C0.8104,8.9386 0.7369,8.6406 0.8251,8.3691C0.9133,8.0975 1.148,7.8997 1.4305,7.8586L8.2691,6.8649L11.3275,0.6681C11.4538,0.4121 11.7145,0.25 12,0.25Z",
+        ).forEach { (name, path) ->
+            resourceFile("res").resolve("drawable/fakh_ic_${name}_fill_24.xml").writeText(
+                """
+                    <vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp"
+                        android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+                        <path android:fillColor="#ff000000" android:fillType="evenOdd" android:pathData="$path" />
+                    </vector>
+                """.trimIndent(),
+            )
+        }
+        addExtraTabs(tabType)
 
         val item = NavigationItemFingerprint.method
         val call = item.tabCall()

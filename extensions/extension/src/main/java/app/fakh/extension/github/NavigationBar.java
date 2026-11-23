@@ -43,6 +43,8 @@ public final class NavigationBar {
     public static final String NAV_RIGHT = "fakh_nav_right";
     /** Prefix of the switch that hides each tab, which {@link ChoiceSheets} sets from the tab sheet. */
     static final String HIDE_TAB = "fakh_hide_tab_";
+    /** The tabs after Home in the order the user dragged them to, as label names joined by commas. */
+    static final String TAB_ORDER = "fakh_tab_order";
     /** The name of the label of the Home tab. */
     static final String HOME_TAB = "menu_home";
     /** Every tab the app lists, before the hidden ones are dropped, for the sheet. */
@@ -574,6 +576,15 @@ public final class NavigationBar {
      * read: drops the tabs switched off in the sheet, and keeps them all when none would be left.
      */
     public static List<Object> tabs(List<Object> tabs) {
+        tabs = new ArrayList<>(tabs);
+        tabs.addAll(ExtraTab.all());
+        List<String> order = java.util.Arrays.asList(Features.text(TAB_ORDER, "").split(","));
+        // A stable sort: Home first, then the dragged order, then tabs the user has not placed yet.
+        tabs.sort(java.util.Comparator.comparingInt(tab -> {
+            String name = labelName(tab);
+            int index = order.indexOf(name);
+            return HOME_TAB.equals(name) ? -1 : index < 0 ? order.size() : index;
+        }));
         allTabs = new ArrayList<>(tabs);
         List<Object> shown = new ArrayList<>();
         for (Object tab : tabs) {
@@ -600,9 +611,12 @@ public final class NavigationBar {
         }
     }
 
-    /** Whether the user switched the tab named [name] off; the Home tab never is, as the app starts on it. */
+    /**
+     * Whether the user switched the tab named [name] off; the Home tab never is, as the app starts on it. The tabs the
+     * app does not have, Repositories and Stars, start off.
+     */
     static boolean hidden(String name) {
-        return !HOME_TAB.equals(name) && Features.value(HIDE_TAB + name, false);
+        return !HOME_TAB.equals(name) && Features.value(HIDE_TAB + name, ExtraTab.LABELS.contains(name));
     }
 
     /**
@@ -619,6 +633,24 @@ public final class NavigationBar {
                     field.setAccessible(true);
                     int id = field.getInt(tab);
                     if (id != 0 && "string".equals(context.getResources().getResourceTypeName(id))) return id;
+                } catch (ReflectiveOperationException | Resources.NotFoundException ignored) {
+                }
+            }
+        }
+        return 0;
+    }
+
+    /** The icon of a tab, as a drawable resource id: the first of its int fields that names a drawable; 0 when none does. */
+    static int iconId(Object tab) {
+        Context context = AppRuntime.application();
+        if (context == null) return 0;
+        for (Class<?> type = tab.getClass(); type != null && type != Object.class; type = type.getSuperclass()) {
+            for (Field field : type.getDeclaredFields()) {
+                if (field.getType() != int.class || Modifier.isStatic(field.getModifiers())) continue;
+                try {
+                    field.setAccessible(true);
+                    int id = field.getInt(tab);
+                    if (id != 0 && "drawable".equals(context.getResources().getResourceTypeName(id))) return id;
                 } catch (ReflectiveOperationException | Resources.NotFoundException ignored) {
                 }
             }
