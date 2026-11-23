@@ -1,3 +1,14 @@
+## [2.9.0](https://github.com/amfakh/fakh-patches/compare/v2.8.0...v2.9.0) (2026-11-23)
+
+### New Features
+
+* **GitHub:** add Disable analytics ([1016b99](https://github.com/amfakh/fakh-patches/commit/1016b99d7c42023e02767e3283dcfc2beb756be6))
+* **GitHub:** add Repositories and Stars tabs, icons and drag to sort in the Navigation bar tabs sheet ([ea0c1d6](https://github.com/amfakh/fakh-patches/commit/ea0c1d62ecc3c234bc51c2ce1077296d1a1e9e75))
+
+### Bug Fixes
+
+* **LinkedIn:** move the drag handle of the Navigation bar tabs sheet to the left ([29b1d80](https://github.com/amfakh/fakh-patches/commit/29b1d8082836ac85c0814b232edaf12ffe376b1a))
+
 ## [2.8.0](https://github.com/amfakh/fakh-patches/compare/v2.7.0...v2.8.0) (2026-11-23)
 
 ### New Features

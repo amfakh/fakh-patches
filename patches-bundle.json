@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-23T12:50:17",
-  "description": "## [2.8.0](https://github.com/amfakh/fakh-patches/compare/v2.7.0...v2.8.0) (2026-11-23)\n\n### New Features\n\n* **Warung Life Simulator:** add support for `1.2` with Hide ads, Clone and GmsCore support ([5bdc23e](https://github.com/amfakh/fakh-patches/commit/5bdc23e2b097a461b5f16b246249105062fc25bf))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v2.8.0/patches-2.8.0.mpp",
+  "created_at": "2026-11-23T14:29:35",
+  "description": "## [2.9.0](https://github.com/amfakh/fakh-patches/compare/v2.8.0...v2.9.0) (2026-11-23)\n\n### New Features\n\n* **GitHub:** add Disable analytics ([1016b99](https://github.com/amfakh/fakh-patches/commit/1016b99d7c42023e02767e3283dcfc2beb756be6))\n* **GitHub:** add Repositories and Stars tabs, icons and drag to sort in the Navigation bar tabs sheet ([ea0c1d6](https://github.com/amfakh/fakh-patches/commit/ea0c1d62ecc3c234bc51c2ce1077296d1a1e9e75))\n\n### Bug Fixes\n\n* **LinkedIn:** move the drag handle of the Navigation bar tabs sheet to the left ([29b1d80](https://github.com/amfakh/fakh-patches/commit/29b1d8082836ac85c0814b232edaf12ffe376b1a))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v2.9.0/patches-2.9.0.mpp",
   "signature_download_url": "",
-  "version": "2.8.0",
+  "version": "2.9.0",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }
