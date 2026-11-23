@@ -2,8 +2,8 @@
 
 ### New Features
 
-* **GitHub:** add Disable analytics ([1016b99](https://github.com/amfakh/fakh-patches/commit/1016b99d7c42023e02767e3283dcfc2beb756be6))
-* **GitHub:** add Repositories and Stars tabs, icons and drag to sort in the Navigation bar tabs sheet ([ea0c1d6](https://github.com/amfakh/fakh-patches/commit/ea0c1d62ecc3c234bc51c2ce1077296d1a1e9e75))
+* **GitHub:** add Disable analytics ([1016b99](https://github.com/amfakh/fakh-patches/commit/1016b99d7c42023e02767e3283dcfc2beb756be6)), closes [#6](https://github.com/amfakh/fakh-patches/issues/6)
+* **GitHub:** add Repositories and Stars tabs, icons and drag to sort in the Navigation bar tabs sheet ([ea0c1d6](https://github.com/amfakh/fakh-patches/commit/ea0c1d62ecc3c234bc51c2ce1077296d1a1e9e75)), closes [#7](https://github.com/amfakh/fakh-patches/issues/7)
 
 ### Bug Fixes
 
