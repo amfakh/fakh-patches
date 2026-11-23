@@ -2,8 +2,9 @@ package app.fakh.patches.linkedin.feed
 
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
 import app.fakh.patches.linkedin.shared.Constants.EXTENSION_PACKAGE
-import app.fakh.patches.linkedin.shared.markIncluded
+import app.fakh.patches.linkedin.shared.Constants.KEEP_FEED
 import app.fakh.patches.linkedin.shared.settingsPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
@@ -40,7 +41,7 @@ val keepFeedPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isKeepFeedIncluded")
+        register(KEEP_FEED)
 
         var patched = 0
         classDefForEach { classDef ->

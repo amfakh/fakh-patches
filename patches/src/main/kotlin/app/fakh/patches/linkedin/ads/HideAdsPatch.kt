@@ -2,8 +2,9 @@ package app.fakh.patches.linkedin.ads
 
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
 import app.fakh.patches.linkedin.shared.Constants.EXTENSION_PACKAGE
-import app.fakh.patches.linkedin.shared.markIncluded
+import app.fakh.patches.linkedin.shared.Constants.HIDE_ADS
 import app.fakh.patches.linkedin.shared.sduiComponentFilterPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
@@ -30,7 +31,7 @@ val hideAdsPatch = patch(
     dependsOn(sduiComponentFilterPatch)
 
     execute {
-        markIncluded("isHideAdsIncluded")
+        register(HIDE_ADS)
 
         // Legacy (RecyclerView) home feed. The server driven feed is handled by the SDUI filter.
         SponsoredDuplicatesFilterFingerprint.let {

@@ -2,8 +2,10 @@ package app.fakh.patches.linkedin.navigation
 
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
 import app.fakh.patches.linkedin.shared.Constants.EXTENSION_PACKAGE
-import app.fakh.patches.linkedin.shared.markIncluded
+import app.fakh.patches.linkedin.shared.Constants.SHOW_TOP_BAR_MESSAGING
+import app.fakh.patches.linkedin.shared.Constants.SHOW_TOP_BAR_POST
 import app.fakh.patches.linkedin.shared.settingsPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
@@ -27,7 +29,7 @@ val hideTopBarButtonsPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isTopBarButtonsIncluded")
+        register(SHOW_TOP_BAR_POST, SHOW_TOP_BAR_MESSAGING)
 
         HomeViewCreatedFingerprint.method.addInstruction(
             0,

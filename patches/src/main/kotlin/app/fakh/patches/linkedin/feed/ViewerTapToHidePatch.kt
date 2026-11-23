@@ -3,8 +3,9 @@ package app.fakh.patches.linkedin.feed
 import app.fakh.patches.linkedin.shared.ComposeTouchFingerprint
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
 import app.fakh.patches.linkedin.shared.Constants.EXTENSION_PACKAGE
-import app.fakh.patches.linkedin.shared.markIncluded
+import app.fakh.patches.linkedin.shared.Constants.VIEWER_TAP_TO_HIDE
 import app.fakh.patches.linkedin.shared.sduiComponentFilterPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
@@ -34,7 +35,7 @@ val viewerTapToHidePatch = patch(
     dependsOn(sduiComponentFilterPatch)
 
     execute {
-        markIncluded("isViewerTapToHideIncluded")
+        register(VIEWER_TAP_TO_HIDE)
 
         StateManagerConstructorFingerprint.method.apply {
             val index = instructions.indexOfLast { it.opcode == Opcode.RETURN_VOID }

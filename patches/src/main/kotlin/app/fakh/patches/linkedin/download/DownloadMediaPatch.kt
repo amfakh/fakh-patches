@@ -1,11 +1,13 @@
 package app.fakh.patches.linkedin.download
 
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
+import app.fakh.patches.linkedin.shared.Constants.DOWNLOAD_MEDIA
+import app.fakh.patches.linkedin.shared.Constants.DOWNLOAD_SPLIT_BY_TYPE
 import app.fakh.patches.linkedin.shared.Constants.EXTENSION_PACKAGE
 import app.fakh.patches.linkedin.feed.DocumentPlayerFingerprint
 import app.fakh.patches.linkedin.feed.postMenuPatch
-import app.fakh.patches.linkedin.shared.markIncluded
 import app.fakh.patches.linkedin.shared.sduiComponentFilterPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.patch.patch
 
@@ -26,7 +28,7 @@ val downloadMediaPatch = patch(
     dependsOn(sduiComponentFilterPatch, postMenuPatch)
 
     execute {
-        markIncluded("isDownloadMediaIncluded")
+        register(DOWNLOAD_MEDIA, DOWNLOAD_SPLIT_BY_TYPE)
 
         // p3 = DocumentAsset, p4 = Source, p5 = navigablePages, p6 = isFullScreenMode. A static call before the
         // super constructor is allowed, as long as it doesn't touch p0.

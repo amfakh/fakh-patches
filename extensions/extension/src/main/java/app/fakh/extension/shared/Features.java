@@ -45,6 +45,8 @@ public final class Features {
     private static List<Feature> all;
     private static Map<String, Feature> byId;
     private static SharedPreferences prefs;
+    /** A context from before the Application exists, for apps whose themes read switches that early. */
+    private static Context early;
 
     private Features() {
     }
@@ -135,9 +137,19 @@ public final class Features {
         if (store != null) store.edit().putBoolean(id, on).commit();
     }
 
+    /**
+     * Lets the switches be read before the Application exists, from the context the app attaches first.
+     *
+     * @param context the Application's base context
+     */
+    public static void attachBaseContext(Context context) {
+        early = context;
+    }
+
     private static SharedPreferences prefs() {
         if (prefs == null) {
             Context context = AppRuntime.application();
+            if (context == null) context = early;
             if (context != null) prefs = context.getSharedPreferences(store(), Context.MODE_PRIVATE);
         }
         return prefs;

@@ -2,8 +2,9 @@ package app.fakh.patches.linkedin.links
 
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
 import app.fakh.patches.linkedin.shared.Constants.EXTENSION_PACKAGE
-import app.fakh.patches.linkedin.shared.markIncluded
+import app.fakh.patches.linkedin.shared.Constants.SANITIZE_SHARE_LINKS
 import app.fakh.patches.linkedin.shared.settingsPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
@@ -53,7 +54,7 @@ val sanitizeShareLinksPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isSanitizeShareLinksIncluded")
+        register(SANITIZE_SHARE_LINKS)
 
         // Edit every class that calls one of the redirected methods, found through the patcher's call index. This
         // includes libraries (Compose clipboard, ShareCompat), since LinkedIn copies and shares through them too.

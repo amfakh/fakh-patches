@@ -2,8 +2,10 @@ package app.fakh.patches.linkedin.links
 
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
 import app.fakh.patches.linkedin.shared.Constants.EXTENSION_PACKAGE
-import app.fakh.patches.linkedin.shared.markIncluded
+import app.fakh.patches.linkedin.shared.Constants.OPEN_LINKS_DIRECTLY
+import app.fakh.patches.linkedin.shared.Constants.RESOLVE_SHORT_LINKS
 import app.fakh.patches.linkedin.shared.settingsPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -39,7 +41,7 @@ val openLinksDirectlyPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isOpenLinksDirectlyIncluded")
+        register(OPEN_LINKS_DIRECTLY, RESOLVE_SHORT_LINKS)
 
         // Replace the Uri parameter before the constructor stores it. Range form because p1 can be above v15.
         NavigateToUrlActionFingerprint.method.addInstructions(

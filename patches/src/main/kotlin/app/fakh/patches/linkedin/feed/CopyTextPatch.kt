@@ -1,7 +1,8 @@
 package app.fakh.patches.linkedin.feed
 
 import app.fakh.patches.linkedin.shared.Constants.COMPATIBILITY_LINKEDIN
-import app.fakh.patches.linkedin.shared.markIncluded
+import app.fakh.patches.linkedin.shared.Constants.COPY_TEXT
+import app.fakh.patches.shared.register
 import app.morphe.patcher.patch.patch
 
 @Suppress("unused")
@@ -16,6 +17,6 @@ val copyTextPatch = patch(
     dependsOn(postMenuPatch)
 
     execute {
-        markIncluded("isCopyTextIncluded")
+        register(COPY_TEXT)
     }
 }
