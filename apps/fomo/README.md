@@ -8,6 +8,7 @@ version `9.0.64`, as an XAPK.
 | Category | Patch | What it does |
 |---|---|---|
 | Ads | Hide ads | Hides the FOMO+ upsell cards and banners (such as the "LANGGANAN F+ AJA~" banner) and the sponsored posts in the home feed. |
+| Theme | Themed icon | Adds the themed (monochrome) app icon of Android 13 and later, which follows the wallpaper colors. The two chat bubbles keep different shades. |
 
 ## How it works
 
