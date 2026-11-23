@@ -28,7 +28,7 @@ private object PremiumFlowFingerprint : Fingerprint(
 
 @Suppress("unused")
 val unlockPremiumPatch = patch(
-    name = "Unlock Premium",
+    name = "Premium unlock",
     description = "Unlocks the client-side Premium checks.",
     default = true,
 ) {

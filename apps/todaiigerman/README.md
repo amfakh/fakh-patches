@@ -9,12 +9,12 @@ Every patch except **GmsCore support** is on by default. Morphe Manager groups t
 | Category | Patch | Default | What it does |
 |---|---|---|---|
 | Feature | GmsCore support | Off | Makes Google sign-in work through [microG RE](https://github.com/WSTxda/MicroG-RE) (GmsCore) instead of Google Play services. |
-| Premium | Unlock Premium | On | Unlocks the client-side Premium and Premium AI checks and removes ads. |
+| Premium | Premium unlock | On | Unlocks the client-side Premium and Premium AI checks and removes ads. |
 | Privacy | Disable analytics | On | Stops AppMetrica, Facebook App Events, and Firebase Analytics, Crashlytics, Performance and Sessions. |
 
 ## How the patches work
 
-**Unlock Premium** makes `User.isUserPremium`, `isUserPremiumAi`, `isPremium` and `isPremiumAi` return true. The banner, interstitial and rewarded gates read these, so the ads stop on their own. It also pulls in an ad removal step that disables `MobileAdsInitProvider`, `AppLovinInitProvider`, Yandex `MobileAdsInitializeProvider`, and `AudienceNetworkContentProvider` in the manifest, skips `MobileAdsState` and `AppLovinPrivacySettings` initialization at startup, hides banner containers (`AdsBanner`), skips interstitials (`AdsInterval`), and invokes the continue callback immediately on rewarded-ad gates (`AdsReward`).
+**Premium unlock** makes `User.isUserPremium`, `isUserPremiumAi`, `isPremium` and `isPremiumAi` return true. The banner, interstitial and rewarded gates read these, so the ads stop on their own. It also pulls in an ad removal step that disables `MobileAdsInitProvider`, `AppLovinInitProvider`, Yandex `MobileAdsInitializeProvider`, and `AudienceNetworkContentProvider` in the manifest, skips `MobileAdsState` and `AppLovinPrivacySettings` initialization at startup, hides banner containers (`AdsBanner`), skips interstitials (`AdsInterval`), and invokes the continue callback immediately on rewarded-ad gates (`AdsReward`).
 
 **GmsCore support** redirects the app's Google Play services calls to microG RE (`app.revanced.android.gms`) and declares Todaii German's original signing certificate SHA-1 so Google issues the ID token that login expects.
 

@@ -9,12 +9,12 @@ Every patch except **GmsCore support** is on by default. Morphe Manager groups t
 | Category | Patch | Default | What it does |
 |---|---|---|---|
 | Feature | GmsCore support | Off | Makes Google sign-in work through [microG RE](https://github.com/WSTxda/MicroG-RE) (GmsCore) instead of Google Play services. |
-| Premium | Unlock Premium | On | Unlocks the client-side Premium checks. |
+| Premium | Premium unlock | On | Unlocks the client-side Premium checks. |
 | Privacy | Disable analytics | On | Stops Firebase Analytics, Crashlytics, Performance and Sessions. |
 
 ## How the patches work
 
-**Unlock Premium** makes `ConfigPreferences.isPremiumForLanguage` and the `isPremiumFlow` combiner resolve to true, so every screen that reads the Premium state opens. Todaii Super has no ad SDK. Content the server only sends to paying accounts still depends on the server.
+**Premium unlock** makes `ConfigPreferences.isPremiumForLanguage` and the `isPremiumFlow` combiner resolve to true, so every screen that reads the Premium state opens. Todaii Super has no ad SDK. Content the server only sends to paying accounts still depends on the server.
 
 **Disable analytics** turns off Firebase Analytics, Crashlytics, Performance and Sessions through their manifest switches and disables `TransportBackendDiscovery`, prevents `SuperApplication.onCreate` from re-enabling Crashlytics at runtime, and stubs the Firebase Analytics event logging helpers. Both patches also stub `Pairip` license checks (`LicenseClient.checkLicense`) so the repackaged APK runs normally.
 

@@ -46,7 +46,7 @@ private object UserPaidAiFingerprint : Fingerprint(
 
 @Suppress("unused")
 val unlockPremiumPatch = patch(
-    name = "Unlock Premium",
+    name = "Premium unlock",
     description = "Unlocks the client-side Premium and Premium AI checks and removes ads.",
     default = true,
 ) {
