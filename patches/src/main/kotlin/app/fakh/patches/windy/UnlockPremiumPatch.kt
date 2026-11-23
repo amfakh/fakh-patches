@@ -1,4 +1,4 @@
-package app.fakh.patches.windy.premium
+package app.fakh.patches.windy
 
 import app.fakh.patches.windy.shared.Constants.COMPATIBILITY_WINDY
 import app.morphe.patcher.patch.PatchException
