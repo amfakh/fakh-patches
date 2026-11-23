@@ -1,7 +1,7 @@
 package app.fakh.patches.fomo
 
 import app.fakh.patches.fomo.shared.Constants.COMPATIBILITY_FOMO
-import app.fakh.patches.shared.Feature
+import app.fakh.patches.fomo.shared.Constants.MATERIAL_YOU
 import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -35,8 +35,6 @@ private val viewColorFingerprints = listOf(
 private val spanFingerprints = listOf("ReactForegroundColorSpan", "ReactBackgroundColorSpan").map {
     Fingerprint(definingClass = "Lcom/facebook/react/views/text/internal/span/$it;", name = "<init>", parameters = listOf("I"))
 }
-
-internal val MATERIAL_YOU = Feature("material_you", "Material You", "Theme")
 
 /** The color hooks the theme patches share; what they change is decided by the features that are on. */
 internal val colorHooksPatch = bytecodePatch {

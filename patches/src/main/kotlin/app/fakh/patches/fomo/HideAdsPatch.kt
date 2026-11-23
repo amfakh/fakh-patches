@@ -1,11 +1,11 @@
 package app.fakh.patches.fomo
 
 import app.fakh.patches.fomo.shared.Constants.COMPATIBILITY_FOMO
+import app.fakh.patches.fomo.shared.Constants.HIDE_ADS
 import app.fakh.patches.fomo.shared.HermesBundle
 import app.fakh.patches.fomo.shared.HermesBundle.Companion.OP_JMP
 import app.fakh.patches.fomo.shared.HermesBundle.Companion.OP_JSTRICT_EQUAL_LONG
 import app.fakh.patches.fomo.shared.HermesBundle.Companion.OP_LOAD_CONST_STRING
-import app.fakh.patches.shared.Feature
 import app.fakh.patches.shared.register
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.rawResourcePatch
@@ -55,8 +55,6 @@ private const val SUMMARY_UPSELL_PATTERN = """
 """
 
 private const val SUMMARY_UPSELL_JUMP_AT = 19
-
-private val HIDE_ADS = Feature("hide_ads", "Hide ads", "Ads")
 
 @Suppress("unused")
 val fomoHideAdsPatch = rawResourcePatch(

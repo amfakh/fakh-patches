@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * The runtime switches of the patches in this app. The features patch rewrites {@link #registry()} at patch time with
  * one line per feature of the patches that were applied, so a feature whose patch was left out is never listed and
- * never on. Every switch is on until the user turns it off, and a feature whose dependency is off is off too.
+ * never on. A switch keeps its default until the user changes it, and a feature whose dependency is off is off too.
  */
 public final class Features {
     /** One switch, as the patch that implements it registered it. */
@@ -25,6 +25,10 @@ public final class Features {
         public final String dependsOn;
         /** Whether a change applies only after the app restarts. */
         public final boolean restart;
+        /** Whether the switch is on until the user changes it. */
+        public final boolean defaultOn;
+        /** What the switch does in English, or an empty string when the title says it. */
+        public final String description;
 
         Feature(String[] fields) {
             id = fields[0];
@@ -32,6 +36,8 @@ public final class Features {
             section = fields[2];
             dependsOn = fields[3];
             restart = Boolean.parseBoolean(fields[4]);
+            defaultOn = Boolean.parseBoolean(fields[5]);
+            description = fields[6];
         }
     }
 
@@ -46,7 +52,7 @@ public final class Features {
 
     /**
      * Rewritten at patch time: one line per feature, its fields separated by tabs (id, title, section, dependsOn,
-     * restart).
+     * restart, default, description).
      */
     static String registry() {
         return "";
@@ -59,7 +65,7 @@ public final class Features {
             Map<String, Feature> ids = new HashMap<>();
             for (String line : registry().split("\n")) {
                 String[] fields = line.split("\t", -1);
-                if (fields.length != 5) continue;
+                if (fields.length != 7) continue;
                 Feature feature = new Feature(fields);
                 list.add(feature);
                 ids.put(feature.id, feature);
@@ -96,14 +102,17 @@ public final class Features {
         }
     }
 
-    /** Whether the user left a switch on, whatever its dependency says. */
-    static boolean saved(String id) {
+    /** Whether a switch is on, whatever its dependency says; its default until the user changes it. */
+    public static boolean saved(String id) {
+        all();
+        Feature feature = byId.get(id);
+        boolean defaultOn = feature == null || feature.defaultOn;
         SharedPreferences store = prefs();
-        return store == null || store.getBoolean(id, true);
+        return store == null ? defaultOn : store.getBoolean(id, defaultOn);
     }
 
     /** Saves a switch; committed at once, since a restart may follow right after. */
-    static void set(String id, boolean on) {
+    public static void set(String id, boolean on) {
         SharedPreferences store = prefs();
         if (store != null) store.edit().putBoolean(id, on).commit();
     }

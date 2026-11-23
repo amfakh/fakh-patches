@@ -13,6 +13,8 @@ import app.morphe.patcher.patch.mutableClassDefBy
  * @param section The group the settings list it under.
  * @param dependsOn The feature this one needs on; this one is off while that one is.
  * @param restart Whether a change applies only after the app restarts.
+ * @param default Whether the switch is on until the user changes it.
+ * @param description What the switch does, for a switch whose title does not say; the extension translates it.
  */
 class Feature(
     val id: String,
@@ -20,7 +22,16 @@ class Feature(
     val section: String,
     val dependsOn: Feature? = null,
     val restart: Boolean = true,
-)
+    val default: Boolean = true,
+    val description: String = "",
+) {
+    /** The settings list features in the order they are declared, so declare an app's features in one place. */
+    internal val order = declared++
+
+    private companion object {
+        var declared = 0
+    }
+}
 
 private val registered = linkedSetOf<Feature>()
 
@@ -36,14 +47,14 @@ fun register(vararg features: Feature) {
 val featuresPatch = bytecodePatch {
     extendWith("extensions/extension.mpe")
 
-    // Runs before the patches that depend on it, so a second patch run in one process starts empty.
-    execute { registered.clear() }
-
-    // Runs after every patch executed and registered its features.
+    // Runs after every patch executed and registered its features. A patch may register before this patch executes,
+    // so the list is emptied only once it is written, for the next patch run in the same process.
     finalize {
         val registry = registered
-            .sortedWith(compareBy({ it.section }, { it.title }))
-            .joinToString("\n") { listOf(it.id, it.title, it.section, it.dependsOn?.id.orEmpty(), it.restart).joinToString("\t") }
+            .sortedBy { it.order }
+            .joinToString("\n") {
+                listOf(it.id, it.title, it.section, it.dependsOn?.id.orEmpty(), it.restart, it.default, it.description).joinToString("\t")
+            }
         val literal = buildString {
             registry.forEach { c ->
                 when (c) {
@@ -62,5 +73,6 @@ val featuresPatch = bytecodePatch {
                 return-object v0
             """,
         )
+        registered.clear()
     }
 }

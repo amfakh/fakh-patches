@@ -1,5 +1,6 @@
 package app.fakh.patches.smartlife.shared
 
+import app.fakh.patches.shared.Feature
 import app.morphe.patcher.patch.ApkFileType
 import app.morphe.patcher.patch.AppTarget
 import app.morphe.patcher.patch.Compatibility
@@ -28,4 +29,24 @@ object Constants {
         appIconColor = 0xFF5A1F,
         targets = listOf(AppTarget(version = "1.5.3", versionCode = 49)),
     )
+
+    // The switches of the Fakh Patches page, in the order it lists them, grouped by where they act.
+    val HIDE_PLUS = Feature("fakh_hide_plus", "Hide Plus button", "Home")
+    val HIDE_RECOMMENDED = Feature("fakh_hide_recommended", "Hide Recommended for you", "Home")
+    val HIDE_AI_BAR = Feature("fakh_hide_ai_bar", "Hide AI ask bar", "Home")
+    val HIDE_EXPLORE = Feature("fakh_hide_explore", "Hide Explore tab", "Navigation bar")
+    val HIDE_MALL_TAB = Feature("fakh_hide_mall_tab", "Hide Mall tab", "Navigation bar")
+    val HIDE_TAB_LABELS = Feature("fakh_hide_tab_labels", "Hide tab labels", "Navigation bar", default = false)
+    val SWIPE_TABS = Feature("fakh_swipe_tabs", "Swipe between tabs", "Navigation bar")
+    val HIDE_REWARDS = Feature("fakh_hide_rewards", "Hide Rewards Hub", "Me")
+    val HIDE_ORDERS = Feature("fakh_hide_orders", "Hide My Orders", "Me")
+    val HIDE_AI_WEB = Feature("fakh_hide_ai_web", "Hide Tuya AI Web Version", "Me")
+    val HIDE_ME_BANNER = Feature("fakh_hide_me_banner", "Hide Me banner", "Me")
+    val HIDE_APP_MALL = Feature("fakh_hide_app_mall", "Hide App Mall", "Me")
+    val LIQUID_GLASS = Feature("fakh_liquid_glass", "Liquid Glass", "Appearance")
+    val DARK_PANELS = Feature(
+        "fakh_dark_panels", "Dark Device Panels", "Appearance", restart = false, default = false,
+        description = "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.",
+    )
+    val HIDE_ADS = Feature("fakh_hide_ads", "Hide ads", "Ads")
 }

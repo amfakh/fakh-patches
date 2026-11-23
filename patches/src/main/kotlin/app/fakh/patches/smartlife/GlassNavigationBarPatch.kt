@@ -1,8 +1,12 @@
 package app.fakh.patches.smartlife
 
+import app.fakh.patches.shared.register
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_BARDI
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_SMARTLIFE
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_TUYA_SMART
+import app.fakh.patches.smartlife.shared.Constants.HIDE_TAB_LABELS
+import app.fakh.patches.smartlife.shared.Constants.LIQUID_GLASS
+import app.fakh.patches.smartlife.shared.Constants.SWIPE_TABS
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
@@ -15,14 +19,14 @@ import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 /** The Liquid Glass switch in Settings, which turns the glass bar and the glass cards on and off. */
 private val liquidGlassSwitchPatch = patch {
     execute {
-        addSettingsSwitch("fakh_liquid_glass")
+        register(LIQUID_GLASS)
     }
 }
 
 /** The Hide tab labels switch in Settings, which hides the text under the icons of the glass bar. */
 private val hideTabLabelsSwitchPatch = patch {
     execute {
-        addSettingsSwitch("fakh_hide_tab_labels")
+        register(HIDE_TAB_LABELS)
     }
 }
 
@@ -73,7 +77,7 @@ val swipeTabsPatch = patch(
     compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
     category("Feature")
     extendWith("extensions/extension.mpe")
-    dependsOn(switchRow("fakh_swipe_tabs"), settingsSwitchesPatch)
+    dependsOn(switchRow(SWIPE_TABS), settingsSwitchesPatch)
 
     execute {
         // p0 is only read. The glass bar's call at the returns stays valid: this one goes in at the start, where

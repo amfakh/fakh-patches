@@ -60,6 +60,14 @@ public final class FeaturesDialog {
             });
             switches.put(feature, row);
             list.addView(row);
+            if (!feature.description.isEmpty()) {
+                TextView about = new TextView(activity);
+                about.setText(I18n.tr(feature.description));
+                about.setTextSize(13);
+                about.setAlpha(0.7f);
+                about.setPadding(0, 0, Math.round(56 * density), Math.round(8 * density));
+                list.addView(about);
+            }
         }
         refresh(switches, style);
 
