@@ -5,6 +5,7 @@
 
 package app.fakh.patches.todaii
 
+import app.fakh.patches.shared.disableFacebookAppEvents
 import app.fakh.patches.shared.disableProviders
 import app.fakh.patches.shared.firebase.firebaseManifestPatch
 import app.fakh.patches.todaii.shared.Constants.COMPATIBILITY_TODAII
@@ -14,7 +15,6 @@ import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
-import org.w3c.dom.Element
 
 /**
  * Disables Adjust's lifecycle content provider and turns off Facebook App Events and advertiser ID collection.
@@ -25,16 +25,7 @@ private val analyticsManifestPatch = patch {
         document("AndroidManifest.xml").use { manifest ->
             manifest.disableProviders("com.adjust.sdk.SystemLifecycleContentProvider")
 
-            val application = manifest.getElementsByTagName("application").item(0) as Element
-            mapOf(
-                "com.facebook.sdk.AutoLogAppEventsEnabled" to "false",
-                "com.facebook.sdk.AdvertiserIDCollectionEnabled" to "false",
-            ).forEach { (name, value) ->
-                application.appendChild(manifest.createElement("meta-data").also {
-                    it.setAttribute("android:name", name)
-                    it.setAttribute("android:value", value)
-                })
-            }
+            manifest.disableFacebookAppEvents()
         }
     }
 }

@@ -5,6 +5,7 @@
 
 package app.fakh.patches.todaiigerman
 
+import app.fakh.patches.shared.disableFacebookAppEvents
 import app.fakh.patches.shared.disableProviders
 import app.fakh.patches.shared.firebase.firebaseManifestPatch
 import app.fakh.patches.todaiigerman.shared.Constants.COMPATIBILITY_TODAII_GERMAN
@@ -12,7 +13,6 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
-import org.w3c.dom.Element
 
 /**
  * Disables the AppMetrica init provider and turns off Facebook App Events and advertiser ID collection.
@@ -26,16 +26,7 @@ private val analyticsManifestPatch = patch {
                 "io.appmetrica.analytics.internal.PreloadInfoContentProvider",
             )
 
-            val application = manifest.getElementsByTagName("application").item(0) as Element
-            mapOf(
-                "com.facebook.sdk.AutoLogAppEventsEnabled" to "false",
-                "com.facebook.sdk.AdvertiserIDCollectionEnabled" to "false",
-            ).forEach { (name, value) ->
-                application.appendChild(manifest.createElement("meta-data").also {
-                    it.setAttribute("android:name", name)
-                    it.setAttribute("android:value", value)
-                })
-            }
+            manifest.disableFacebookAppEvents()
         }
     }
 }

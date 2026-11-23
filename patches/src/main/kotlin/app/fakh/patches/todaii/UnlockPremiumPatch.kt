@@ -6,9 +6,9 @@
 package app.fakh.patches.todaii
 
 import app.fakh.patches.todaii.shared.Constants.COMPATIBILITY_TODAII
+import app.fakh.patches.shared.returnTrue
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.patch
 
 /** PrefHelper.isUserPremiumStandard: false when signed out, so the SignInResult getter alone is not enough. */
@@ -70,15 +70,7 @@ val unlockPremiumPatch = patch(
             PrefAiPremiumFingerprint,
             ResultStandardPremiumFingerprint,
             ResultAiPremiumFingerprint,
-        ).forEach {
-            it.method.addInstructions(
-                0,
-                """
-                    const/4 v0, 0x1
-                    return v0
-                """,
-            )
-        }
+        ).forEach { it.method.returnTrue() }
         MainActivityCheckAccountFingerprint.method.addInstruction(0, "return-void")
     }
 }

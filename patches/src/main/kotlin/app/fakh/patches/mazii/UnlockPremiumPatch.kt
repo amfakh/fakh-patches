@@ -6,9 +6,9 @@
 package app.fakh.patches.mazii
 
 import app.fakh.patches.mazii.shared.Constants.COMPATIBILITY_MAZII
+import app.fakh.patches.shared.returnTrue
 import app.morphe.patcher.Fingerprint
 import app.fakh.patches.shared.disableProviders
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.document
 import app.morphe.patcher.patch.patch
 
@@ -61,14 +61,6 @@ val unlockPremiumPatch = patch(
     dependsOn(adSdkManifestPatch)
 
     execute {
-        listOf(IsPremiumFingerprint, IsAccountPremiumFingerprint, AccountPremiumFingerprint).forEach {
-            it.method.addInstructions(
-                0,
-                """
-                    const/4 v0, 0x1
-                    return v0
-                """,
-            )
-        }
+        listOf(IsPremiumFingerprint, IsAccountPremiumFingerprint, AccountPremiumFingerprint).forEach { it.method.returnTrue() }
     }
 }
