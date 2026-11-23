@@ -1,3 +1,18 @@
+## [2.6.0](https://github.com/amfakh/fakh-patches/compare/v2.5.3...v2.6.0) (2026-11-23)
+
+### New Features
+
+* **FOMO Indonesia:** add support for `9.0.64` with Hide ads, Material You, Pitch black, Hide post divider and Themed icon ([6f6e5b1](https://github.com/amfakh/fakh-patches/commit/6f6e5b1d555c5142ae89d3542edff97f554c434e))
+* every app lists its original signer certificate for Morphe Manager to check ([e58a3f3](https://github.com/amfakh/fakh-patches/commit/e58a3f3281d9fbde699d257fcc3fb675c2bb3c37))
+
+### Bug Fixes
+
+* **LinkedIn:** `Sanitize share links` reports an error instead of silently doing nothing ([b6df614](https://github.com/amfakh/fakh-patches/commit/b6df6140bb26d8e1238f5bddc9cd75b5aeb0c2b4))
+
+### Updated App Support
+
+* **IDN:** add support for `6.70.0`, next to `6.69.1` ([48223a6](https://github.com/amfakh/fakh-patches/commit/48223a61c47707e704da7f463aee8cfe3bc73160))
+
 ## [2.5.3](https://github.com/amfakh/fakh-patches/compare/v2.5.2...v2.5.3) (2026-11-22)
 
 ### Updated App Support
