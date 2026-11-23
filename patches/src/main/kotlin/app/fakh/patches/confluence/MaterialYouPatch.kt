@@ -1,6 +1,8 @@
 package app.fakh.patches.confluence
 
 import app.fakh.patches.confluence.shared.Constants.COMPATIBILITY_CONFLUENCE
+import app.fakh.patches.confluence.shared.Constants.MATERIAL_YOU
+import app.fakh.patches.shared.register
 import app.fakh.patches.shared.atlassian.ATLASSIAN_RAMP_ACCENTS
 import app.fakhradio.patches.shared.writeColors
 import app.morphe.patcher.Fingerprint
@@ -174,12 +176,6 @@ val materialYouPatch = patch(
     dependsOn(colorsPatch, materialYouResourcePatch, settingsPatch)
 
     execute {
-        mutableClassDefBy(EXTENSION).methods.first { it.name == "isMaterialYouIncluded" }.addInstructions(
-            0,
-            """
-                const/4 v0, 0x1
-                return v0
-            """,
-        )
+        register(MATERIAL_YOU)
     }
 }

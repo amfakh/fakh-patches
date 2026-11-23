@@ -1,5 +1,6 @@
 package app.fakh.patches.confluence
 
+import app.fakh.patches.shared.featuresPatch
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -46,7 +47,7 @@ private val fakhPatchesPagePatch = patch {
  */
 internal val settingsPatch = patch {
     extendWith("extensions/extension.mpe")
-    dependsOn(fakhPatchesPagePatch)
+    dependsOn(fakhPatchesPagePatch, featuresPatch)
 
     execute {
         textTransformFingerprint.method.addInstructions(
