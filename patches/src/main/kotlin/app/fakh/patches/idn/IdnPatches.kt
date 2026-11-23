@@ -1,6 +1,13 @@
 package app.fakh.patches.idn
 
+import app.fakh.patches.idn.shared.Constants.AUTOPLAY
 import app.fakh.patches.idn.shared.Constants.COMPATIBILITY_IDN
+import app.fakh.patches.idn.shared.Constants.HOME_TABS
+import app.fakh.patches.idn.shared.Constants.SHOW_ADS
+import app.fakh.patches.idn.shared.Constants.SHOW_CREATE_BUTTON
+import app.fakh.patches.idn.shared.Constants.SHOW_PACKAGE_BANNER
+import app.fakh.patches.shared.featuresPatch
+import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.checkCast
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
@@ -27,21 +34,6 @@ import com.android.tools.smali.dexlib2.iface.reference.StringReference
 
 private const val EXTENSION_SETTINGS = "Lapp/fakh/extension/idn/IdnSettings;"
 
-/** Makes IdnSettings.<method>() return true, marking a feature as patched in so its switch shows on the settings page. */
-private fun markIncluded(method: String) {
-    Fingerprint(
-        definingClass = EXTENSION_SETTINGS,
-        name = method,
-        returnType = "Z",
-        parameters = emptyList(),
-    ).method.addInstructions(
-        0,
-        """
-            const/4 v0, 0x1
-            return v0
-        """,
-    )
-}
 
 /** Every reference the method's instructions carry, as smali text. */
 private fun Method.references(): List<String> =
@@ -79,7 +71,7 @@ private object SettingsScreenFingerprint : Fingerprint(
 /** The "Fakh Patches" row on the app's Settings screen, and the page it opens. Every feature below depends on it. */
 private val settingsPatch = patch(description = "Adds a Fakh Patches page to the app's Settings screen.") {
     compatibleWith(COMPATIBILITY_IDN)
-    dependsOn(settingsManifestPatch)
+    dependsOn(settingsManifestPatch, featuresPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
@@ -115,7 +107,7 @@ val hideAdsPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isHideAdsIncluded")
+        register(SHOW_ADS)
         // Skip the ad request and collapse the frame that would hold the banner, unless the user turned ads back on.
         AdManagerLoadAdFingerprint.method.apply {
             addInstructionsWithLabels(
@@ -174,7 +166,7 @@ val hideCreateButtonPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isHideCreateButtonIncluded")
+        register(SHOW_CREATE_BUTTON)
         // p2 is the binding. The button and the bottom bar's empty "create" item are hidden at runtime, so the
         // switch can bring them back. The item stays in the menu, because the app disables it and selects the
         // tabs by index.
@@ -258,7 +250,7 @@ val hideHomeTabsPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isHideTabsIncluded")
+        register(*HOME_TABS.toTypedArray())
         HomeTabsFingerprint.method.apply {
             val valueOf = instructions.indexOfFirst(::isEnumValueOf)
             if (valueOf < 0) throw PatchException("IDN: HomeMenu.valueOf was not found in the home tab adapter.")
@@ -312,7 +304,7 @@ val stopAutoplayPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isStopAutoplayIncluded")
+        register(AUTOPLAY)
         listOf(autoPlaySetter("carousel/Carousel"), autoPlaySetter("viewpager/CarouselViewPager")).forEach {
             it.method.addInstructions(
                 0,
@@ -424,7 +416,7 @@ val hidePackageBannerPatch = patch(
     dependsOn(settingsPatch)
 
     execute {
-        markIncluded("isHidePackageBannerIncluded")
+        register(SHOW_PACKAGE_BANNER)
 
         val bind = SubscriptionBannerFingerprint.method
         val bindCall = "${bind.definingClass}->${bind.name}(${bind.parameterTypes.joinToString("")})${bind.returnType}"
