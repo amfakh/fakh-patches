@@ -11,6 +11,7 @@ object Constants {
     val COMPATIBILITY_LINKEDIN = Compatibility(
         name = "LinkedIn",
         packageName = "com.linkedin.android",
+        signatures = setOf("3b6a403ca91d56ab854517720203176640816d3f923f92cca16138f5cc3d0727"),
         // LinkedIn is only on APKMirror as a bundle; Morphe merges APKM splits itself.
         apkFileType = ApkFileType.APKM,
         appIconColor = 0x0A66C2,

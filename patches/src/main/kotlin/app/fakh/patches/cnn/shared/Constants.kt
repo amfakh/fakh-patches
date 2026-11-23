@@ -8,6 +8,7 @@ object Constants {
     val COMPATIBILITY_CNN = Compatibility(
         name = "CNN Indonesia",
         packageName = "com.cnn.indonesia",
+        signatures = setOf("181d3d5ac0705311e3690f2e807bc909efb131a7a08c68aed0f9196211dd566d"),
         apkFileType = ApkFileType.APK,
         appIconColor = 0xCC0000,
         targets = listOf(

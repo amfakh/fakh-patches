@@ -9,6 +9,7 @@ object Constants {
     val COMPATIBILITY_CONFLUENCE = Compatibility(
         name = "Confluence",
         packageName = "com.atlassian.android.confluence.core",
+        signatures = setOf("f6c89315169de0080ab7ea3615262425609377f7617989e95205f409b30e5944"),
         apkFileType = ApkFileType.APKM,
         appIconColor = 0x1868DB,
         targets = listOf(AppTarget(version = "5.26.1.1", versionCode = 5260101)),

@@ -9,6 +9,7 @@ object Constants {
     val COMPATIBILITY_SMARTLIFE = Compatibility(
         name = "Smart Life",
         packageName = "com.tuya.smartlife",
+        signatures = setOf("0fc361999cc0c35ba8aca57daa5593a20cf55727702ea85ad7b3228949f888fe"),
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0xFF5A1F,
         targets = listOf(AppTarget(version = "7.12.3", versionCode = 877), AppTarget(version = "7.12.6", versionCode = 880)),
@@ -17,6 +18,7 @@ object Constants {
     val COMPATIBILITY_TUYA_SMART = Compatibility(
         name = "Tuya Smart",
         packageName = "com.tuya.smart",
+        signatures = setOf("93219fc273e2200f4adee5f7191dc656ba2a2d7b2ff5d24cd55c4b6155001e40"),
         apkFileType = ApkFileType.APKM,
         appIconColor = 0xFF5A1F,
         targets = listOf(AppTarget(version = "7.12.3", versionCode = 870), AppTarget(version = "7.12.6", versionCode = 872), AppTarget(version = "7.13.0", versionCode = 875), AppTarget(version = "7.13.3", versionCode = 876)),
@@ -25,6 +27,7 @@ object Constants {
     val COMPATIBILITY_BARDI = Compatibility(
         name = "BARDI Smart Home",
         packageName = "com.bardi.smart.home",
+        signatures = setOf("f5b10815430e7cfaaa6bc5dd40bc475ced8bcf7959f3ba7cf52f46829b709877"),
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0xFF5A1F,
         targets = listOf(AppTarget(version = "1.5.3", versionCode = 49)),

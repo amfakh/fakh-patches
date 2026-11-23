@@ -9,6 +9,7 @@ object Constants {
     val COMPATIBILITY_FOMO = Compatibility(
         name = "FOMO Indonesia",
         packageName = "id.anon.android",
+        signatures = setOf("5dd4df3b640ebdb164dab5c96ef23d86bb8b4fa4640e952f12c1e18dfc60c5f7"),
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0x8A3BF5,
         targets = listOf(AppTarget(version = "9.0.64", versionCode = 340)),

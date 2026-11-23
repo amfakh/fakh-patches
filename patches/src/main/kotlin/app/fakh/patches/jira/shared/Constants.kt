@@ -9,6 +9,7 @@ object Constants {
     val COMPATIBILITY_JIRA = Compatibility(
         name = "Jira",
         packageName = "com.atlassian.android.jira.core",
+        signatures = setOf("0d9ab6d69e7e34705b4a1d69474a70e694b5a273b1ef9a9a691768d183c00a04", "f6c89315169de0080ab7ea3615262425609377f7617989e95205f409b30e5944"),
         apkFileType = ApkFileType.APKM,
         appIconColor = 0x1868DB,
         targets = listOf(AppTarget(version = "2026.22.0", versionCode = 202616079), AppTarget(version = "2026.22.1", versionCode = 202616088)),

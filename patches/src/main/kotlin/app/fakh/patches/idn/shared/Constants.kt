@@ -9,6 +9,7 @@ object Constants {
     val COMPATIBILITY_IDN = Compatibility(
         name = "IDN",
         packageName = "com.idntimes.idntimes",
+        signatures = setOf("e5b9a14c81067bc215d6e0168cc37fb9789e211a8cb9430bf0883f0de22b5bd6"),
         apkFileType = ApkFileType.XAPK,
         appIconColor = 0xED1C24,
         targets = listOf(

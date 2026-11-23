@@ -8,6 +8,7 @@ object Constants {
     val COMPATIBILITY_WINDY = Compatibility(
         name = "Windy",
         packageName = "com.windyty.android",
+        signatures = setOf("487e861a84064f74742069e3062759f273f3909ed7ff242d37e8206aa3082663"),
         apkFileType = ApkFileType.APKM,
         appIconColor = 0x0FA0EB,
         targets = listOf(AppTarget(version = "51.3.2", versionCode = 5103023)),
