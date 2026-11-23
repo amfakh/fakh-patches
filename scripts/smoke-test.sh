@@ -25,6 +25,7 @@ packages=(
   idn:com.idntimes.idntimes
   jira:com.atlassian.android.jira.core
   kompas:com.ertanto.kompas.official
+  krisbow:com.kawanlama.smartklic
   linkedin:com.linkedin.android
   radio:com.appmind.radios.id
   smartlife:com.tuya.smartlife

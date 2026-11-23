@@ -6,6 +6,7 @@
 package app.fakh.patches.smartlife
 
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_BARDI
+import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_KRISBOW
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_SMARTLIFE
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_TUYA_SMART
 import app.fakh.patches.smartlife.shared.Constants.HIDE_ADS
@@ -62,7 +63,7 @@ val signatureSpoofPatch = patch(
         "integrity check rejects, so without this it closes a few seconds after it opens.",
     default = true,
 ) {
-    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI, COMPATIBILITY_KRISBOW)
     category("Feature")
     extendWith("extensions/extension.mpe")
 

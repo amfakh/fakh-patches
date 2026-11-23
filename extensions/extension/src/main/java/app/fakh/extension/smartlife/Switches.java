@@ -37,6 +37,7 @@ public final class Switches {
     private static final String PLUS = "fakh_hide_plus";
     private static final String EXPLORE = "fakh_hide_explore";
     private static final String MALL_TAB = "fakh_hide_mall_tab";
+    private static final String DISCOVERY_TAB = "fakh_hide_discovery_tab";
 
     /** The About cell that is the Fakh Patches row, for each Settings page. */
     private static final Map<Context, Object> rows = new WeakHashMap<>();
@@ -85,11 +86,23 @@ public final class Switches {
             for (Iterator<Object> it = tabs.iterator(); it.hasNext(); ) {
                 Object name = it.next();
                 name = name.getClass().getField("name").get(name);
-                if ("thing_smart_tab".equals(name) && on(EXPLORE) || "mall".equals(name) && on(MALL_TAB)) it.remove();
+                if ("thing_smart_tab".equals(name) && on(EXPLORE) || "mall".equals(name) && on(MALL_TAB)
+                    || "miniappa".equals(name) && on(DISCOVERY_TAB)) it.remove();
             }
         } catch (ReflectiveOperationException | RuntimeException failure) {
             // The tabs stay as the app loaded them.
         }
+    }
+
+    /**
+     * Injected before each return of the home theme's background transformer.
+     *
+     * @param themed   the drawable with the theme's picture
+     * @param original the plain drawable the theme started from
+     * @return the plain drawable while the hide background switch is on, else {@code themed}
+     */
+    public static Object background(Object themed, Object original) {
+        return on("fakh_hide_background") && original != null ? original : themed;
     }
 
     /**

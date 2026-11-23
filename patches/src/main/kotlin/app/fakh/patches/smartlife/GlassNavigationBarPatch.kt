@@ -7,6 +7,7 @@ package app.fakh.patches.smartlife
 
 import app.fakh.patches.shared.register
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_BARDI
+import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_KRISBOW
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_SMARTLIFE
 import app.fakh.patches.smartlife.shared.Constants.COMPATIBILITY_TUYA_SMART
 import app.fakh.patches.smartlife.shared.Constants.HIDE_TAB_LABELS
@@ -15,6 +16,7 @@ import app.fakh.patches.smartlife.shared.Constants.SWIPE_TABS
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.packageMetadata
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.classDefForEach
 import app.morphe.patcher.patch.mutableClassDefBy
@@ -52,7 +54,7 @@ val glassNavigationBarPatch = patch(
     description = "Draws the navigation bar as a floating, translucent capsule with a sliding selection pill, " +
         "in the app's own colors. Slide a finger along it to switch tabs.",
 ) {
-    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI, COMPATIBILITY_KRISBOW)
     category("Theme")
     extendWith("extensions/extension.mpe")
     dependsOn(liquidGlassSwitchPatch, hideTabLabelsSwitchPatch, settingsSwitchesPatch)
@@ -79,7 +81,7 @@ val swipeTabsPatch = patch(
     description = "Swipe sideways to go to the next or previous tab of the navigation bar. Where Scene shows " +
         "Automation and Tap-to-Run as tabs, it switches between them first.",
 ) {
-    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI, COMPATIBILITY_KRISBOW)
     category("Feature")
     extendWith("extensions/extension.mpe")
     dependsOn(switchRow(SWIPE_TABS), settingsSwitchesPatch)
@@ -141,7 +143,7 @@ val glassCardsPatch = patch(
     name = "Glass cards",
     description = "Draws the cards on the Home tab as glass in the app's own colors, and gives the weather card a glass edge over its weather background.",
 ) {
-    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI)
+    compatibleWith(COMPATIBILITY_SMARTLIFE, COMPATIBILITY_TUYA_SMART, COMPATIBILITY_BARDI, COMPATIBILITY_KRISBOW)
     category("Theme")
     extendWith("extensions/extension.mpe")
     dependsOn(liquidGlassSwitchPatch, settingsSwitchesPatch)
@@ -160,11 +162,14 @@ val glassCardsPatch = patch(
             }
         }
 
-        beforeReturns(smallCardFingerprint, "p0", "install")
-        beforeReturns(roomCardFingerprint, "p0", "install")
-        // At the return p1 holds the card's CardView, which the method looked up into it, or null when it found none.
-        beforeReturns(weatherMediumFingerprint, "p1", "weather")
-        beforeReturns(weatherLargeFingerprint, "p1", "weather")
+        // Krisbow has no Favorites, room or weather cards, only the generic Home cards and the Device Management ones.
+        if (packageMetadata.packageName != COMPATIBILITY_KRISBOW.packageName) {
+            beforeReturns(smallCardFingerprint, "p0", "install")
+            beforeReturns(roomCardFingerprint, "p0", "install")
+            // At the return p1 holds the card's CardView, which the method looked up into it, or null when it found none.
+            beforeReturns(weatherMediumFingerprint, "p1", "weather")
+            beforeReturns(weatherLargeFingerprint, "p1", "weather")
+        }
 
         // The Device Management page inflates its cards through IDeviceUIItemView (and IDeviceCard in its older lists),
         // which tell each one when its layout is inflated; the card's layout is the argument.
