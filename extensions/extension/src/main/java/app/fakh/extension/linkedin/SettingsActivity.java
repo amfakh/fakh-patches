@@ -1,3 +1,11 @@
+/*
+ * Portions based on Michii Patches by heyymichii, GPLv3:
+ * https://github.com/heyymichii/michii-patches
+ *
+ * Modifications copyright 2026 amfakh
+ * SPDX-License-Identifier: GPL-3.0-only
+ */
+
 package app.fakh.extension.linkedin;
 
 import android.app.ActionBar;
@@ -53,7 +61,6 @@ import app.fakh.extension.shared.TabSheet;
 @SuppressWarnings("unused")
 public final class SettingsActivity extends Activity {
     static final String BRAND = "Fakh Patches";
-    private static final String MICHII_URL = "https://github.com/heyymichii/michii-patches";
     static final int ACCENT_DARK = 0xFF2DBCB1;
     static final int ACCENT_LIGHT = 0xFF00897B;
 
@@ -554,22 +561,6 @@ public final class SettingsActivity extends Activity {
             content.addView(sectionHeader(categories.get(i).title));
             renderItems(categories.get(i).items, null);
         }
-        content.addView(credit());
-    }
-
-    /** Small footer crediting the project these patches are based on; opens its GitHub page. */
-    private View credit() {
-        TextView view = text("Based on Michii Patches by heyymichii", 13, textSecondary, false);
-        view.setPadding(dp(24), dp(24), dp(24), dp(16));
-        view.setBackground(ripple(false));
-        view.setOnClickListener(v -> {
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(MICHII_URL)));
-            } catch (Exception e) {
-                Downloads.toast(this, "Can't open the link");
-            }
-        });
-        return view;
     }
 
     private void renderItems(List<Item> items, List<String> categoryNames) {
