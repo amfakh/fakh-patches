@@ -40,24 +40,29 @@ private const val GMS_CORE_VENDOR = "app.revanced"
 
 /**
  * Points the app at GmsCore and declares the package [packageName] and the signing certificate SHA-1 [signature]
- * that GmsCore presents to Google in place of the patched app's.
+ * that GmsCore presents to Google in place of the patched app's. The package is the one given, not the manifest's, so
+ * an app whose package another patch renames still signs in as the original.
  */
 fun gmsCoreSupportResourcePatch(packageName: String, signature: String) =
-    gmsCoreSupportResourcePatch(mapOf(packageName to signature))
+    gmsCoreSupportResourcePatch { packageName to signature }
 
 /**
  * Same as above for a patch that targets several apps: the package and certificate are picked by the package the
  * manifest declares.
  */
-fun gmsCoreSupportResourcePatch(signatures: Map<String, String>) = patch {
+fun gmsCoreSupportResourcePatch(signatures: Map<String, String>) = gmsCoreSupportResourcePatch { packageName ->
+    packageName to (signatures[packageName] ?: throw PatchException("No certificate known for $packageName"))
+}
+
+/** [spoof] maps the package the manifest declares to the package and certificate GmsCore presents. */
+private fun gmsCoreSupportResourcePatch(spoof: (String) -> Pair<String, String>) = patch {
     execute {
         val manifest = resourceFile("AndroidManifest.xml")
         manifest.writeText(manifest.readText().replace("com.google.android.c2dm", "$GMS_CORE_VENDOR.android.c2dm"))
 
         document("AndroidManifest.xml").use { document ->
             val root = document.documentElement
-            val packageName = root.getAttribute("package")
-            val signature = signatures[packageName] ?: throw PatchException("No certificate known for $packageName")
+            val (packageName, signature) = spoof(root.getAttribute("package"))
             val application = document.getElementsByTagName("application").item(0) as Element
             fun Element.add(tag: String, vararg attributes: Pair<String, String>) {
                 appendChild(document.createElement(tag).also { child ->
@@ -178,7 +183,8 @@ private fun spoofFirebaseCertificate(sha1: String) {
             }
         }
     }
-    if (spoofed == 0) throw PatchException("Firebase certificate header not found")
+    // An app without Firebase has no header to spoof; one that has it must get every call site.
+    if (holders.isNotEmpty() && spoofed == 0) throw PatchException("Firebase certificate header not found")
 }
 
 /**

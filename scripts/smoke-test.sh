@@ -30,6 +30,7 @@ packages=(
   radio:com.appmind.radios.id
   smartlife:com.tuya.smartlife
   tuya:com.tuya.smart
+  warunglife:com.neopawstudio.warunglife
   windy:com.windyty.android
 )
 
