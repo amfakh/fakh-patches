@@ -105,7 +105,7 @@ private const val PLAY_SERVICES_UTIL = "Lcom/google/android/gms/common/GooglePla
  * Sends every Google Play services call of the app to GmsCore and makes GmsCore pass the availability checks.
  * [signature] is the SHA-1 of the app's own signing certificate, which Firebase gets in place of the patched app's.
  */
-fun redirectToGmsCore(signature: String) {
+fun redirectToGmsCore(signature: String, patchPlayServicesUtil: Boolean = true) {
     val replacements = buildMap {
         put("com.google", GMS_CORE_VENDOR)
         put("com.google.android.gms", "$GMS_CORE_VENDOR.android.gms")
@@ -123,25 +123,27 @@ fun redirectToGmsCore(signature: String) {
         ).distinctBy { it.type }
     if (replaceStrings(classes, ::replacement) == 0) throw PatchException("No Google Play services strings found")
 
-    // GmsCore is signed with its own key, so the signature checks of the availability calls would fail. It
-    // reports as too old for the APIs that need Play services 25.24 or newer (Credential Manager's Identity
-    // Credentials API, which GmsCore lacks), so the Google sign-in falls back to the one GmsCore implements.
-    // Only the (Context, int) overloads: the (Context) one delegates to them and has no version parameter.
-    playServicesUtil().methods.filter { it.parameterTypes.size == 2 }.forEach { method ->
-        when (method.name) {
-            "isGooglePlayServicesAvailable" -> method.addInstructions(
-                0,
-                """
-                    const v0, $GMS_CORE_MAX_APK_VERSION
-                    if-ge p1, v0, :too_old
-                    const/4 v0, 0x0
-                    return v0
-                    :too_old
-                    const/4 v0, 0x2
-                    return v0
-                """
-            )
-            "ensurePlayServicesAvailable" -> method.addInstructions(0, "return-void")
+    if (patchPlayServicesUtil) {
+        // GmsCore is signed with its own key, so the signature checks of the availability calls would fail. It
+        // reports as too old for the APIs that need Play services 25.24 or newer (Credential Manager's Identity
+        // Credentials API, which GmsCore lacks), so the Google sign-in falls back to the one GmsCore implements.
+        // Only the (Context, int) overloads: the (Context) one delegates to them and has no version parameter.
+        playServicesUtil().methods.filter { it.parameterTypes.size == 2 }.forEach { method ->
+            when (method.name) {
+                "isGooglePlayServicesAvailable" -> method.addInstructions(
+                    0,
+                    """
+                        const v0, $GMS_CORE_MAX_APK_VERSION
+                        if-ge p1, v0, :too_old
+                        const/4 v0, 0x0
+                        return v0
+                        :too_old
+                        const/4 v0, 0x2
+                        return v0
+                    """
+                )
+                "ensurePlayServicesAvailable" -> method.addInstructions(0, "return-void")
+            }
         }
     }
 
