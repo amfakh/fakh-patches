@@ -62,6 +62,7 @@ val fomoHideAdsPatch = rawResourcePatch(
 ) {
     compatibleWith(COMPATIBILITY_FOMO)
     category("Ads")
+    dependsOn(hideAdsSwitchPatch)
 
     execute {
         val bundleFile = get("assets/index.android.bundle")
@@ -69,6 +70,8 @@ val fomoHideAdsPatch = rawResourcePatch(
             throw PatchException("FOMO: assets/index.android.bundle not found.")
         }
 
+        // The untouched bundle stays in the app, for the Hide ads switch of Fakh Patches to turn off.
+        bundleFile.copyTo(bundleFile.resolveSibling("index.android.bundle.original"), overwrite = true)
         val bytes = bundleFile.readBytes()
         val bundle = HermesBundle(bytes)
 
