@@ -5,7 +5,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
@@ -31,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 import app.fakh.extension.shared.AppRuntime;
+import app.fakh.extension.shared.Features;
 import app.fakh.extension.shared.RestartBar;
 
 /**
@@ -40,8 +40,6 @@ import app.fakh.extension.shared.RestartBar;
  */
 @SuppressWarnings("unused")
 public final class MaterialYou {
-    /** GitHub's own settings file, which the Fakh Patches switches persist to. */
-    private static final String PREFS = "settings_preferences";
     /** Setting keys, also the keys of their rows in Settings. */
     public static final String MATERIAL_YOU = "fakh_material_you";
     public static final String AMOLED = "fakh_amoled";
@@ -144,8 +142,6 @@ public final class MaterialYou {
 
     // Read once per process, except AMOLED black, which switches in place: Material You needs a restart.
     private static Boolean materialYou;
-    /** The application context, kept by the first activity, for settings read outside a screen. */
-    private static Context appContext;
     private static Boolean amoled;
 
     private MaterialYou() {
@@ -302,9 +298,8 @@ public final class MaterialYou {
             ChoiceSheets.open(activity(context), key, preference);
             return;
         }
-        SharedPreferences prefs = prefs(context);
-        boolean on = prefs.getBoolean(key, MATERIAL_YOU.equals(key));
-        prefs.edit().putBoolean(key, on).commit();
+        boolean on = Features.saved(key);
+        Features.set(key, on);
         Activity activity = activity(context);
         if (AMOLED.equals(key)) {
             setAmoled(on);
@@ -374,7 +369,6 @@ public final class MaterialYou {
         ((Application) context.getApplicationContext()).registerActivityLifecycleCallbacks(new Application.ActivityLifecycleCallbacks() {
             @Override
             public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-                appContext = activity.getApplicationContext();
                 CREATED_BLACK.put(activity, isAmoled(activity));
             }
 
@@ -427,40 +421,15 @@ public final class MaterialYou {
         return null;
     }
 
-    /** Whether the Material You patch is in; the patch makes this return true. */
-    static boolean isMaterialYouIncluded() {
-        return false;
-    }
-
     /** Whether Material You is patched in and its switch is on. Without the patch the glass bar's pill stays neutral. */
     static boolean isMaterialYou(Context context) {
-        if (materialYou == null) materialYou = isMaterialYouIncluded() && prefs(context).getBoolean(MATERIAL_YOU, true);
+        if (materialYou == null) materialYou = Features.on(MATERIAL_YOU);
         return materialYou;
     }
 
     private static boolean isAmoled(Context context) {
-        if (amoled == null) amoled = prefs(context).getBoolean(AMOLED, false);
+        if (amoled == null) amoled = Features.on(AMOLED);
         return amoled;
     }
 
-    /** A Fakh Patches switch that is off unless turned on. */
-    static boolean flag(String key) {
-        return flag(key, false);
-    }
-
-    /** A Fakh Patches switch with the given state until the user changes it. */
-    static boolean flag(String key, boolean def) {
-        if (appContext == null) {
-            // Static initializers of the app's classes can run before the first activity exists.
-            appContext = AppRuntime.application();
-        }
-        return appContext != null ? prefs(appContext).getBoolean(key, def) : false;
-    }
-
-    /** GitHub's settings file, where the Fakh Patches switches save their state. */
-    static SharedPreferences prefs(Context context) {
-        return context.getApplicationContext() != null
-                ? context.getApplicationContext().getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-                : context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-    }
 }

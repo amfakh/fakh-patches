@@ -2,7 +2,6 @@ package app.fakh.extension.github;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -14,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import app.fakh.extension.shared.Features;
 import app.fakh.extension.shared.GlassTabs;
 import app.fakh.extension.shared.I18n;
 import app.fakh.extension.shared.AppRuntime;
@@ -84,12 +84,12 @@ final class ChoiceSheets {
         items.add(helper("fakhSingleItem", "left", I18n.tr("Left")));
         items.add(helper("fakhSingleItem", "right", I18n.tr("Right")));
         helper("fakhShowSingle", settings, I18n.tr("Landscape navigation bar position"),
-                MaterialYou.flag(NavigationBar.NAV_RIGHT) ? "right" : "left", NAV_POSITION, items);
+                Features.saved(NavigationBar.NAV_RIGHT) ? "right" : "left", NAV_POSITION, items);
     }
 
     /** What a row shows under its title: the position, or how many tabs the bar shows; null while unknown. */
     static String summary(String key) {
-        if (NAV_POSITION.equals(key)) return I18n.tr(MaterialYou.flag(NavigationBar.NAV_RIGHT) ? "Right" : "Left");
+        if (NAV_POSITION.equals(key)) return I18n.tr(Features.saved(NavigationBar.NAV_RIGHT) ? "Right" : "Left");
         if (!NAV_TABS.equals(key) || NavigationBar.allTabs.isEmpty()) return null;
         int shown = 0;
         for (Object tab : NavigationBar.allTabs) {
@@ -106,17 +106,15 @@ final class ChoiceSheets {
         try {
             Context context = AppRuntime.application();
             if (context == null) return;
-            SharedPreferences.Editor edit = MaterialYou.prefs(context).edit();
             if (NAV_POSITION.equals(key)) {
                 Parcelable item = result.getParcelable("key_result_item");
-                edit.putBoolean(NavigationBar.NAV_RIGHT, "right".equals(value(item)));
+                Features.set(NavigationBar.NAV_RIGHT, "right".equals(value(item)));
             } else if (NAV_TABS.equals(key)) {
-                edit.putBoolean(NavigationBar.HIDE_TAB + result.getString("key_result_value"),
+                Features.set(NavigationBar.HIDE_TAB + result.getString("key_result_value"),
                         !result.getBoolean("key_result_is_selected"));
             } else {
                 return;
             }
-            edit.commit();
             WeakReference<Object> row = rows.get(key);
             if (row != null && row.get() != null) helper("fakhSummary", row.get(), summary(key));
             Activity from = activity.get();

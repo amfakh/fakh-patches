@@ -16,6 +16,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
+import app.fakh.extension.shared.Features;
 import app.fakh.extension.shared.GlassCapsule;
 import app.fakh.extension.shared.GlassTabs;
 import app.fakh.extension.shared.SlidingPill;
@@ -87,7 +88,7 @@ public final class NavigationBar {
 
     /** Injected before the call that draws a tab: its label composable, or null while labels are hidden. */
     public static Object label(Object label) {
-        return MaterialYou.flag(HIDE_LABELS) ? null : label;
+        return Features.on(HIDE_LABELS) ? null : label;
     }
 
     /**
@@ -304,7 +305,7 @@ public final class NavigationBar {
     /** Called when an activity comes to the front: gives its bottom bar the capsule. */
     static void install(Activity activity) {
         boolean glass = glass();
-        boolean right = MaterialYou.flag(NAV_RIGHT);
+        boolean right = Features.on(NAV_RIGHT);
         if (!glass && !right) return;
         boolean portrait = activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
         View bar = activity.findViewById(activity.getResources().getIdentifier(
@@ -325,7 +326,7 @@ public final class NavigationBar {
         bar.setPadding(side, vertical, side, vertical);
         // The tabs are at least 80dp tall; a bar that is shorter clamps them and centers the icon and label.
         ViewGroup.LayoutParams size = bar.getLayoutParams();
-        size.height = Math.round((MaterialYou.flag(HIDE_LABELS) ? ICON_ONLY_HEIGHT_DP : LABELED_HEIGHT_DP) * density)
+        size.height = Math.round((Features.on(HIDE_LABELS) ? ICON_ONLY_HEIGHT_DP : LABELED_HEIGHT_DP) * density)
                 + 2 * vertical;
         bar.setLayoutParams(size);
         GlassCapsule.clearSystemBar(activity);
@@ -353,7 +354,7 @@ public final class NavigationBar {
             }
         }, FILL_ALPHA);
         bar.setBackground(capsule);
-        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, false));
+        capsule.setLiquid(Features.on(LIQUID));
         capsule.setBevel(true);
         startPill(bar, false);
         matchPage(activity);
@@ -498,7 +499,7 @@ public final class NavigationBar {
             }
         }, FILL_ALPHA);
         bar.setBackground(capsule);
-        capsule.setLiquid(MaterialYou.prefs(activity).getBoolean(LIQUID, false));
+        capsule.setLiquid(Features.on(LIQUID));
         capsule.setBevel(true);
         startPill(bar, true);
         bar.addOnLayoutChangeListener((v, l, t, r, b, ol, ot, or, ob) -> syncPill());
@@ -560,7 +561,7 @@ public final class NavigationBar {
     }
 
     private static boolean glass() {
-        return MaterialYou.flag(GLASS, true);
+        return Features.on(GLASS);
     }
 
     /**
@@ -596,7 +597,7 @@ public final class NavigationBar {
 
     /** Whether the user switched the tab named [name] off; the Home tab never is, as the app starts on it. */
     static boolean hidden(String name) {
-        return !HOME_TAB.equals(name) && MaterialYou.flag(HIDE_TAB + name);
+        return !HOME_TAB.equals(name) && Features.value(HIDE_TAB + name, false);
     }
 
     /**

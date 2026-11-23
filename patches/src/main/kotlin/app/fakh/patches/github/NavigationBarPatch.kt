@@ -1,6 +1,11 @@
 package app.fakh.patches.github
 
+import app.fakh.patches.github.shared.Constants.BACKGROUND_BLUR
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
+import app.fakh.patches.github.shared.Constants.GLASS_NAVBAR
+import app.fakh.patches.github.shared.Constants.HIDE_TAB_LABELS
+import app.fakh.patches.github.shared.Constants.NAV_RIGHT
+import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.fieldAccess
@@ -152,8 +157,8 @@ val navigationBarPatch = patch(
             """,
         )
 
-        addSwitch("fakh_hide_nav_labels", "Hide tab labels", false)
-        addSwitch("fakh_nav_tabs", "Navigation bar tabs", null)
+        addSwitch(HIDE_TAB_LABELS)
+        addRow("fakh_nav_tabs", "Navigation bar tabs")
     }
 }
 
@@ -283,13 +288,8 @@ val glassNavigationBarPatch = patch(
         removeTabRipple()
         tightenTabLabel()
         watchActivities()
-        addSwitch("fakh_glass_navbar", "Liquid Glass navigation bar", true)
-        addSwitch(
-            "fakh_liquid_glass",
-            "Background blur",
-            false,
-            "Blurs what's behind the glass. Uses more battery and might stutter.",
-        )
+        addSwitch(GLASS_NAVBAR)
+        addSwitch(BACKGROUND_BLUR)
     }
 }
 
@@ -306,7 +306,8 @@ val navigationBarRightPatch = patch(
 
     execute {
         watchActivities()
-        addSwitch("fakh_nav_position", "Landscape navigation bar position", null)
+        register(NAV_RIGHT)
+        addRow("fakh_nav_position", "Landscape navigation bar position")
     }
 }
 

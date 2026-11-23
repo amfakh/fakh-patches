@@ -35,6 +35,16 @@ class Feature(
 
 private val registered = linkedSetOf<Feature>()
 
+private var store: String? = null
+
+/**
+ * Saves the switches in the app's own settings file [name] instead of `fakh_patches`, for an app whose own settings
+ * screen saves them there.
+ */
+fun useStore(name: String) {
+    store = name
+}
+
 /**
  * Lists [features] in the app's settings. Call it from the execute block of the patch that implements them, which
  * depends on [featuresPatch], so only the features of applied patches are listed.
@@ -74,5 +84,16 @@ val featuresPatch = bytecodePatch {
             """,
         )
         registered.clear()
+
+        store?.let { name ->
+            mutableClassDefBy("Lapp/fakh/extension/shared/Features;").methods.first { it.name == "store" }.addInstructions(
+                0,
+                """
+                    const-string v0, "$name"
+                    return-object v0
+                """,
+            )
+        }
+        store = null
     }
 }

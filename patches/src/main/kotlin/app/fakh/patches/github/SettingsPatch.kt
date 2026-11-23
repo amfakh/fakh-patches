@@ -1,5 +1,9 @@
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.Feature
+import app.fakh.patches.shared.featuresPatch
+import app.fakh.patches.shared.register
+import app.fakh.patches.shared.useStore
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.checkCast
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -187,8 +191,11 @@ private fun row(api: PreferenceApi, key: String, title: String, default: Boolean
  */
 internal val githubSettingsPatch = patch {
     extendWith("extensions/extension.mpe")
+    dependsOn(featuresPatch)
 
     execute {
+        // The switches are GitHub's own preferences, which save themselves in its settings file.
+        useStore("settings_preferences")
         // Settings: a Fakh Patches section with a switch per setting, right after General.
         val settings = mutableClassDefBy(SETTINGS_FRAGMENT)
         // onCreatePreferences, which builds the preference screen; other methods look the Theme row up by its key.
@@ -543,11 +550,17 @@ private fun addChoiceSheets(api: PreferenceApi, build: MutableMethod) {
     build.addInstructions(0, "invoke-static/range { p0 .. p0 }, $EXTENSION->settings(Ljava/lang/Object;)V")
 }
 
+/** Registers [feature] and adds its switch to the Fakh Patches section; run after [githubSettingsPatch] has built it. */
+internal fun addSwitch(feature: Feature) {
+    register(feature)
+    addRow(feature.id, feature.title, feature.default, feature.description.ifEmpty { null })
+}
+
 /**
  * Adds a row to the Fakh Patches section; run after [githubSettingsPatch] has built it. A null [default] makes a
  * plain row that only reports its click, such as one that opens a sheet.
  */
-internal fun addSwitch(key: String, title: String, default: Boolean?, summary: String? = null) {
+internal fun addRow(key: String, title: String, default: Boolean? = null, summary: String? = null) {
     val api = switchApi ?: throw PatchException("The Fakh Patches section is not built yet")
     val section = mutableClassDefBy(SETTINGS_FRAGMENT).methods.first { it.name == "fakhAddPatchesSection" }
     section.addInstructions(section.implementation!!.instructions.count() - 1, row(api, key, title, default, summary))

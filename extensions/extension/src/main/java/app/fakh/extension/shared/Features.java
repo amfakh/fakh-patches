@@ -41,7 +41,6 @@ public final class Features {
         }
     }
 
-    private static final String PREFS = "fakh_patches";
 
     private static List<Feature> all;
     private static Map<String, Feature> byId;
@@ -56,6 +55,14 @@ public final class Features {
      */
     static String registry() {
         return "";
+    }
+
+    /**
+     * The settings file the switches are saved in. Rewritten at patch time for an app whose own settings screen saves
+     * them, such as GitHub's preferences.
+     */
+    static String store() {
+        return "fakh_patches";
     }
 
     /** The features of the applied patches, in the order the settings list them. */
@@ -111,6 +118,17 @@ public final class Features {
         return store == null ? defaultOn : store.getBoolean(id, defaultOn);
     }
 
+    /**
+     * A value saved in the switches' file under a key that is not a feature, such as one row of a list setting.
+     *
+     * @param key the key it is saved under
+     * @param fallback the value until one is saved, or while the app has no context yet
+     */
+    public static boolean value(String key, boolean fallback) {
+        SharedPreferences store = prefs();
+        return store == null ? fallback : store.getBoolean(key, fallback);
+    }
+
     /** Saves a switch; committed at once, since a restart may follow right after. */
     public static void set(String id, boolean on) {
         SharedPreferences store = prefs();
@@ -120,7 +138,7 @@ public final class Features {
     private static SharedPreferences prefs() {
         if (prefs == null) {
             Context context = AppRuntime.application();
-            if (context != null) prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+            if (context != null) prefs = context.getSharedPreferences(store(), Context.MODE_PRIVATE);
         }
         return prefs;
     }
