@@ -57,11 +57,12 @@ private object MainActivityCheckAccountFingerprint : Fingerprint(
 @Suppress("unused")
 val unlockPremiumPatch = patch(
     name = "Unlock Premium",
-    description = "Unlocks the client-side Premium and Premium AI checks.",
+    description = "Unlocks the client-side Premium and Premium AI checks and removes ads, the Premium upsell sheet and the marketing popup.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_TODAII)
     category("Premium")
+    dependsOn(hideAdsPatch)
 
     execute {
         listOf(

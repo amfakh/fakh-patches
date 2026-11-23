@@ -8,13 +8,13 @@ Every patch except **GmsCore support** is on by default. Morphe Manager groups t
 
 | Category | Patch | Default | What it does |
 |---|---|---|---|
-| Ads | Hide ads | On | Removes banner, feed, in-house promo, interstitial and rewarded ads. |
 | Feature | GmsCore support | Off | Makes Google sign-in work through [microG RE](https://github.com/WSTxda/MicroG-RE) (GmsCore) instead of Google Play services. |
+| Premium | Unlock Premium | On | Unlocks the client-side Premium and Premium AI checks and removes ads. |
 | Privacy | Disable analytics | On | Stops Adjust, Facebook App Events and Firebase Analytics, Crashlytics, Performance and Sessions. |
 
 ## How the patches work
 
-**Hide ads** disables `MobileAdsInitProvider` and `AppLovinInitProvider` in the manifest and skips `MobileAdsState` and `AppLovinSdk` initialization at startup. Banner containers (`AdsBanner`) are hidden on attach, full-screen interstitials (`AdsInterval`) return without showing, rewarded-ad gates (`AdsReward` and `FeatureAdUnlockManager`) invoke their reward callback immediately, the "Remove ads / Upgrade" row is omitted from the news feed, and in-house promo fetches (`AdsInHouseViewModel` and `AdsInHouseRefresher`) are skipped.
+**Unlock Premium** forces the Premium and Premium AI checks to true. It also removes ads: it disables `MobileAdsInitProvider` and `AppLovinInitProvider` in the manifest and skips `MobileAdsState` and `AppLovinSdk` initialization at startup. Banner containers (`AdsBanner`) are hidden on attach, full-screen interstitials (`AdsInterval`) return without showing, rewarded-ad gates (`AdsReward` and `FeatureAdUnlockManager`) invoke their reward callback immediately, the "Remove ads / Upgrade" row is omitted from the news feed, and in-house promo fetches (`AdsInHouseViewModel` and `AdsInHouseRefresher`) are skipped.
 
 **GmsCore support** redirects the app's Google Play services calls to microG RE (`app.revanced.android.gms`) and declares Todaii's original signing certificate SHA-1 so Google issues the ID token that Todaii's login endpoint expects.
 

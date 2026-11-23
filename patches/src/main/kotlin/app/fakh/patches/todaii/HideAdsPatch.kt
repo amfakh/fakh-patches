@@ -6,7 +6,6 @@
 package app.fakh.patches.todaii
 
 import app.fakh.patches.shared.disableProviders
-import app.fakh.patches.todaii.shared.Constants.COMPATIBILITY_TODAII
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.instructions
@@ -116,14 +115,8 @@ private object MainMarketingPopupFingerprint : Fingerprint(
     parameters = listOf(),
 )
 
-@Suppress("unused")
-val hideAdsPatch = patch(
-    name = "Hide ads",
-    description = "Removes banner, feed, in-house promo, interstitial and rewarded ads, plus the Premium upsell sheet and marketing popup.",
-    default = true,
-) {
-    compatibleWith(COMPATIBILITY_TODAII)
-    category("Ads")
+/** Ad removal that the Premium unlock pulls in: the app has its own ad paths that Premium alone leaves open. */
+internal val hideAdsPatch = patch {
     dependsOn(adSdkManifestPatch)
 
     execute {
