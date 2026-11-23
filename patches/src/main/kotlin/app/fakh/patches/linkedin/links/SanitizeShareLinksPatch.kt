@@ -9,6 +9,7 @@ import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.methodCall
+import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.patch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -72,6 +73,7 @@ val sanitizeShareLinksPatch = patch(
             ).matchAllOrNull().orEmpty()
         }.filterNot { it.originalClassDef.type.startsWith("$EXTENSION_PACKAGE/") }.map { it.classDef }.distinctBy { it.type }
 
+        var redirected = 0
         targets.forEach { classDef ->
             classDef.methods.forEach { method ->
                 val instructions = method.implementation?.instructions ?: return@forEach
@@ -95,8 +97,10 @@ val sanitizeShareLinksPatch = patch(
                         else -> return@forEach
                     }
                     method.replaceInstruction(index, call)
+                    redirected++
                 }
             }
         }
+        if (redirected == 0) throw PatchException("No link copy or share calls found")
     }
 }
