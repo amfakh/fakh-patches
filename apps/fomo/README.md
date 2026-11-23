@@ -7,27 +7,16 @@ version `9.0.64`, as an XAPK.
 
 | Category | Patch | What it does |
 |---|---|---|
-| Premium | Unlock FOMO+ | Unlocks FOMO+ on your phone: salary insight summary and role level filters, subscriber reaction styles, and the premium profile perks. Paywall screens stop blocking those features. Also hides promo cards, banners and sponsored posts in the home feed, and silences the "Gunakan logo default" 403 alert. |
+| Ads | Hide ads | Hides the FOMO+ upsell cards and banners (such as the "LANGGANAN F+ AJA~" banner) and the sponsored posts in the home feed. |
 
-## How the unlock works
+## How it works
 
 FOMO is a React Native app: every screen lives in one Hermes JavaScript bundle
-inside the APK. Your subscription status arrives from the FOMO server with your
-profile (`subscription`: NONE, PLUS or PRO), and one function in the bundle —
-`hasFomoPlusSubscription()` — decides for every paywall whether to show the
-premium path or block it: the salary insight summary, the role level filter,
-subscriber reaction styles, the profile card.
-
-The patch rewrites that one function in the bundle so it always answers "yes".
-The unlock happens on your phone only; nothing is bought or faked on the
-server. Features where the server itself withholds data from non-subscribers
-stay out of reach.
-
-## What is not unlocked
-
-- Salary data the FOMO API only serves to paying accounts.
-- FOMO PRO-only perks that are enforced by the server (posting in f/Publik,
-  Mynd usage limits).
+inside the APK. The home feed draws each server item through one function that
+already has a "render nothing" exit. The patch rewrites a few instructions in
+place so the four promo item types (`CLIENT_PROMO`, `INTERNAL_PROMO`,
+`BANNER_PROMO`, `PROMO`) take that exit. The bundle keeps its size and nothing
+is repacked.
 
 ## Build
 
