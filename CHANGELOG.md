@@ -1,3 +1,9 @@
+## [2.7.0](https://github.com/amfakh/fakh-patches/compare/v2.6.0...v2.7.0) (2026-11-23)
+
+### New Features
+
+* **SYNC by Krisbow:** add support for `3.1.2` with Glass navigation bar, Glass cards, Swipe between tabs, Dark device panels, Spoof signature, Hide Discovery tab, Hide Discovery and Hide background image ([6ac1ce3](https://github.com/amfakh/fakh-patches/commit/6ac1ce36ffcdaf40967182dae2fd3dfdbd79ffdb))
+
 ## [2.6.0](https://github.com/amfakh/fakh-patches/compare/v2.5.3...v2.6.0) (2026-11-23)
 
 ### New Features
