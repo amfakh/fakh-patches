@@ -18,6 +18,7 @@ val patchListGeneratorClasspath = configurations.create("patchListGeneratorClass
 
 dependencies {
     compileOnly(libs.gson)
+    implementation(libs.aircompressor)
     patchListGeneratorClasspath(libs.gson)
 }
 
