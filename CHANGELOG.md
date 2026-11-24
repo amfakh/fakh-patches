@@ -1,3 +1,9 @@
+## [2.11.1](https://github.com/amfakh/fakh-patches/compare/v2.11.0...v2.11.1) (2026-11-24)
+
+### Bug Fixes
+
+* fix Morphe Manager showing 0 patches for the bundle ([ec682a5](https://github.com/amfakh/fakh-patches/commit/ec682a584668a587af9456f503f3ae77eefeb623))
+
 ## [2.11.0](https://github.com/amfakh/fakh-patches/compare/v2.10.0...v2.11.0) (2026-11-24)
 
 ### New Features
