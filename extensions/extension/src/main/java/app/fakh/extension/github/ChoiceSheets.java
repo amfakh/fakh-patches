@@ -7,12 +7,19 @@ package app.fakh.extension.github;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.view.View;
 
 import java.lang.ref.WeakReference;
@@ -35,6 +42,7 @@ final class ChoiceSheets {
     /** Keys of the rows that open a sheet. */
     static final String NAV_TABS = "fakh_nav_tabs";
     static final String NAV_POSITION = "fakh_nav_position";
+    static final String DOWNLOAD_FOLDER = ReleaseDownload.FOLDER_KEY;
     private static final String SETTINGS_FRAGMENT = "com.github.android.settings.SettingsFragment";
     private static final String TAG = "FakhPatches";
 
@@ -48,7 +56,7 @@ final class ChoiceSheets {
 
     /** Whether the row with this key opens a sheet instead of being a switch. */
     static boolean opens(String key) {
-        return NAV_TABS.equals(key) || NAV_POSITION.equals(key);
+        return NAV_TABS.equals(key) || NAV_POSITION.equals(key) || DOWNLOAD_FOLDER.equals(key);
     }
 
     /** The Settings fragment, which the sheets are shown from. */
@@ -64,6 +72,7 @@ final class ChoiceSheets {
         rows.put(key, new WeakReference<>(preference));
         try {
             if (NAV_TABS.equals(key)) openTabs();
+            else if (DOWNLOAD_FOLDER.equals(key)) openDownloadFolder();
             else openPosition();
         } catch (RuntimeException error) {
             Log.w(TAG, "Choice sheet", error);
@@ -187,9 +196,65 @@ final class ChoiceSheets {
         }
     }
 
-    /** What a row shows under its title: the position, or how many tabs the bar shows; null while unknown. */
+    /** The sheet of the download subfolder under Download, with a text field and Save button. */
+    private static void openDownloadFolder() {
+        Activity from = activity.get();
+        if (from == null) return;
+        int[] colors = colors(from);
+        int text = colors[1];
+        int secondary = colors[2];
+        int accent = colors[3];
+        float density = from.getResources().getDisplayMetrics().density;
+        int padH = Math.round(20 * density);
+        int padV = Math.round(12 * density);
+
+        LinearLayout content = new LinearLayout(from);
+        content.setOrientation(LinearLayout.VERTICAL);
+        content.setPadding(padH, 0, padH, padV);
+
+        EditText input = new EditText(from);
+        input.setSingleLine(true);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        input.setText(ReleaseDownload.folder());
+        input.setHint(ReleaseDownload.DEFAULT_FOLDER);
+        input.setTextColor(text);
+        input.setHintTextColor(secondary);
+        input.setBackgroundTintList(ColorStateList.valueOf(accent));
+        input.setSelection(input.getText().length());
+        content.addView(input);
+
+        TabSheet[] sheet = new TabSheet[1];
+        TextView save = new TextView(from);
+        save.setText(I18n.tr("Save"));
+        save.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        save.setTextColor(Color.WHITE);
+        save.setGravity(Gravity.CENTER);
+        save.setPadding(padH, padV, padH, padV);
+        GradientDrawable pill = new GradientDrawable();
+        pill.setColor(accent);
+        pill.setCornerRadius(12 * density);
+        save.setBackground(pill);
+        LinearLayout.LayoutParams saveParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        saveParams.topMargin = Math.round(16 * density);
+        save.setOnClickListener(v -> {
+            Features.setText(DOWNLOAD_FOLDER, ReleaseDownload.sanitize(input.getText().toString()));
+            if (sheet[0] != null) sheet[0].close();
+            refreshSummary(DOWNLOAD_FOLDER);
+        });
+        content.addView(save, saveParams);
+
+        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content),
+                I18n.tr("Save location"),
+                I18n.tr("Use \"/\" for nested folders, for example LinkedIn/Media. Leave empty to save directly in the main folder.")
+                        .replace("LinkedIn/Media", "GitHub/APKs"),
+                colors[0], text, secondary, content, null);
+    }
+
+    /** What a row shows under its title: the position, the download folder, or how many tabs the bar shows; null while unknown. */
     static String summary(String key) {
         if (NAV_POSITION.equals(key)) return I18n.tr(Features.saved(NavigationBar.NAV_RIGHT) ? "Right" : "Left");
+        if (DOWNLOAD_FOLDER.equals(key)) return ReleaseDownload.location();
         if (!NAV_TABS.equals(key) || NavigationBar.allTabs.isEmpty()) return null;
         int shown = 0;
         for (Object tab : NavigationBar.allTabs) {
