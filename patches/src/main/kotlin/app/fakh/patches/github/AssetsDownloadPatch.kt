@@ -29,6 +29,13 @@ private object AssetsDownloadFingerprint : Fingerprint(
     strings = listOf("download", "android.intent.action.VIEW", "android.intent.action.SEND"),
 )
 
+/**
+ * The OkHttp auth interceptor that adds `"Authorization: token <oauth>"` to GitHub API requests.
+ */
+private object ApiAuthHeaderFingerprint : Fingerprint(
+    strings = listOf("Copilot-Integration-Id", "Authorization", "token "),
+)
+
 @Suppress("unused")
 val assetsDownloadPatch = patch(
     name = "Download assets",
@@ -81,6 +88,23 @@ val assetsDownloadPatch = patch(
         method.addInstruction(
             assetUrlAt,
             "invoke-static { v$assetRegister }, $ASSETS_DOWNLOAD->prepare(Ljava/lang/Object;)V",
+        )
+
+        val authMethod = ApiAuthHeaderFingerprint.method
+        val authInstructions = authMethod.implementation!!.instructions
+        val tokenAt = authInstructions.indexOfFirst {
+            ((it as? ReferenceInstruction)?.reference as? StringReference)?.string == "token "
+        }
+        if (tokenAt < 0) throw PatchException("API token prefix not found")
+        val headerAt = (tokenAt + 1 until authInstructions.size).firstOrNull { index ->
+            val ref = (authInstructions[index] as? ReferenceInstruction)?.reference as? MethodReference
+            authInstructions[index].opcode == Opcode.INVOKE_VIRTUAL && ref != null &&
+                ref.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;")
+        } ?: throw PatchException("Authorization header call not found")
+        val valueRegister = (authInstructions[headerAt] as FiveRegisterInstruction).registerE
+        authMethod.addInstruction(
+            headerAt,
+            "invoke-static { v$valueRegister }, $ASSETS_DOWNLOAD->captureAuth(Ljava/lang/String;)V",
         )
     }
 }
