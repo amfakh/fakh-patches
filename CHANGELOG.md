@@ -1,3 +1,10 @@
+## [2.12.0](https://github.com/amfakh/fakh-patches/compare/v2.11.1...v2.12.0) (2026-11-24)
+
+### Bug Fixes
+
+* **Warung Life Simulator:** group the patches under Mods and turn them all on except Clone ([dc206ab](https://github.com/amfakh/fakh-patches/commit/dc206abfb05cc79309122e245031c0893ad610d5))
+* **Warung Life Simulator:** show the Clone tag in Morphe Manager, with the package name as one option ([dc206ab](https://github.com/amfakh/fakh-patches/commit/dc206abfb05cc79309122e245031c0893ad610d5))
+
 ## [2.11.1](https://github.com/amfakh/fakh-patches/compare/v2.11.0...v2.11.1) (2026-11-24)
 
 ### Bug Fixes

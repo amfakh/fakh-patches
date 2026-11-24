@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-24T03:29:12",
-  "description": "## [2.11.1](https://github.com/amfakh/fakh-patches/compare/v2.11.0...v2.11.1) (2026-11-24)\n\n### Bug Fixes\n\n* fix Morphe Manager showing 0 patches for the bundle ([ec682a5](https://github.com/amfakh/fakh-patches/commit/ec682a584668a587af9456f503f3ae77eefeb623))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v2.11.1/patches-2.11.1.mpp",
+  "created_at": "2026-11-24T03:34:52",
+  "description": "## [2.12.0](https://github.com/amfakh/fakh-patches/compare/v2.11.1...v2.12.0) (2026-11-24)\n\n### Bug Fixes\n\n* **Warung Life Simulator:** group the patches under Mods and turn them all on except Clone ([dc206ab](https://github.com/amfakh/fakh-patches/commit/dc206abfb05cc79309122e245031c0893ad610d5))\n* **Warung Life Simulator:** show the Clone tag in Morphe Manager, with the package name as one option ([dc206ab](https://github.com/amfakh/fakh-patches/commit/dc206abfb05cc79309122e245031c0893ad610d5))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v2.12.0/patches-2.12.0.mpp",
   "signature_download_url": "",
-  "version": "2.11.1",
+  "version": "2.12.0",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }
