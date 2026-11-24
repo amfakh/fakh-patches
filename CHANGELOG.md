@@ -1,3 +1,9 @@
+## [2.12.0](https://github.com/amfakh/fakh-patches/compare/v2.11.3...v2.12.0) (2026-11-24)
+
+### New Features
+
+* **Genius:** add support for `8.2.3.5414` with Hide ads, Fix Spotify login, GmsCore support and Disable analytics ([ddf6ea4](https://github.com/amfakh/fakh-patches/commit/ddf6ea46cf14b3719d357e33990ec816b134536f))
+
 ## [2.11.3](https://github.com/amfakh/fakh-patches/compare/v2.11.2...v2.11.3) (2026-11-24)
 
 ### Bug Fixes
