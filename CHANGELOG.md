@@ -1,4 +1,4 @@
-## [2.12.0](https://github.com/amfakh/fakh-patches/compare/v2.11.1...v2.12.0) (2026-11-24)
+## [2.11.2](https://github.com/amfakh/fakh-patches/compare/v2.11.1...v2.11.2) (2026-11-24)
 
 ### Bug Fixes
 
