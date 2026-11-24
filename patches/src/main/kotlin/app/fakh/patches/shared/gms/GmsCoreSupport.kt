@@ -176,8 +176,8 @@ private fun spoofFirebaseCertificate(sha1: String) {
                     val target = (instruction as? ReferenceInstruction)?.reference as? MethodReference
                     instruction is FiveRegisterInstruction && instruction.registerCount == 3 &&
                         instruction.registerD == name &&
-                        target?.definingClass == "Ljava/net/URLConnection;" &&
-                        target.name.endsWith("RequestProperty")
+                        target?.definingClass in setOf("Ljava/net/URLConnection;", "Ljava/net/HttpURLConnection;") &&
+                        target?.name?.endsWith("RequestProperty") == true
                 } ?: return@forEach
                 val value = (code[call] as FiveRegisterInstruction).registerE
                 method.addInstructions(call, "const-string v$value, \"$sha1\"")
