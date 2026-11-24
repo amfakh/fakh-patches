@@ -25,13 +25,13 @@ import app.fakh.extension.shared.I18n;
  * falling back to the original chooser intent if enqueueing fails.
  */
 @SuppressWarnings("unused")
-public final class ReleaseDownload {
+public final class AssetsDownload {
     static final String FOLDER_KEY = "fakh_download_folder";
     static final String DEFAULT_FOLDER = "GitHub";
-    private static final String TAG = "FakhReleaseDownload";
+    private static final String TAG = "FakhAssetsDownload";
     private static String pendingAsset;
 
-    private ReleaseDownload() {
+    private AssetsDownload() {
     }
 
     /** Captures the {@code ReleaseAsset} metadata right before the download branch builds its view intent. */

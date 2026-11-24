@@ -19,19 +19,19 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 
-private const val RELEASE_DOWNLOAD = "Lapp/fakh/extension/github/ReleaseDownload;"
+private const val ASSETS_DOWNLOAD = "Lapp/fakh/extension/github/AssetsDownload;"
 
 /**
  * The lambda that handles the release asset overflow menu ("download" and "share"). Both branches are in the same
  * method and are not obfuscated away because the action strings and Android intent actions are literals.
  */
-private object ReleaseAssetDownloadFingerprint : Fingerprint(
+private object AssetsDownloadFingerprint : Fingerprint(
     strings = listOf("download", "android.intent.action.VIEW", "android.intent.action.SEND"),
 )
 
 @Suppress("unused")
-val releaseDownloadPatch = patch(
-    name = "Native release download",
+val assetsDownloadPatch = patch(
+    name = "Download assets",
     description = "Downloads release assets directly with the system download manager instead of opening the browser.",
     default = true,
 ) {
@@ -41,8 +41,8 @@ val releaseDownloadPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        addRow("fakh_download_folder", "Release download folder")
-        val method = ReleaseAssetDownloadFingerprint.method
+        addRow("fakh_download_folder", "Download location")
+        val method = AssetsDownloadFingerprint.method
         val instructions = method.implementation!!.instructions
 
         val downloadAt = instructions.indexOfFirst {
@@ -76,11 +76,11 @@ val releaseDownloadPatch = patch(
         val chooserRegister = (instructions[startActivityAt] as FiveRegisterInstruction).registerD
         method.replaceInstruction(
             startActivityAt,
-            "invoke-static { v$chooserRegister }, $RELEASE_DOWNLOAD->download(Landroid/content/Intent;)V",
+            "invoke-static { v$chooserRegister }, $ASSETS_DOWNLOAD->download(Landroid/content/Intent;)V",
         )
         method.addInstruction(
             assetUrlAt,
-            "invoke-static { v$assetRegister }, $RELEASE_DOWNLOAD->prepare(Ljava/lang/Object;)V",
+            "invoke-static { v$assetRegister }, $ASSETS_DOWNLOAD->prepare(Ljava/lang/Object;)V",
         )
     }
 }

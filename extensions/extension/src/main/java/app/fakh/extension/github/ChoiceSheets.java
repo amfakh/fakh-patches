@@ -42,7 +42,7 @@ final class ChoiceSheets {
     /** Keys of the rows that open a sheet. */
     static final String NAV_TABS = "fakh_nav_tabs";
     static final String NAV_POSITION = "fakh_nav_position";
-    static final String DOWNLOAD_FOLDER = ReleaseDownload.FOLDER_KEY;
+    static final String DOWNLOAD_FOLDER = AssetsDownload.FOLDER_KEY;
     private static final String SETTINGS_FRAGMENT = "com.github.android.settings.SettingsFragment";
     private static final String TAG = "FakhPatches";
 
@@ -215,8 +215,8 @@ final class ChoiceSheets {
         EditText input = new EditText(from);
         input.setSingleLine(true);
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        input.setText(ReleaseDownload.folder());
-        input.setHint(ReleaseDownload.DEFAULT_FOLDER);
+        input.setText(AssetsDownload.folder());
+        input.setHint(AssetsDownload.DEFAULT_FOLDER);
         input.setTextColor(text);
         input.setHintTextColor(secondary);
         input.setBackgroundTintList(ColorStateList.valueOf(accent));
@@ -238,14 +238,14 @@ final class ChoiceSheets {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         saveParams.topMargin = Math.round(16 * density);
         save.setOnClickListener(v -> {
-            Features.setText(DOWNLOAD_FOLDER, ReleaseDownload.sanitize(input.getText().toString()));
+            Features.setText(DOWNLOAD_FOLDER, AssetsDownload.sanitize(input.getText().toString()));
             if (sheet[0] != null) sheet[0].close();
             refreshSummary(DOWNLOAD_FOLDER);
         });
         content.addView(save, saveParams);
 
         sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content),
-                I18n.tr("Release download folder"),
+                I18n.tr("Download location"),
                 I18n.tr("Use \"/\" for nested folders, for example LinkedIn/Media. Leave empty to save directly in the main folder.")
                         .replace("LinkedIn/Media", "GitHub/APKs"),
                 colors[0], text, secondary, content, null);
@@ -254,7 +254,7 @@ final class ChoiceSheets {
     /** What a row shows under its title: the position, the download folder, or how many tabs the bar shows; null while unknown. */
     static String summary(String key) {
         if (NAV_POSITION.equals(key)) return I18n.tr(Features.saved(NavigationBar.NAV_RIGHT) ? "Right" : "Left");
-        if (DOWNLOAD_FOLDER.equals(key)) return ReleaseDownload.location();
+        if (DOWNLOAD_FOLDER.equals(key)) return AssetsDownload.location();
         if (!NAV_TABS.equals(key) || NavigationBar.allTabs.isEmpty()) return null;
         int shown = 0;
         for (Object tab : NavigationBar.allTabs) {

@@ -325,7 +325,7 @@ public final class SettingsActivity extends Activity {
             categories.add(new Category("Download")
                     .toggle(Settings.DOWNLOAD_MEDIA, true, "Download media",
                             "On profile photos and banners, and in the ⋯ menu of posts.")
-                    .value("Save location", new ValueRow() {
+                    .value("Download location", new ValueRow() {
                         public String currentValue() {
                             return Settings.downloadSplitByType()
                                     ? I18n.f("Photos: %1$s\nVideos: %2$s", Downloads.location(false),
