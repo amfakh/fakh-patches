@@ -494,8 +494,9 @@ public final class NavigationBar {
 
     /** Landscape: the same capsule, upright around the rail's tabs. */
     private static void installLandscapeGlass(Activity activity, View bar) {
+        boolean small = smaller();
         float density = bar.getResources().getDisplayMetrics().density;
-        // The rail is 80dp wide on its own; the capsule hugs it and is only as tall as the four tabs.
+        // The rail is 80dp wide on its own (64dp when smaller); the capsule hugs it and is only as tall as the four tabs.
         bar.setPadding(0, 0, 0, 0);
         GlassCapsule.clearSystemBar(activity);
         capsule = new GlassCapsule(barColor, density, new GlassCapsule.Layout() {
@@ -503,9 +504,13 @@ public final class NavigationBar {
 
             @Override
             public boolean capsule(RectF out) {
-                float height = Math.min(bar.getHeight() - 2 * VERTICAL_MARGIN_DP * density, LANDSCAPE_HEIGHT_DP * density);
+                int count = tabIcons.size();
+                float contentHeight = (count > 0 ? count * (RAIL_TAB_DP + RAIL_GAP_DP) - RAIL_GAP_DP : 236) * density;
+                float pad = (small ? 4 : 6) * density;
+                float height = Math.min(bar.getHeight() - 2 * VERTICAL_MARGIN_DP * density, contentHeight + 2 * pad);
                 float top = (bar.getHeight() - height) / 2f;
-                out.set(8 * density, top, bar.getWidth() - 8 * density, top + height);
+                float sideInset = (small ? 14 : 8) * density;
+                out.set(sideInset, top, bar.getWidth() - sideInset, top + height);
                 return out.width() > 0 && out.height() > 0;
             }
 
@@ -513,8 +518,8 @@ public final class NavigationBar {
             public boolean pill(RectF out) {
                 if (slider == null || !slider.has() || !capsule(shape)) return false;
                 // The whole tab, a little taller than it, with a thin rim of the capsule all around.
-                float inset = PILL_INSET_DP * density;
-                float grow = PILL_GROW_DP * density;
+                float inset = (small ? 3 : PILL_INSET_DP) * density;
+                float grow = (small ? 1 : PILL_GROW_DP) * density;
                 out.set(shape.left + inset, Math.max(shape.top + inset, slider.start() - grow),
                         shape.right - inset, Math.min(shape.bottom - inset, slider.end() + grow));
                 return true;
