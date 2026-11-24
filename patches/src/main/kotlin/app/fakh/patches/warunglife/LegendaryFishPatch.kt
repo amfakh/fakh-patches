@@ -13,24 +13,24 @@ import app.morphe.patcher.patch.rawResourcePatch
 
 @Suppress("unused")
 val warungLifeLegendaryFishPatch = rawResourcePatch(
-    name = "Legendary fish multiplier",
-    description = "Makes legendary fish more likely to bite.",
+    name = "Legendary fish chance",
+    description = "Makes the legendary fish (Ikan dewa) bite more often than the usual 0.6% of catches.",
     default = false,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
     category("Feature")
     dependsOn(gameScriptPatch)
 
-    val multiplier = intOption(
-        key = "multiplier",
+    val chance = intOption(
+        key = "chance",
         default = 5,
-        values = listOf(2, 4, 5, 10, 20, 50, 100).associateBy { "${it}x" },
-        title = "Multiplier",
-        description = "How many times as likely a legendary fish is. 100x makes every cast a chance at one.",
+        values = listOf(5, 10, 25, 50, 75, 100).associateBy { "$it%" },
+        title = "Chance per catch",
+        description = "How often a catch is the legendary fish. The game's own chance is 0.6%.",
         required = true,
-    ) { value -> value != null && value in 2..100 }
+    ) { value -> value != null && value in 5..100 }
 
     execute {
-        editGameScript { script -> script.multiplyLegendaryChance(multiplier.value!!) }
+        editGameScript { script -> script.setLegendaryChance(chance.value!!) }
     }
 }

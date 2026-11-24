@@ -14,7 +14,7 @@ Instant ad rewards and Unlimited ad rewards are on by default; the other patches
 | Feature | Clone | Installs the game as a separate app next to the Play Store version. Progress is not shared between the two. Options: **App name** (default "Warung Life Simulator (Clone)") and **Package suffix** (default `fakh`, giving `com.neopawstudio.warunglife.fakh`); a different suffix installs another clone. |
 | Feature | Sales income multiplier | Makes every sale to a customer pay several times its price. Off by default. Option: **Multiplier** (default 2x; 2x, 3x, 4x, 5x, 10x, 20x, 50x or 100x). |
 | Feature | Daily bonus | Adds money to your wallet at the start of every day. Off by default. Option: **Amount** (default Rp1.000.000; Rp10.000, 50.000, 100.000, 200.000, 1.000.000 or 2.000.000). |
-| Feature | Legendary fish multiplier | Makes legendary fish more likely to bite. Off by default. Option: **Multiplier** (default 5x; 2x, 4x, 5x, 10x, 20x, 50x or 100x). |
+| Feature | Legendary fish chance | Makes the legendary fish (Ikan dewa) bite more often than the game's 0.6% of catches. Off by default. Option: **Chance per catch** (default 5%; 5%, 10%, 25%, 50%, 75% or 100%). |
 | Feature | Unlock tester outfit | Unlocks the Kaos & sarung outfit that is a reward for the game's testers, normally also given on day 30 of the daily gift calendar. Off by default. |
 | Feature | GmsCore support | Makes "Tautkan akun" with Google work by signing in through microG RE (GmsCore) instead of Google Play services, so the warung saved to your Google account comes back. Needs microG RE installed and signed in to a Google account. |
 
@@ -26,7 +26,7 @@ if the ad had played to the end, so the game pays the reward and moves on. The U
 
 Unlimited ad rewards raises the two ad limits the game keeps in `game_state.gdc` (energy refills per day and discounts
 per upgrade) to 100. The game only loads that script at its original size, so the patch keeps the size and rewrites
-only the blocks after the first edit. The other patches edit the same script: a sale in `jual` pays `price * multiplier`, `_kosongkan_catatan_hari` adds the daily bonus, `acak_hasil_alam` rolls legendary fish against `100 / multiplier`, and `_cek_tester` treats every build as the test period. A multiplier or amount has to be a number that the script already holds as a constant, which is why each option is a short list. The "Tanpa Iklan" purchase is not unlocked.
+only the blocks after the first edit. The other patches edit the same script: a sale in `jual` pays `price * multiplier`, `_kosongkan_catatan_hari` adds the daily bonus, `acak_hasil_alam` scales the legendary roll from 100 to `60 / percent`, and `_cek_tester` treats every build as the test period. A multiplier or amount has to be a number that the script already holds as a constant, which is why each option is a short list. The "Tanpa Iklan" purchase is not unlocked.
 
 Linking a Google account ("Tautkan akun" > Google) only works with GmsCore support. Google hands the game its sign-in
 token only when the request comes from the developer's own signing key, which a patched app never has. microG RE

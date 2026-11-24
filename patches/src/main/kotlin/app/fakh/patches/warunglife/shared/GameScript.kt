@@ -219,10 +219,11 @@ internal class GameScript(private val data: ByteArray) {
     }
 
     /**
-     * Makes legendary fish [factor] times as likely. `acak_hasil_alam` rolls `randf() * 100.0 < chance` for every fish
-     * that has a legendary chance in percent, so the 100.0 there becomes `100.0 / factor`, a float already in the table.
+     * Makes the legendary fish [percent] percent of the catches from its group instead of 0.6. `acak_hasil_alam` rolls
+     * `randf() * 100.0 < 0.6` for it, so the 100.0 there becomes `60.0 / percent`, a float already in the table
+     * (5, 10, 25, 50, 75 and 100 percent all land on one).
      */
-    fun multiplyLegendaryChance(factor: Int) {
+    fun setLegendaryChance(percent: Int) {
         val function = (0 until tokens.size - 1).filter { type(it) == TOKEN_FUNC && isIdentifier(it + 1, "acak_hasil_alam") }
         if (function.size != 1) throw PatchException("Warung Life: expected one acak_hasil_alam, found ${function.size}.")
         val body = function[0] until ((function[0] + 2 until tokens.size).firstOrNull { type(it) == TOKEN_FUNC } ?: tokens.size)
@@ -231,7 +232,7 @@ internal class GameScript(private val data: ByteArray) {
                 type(it + 3) == TOKEN_STAR && type(it + 4) == TOKEN_LITERAL && floatAt[data(it + 4)] == 100.0
         }
         if (rolls.size != 1) throw PatchException("Warung Life: expected one legendary roll, found ${rolls.size}.")
-        val scale = 100.0 / factor
+        val scale = 60.0 / percent
         val constant = floats[scale] ?: throw PatchException("Warung Life: $SCRIPT has no constant $scale; use another factor.")
         tokens[rolls[0] + 4] = (tokens[rolls[0] + 4] and KEEP_TYPE_AND_LINE) or (constant.toLong() shl 8)
     }
