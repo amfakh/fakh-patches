@@ -13,6 +13,8 @@ Enabled by default.
 | Theme | Glass navigation bar | Draws the navigation bar (the side bar in landscape) as a floating, translucent capsule with a sliding selection pill. On by default; the **Liquid Glass navigation bar** switch in Settings turns it off. Slide a finger along the bar to switch tabs, with a haptic tick for each tab. The **Background blur** switch (off by default) blurs what's behind the bar and bends it at the edges on Android 12 and newer. The pill takes the wallpaper accent with Material You and stays neutral gray without it. |
 | Privacy | Disable analytics | Turns off GitHub's own analytics, telemetry and health metrics (the **Analytics** and **Crash reporting** switches under Privacy and analytics stay off), and Firebase Analytics, Crashlytics, Performance and Sessions. Push notifications keep working. |
 | Feature | Landscape navigation bar position | Adds a **Landscape navigation bar position** setting in Fakh Patches that moves the landscape navigation bar to the left or right edge. |
+| Feature | Smaller navigation bar | Adds a **Smaller navigation bar** switch in Fakh Patches that shrinks the navigation bar height, the space between icon and label, and the label text size. |
+| Feature | Native release download | Downloads a release asset straight with Android's download manager when you tap **Download** in its menu, instead of opening the browser. Adds a **Save location** setting in Fakh Patches (default folder `GitHub` in Downloads). If the download cannot start, it falls back to the browser. |
 
 The app draws its screens with both Views and Jetpack Compose, so the patch recolors both: resource
 colors for the Views, and the Compose palettes and schemes when the app starts. Markdown and README
