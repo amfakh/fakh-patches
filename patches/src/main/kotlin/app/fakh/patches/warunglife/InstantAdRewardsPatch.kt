@@ -49,7 +49,7 @@ val warungLifeInstantAdRewardsPatch = patch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Ads")
+    category("Mods")
     dependsOn(pairipLicenseCheckPatch, adSdkManifestPatch)
 
     execute {

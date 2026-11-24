@@ -14,10 +14,10 @@ import app.morphe.patcher.patch.rawResourcePatch
 val warungLifeTesterOutfitPatch = rawResourcePatch(
     name = "Unlock tester outfit",
     description = "Unlocks the Kaos & sarung outfit that is a reward for the game's testers.",
-    default = false,
+    default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Feature")
+    category("Mods")
     dependsOn(gameScriptPatch)
 
     execute {

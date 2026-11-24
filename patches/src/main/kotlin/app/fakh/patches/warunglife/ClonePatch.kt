@@ -29,7 +29,7 @@ val warungLifeClonePatch = resourcePatch(
     default = false,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Feature")
+    category("Mods")
 
     val appName = stringOption(
         key = "appName",
@@ -38,17 +38,19 @@ val warungLifeClonePatch = resourcePatch(
         description = "The name shown under the launcher icon.",
         required = true,
     ) { value -> !value.isNullOrBlank() }
-    val packageSuffix = stringOption(
-        key = "packageSuffix",
-        default = "fakh",
-        title = "Package suffix",
-        description = "Added after \"$PACKAGE.\" to make the clone's package. Lowercase letters, digits and " +
-            "underscores, starting with a letter; dots separate parts. A different suffix installs another clone.",
+    val packageName = stringOption(
+        key = "packageName",
+        default = "$PACKAGE.fakh",
+        title = "Package name",
+        description = "The package the clone installs as. Lowercase letters, digits and underscores, starting with a " +
+            "letter; dots separate parts. A different name installs another clone.",
         required = true,
-    ) { value -> value != null && Regex("[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*").matches(value) }
+    ) { value ->
+        value != null && value != PACKAGE && Regex("[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+").matches(value)
+    }
 
     execute {
-        val clonePackage = "$PACKAGE.${packageSuffix.value}"
+        val clonePackage = packageName.value!!
         var label: String? = null
         document("AndroidManifest.xml").use { manifest ->
             val root = manifest.documentElement

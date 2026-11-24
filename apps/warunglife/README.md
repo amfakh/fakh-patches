@@ -5,18 +5,18 @@ or merged APK.
 
 ## Patches
 
-Instant ad rewards and Unlimited ad rewards are on by default; the other patches are off until you turn them on. Morphe Manager groups them by category.
+Every patch is on by default except Clone. Morphe Manager lists them under **Mods**.
 
 | Category | Patch | What it does |
 |---|---|---|
-| Ads | Instant ad rewards | Gives the rewards of rewarded ads (full energy, extra side job, double pay, upgrade discount) without watching them, and skips the ads shown when you level up. The patched app also opens normally instead of closing on Google Play's license check. |
-| Ads | Unlimited ad rewards | Lets you use the energy refill and the upgrade discount of rewarded ads as often as you like, instead of once a day and six times per upgrade. The discount still stops at 60% off. |
-| Feature | Clone | Installs the game as a separate app next to the Play Store version. Progress is not shared between the two. Options: **App name** (default "Warung Life Simulator (Clone)") and **Package suffix** (default `fakh`, giving `com.neopawstudio.warunglife.fakh`); a different suffix installs another clone. |
-| Feature | Sales income multiplier | Makes every sale to a customer pay several times its price. Off by default. Option: **Multiplier** (default 2x; 2x, 3x, 4x, 5x, 10x, 20x, 50x or 100x). |
-| Feature | Daily bonus | Adds money to your wallet at the start of every day. Off by default. Option: **Amount** (default Rp1.000.000; Rp10.000, 50.000, 100.000, 200.000, 1.000.000 or 2.000.000). |
-| Feature | Legendary fish chance | Makes the legendary fish (Ikan dewa) bite more often than the game's 0.6% of catches. Off by default. Option: **Chance per catch** (default 5%; 5%, 10%, 25%, 50%, 75% or 100%). |
-| Feature | Unlock tester outfit | Unlocks the Kaos & sarung outfit that is a reward for the game's testers, normally also given on day 30 of the daily gift calendar. Off by default. |
-| Feature | GmsCore support | Makes "Tautkan akun" with Google work by signing in through microG RE (GmsCore) instead of Google Play services, so the warung saved to your Google account comes back. Needs microG RE installed and signed in to a Google account. |
+| Mods | Instant ad rewards | Gives the rewards of rewarded ads (full energy, extra side job, double pay, upgrade discount) without watching them, and skips the ads shown when you level up. The patched app also opens normally instead of closing on Google Play's license check. |
+| Mods | Unlimited ad rewards | Lets you use the energy refill and the upgrade discount of rewarded ads as often as you like, instead of once a day and six times per upgrade. The discount still stops at 60% off. |
+| Mods | Clone | Installs the game as a separate app next to the Play Store version. Progress is not shared between the two. Options: **App name** (default "Warung Life Simulator (Clone)") and **Package name** (default `com.neopawstudio.warunglife.fakh`); a different name installs another clone. Off by default. |
+| Mods | Sales income multiplier | Makes every sale to a customer pay several times its price. Option: **Multiplier** (default 2x; 2x, 3x, 4x, 5x, 10x, 20x, 50x or 100x). |
+| Mods | Daily bonus | Adds money to your wallet at the start of every day. Option: **Amount** (default Rp1.000.000; Rp10.000, 50.000, 100.000, 200.000, 1.000.000 or 2.000.000). |
+| Mods | Legendary fish chance | Makes the legendary fish (Ikan dewa) bite more often than the game's 0.6% of catches. Option: **Chance per catch** (default 5%; 5%, 10%, 25%, 50%, 75% or 100%). |
+| Mods | Unlock tester outfit | Unlocks the Kaos & sarung outfit that is a reward for the game's testers, normally also given on day 30 of the daily gift calendar. |
+| Mods | GmsCore support | Makes "Tautkan akun" with Google work by signing in through microG RE (GmsCore) instead of Google Play services, so the warung saved to your Google account comes back. Needs microG RE installed and signed in to a Google account. |
 
 ## How it works
 

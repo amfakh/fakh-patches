@@ -15,10 +15,10 @@ import app.morphe.patcher.patch.rawResourcePatch
 val warungLifeLegendaryFishPatch = rawResourcePatch(
     name = "Legendary fish chance",
     description = "Makes the legendary fish (Ikan dewa) bite more often than the usual 0.6% of catches.",
-    default = false,
+    default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Feature")
+    category("Mods")
     dependsOn(gameScriptPatch)
 
     val chance = intOption(

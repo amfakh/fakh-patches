@@ -15,10 +15,10 @@ import app.morphe.patcher.patch.rawResourcePatch
 val warungLifeIncomeMultiplierPatch = rawResourcePatch(
     name = "Sales income multiplier",
     description = "Makes every sale to a customer pay several times its price.",
-    default = false,
+    default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Feature")
+    category("Mods")
     dependsOn(gameScriptPatch)
 
     val multiplier = intOption(

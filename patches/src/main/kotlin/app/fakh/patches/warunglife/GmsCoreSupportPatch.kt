@@ -35,10 +35,10 @@ val warungLifeGmsCoreSupportPatch = patch(
     description = "Makes \"Tautkan akun\" with Google work by signing in through microG RE (GmsCore) instead of " +
         "Google Play services, so the warung saved to your Google account comes back. Needs microG RE installed " +
         "and signed in to a Google account.",
-    default = false,
+    default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Feature")
+    category("Mods")
     extendWith("extensions/extension.mpe")
     dependsOn(gmsCoreSupportResourcePatch("com.neopawstudio.warunglife", WARUNGLIFE_SIGNATURE))
 

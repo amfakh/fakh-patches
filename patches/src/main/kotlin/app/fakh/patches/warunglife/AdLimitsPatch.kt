@@ -21,7 +21,7 @@ val warungLifeAdLimitsPatch = rawResourcePatch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Ads")
+    category("Mods")
     dependsOn(gameScriptPatch)
 
     execute {

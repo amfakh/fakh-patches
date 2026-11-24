@@ -15,10 +15,10 @@ import app.morphe.patcher.patch.rawResourcePatch
 val warungLifeDailyBonusPatch = rawResourcePatch(
     name = "Daily bonus",
     description = "Adds money to your wallet at the start of every day.",
-    default = false,
+    default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)
-    category("Feature")
+    category("Mods")
     dependsOn(gameScriptPatch)
 
     val amount = intOption(
