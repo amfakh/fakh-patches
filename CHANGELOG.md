@@ -3,8 +3,8 @@
 ### New Features
 
 * **Warung Life Simulator:** add Unlimited ad rewards, Sales income multiplier, Daily bonus, Unlock tester outfit and Legendary fish chance ([ef042d3](https://github.com/amfakh/fakh-patches/commit/ef042d393d4720986016ebe493690f0b69ddf303))
-* **GitHub:** add Smaller navigation bar ([f27ffed](https://github.com/amfakh/fakh-patches/commit/f27ffedcdd278c605bd4a555cc4714eab398c943))
-* **GitHub:** add Download assets, which saves release assets with the download manager, private repositories included ([8272545](https://github.com/amfakh/fakh-patches/commit/827254512a29c1097e1554e4d936156be948eb49))
+* **GitHub:** add Smaller navigation bar ([f27ffed](https://github.com/amfakh/fakh-patches/commit/f27ffedcdd278c605bd4a555cc4714eab398c943)), closes [#8](https://github.com/amfakh/fakh-patches/issues/8)
+* **GitHub:** add Download assets, which saves release assets with the download manager, private repositories included ([8272545](https://github.com/amfakh/fakh-patches/commit/827254512a29c1097e1554e4d936156be948eb49)), closes [#10](https://github.com/amfakh/fakh-patches/issues/10)
 
 ### Bug Fixes
 
