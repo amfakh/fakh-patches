@@ -41,7 +41,7 @@ val releaseDownloadPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        addRow("fakh_download_folder", "Save location")
+        addRow("fakh_download_folder", "Release download folder")
         val method = ReleaseAssetDownloadFingerprint.method
         val instructions = method.implementation!!.instructions
 

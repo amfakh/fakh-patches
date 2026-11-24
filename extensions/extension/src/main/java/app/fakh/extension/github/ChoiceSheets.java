@@ -245,7 +245,7 @@ final class ChoiceSheets {
         content.addView(save, saveParams);
 
         sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content),
-                I18n.tr("Save location"),
+                I18n.tr("Release download folder"),
                 I18n.tr("Use \"/\" for nested folders, for example LinkedIn/Media. Leave empty to save directly in the main folder.")
                         .replace("LinkedIn/Media", "GitHub/APKs"),
                 colors[0], text, secondary, content, null);
