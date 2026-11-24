@@ -1,3 +1,9 @@
+## [2.11.3](https://github.com/amfakh/fakh-patches/compare/v2.11.2...v2.11.3) (2026-11-24)
+
+### Bug Fixes
+
+* **Warung Life Simulator:** show the Legendary fish chance in percent and default it to 75% ([9909b55](https://github.com/amfakh/fakh-patches/commit/9909b559cd2786ea7b0e45eb00e8cc2c57bf6b56))
+
 ## [2.11.2](https://github.com/amfakh/fakh-patches/compare/v2.11.1...v2.11.2) (2026-11-24)
 
 ### Bug Fixes
