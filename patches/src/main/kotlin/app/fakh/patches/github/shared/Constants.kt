@@ -31,4 +31,5 @@ object Constants {
         description = "Blurs what's behind the glass. Uses more battery and might stutter.",
     )
     val NAV_RIGHT = Feature("fakh_nav_right", "Landscape navigation bar position", "Navigation bar", default = false)
+    val SMALLER_NAVBAR = Feature("fakh_smaller_navbar", "Smaller navigation bar", "Navigation bar")
 }

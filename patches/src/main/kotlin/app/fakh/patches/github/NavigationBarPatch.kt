@@ -10,6 +10,7 @@ import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.fakh.patches.github.shared.Constants.GLASS_NAVBAR
 import app.fakh.patches.github.shared.Constants.HIDE_TAB_LABELS
 import app.fakh.patches.github.shared.Constants.NAV_RIGHT
+import app.fakh.patches.github.shared.Constants.SMALLER_NAVBAR
 import app.fakh.patches.shared.register
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -351,6 +352,15 @@ val navigationBarPatch = patch(
     }
 }
 
+private val sharedNavLabelHooksPatch = patch {
+    execute {
+        val colors = NavigationItemFingerprint.method.tabCall().parameters[10]
+        tintLabels(colors)
+        tightenTabLabel()
+        watchActivities()
+    }
+}
+
 @Suppress("unused")
 val glassNavigationBarPatch = patch(
     name = "Glass navigation bar",
@@ -360,7 +370,7 @@ val glassNavigationBarPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Theme")
-    dependsOn(githubSettingsPatch)
+    dependsOn(githubSettingsPatch, sharedNavLabelHooksPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
@@ -473,12 +483,25 @@ val glassNavigationBarPatch = patch(
                 move-result-wide v$register
             """,
         )
-        tintLabels(colors)
         removeTabRipple()
-        tightenTabLabel()
-        watchActivities()
         addSwitch(GLASS_NAVBAR)
         addSwitch(BACKGROUND_BLUR)
+    }
+}
+
+@Suppress("unused")
+val smallerNavigationBarPatch = patch(
+    name = "Smaller navigation bar",
+    description = "Shrinks the navigation bar height, icon-to-label spacing, and label text size.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_GITHUB)
+    category("Feature")
+    dependsOn(githubSettingsPatch, sharedNavLabelHooksPatch)
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        addSwitch(SMALLER_NAVBAR)
     }
 }
 
@@ -542,32 +565,35 @@ private fun removeTabRipple() {
  * [NAVIGATION_BAR]'s labelGap turns it into 0.
  */
 private fun tightenTabLabel() {
-    fun Method.gapIndex(): Int? {
-        val instructions = implementation?.instructions?.toList() ?: return null
+    fun Method.gapIndices(): List<Int> {
+        val instructions = implementation?.instructions?.toList() ?: return emptyList()
         fun literal(index: Int) = (instructions[index] as? NarrowLiteralInstruction)
             ?.takeIf { instructions[index].opcode == Opcode.CONST_HIGH16 }?.narrowLiteral
         val strings = instructions.mapNotNull { ((it as? ReferenceInstruction)?.reference as? StringReference)?.string }
-        if ("indicatorRipple" !in strings || "label" !in strings) return null
-        val tall = instructions.indices.firstOrNull { literal(it) == 80f.toRawBits() } ?: return null
-        return (tall + 1 until instructions.size).firstOrNull { literal(it) == 4f.toRawBits() }
+        if ("indicatorRipple" !in strings || "label" !in strings) return emptyList()
+        val tall = instructions.indices.firstOrNull { literal(it) == 80f.toRawBits() } ?: return emptyList()
+        return (tall + 1 until instructions.size).filter { literal(it) == 4f.toRawBits() }
     }
     val found = mutableListOf<Pair<String, String>>()
     classDefByStrings("indicatorRipple").distinctBy { it.type }.forEach { classDef ->
-        for (method in classDef.methods) if (method.gapIndex() != null) found += classDef.type to method.name
+        for (method in classDef.methods) if (method.gapIndices().isNotEmpty()) found += classDef.type to method.name
     }
     if (found.size != 1) throw PatchException("Tab label gap not found: $found")
     val method = mutableClassDefBy(found.single().first).methods.first {
-        it.name == found.single().second && it.gapIndex() != null
+        it.name == found.single().second && it.gapIndices().isNotEmpty()
     }
-    val index = method.gapIndex()!!
-    val register = (method.implementation!!.instructions[index] as OneRegisterInstruction).registerA
-    method.addInstructions(
-        index + 1,
-        """
-            invoke-static/range { v$register .. v$register }, $NAVIGATION_BAR->labelGap(F)F
-            move-result v$register
-        """,
-    )
+    val indices = method.gapIndices()
+    val instructions = method.implementation!!.instructions.toList()
+    indices.asReversed().forEach { index ->
+        val register = (instructions[index] as OneRegisterInstruction).registerA
+        method.addInstructions(
+            index + 1,
+            """
+                invoke-static/range { v$register .. v$register }, $NAVIGATION_BAR->labelGap(F)F
+                move-result v$register
+            """,
+        )
+    }
 }
 
 /**
@@ -641,6 +667,7 @@ private fun tintLabels(colors: String) {
     } ?: throw PatchException("Tab label style copy not found")
     val range = instructions[copy] as RegisterRangeInstruction
     val color = range.startRegister + 1
+    val fontSize = range.startRegister + 3
     val mask = range.startRegister + range.registerCount - 1
     // The read sits right after the branch on whether the tab is selected, which reads one text field when it is
     // and the other when it isn't. A method added to the item colors makes the same pick for the copy.
@@ -672,6 +699,8 @@ private fun tintLabels(colors: String) {
         """
             invoke-virtual { v$owner, v$selected }, $colors->fakhLabelColor(Z)J
             move-result-wide v$color
+            invoke-static/range { v$fontSize .. v${fontSize + 1} }, $NAVIGATION_BAR->labelFontSize(J)J
+            move-result-wide v$fontSize
             invoke-static/range { v$mask .. v$mask }, $NAVIGATION_BAR->labelStyleMask(I)I
             move-result v$mask
         """,

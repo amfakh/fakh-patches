@@ -37,6 +37,7 @@ import app.fakh.extension.shared.AppRuntime;
 public final class NavigationBar {
     public static final String GLASS = "fakh_glass_navbar";
     public static final String HIDE_LABELS = "fakh_hide_nav_labels";
+    public static final String SMALLER = "fakh_smaller_navbar";
     /** The Liquid Glass switch, on until turned off: the settings row shows it on before it is ever saved. */
     public static final String LIQUID = "fakh_liquid_glass";
     private static final float LANDSCAPE_HEIGHT_DP = 272f;
@@ -167,7 +168,13 @@ public final class NavigationBar {
      * @return the mask, with the color taken from the arguments while the bar is glass
      */
     public static int labelStyleMask(int mask) {
-        return glass() ? mask & ~1 : mask;
+        int result = glass() ? mask & ~1 : mask;
+        return smaller() ? result & ~2 : result;
+    }
+
+    /** Smaller label font size (10sp) when the smaller navigation bar is enabled. */
+    public static long labelFontSize(long fontSize) {
+        return smaller() ? 0x141200000L : fontSize;
     }
 
     /** The indicator the app draws behind the selected tab: none where the capsule draws its own pill. */
@@ -176,11 +183,12 @@ public final class NavigationBar {
     }
 
     /**
-     * The space Material 3 puts between a tab's icon indicator and its label, in dp: none on the glass bar, whose pill
-     * holds both and is too low for Material's 4dp on top of the indicator's own.
+     * The space Material 3 puts between a tab's icon indicator and its label, in dp: none on the glass bar, or -2dp on
+     * the smaller bar to offset the indicator's own 4dp bottom padding so the label sits closer to the icon.
      */
     public static float labelGap(float gap) {
-        return slider == null || !glass() ? gap : 0f;
+        if (smaller()) return -2f;
+        return slider != null && glass() ? 0f : gap;
     }
 
     /** The ripple a pressed tab shows behind its icon, or none on the glass bar, where the pill marks the tab. */
@@ -313,7 +321,8 @@ public final class NavigationBar {
     static void install(Activity activity) {
         boolean glass = glass();
         boolean right = Features.on(NAV_RIGHT);
-        if (!glass && !right) return;
+        boolean small = smaller();
+        if (!glass && !right && !small) return;
         boolean portrait = activity.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT;
         View bar = activity.findViewById(activity.getResources().getIdentifier(
                 "navigation_bar", "id", activity.getPackageName()));
@@ -326,15 +335,21 @@ public final class NavigationBar {
             if (glass) installLandscapeGlass(activity, bar);
             return;
         }
-        if (!glass) return;
         float density = bar.getResources().getDisplayMetrics().density;
+        if (!glass) {
+            ViewGroup.LayoutParams size = bar.getLayoutParams();
+            size.height = Math.round((Features.on(HIDE_LABELS) ? 48 : 52) * density) + bar.getPaddingBottom();
+            bar.setLayoutParams(size);
+            return;
+        }
         int side = Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density);
-        int vertical = Math.round(VERTICAL_MARGIN_DP * density);
+        int vertical = Math.round((small ? 4 : VERTICAL_MARGIN_DP) * density);
         bar.setPadding(side, vertical, side, vertical);
         // The tabs are at least 80dp tall; a bar that is shorter clamps them and centers the icon and label.
+        int heightDp = small ? (Features.on(HIDE_LABELS) ? 42 : 46)
+                : (Features.on(HIDE_LABELS) ? ICON_ONLY_HEIGHT_DP : LABELED_HEIGHT_DP);
         ViewGroup.LayoutParams size = bar.getLayoutParams();
-        size.height = Math.round((Features.on(HIDE_LABELS) ? ICON_ONLY_HEIGHT_DP : LABELED_HEIGHT_DP) * density)
-                + 2 * vertical;
+        size.height = Math.round(heightDp * density) + 2 * vertical;
         bar.setLayoutParams(size);
         GlassCapsule.clearSystemBar(activity);
         capsule = new GlassCapsule(barColor, density, new GlassCapsule.Layout() {
@@ -353,7 +368,7 @@ public final class NavigationBar {
             public boolean pill(RectF out) {
                 if (slider == null || !slider.has() || !capsule(shape)) return false;
                 // The whole tab, icon and label, a little wider than the tab, with a thin rim of the capsule all around.
-                float inset = PILL_INSET_DP * density;
+                float inset = (small ? 3 : PILL_INSET_DP) * density;
                 float grow = PILL_GROW_DP * density;
                 out.set(Math.max(shape.left + inset, slider.start() - grow), shape.top + inset,
                         Math.min(shape.right - inset, slider.end() + grow), shape.bottom - inset);
@@ -569,6 +584,10 @@ public final class NavigationBar {
 
     private static boolean glass() {
         return Features.on(GLASS);
+    }
+
+    private static boolean smaller() {
+        return Features.on(SMALLER);
     }
 
     /**
