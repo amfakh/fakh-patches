@@ -23,10 +23,11 @@ val warungLifeLegendaryFishPatch = rawResourcePatch(
 
     val chance = intOption(
         key = "chance",
-        default = 5,
+        default = 75,
         values = listOf(5, 10, 25, 50, 75, 100).associateBy { "$it%" },
-        title = "Chance per catch",
-        description = "How often a catch is the legendary fish. The game's own chance is 0.6%.",
+        title = "Chance (%)",
+        description = "The chance in percent that a fish that bites is the legendary fish. The game's own chance " +
+            "is 0.6%.",
         required = true,
     ) { value -> value != null && value in 5..100 }
 

@@ -14,7 +14,7 @@ Every patch is on by default except Clone. Morphe Manager lists them under **Mod
 | Mods | Clone | Installs the game as a separate app next to the Play Store version. Progress is not shared between the two. Options: **App name** (default "Warung Life Simulator (Clone)") and **Package name** (default `com.neopawstudio.warunglife.fakh`); a different name installs another clone. Off by default. |
 | Mods | Sales income multiplier | Makes every sale to a customer pay several times its price. Option: **Multiplier** (default 2x; 2x, 3x, 4x, 5x, 10x, 20x, 50x or 100x). |
 | Mods | Daily bonus | Adds money to your wallet at the start of every day. Option: **Amount** (default Rp1.000.000; Rp10.000, 50.000, 100.000, 200.000, 1.000.000 or 2.000.000). |
-| Mods | Legendary fish chance | Makes the legendary fish (Ikan dewa) bite more often than the game's 0.6% of catches. Option: **Chance per catch** (default 5%; 5%, 10%, 25%, 50%, 75% or 100%). |
+| Mods | Legendary fish chance | Makes the legendary fish (Ikan dewa) bite more often than the game's 0.6% of fish that bite. Option: **Chance (%)** (default 75%; 5%, 10%, 25%, 50%, 75% or 100%). |
 | Mods | Unlock tester outfit | Unlocks the Kaos & sarung outfit that is a reward for the game's testers, normally also given on day 30 of the daily gift calendar. |
 | Mods | GmsCore support | Makes "Tautkan akun" with Google work by signing in through microG RE (GmsCore) instead of Google Play services, so the warung saved to your Google account comes back. Needs microG RE installed and signed in to a Google account. |
 
