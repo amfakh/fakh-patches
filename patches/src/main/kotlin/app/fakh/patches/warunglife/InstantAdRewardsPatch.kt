@@ -43,9 +43,9 @@ private val adSdkManifestPatch = patch {
 }
 
 @Suppress("unused")
-val warungLifeHideAdsPatch = patch(
-    name = "Hide ads",
-    description = "Removes the level-up ads and gives the rewards of rewarded ads without watching them.",
+val warungLifeInstantAdRewardsPatch = patch(
+    name = "Instant ad rewards",
+    description = "Gives the rewards of rewarded ads without watching them and skips the level-up ads.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_WARUNGLIFE)

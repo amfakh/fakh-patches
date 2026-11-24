@@ -5,11 +5,11 @@ or merged APK.
 
 ## Patches
 
-Hide ads and Unlimited ad rewards are on by default; the other patches are off until you turn them on. Morphe Manager groups them by category.
+Instant ad rewards and Unlimited ad rewards are on by default; the other patches are off until you turn them on. Morphe Manager groups them by category.
 
 | Category | Patch | What it does |
 |---|---|---|
-| Ads | Hide ads | Removes the ads shown when you level up and gives the rewards of rewarded ads (full energy, extra side job, double pay, upgrade discount) without watching them. The patched app also opens normally instead of closing on Google Play's license check. |
+| Ads | Instant ad rewards | Gives the rewards of rewarded ads (full energy, extra side job, double pay, upgrade discount) without watching them, and skips the ads shown when you level up. The patched app also opens normally instead of closing on Google Play's license check. |
 | Ads | Unlimited ad rewards | Lets you use the energy refill and the upgrade discount of rewarded ads as often as you like, instead of once a day and six times per upgrade. The discount still stops at 60% off. |
 | Feature | Clone | Installs the game as a separate app next to the Play Store version. Progress is not shared between the two. Options: **App name** (default "Warung Life Simulator (Clone)") and **Package suffix** (default `fakh`, giving `com.neopawstudio.warunglife.fakh`); a different suffix installs another clone. |
 | Feature | Sales income multiplier | Makes every sale to a customer pay several times its price. Off by default. Option: **Multiplier** (default 2x; 2x, 3x, 4x, 5x, 10x, 20x, 50x or 100x). |
