@@ -1,3 +1,9 @@
+## [2.13.0](https://github.com/amfakh/fakh-patches/compare/v2.12.1...v2.13.0) (2026-11-25)
+
+### New Features
+
+* Smart Life, Tuya Smart, BARDI Smart Home, SYNC by Krisbow, CNN Indonesia, detikcom, DoDo Music, Genius, IDN, KOMPAS.com, Mazii: Japanese Dictionary, Todaii: Learn Japanese N5-N1, Todaii: Learn German A1-C1, Todaii Super and Warung Life Simulator get the themed icon of Android 13 and later ([ae9ac9f](https://github.com/amfakh/fakh-patches/commit/ae9ac9f65a3b803ce883dd5e7ff959f5f02e5d39))
+
 ## [2.12.1](https://github.com/amfakh/fakh-patches/compare/v2.12.0...v2.12.1) (2026-11-25)
 
 ### Updated App Support
