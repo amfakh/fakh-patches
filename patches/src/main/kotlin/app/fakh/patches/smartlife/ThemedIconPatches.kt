@@ -39,7 +39,8 @@ val bardiThemedIconPatch = themedIconPatch(
     COMPATIBILITY_BARDI,
     folder = "bardi",
     icons = listOf("res/mipmap-anydpi-v26/a007595.xml"),
-    bundled = listOf("background", "foreground", "monochrome"),
+    bundled = listOf("foreground", "monochrome"),
+    background = "#42BBC4",
 )
 
 /** SYNC by Krisbow ships a bitmap launcher icon only, so the logo is lifted off the gradient tile into a foreground, plus a monochrome layer. */

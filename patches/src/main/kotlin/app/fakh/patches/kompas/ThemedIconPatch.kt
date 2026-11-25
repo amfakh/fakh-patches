@@ -14,5 +14,6 @@ val kompasThemedIconPatch = themedIconPatch(
     COMPATIBILITY_KOMPAS,
     folder = "kompas",
     icons = listOf("res/mipmap-anydpi-v26/ic_launcher_bgblack_new.xml"),
-    bundled = listOf("background", "foreground", "monochrome"),
+    bundled = listOf("foreground", "monochrome"),
+    background = "#000000",
 )
