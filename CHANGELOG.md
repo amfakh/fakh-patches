@@ -1,3 +1,10 @@
+## [2.12.1](https://github.com/amfakh/fakh-patches/compare/v2.12.0...v2.12.1) (2026-11-25)
+
+### Updated App Support
+
+* **Smart Life:** add support for `7.13.3-887`, next to `7.12.6-880` ([d69e7c0](https://github.com/amfakh/fakh-patches/commit/d69e7c0efbf7ad883528bfd86d42607a800a6404))
+* **Tuya Smart:** update `7.13.3` target to build `877` ([d69e7c0](https://github.com/amfakh/fakh-patches/commit/d69e7c0efbf7ad883528bfd86d42607a800a6404))
+
 ## [2.12.0](https://github.com/amfakh/fakh-patches/compare/v2.11.3...v2.12.0) (2026-11-24)
 
 ### New Features
