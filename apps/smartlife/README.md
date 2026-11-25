@@ -5,8 +5,8 @@ of them.
 
 | App | Package | Version | Source |
 |---|---|---|---|
-| Smart Life | `com.tuya.smartlife` | `7.12.3-877`, `7.12.6-880` | XAPK from APKPure, APKM from APKMirror ("SmartLife - Smart Living") |
-| Tuya Smart | `com.tuya.smart` | `7.12.3-870`, `7.12.6-872`, `7.13.0-875`, `7.13.3-876` | APKM from APKMirror |
+| Smart Life | `com.tuya.smartlife` | `7.12.3-877`, `7.12.6-880`, `7.13.3-887` | XAPK from APKPure, APKM from APKMirror ("SmartLife - Smart Living") |
+| Tuya Smart | `com.tuya.smart` | `7.12.3-870`, `7.12.6-872`, `7.13.0-875`, `7.13.3-877` | APKM from APKMirror |
 | BARDI Smart Home | `com.bardi.smart.home` | `1.5.3` | XAPK from APKPure |
 | SYNC by Krisbow | `com.kawanlama.smartklic` | `3.1.2` | XAPK from APKPure |
 
