@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "Liquid Glass ナビゲーションバー",
   "A floating, translucent navigation bar.": "浮いたような半透明のナビゲーションバー。",
   "Mark as read when you reply": "返信したら既読にする",
-  "With ghost mode on, a chat you reply to is marked as read.": "ゴーストモード中でも、返信したチャットは既読になります。"
+  "With ghost mode on, a chat you reply to is marked as read.": "ゴーストモード中でも、返信したチャットは既読になります。",
+  "Muted words": "ミュートするワード",
+  "Muted authors": "ミュートする投稿者",
+  "Hide posts with these words.": "これらのワードを含む投稿を非表示にします。",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "1行に1つのワードまたはフレーズ（大文字と小文字は区別しません）。本文またはリポスト元の本文が一致すると投稿が非表示になります。",
+  "Hide posts from these people and pages.": "これらの人やページの投稿を非表示にします。",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "1行に1つの名前（大文字と小文字は区別しません）。投稿者またはリポスト元の投稿者が一致すると投稿が非表示になります。"
 }

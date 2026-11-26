@@ -7,12 +7,15 @@ package app.fakh.extension.linkedin;
 
 
 import android.os.SystemClock;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 /**
  * Hook for the server driven UI (SDUI) screens, which render through
@@ -38,6 +41,9 @@ public final class SduiComponentFilter {
     private static final int MAX_HIDDEN_COMMENT_SHEETS = 500;
     /** Comment sheet keys of hidden posts, to hide their highlighted comments, which 4.1.1267 renders apart. */
     private static final Set<String> hiddenCommentSheets = ConcurrentHashMap.newKeySet();
+
+    /** The patterns of each muted list, by the text it was typed as. */
+    private static final Map<String, List<Pattern>> mutedPatterns = new ConcurrentHashMap<>();
 
     private static final long COMMENT_MENU_WINDOW_MS = 10_000;
     /** Until when (uptimeMillis) unnamed components may be a comment menu's rows. */
@@ -234,7 +240,10 @@ public final class SduiComponentFilter {
         boolean recommendations = Settings.hideRecommendations();
         boolean videos = Settings.hideVideoPosts();
         boolean shortLinks = Settings.resolveShortLinks();
-        if (!ads && !suggested && !celebrations && !jobs && !reposts && !recommendations && !videos && !shortLinks) {
+        boolean muted = !Settings.muted(Settings.MUTED_WORDS).isEmpty()
+                || !Settings.muted(Settings.MUTED_AUTHORS).isEmpty();
+        if (!ads && !suggested && !celebrations && !jobs && !reposts && !recommendations && !videos && !shortLinks
+                && !muted) {
             return false;
         }
 
@@ -255,6 +264,8 @@ public final class SduiComponentFilter {
         if (Settings.hideAds() && ProtoScanner.containsAscii(payload, "urn:li:sponsoredContentV2:")) {
             return "sponsored feed update";
         }
+        if (isMuted(Settings.MUTED_WORDS, PostCommentary.texts(payload))) return "muted word";
+        if (isMuted(Settings.MUTED_AUTHORS, PostCommentary.authors(payload))) return "muted author";
         // Child components are embedded in the post payload, so their view names identify the post type.
         if (Settings.hideCelebrations() && ProtoScanner.containsAscii(payload, "feed-celebrations-update-detail")) {
             return "celebration post";
@@ -283,6 +294,30 @@ public final class SduiComponentFilter {
             return "suggested post";
         }
         return null;
+    }
+
+    /**
+     * Whether one of the texts has an entry of a muted list, as whole words in any case, so "java" does not hide posts
+     * about JavaScript. The list holds one entry per line or comma.
+     */
+    private static boolean isMuted(String key, List<String> texts) {
+        String list = Settings.muted(key);
+        if (list.isEmpty()) return false;
+        List<Pattern> patterns = mutedPatterns.computeIfAbsent(list, source -> {
+            List<Pattern> built = new ArrayList<>();
+            for (String entry : source.split("[\\n,]")) {
+                if (entry.trim().isEmpty()) continue;
+                built.add(Pattern.compile("(?<![\\p{L}\\p{N}])" + Pattern.quote(entry.trim()) + "(?![\\p{L}\\p{N}])",
+                        Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE));
+            }
+            return built;
+        });
+        for (String text : texts) {
+            for (Pattern pattern : patterns) {
+                if (pattern.matcher(text).find()) return true;
+            }
+        }
+        return false;
     }
 
     /**

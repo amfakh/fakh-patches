@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "Barra de navegación Liquid Glass",
   "A floating, translucent navigation bar.": "Una barra de navegación flotante y translúcida.",
   "Mark as read when you reply": "Marcar como leído al responder",
-  "With ghost mode on, a chat you reply to is marked as read.": "Con el modo fantasma, un chat al que respondes se marca como leído."
+  "With ghost mode on, a chat you reply to is marked as read.": "Con el modo fantasma, un chat al que respondes se marca como leído.",
+  "Muted words": "Palabras silenciadas",
+  "Muted authors": "Autores silenciados",
+  "Hide posts with these words.": "Ocultar publicaciones con estas palabras.",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "Una palabra o frase por línea, sin distinguir mayúsculas y minúsculas. Se oculta una publicación si coincide su texto o el de la publicación que comparte.",
+  "Hide posts from these people and pages.": "Ocultar publicaciones de estas personas y páginas.",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Un nombre por línea, sin distinguir mayúsculas y minúsculas. Se oculta una publicación si coincide su autor o el de la publicación que comparte."
 }

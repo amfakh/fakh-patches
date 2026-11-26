@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "Navigation bar Liquid Glass",
   "A floating, translucent navigation bar.": "Navigation bar mengambang dan tembus pandang.",
   "Mark as read when you reply": "Tandai dibaca saat kamu membalas",
-  "With ghost mode on, a chat you reply to is marked as read.": "Saat mode hantu aktif, chat yang kamu balas ditandai sudah dibaca."
+  "With ghost mode on, a chat you reply to is marked as read.": "Saat mode hantu aktif, chat yang kamu balas ditandai sudah dibaca.",
+  "Muted words": "Kata yang dibisukan",
+  "Muted authors": "Penulis yang dibisukan",
+  "Hide posts with these words.": "Sembunyikan postingan berisi kata ini.",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "Satu kata atau frasa per baris, huruf besar atau kecil sama saja. Postingan disembunyikan kalau teksnya, atau teks postingan yang di-repost, cocok.",
+  "Hide posts from these people and pages.": "Sembunyikan postingan dari orang dan halaman ini.",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Satu nama per baris, huruf besar atau kecil sama saja. Postingan disembunyikan kalau penulisnya, atau penulis postingan yang di-repost, cocok."
 }

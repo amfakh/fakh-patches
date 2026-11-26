@@ -230,6 +230,14 @@ public final class SettingsActivity extends Activity {
                 feed.toggle(Settings.EXPAND_POSTS, false, "Expand posts by default", "Tap the text to collapse.");
             }
             if (Settings.isFeedFiltersIncluded()) {
+                feed.value("Muted words", mutedRow(Settings.MUTED_WORDS, "Muted words",
+                            "Hide posts with these words.",
+                            "One word or phrase per line, in any letter case. A post is hidden when its text, or "
+                                    + "the text of the post it reposts, matches."))
+                    .value("Muted authors", mutedRow(Settings.MUTED_AUTHORS, "Muted authors",
+                            "Hide posts from these people and pages.",
+                            "One name per line, in any letter case. A post is hidden when its author, or the "
+                                    + "author of the post it reposts, matches."));
                 feed.toggle(Settings.FOCUS_MODE, false, "Hide engagement counts", "Hide like, comment, and repost counts.")
                         .toggle(Settings.HIDE_CELEBRATIONS, false, "Hide celebration posts",
                                 "Work anniversaries and new jobs.")
@@ -927,6 +935,58 @@ public final class SettingsActivity extends Activity {
                 .setNeutralButton(I18n.tr("Default"), (dialog, which) -> {
                     Settings.setString(Settings.DOWNLOAD_FOLDER, Settings.DEFAULT_DOWNLOAD_FOLDER);
                     refresh();
+                })
+                .setNegativeButton(I18n.tr("Cancel"), null)
+                .show();
+    }
+
+    // endregion
+
+    // region Muted lists
+
+    /** The row of a muted list: its entries, or what it hides while it is empty; a tap edits it. */
+    private ValueRow mutedRow(String key, String title, String summary, String help) {
+        return new ValueRow() {
+            public String currentValue() {
+                String list = Settings.muted(key).trim().replaceAll("\\s*\\n\\s*", ", ");
+                return list.isEmpty() ? summary : list;
+            }
+
+            public Runnable onClick() {
+                return () -> editList(key, title, help);
+            }
+
+            public boolean enabled() {
+                return true;
+            }
+        };
+    }
+
+    private void editList(String key, String title, String help) {
+        EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE
+                | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+        input.setMinLines(4);
+        input.setGravity(Gravity.TOP | Gravity.START);
+        input.setText(Settings.muted(key));
+        input.setSelection(input.getText().length());
+
+        TextView helpView = text(help, 13, textSecondary, false);
+        helpView.setPadding(0, dp(8), 0, 0);
+
+        LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.setPadding(dp(24), dp(8), dp(24), 0);
+        box.addView(input);
+        box.addView(helpView);
+
+        new AlertDialog.Builder(this, dialogTheme())
+                .setTitle(I18n.tr(title))
+                .setView(box)
+                .setPositiveButton(I18n.tr("Save"), (dialog, which) -> {
+                    Settings.setString(key, input.getText().toString().trim());
+                    refresh();
+                    showRestartBanner();
                 })
                 .setNegativeButton(I18n.tr("Cancel"), null)
                 .show();

@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "Thanh điều hướng Liquid Glass",
   "A floating, translucent navigation bar.": "Thanh điều hướng nổi, trong mờ.",
   "Mark as read when you reply": "Đánh dấu đã đọc khi bạn trả lời",
-  "With ghost mode on, a chat you reply to is marked as read.": "Khi bật chế độ ẩn danh, cuộc trò chuyện bạn trả lời sẽ được đánh dấu đã đọc."
+  "With ghost mode on, a chat you reply to is marked as read.": "Khi bật chế độ ẩn danh, cuộc trò chuyện bạn trả lời sẽ được đánh dấu đã đọc.",
+  "Muted words": "Từ bị ẩn",
+  "Muted authors": "Tác giả bị ẩn",
+  "Hide posts with these words.": "Ẩn bài viết có những từ này.",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "Mỗi dòng một từ hoặc cụm từ, không phân biệt chữ hoa chữ thường. Bài viết bị ẩn khi nội dung của bài hoặc của bài được đăng lại khớp.",
+  "Hide posts from these people and pages.": "Ẩn bài viết của những người và trang này.",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Mỗi dòng một tên, không phân biệt chữ hoa chữ thường. Bài viết bị ẩn khi tác giả của bài hoặc của bài được đăng lại khớp."
 }

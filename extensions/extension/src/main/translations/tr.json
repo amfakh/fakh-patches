@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "Liquid Glass gezinme çubuğu",
   "A floating, translucent navigation bar.": "Yüzen, yarı saydam bir gezinme çubuğu.",
   "Mark as read when you reply": "Yanıtladığında okundu olarak işaretle",
-  "With ghost mode on, a chat you reply to is marked as read.": "Hayalet modda yanıtladığın sohbet okundu olarak işaretlenir."
+  "With ghost mode on, a chat you reply to is marked as read.": "Hayalet modda yanıtladığın sohbet okundu olarak işaretlenir.",
+  "Muted words": "Sessize alınan kelimeler",
+  "Muted authors": "Sessize alınan yazarlar",
+  "Hide posts with these words.": "Bu kelimeleri içeren gönderileri gizle.",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "Her satıra bir kelime veya ifade, büyük/küçük harf fark etmez. Metni ya da yeniden paylaşılan gönderinin metni eşleşen gönderi gizlenir.",
+  "Hide posts from these people and pages.": "Bu kişi ve sayfaların gönderilerini gizle.",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Her satıra bir isim, büyük/küçük harf fark etmez. Yazarı ya da yeniden paylaşılan gönderinin yazarı eşleşen gönderi gizlenir."
 }

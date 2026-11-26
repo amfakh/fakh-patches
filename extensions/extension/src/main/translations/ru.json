@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "Панель навигации Liquid Glass",
   "A floating, translucent navigation bar.": "Парящая полупрозрачная панель навигации.",
   "Mark as read when you reply": "Отмечать прочитанным при ответе",
-  "With ghost mode on, a chat you reply to is marked as read.": "В режиме невидимки чат, на который вы ответили, отмечается прочитанным."
+  "With ghost mode on, a chat you reply to is marked as read.": "В режиме невидимки чат, на который вы ответили, отмечается прочитанным.",
+  "Muted words": "Скрытые слова",
+  "Muted authors": "Скрытые авторы",
+  "Hide posts with these words.": "Скрывать публикации с этими словами.",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "Одно слово или фраза в строке, регистр букв не важен. Публикация скрывается, если совпадает её текст или текст репоста.",
+  "Hide posts from these people and pages.": "Скрывать публикации этих людей и страниц.",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Одно имя в строке, регистр букв не важен. Публикация скрывается, если совпадает её автор или автор репоста."
 }

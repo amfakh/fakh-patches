@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "แถบนำทาง Liquid Glass",
   "A floating, translucent navigation bar.": "แถบนำทางโปร่งแสงที่ลอยอยู่",
   "Mark as read when you reply": "ทำเครื่องหมายว่าอ่านแล้วเมื่อคุณตอบ",
-  "With ghost mode on, a chat you reply to is marked as read.": "เมื่อเปิดโหมดผี แชตที่คุณตอบจะถูกทำเครื่องหมายว่าอ่านแล้ว"
+  "With ghost mode on, a chat you reply to is marked as read.": "เมื่อเปิดโหมดผี แชตที่คุณตอบจะถูกทำเครื่องหมายว่าอ่านแล้ว",
+  "Muted words": "คำที่ปิดเสียง",
+  "Muted authors": "ผู้โพสต์ที่ปิดเสียง",
+  "Hide posts with these words.": "ซ่อนโพสต์ที่มีคำเหล่านี้",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "หนึ่งคำหรือวลีต่อบรรทัด ไม่สนตัวพิมพ์เล็กหรือใหญ่ โพสต์จะถูกซ่อนเมื่อข้อความของโพสต์หรือของโพสต์ที่ถูกรีโพสต์ตรงกัน",
+  "Hide posts from these people and pages.": "ซ่อนโพสต์จากคนและเพจเหล่านี้",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "หนึ่งชื่อต่อบรรทัด ไม่สนตัวพิมพ์เล็กหรือใหญ่ โพสต์จะถูกซ่อนเมื่อผู้โพสต์หรือผู้โพสต์ต้นฉบับที่ถูกรีโพสต์ตรงกัน"
 }

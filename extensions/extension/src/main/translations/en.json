@@ -176,5 +176,11 @@
   "Liquid Glass navigation bar": "Liquid Glass navigation bar",
   "A floating, translucent navigation bar.": "A floating, translucent navigation bar.",
   "Mark as read when you reply": "Mark as read when you reply",
-  "With ghost mode on, a chat you reply to is marked as read.": "With ghost mode on, a chat you reply to is marked as read."
+  "With ghost mode on, a chat you reply to is marked as read.": "With ghost mode on, a chat you reply to is marked as read.",
+  "Muted words": "Muted words",
+  "Muted authors": "Muted authors",
+  "Hide posts with these words.": "Hide posts with these words.",
+  "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.",
+  "Hide posts from these people and pages.": "Hide posts from these people and pages.",
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches."
 }

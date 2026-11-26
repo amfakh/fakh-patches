@@ -46,6 +46,10 @@ public final class Settings {
     static final String HIDE_GAMES = "hide_games";
     static final String HIDE_NEW_POSTS_PILL = "hide_new_posts_pill";
     static final String HIDE_TRANSLATION = "hide_translation";
+    /** Words and phrases, one per line: posts whose text has one are hidden. */
+    static final String MUTED_WORDS = "muted_words";
+    /** Names of people and pages, one per line: their posts are hidden. */
+    static final String MUTED_AUTHORS = "muted_authors";
     static final String OPEN_LINKS_DIRECTLY = "open_links_directly";
     static final String HIDE_SPONSORED_MESSAGES = "hide_sponsored_messages";
     static final String GHOST_MODE = "ghost_mode";
@@ -520,6 +524,14 @@ public final class Settings {
 
     static boolean hideTranslation() {
         return Features.on(HIDE_TRANSLATION);
+    }
+
+    /**
+     * A muted list as typed ({@link #MUTED_WORDS} or {@link #MUTED_AUTHORS}), or an empty string; only with Feed
+     * filters patched in.
+     */
+    static String muted(String key) {
+        return isFeedFiltersIncluded() ? getString(key, "") : "";
     }
 
     static boolean hideAds() {
