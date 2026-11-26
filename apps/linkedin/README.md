@@ -4,7 +4,7 @@ Patches for the LinkedIn app (`com.linkedin.android`, versions `4.1.1264`, `4.1.
 
 ## Patches
 
-Every patch is on by default except GmsCore support.
+Every patch is on by default.
 Morphe Manager groups them by category.
 
 | Category | Patch | Default | What it does |
@@ -18,7 +18,7 @@ Morphe Manager groups them by category.
 | Feature | Always show navigation bar | On | Adds a switch in Fakh Patches, off by default, that keeps the navigation bar on screen while you scroll instead of sliding it away. |
 | Feature | Hide top bar buttons | On | Adds a Top bar buttons sheet in Fakh Patches to hide the Post and Messaging buttons of the top bar. |
 | Feature | Navigation bar | On | Adds switches in Fakh Patches to show or hide the More, Jobs, Network and Notifications tabs of the navigation bar (and Post, Video, News and Messaging, which can be added even when LinkedIn leaves them out), its notification badges and its tab labels. The tabs can be sorted in the same sheet (Home stays first). |
-| Feature | GmsCore support | Off | Makes "Continue with Google" work by signing in through [microG RE](https://github.com/MorpheApp/microg-RE) instead of Google Play services. Needs microG RE installed and signed in to a Google account. |
+| Feature | GmsCore support | On | Makes "Continue with Google" work by signing in through [microG RE](https://github.com/MorpheApp/microg-RE) instead of Google Play services. Needs microG RE installed and signed in to a Google account. |
 | Feed | Hide suggested posts | On | Removes "Suggested" posts from people outside your network. |
 | Feed | Feed filters | On | Adds filters you can turn on in Fakh Patches: engagement counts, celebrations, job cards, network activity (likes, comments, reposts), video posts, "Recommended for you", puzzle games, the "New posts" pill and "Show translation". All start off. |
 | Feed | Disable double-tap like | On | Double tapping a post or photo no longer likes it. |

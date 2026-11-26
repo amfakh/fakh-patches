@@ -5,11 +5,11 @@ versions `51.3.2` and `51.4.4`, as an APKM.
 
 ## Patches
 
-Every patch except **GmsCore support** is on by default. Morphe Manager groups them by category.
+Every patch is on by default. Morphe Manager groups them by category.
 
 | Category | Patch | Default | What it does |
 |---|---|---|---|
-| Feature | GmsCore support | Off | Makes "Log in with Google" work through [microG RE](https://github.com/WSTxda/MicroG-RE) (GmsCore) instead of Google Play services. |
+| Feature | GmsCore support | On | Makes "Log in with Google" work through [microG RE](https://github.com/WSTxda/MicroG-RE) (GmsCore) instead of Google Play services. |
 | Premium | Premium unlock | On | Unlocks Windy Pro on your phone: deeper map zoom, 1-hour forecast steps, the premium calendar view and the rest of the premium screens. The "Go Premium" button disappears. |
 
 ## How the unlock works
