@@ -27,7 +27,7 @@ Morphe Manager groups them by category.
 | Feed | Disable screenshot share sheet | On | Stops the Share sheet from opening when you take a screenshot of a post. Adds a switch in Fakh Patches. |
 | Feed | Keep feed on reopen | On | Keeps your place in the feed when you come back to LinkedIn instead of reloading it. Pull down or tap "New posts" to load new posts. |
 | Feed | Tap to hide controls in viewers | On | Tap a video or document in full screen to hide its caption and buttons, like photos. |
-| Feed | Video tab | On | Shows the video's time above the seek bar and can go to the next video when one ends. Adds switches in Fakh Patches. |
+| Feed | Video tab | On | Shows the video's time above the seek bar, in the Video tab and the full screen video viewer, and can go to the next video of the tab when one ends. Adds switches in Fakh Patches. |
 | Privacy | Messaging | On | Hides sponsored messages, and adds an optional ghost mode that sends no typing indicator and no automatic read receipts. |
 | Privacy | Open links directly | On | Opens outside links without LinkedIn's warning page, including `lnkd.in` short links. |
 | Privacy | Sanitize share links | On | Strips tracking parameters from LinkedIn links you copy or share. |
