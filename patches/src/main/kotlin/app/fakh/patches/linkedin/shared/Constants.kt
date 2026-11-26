@@ -99,6 +99,7 @@ object Constants {
     val DOWNLOAD_SPLIT_BY_TYPE = Feature("download_split_by_type", "Split photos & videos", "Downloads", default = false)
     val HIDE_SPONSORED_MESSAGES = Feature("hide_sponsored_messages", "Hide sponsored messages", "Messaging")
     val GHOST_MODE = Feature("ghost_mode", "Ghost mode", "Messaging", default = false)
+    val MARK_READ_AFTER_REPLY = Feature("mark_read_after_reply", "Mark as read when you reply", "Messaging", dependsOn = GHOST_MODE)
     val OPEN_LINKS_DIRECTLY = Feature("open_links_directly", "Open links directly", "Privacy")
     val RESOLVE_SHORT_LINKS = Feature("resolve_short_links", "Expand lnkd.in links", "Privacy")
     val SANITIZE_SHARE_LINKS = Feature("sanitize_share_links", "Clean share links", "Privacy")

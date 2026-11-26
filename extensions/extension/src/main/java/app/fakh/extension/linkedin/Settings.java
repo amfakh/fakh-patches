@@ -49,6 +49,7 @@ public final class Settings {
     static final String OPEN_LINKS_DIRECTLY = "open_links_directly";
     static final String HIDE_SPONSORED_MESSAGES = "hide_sponsored_messages";
     static final String GHOST_MODE = "ghost_mode";
+    static final String MARK_READ_AFTER_REPLY = "mark_read_after_reply";
     static final String BLOCK_TRACKING = "block_tracking";
     static final String ANONYMOUS_PROFILE_VIEWING = "anonymous_profile_viewing";
     static final String DISABLE_DOUBLE_TAP_LIKE = "disable_double_tap_like";
@@ -468,6 +469,11 @@ public final class Settings {
     /** Off by default: it also stops chats being marked as read on this device. */
     static boolean ghostMode() {
         return Features.on(GHOST_MODE);
+    }
+
+    /** Part of Ghost mode: a chat you reply to is marked as read. */
+    static boolean markReadAfterReply() {
+        return Features.on(MARK_READ_AFTER_REPLY);
     }
 
     static boolean openLinksDirectly() {

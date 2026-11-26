@@ -174,5 +174,7 @@
   "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "บังคับโหมดมืดในแผงควบคุมอุปกรณ์ที่ไม่มีโหมดมืด มีผลเมื่อเปิดแผง และเฉพาะเมื่ออยู่ในโหมดมืดเท่านั้น",
   "Background blur": "เบลอพื้นหลัง",
   "Liquid Glass navigation bar": "แถบนำทาง Liquid Glass",
-  "A floating, translucent navigation bar.": "แถบนำทางโปร่งแสงที่ลอยอยู่"
+  "A floating, translucent navigation bar.": "แถบนำทางโปร่งแสงที่ลอยอยู่",
+  "Mark as read when you reply": "ทำเครื่องหมายว่าอ่านแล้วเมื่อคุณตอบ",
+  "With ghost mode on, a chat you reply to is marked as read.": "เมื่อเปิดโหมดผี แชตที่คุณตอบจะถูกทำเครื่องหมายว่าอ่านแล้ว"
 }

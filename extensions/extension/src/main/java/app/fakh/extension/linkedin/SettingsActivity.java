@@ -377,7 +377,9 @@ public final class SettingsActivity extends Activity {
             categories.add(new Category("Chat")
                     .toggle(Settings.HIDE_SPONSORED_MESSAGES, true, "Hide sponsored messages", null)
                     .toggle(Settings.GHOST_MODE, false, "Ghost mode",
-                            "Don't send typing or seen status. Mark chats as read from the chat list."));
+                            "Don't send typing or seen status. Mark chats as read from the chat list.")
+                        .toggle(Settings.MARK_READ_AFTER_REPLY, true, "Mark as read when you reply",
+                                "With ghost mode on, a chat you reply to is marked as read."));
         }
 
         if (Settings.isOpenLinksDirectlyIncluded() || Settings.isBlockTrackingIncluded()

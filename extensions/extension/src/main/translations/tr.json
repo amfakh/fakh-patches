@@ -174,5 +174,7 @@
   "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Koyu modu olmayan cihaz kontrol panellerinde koyu temayı zorlar. Bir panel açıldığında ve yalnızca koyu modda geçerlidir.",
   "Background blur": "Arka plan bulanıklığı",
   "Liquid Glass navigation bar": "Liquid Glass gezinme çubuğu",
-  "A floating, translucent navigation bar.": "Yüzen, yarı saydam bir gezinme çubuğu."
+  "A floating, translucent navigation bar.": "Yüzen, yarı saydam bir gezinme çubuğu.",
+  "Mark as read when you reply": "Yanıtladığında okundu olarak işaretle",
+  "With ghost mode on, a chat you reply to is marked as read.": "Hayalet modda yanıtladığın sohbet okundu olarak işaretlenir."
 }

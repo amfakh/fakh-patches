@@ -174,5 +174,7 @@
   "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.",
   "Background blur": "Background blur",
   "Liquid Glass navigation bar": "Liquid Glass navigation bar",
-  "A floating, translucent navigation bar.": "A floating, translucent navigation bar."
+  "A floating, translucent navigation bar.": "A floating, translucent navigation bar.",
+  "Mark as read when you reply": "Mark as read when you reply",
+  "With ghost mode on, a chat you reply to is marked as read.": "With ghost mode on, a chat you reply to is marked as read."
 }

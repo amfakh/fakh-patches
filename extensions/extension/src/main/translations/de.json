@@ -174,5 +174,7 @@
   "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "Erzwingt dunkle Darstellung in Gerätesteuerungs-Panels ohne Dunkelmodus. Gilt beim Öffnen eines Panels und nur im Dunkelmodus.",
   "Background blur": "Hintergrundunschärfe",
   "Liquid Glass navigation bar": "Liquid-Glass-Navigationsleiste",
-  "A floating, translucent navigation bar.": "Eine schwebende, durchscheinende Navigationsleiste."
+  "A floating, translucent navigation bar.": "Eine schwebende, durchscheinende Navigationsleiste.",
+  "Mark as read when you reply": "Beim Antworten als gelesen markieren",
+  "With ghost mode on, a chat you reply to is marked as read.": "Mit Geistermodus wird ein Chat, auf den du antwortest, als gelesen markiert."
 }

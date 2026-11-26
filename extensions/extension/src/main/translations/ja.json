@@ -174,5 +174,7 @@
   "Force dark on device control panels that have no dark mode. Applies when you open a panel, and only in dark mode.": "ダークモードのないデバイス操作パネルを強制的にダーク表示にします。パネルを開いたときに適用され、ダークモードのときだけ有効です。",
   "Background blur": "背景のぼかし",
   "Liquid Glass navigation bar": "Liquid Glass ナビゲーションバー",
-  "A floating, translucent navigation bar.": "浮いたような半透明のナビゲーションバー。"
+  "A floating, translucent navigation bar.": "浮いたような半透明のナビゲーションバー。",
+  "Mark as read when you reply": "返信したら既読にする",
+  "With ghost mode on, a chat you reply to is marked as read.": "ゴーストモード中でも、返信したチャットは既読になります。"
 }
