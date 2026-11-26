@@ -1,7 +1,7 @@
 # Windy
 
 Patches for **Windy** (`com.windyty.android`, "Windy.com - Weather Forecast" on APKMirror),
-version `51.3.2`, as an APKM.
+versions `51.3.2` and `51.4.4`, as an APKM.
 
 ## Patches
 
@@ -34,10 +34,10 @@ without it.
 With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs Java 21):
 
 ```bash
-java -jar morphe-desktop-1.19.1-all.jar patch -p patches/build/libs/patches-<version>.mpp -o windy-patched.apk <Windy 51.3.2 APKM>
+java -jar morphe-desktop-1.19.1-all.jar patch -p patches/build/libs/patches-<version>.mpp -o windy-patched.apk <Windy APKM>
 ```
 
 ## Getting the APK
 
-Download the `51.3.2` APKM from APKMirror. Morphe Manager looks the app up on APKMirror itself,
+Download the `51.3.2` or `51.4.4` APKM from APKMirror. Morphe Manager looks the app up on APKMirror itself,
 so it can take you to that page.
