@@ -182,5 +182,11 @@
   "Hide posts with these words.": "Скрывать публикации с этими словами.",
   "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "Одно слово или фраза в строке, регистр букв не важен. Публикация скрывается, если совпадает её текст или текст репоста.",
   "Hide posts from these people and pages.": "Скрывать публикации этих людей и страниц.",
-  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Одно имя в строке, регистр букв не важен. Публикация скрывается, если совпадает её автор или автор репоста."
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Одно имя в строке, регистр букв не важен. Публикация скрывается, если совпадает её автор или автор репоста.",
+  "Hide Follow and Connect": "Скрыть «Отслеживать» и «Установить контакт»",
+  "Hide connection degree": "Скрыть уровень контакта",
+  "The 1st, 2nd and 3rd next to names.": "1-й, 2-й и 3-й рядом с именами.",
+  "Show exact post time": "Показывать точное время публикации",
+  "Instead of 3d or 5h.": "Вместо 3d или 5h.",
+  "Most recent comments first": "Сначала новые комментарии"
 }

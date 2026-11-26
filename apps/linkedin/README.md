@@ -20,7 +20,7 @@ Morphe Manager groups them by category.
 | Feature | Navigation bar | On | Adds switches in Fakh Patches to show or hide the More, Jobs, Network and Notifications tabs of the navigation bar (and Post, Video, News and Messaging, which can be added even when LinkedIn leaves them out; an added Video tab opens the server's video screen), its notification badges and its tab labels. The tabs can be sorted in the same sheet (Home stays first). |
 | Feature | GmsCore support | On | Makes "Continue with Google" work by signing in through [microG RE](https://github.com/MorpheApp/microg-RE) instead of Google Play services. Needs microG RE installed and signed in to a Google account. |
 | Feed | Hide suggested posts | On | Removes "Suggested" posts from people outside your network. |
-| Feed | Feed filters | On | Adds filters you can turn on in Fakh Patches: engagement counts, celebrations, job cards, network activity (likes, comments, reposts), video posts, "Recommended for you", puzzle games, the "New posts" pill and "Show translation", and muted words and muted authors that hide posts by their text or by who wrote them. All start off. |
+| Feed | Feed filters | On | Adds filters you can turn on in Fakh Patches: engagement counts, celebrations, job cards, network activity (likes, comments, reposts), video posts, "Recommended for you", puzzle games, the "New posts" pill, "Show translation", the Follow and Connect buttons on posts and comments, the connection degree (1st, 2nd, 3rd), the exact date and time of a post instead of its age, comments that open with the most recent first, and muted words and muted authors that hide posts by their text or by who wrote them. All start off. |
 | Feed | Disable double-tap like | On | Double tapping a post or photo no longer likes it. |
 | Feed | Expand posts | On | Adds a switch in Fakh Patches that shows posts expanded by default. Tapping the text collapses them. Starts off. |
 | Feed | Copy text | On | Adds Copy text to the ⋯ menu of posts and comments, with its own icon. Adds a switch in Fakh Patches. |
@@ -62,7 +62,8 @@ chat as read or unread from the chat list still works. With **Mark as read when 
 chat screen's next read receipt after your reply is sent.
 **Muted words** and **Muted authors** take one entry per line (or separated by commas) and match
 whole words in any case. Muted words looks at the text of a post and of the post it reposts, and
-Muted authors at the names of their authors.
+Muted authors at the names of their authors. **Show exact post time** reads the time from the post's id, and keeps the age when
+no id fits it.
 
 
 ## Test on desktop

@@ -182,5 +182,11 @@
   "Hide posts with these words.": "ซ่อนโพสต์ที่มีคำเหล่านี้",
   "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "หนึ่งคำหรือวลีต่อบรรทัด ไม่สนตัวพิมพ์เล็กหรือใหญ่ โพสต์จะถูกซ่อนเมื่อข้อความของโพสต์หรือของโพสต์ที่ถูกรีโพสต์ตรงกัน",
   "Hide posts from these people and pages.": "ซ่อนโพสต์จากคนและเพจเหล่านี้",
-  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "หนึ่งชื่อต่อบรรทัด ไม่สนตัวพิมพ์เล็กหรือใหญ่ โพสต์จะถูกซ่อนเมื่อผู้โพสต์หรือผู้โพสต์ต้นฉบับที่ถูกรีโพสต์ตรงกัน"
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "หนึ่งชื่อต่อบรรทัด ไม่สนตัวพิมพ์เล็กหรือใหญ่ โพสต์จะถูกซ่อนเมื่อผู้โพสต์หรือผู้โพสต์ต้นฉบับที่ถูกรีโพสต์ตรงกัน",
+  "Hide Follow and Connect": "ซ่อนปุ่มติดตามและเชื่อมต่อ",
+  "Hide connection degree": "ซ่อนระดับการเชื่อมต่อ",
+  "The 1st, 2nd and 3rd next to names.": "ระดับ 1, 2 และ 3 ข้างชื่อ",
+  "Show exact post time": "แสดงเวลาโพสต์ที่แน่นอน",
+  "Instead of 3d or 5h.": "แทน 3d หรือ 5h",
+  "Most recent comments first": "ความคิดเห็นล่าสุดก่อน"
 }

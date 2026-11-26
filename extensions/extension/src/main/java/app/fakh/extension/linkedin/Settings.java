@@ -46,6 +46,10 @@ public final class Settings {
     static final String HIDE_GAMES = "hide_games";
     static final String HIDE_NEW_POSTS_PILL = "hide_new_posts_pill";
     static final String HIDE_TRANSLATION = "hide_translation";
+    static final String HIDE_POST_FOLLOW = "hide_post_follow";
+    static final String HIDE_DEGREE = "hide_degree";
+    static final String EXACT_POST_TIME = "exact_post_time";
+    static final String NEWEST_COMMENTS = "newest_comments";
     /** Words and phrases, one per line: posts whose text has one are hidden. */
     static final String MUTED_WORDS = "muted_words";
     /** Names of people and pages, one per line: their posts are hidden. */
@@ -524,6 +528,22 @@ public final class Settings {
 
     static boolean hideTranslation() {
         return Features.on(HIDE_TRANSLATION);
+    }
+
+    static boolean hidePostFollow() {
+        return Features.on(HIDE_POST_FOLLOW);
+    }
+
+    static boolean hideDegree() {
+        return Features.on(HIDE_DEGREE);
+    }
+
+    static boolean exactPostTime() {
+        return Features.on(EXACT_POST_TIME);
+    }
+
+    static boolean newestComments() {
+        return Features.on(NEWEST_COMMENTS);
     }
 
     /**

@@ -182,5 +182,11 @@
   "Hide posts with these words.": "Masquer les posts contenant ces mots.",
   "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "Un mot ou une expression par ligne, sans distinction de majuscules et de minuscules. Un post est masqué si son texte, ou celui du post republié, correspond.",
   "Hide posts from these people and pages.": "Masquer les posts de ces personnes et pages.",
-  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Un nom par ligne, sans distinction de majuscules et de minuscules. Un post est masqué si son auteur, ou celui du post republié, correspond."
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "Un nom par ligne, sans distinction de majuscules et de minuscules. Un post est masqué si son auteur, ou celui du post republié, correspond.",
+  "Hide Follow and Connect": "Masquer Suivre et Se connecter",
+  "Hide connection degree": "Masquer le niveau de relation",
+  "The 1st, 2nd and 3rd next to names.": "Les 1er, 2e et 3e à côté des noms.",
+  "Show exact post time": "Afficher l’heure exacte des posts",
+  "Instead of 3d or 5h.": "À la place de 3d ou 5h.",
+  "Most recent comments first": "Commentaires récents en premier"
 }

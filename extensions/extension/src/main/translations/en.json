@@ -182,5 +182,11 @@
   "Hide posts with these words.": "Hide posts with these words.",
   "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.": "One word or phrase per line, in any letter case. A post is hidden when its text, or the text of the post it reposts, matches.",
   "Hide posts from these people and pages.": "Hide posts from these people and pages.",
-  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches."
+  "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.": "One name per line, in any letter case. A post is hidden when its author, or the author of the post it reposts, matches.",
+  "Hide Follow and Connect": "Hide Follow and Connect",
+  "Hide connection degree": "Hide connection degree",
+  "The 1st, 2nd and 3rd next to names.": "The 1st, 2nd and 3rd next to names.",
+  "Show exact post time": "Show exact post time",
+  "Instead of 3d or 5h.": "Instead of 3d or 5h.",
+  "Most recent comments first": "Most recent comments first"
 }

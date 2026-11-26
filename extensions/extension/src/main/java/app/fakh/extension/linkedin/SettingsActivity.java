@@ -249,7 +249,13 @@ public final class SettingsActivity extends Activity {
                                 "Lists of people and pages to follow.")
                         .toggle(Settings.HIDE_GAMES, false, "Hide puzzle games", null)
                         .toggle(Settings.HIDE_NEW_POSTS_PILL, false, "Hide the \"New posts\" button", null)
-                        .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"Show translation\"", null);
+                        .toggle(Settings.HIDE_TRANSLATION, false, "Hide \"Show translation\"", null)
+                        .toggle(Settings.HIDE_POST_FOLLOW, false, "Hide Follow and Connect", null)
+                        .toggle(Settings.HIDE_DEGREE, false, "Hide connection degree",
+                                "The 1st, 2nd and 3rd next to names.")
+                        .toggle(Settings.EXACT_POST_TIME, false, "Show exact post time",
+                                "Instead of 3d or 5h.")
+                        .toggle(Settings.NEWEST_COMMENTS, false, "Most recent comments first", null);
             }
             categories.add(feed);
         }
