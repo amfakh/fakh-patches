@@ -91,6 +91,7 @@ object Constants {
     val HIDE_TAB_BADGES = Feature("hide_tab_badges", "Hide notification badges", "Navigation bar", default = false)
     val SHOW_TOP_BAR_POST = Feature("show_top_bar_post", "Post", "Top bar")
     val SHOW_TOP_BAR_MESSAGING = Feature("show_top_bar_messaging", "Messaging", "Top bar")
+    val FEED_SORT_BUTTON = Feature("feed_sort_button", "Feed sort", "Top bar", default = false)
     val VIDEO_TAB_TIME = Feature("video_tab_time", "Show video time", "Video tab")
     val VIDEO_TAB_AUTO_SCROLL = Feature("video_tab_auto_scroll", "Auto scroll", "Video tab", default = false)
     val MOVE_MORE_ITEMS = Feature("move_more_items", "Show item in profile menu", "More tab")

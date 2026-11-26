@@ -80,6 +80,9 @@ public final class Settings {
     static final String NO_SCREENSHOT_SHARE = "no_screenshot_share";
     static final String SHOW_TOP_BAR_POST = "show_top_bar_post";
     static final String SHOW_TOP_BAR_MESSAGING = "show_top_bar_messaging";
+    static final String FEED_SORT_BUTTON = "feed_sort_button";
+    /** The app's own answer on showing the feed sort button, which the switch follows until the user changes it. */
+    static final String FEED_SORT_STOCK = "feed_sort_button_stock";
     /** HomeTabInfo constants of the tabs after Home, in the order the user sorted them; empty for LinkedIn's order. */
     static final String TAB_ORDER = "tab_order";
     /** The optional tabs (Post, Video, News) LinkedIn last offered, each followed by a comma (NavigationBar). */
@@ -280,6 +283,12 @@ public final class Settings {
 
     public static boolean isTopBarButtonsIncluded() {
         return Features.has(SHOW_TOP_BAR_POST);
+    }
+
+    /** Called by the patched app: whether the home top bar gets the feed sort button, {@code stock} being the app's own answer. */
+    public static boolean showFeedSortButton(boolean stock) {
+        set(FEED_SORT_STOCK, stock);
+        return get(FEED_SORT_BUTTON, stock);
     }
 
     static boolean hideTopBarPost() {

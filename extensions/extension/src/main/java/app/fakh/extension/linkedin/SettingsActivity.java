@@ -290,10 +290,12 @@ public final class SettingsActivity extends Activity {
             List<Item> topBar = new ArrayList<>();
             topBar.add(choice(Settings.SHOW_TOP_BAR_POST, true, "Post"));
             topBar.add(choice(Settings.SHOW_TOP_BAR_MESSAGING, true, "Messaging"));
+            topBar.add(choice(Settings.FEED_SORT_BUTTON, Settings.get(Settings.FEED_SORT_STOCK, false), "Feed sort"));
             categories.add(new Category("Top bar").sheet("Top bar buttons", topBar,
                     () -> showSheet("Top bar buttons", "Choose which buttons the top bar shows.", topBar, Arrays.asList(
                             stockIcon("POST", IconDrawable.POST_TAB_OUTLINE),
-                            stockIcon("MESSAGING", IconDrawable.CHAT_TAB_OUTLINE)))));
+                            stockIcon("MESSAGING", IconDrawable.CHAT_TAB_OUTLINE),
+                            feedSortIcon()))));
         }
 
         if (Settings.isVideoTabIncluded()) {
@@ -1115,6 +1117,12 @@ public final class SettingsActivity extends Activity {
         Drawable drawable = getResources().getDrawable(resource, getTheme()).mutate();
         drawable.setTint(textPrimary);
         return drawable;
+    }
+
+    /** LinkedIn's own icon of the feed sort button, or none when the app no longer has it. */
+    private Drawable feedSortIcon() {
+        int resource = getResources().getIdentifier("feed_sort_order_icon", "drawable", getPackageName());
+        return resource == 0 ? null : tinted(resource);
     }
 
     /** The tab's icon as the navigation bar draws it: Material, or LinkedIn's own once the bar has drawn that. */
