@@ -41,7 +41,7 @@ Morphe Manager groups them by category.
 | Theme | Glass navigation bar | On | Draws the navigation bar as a floating, translucent capsule with a sliding selection pill, in the style of the glass navigation bar of [Morphe Patches](https://github.com/MorpheApp/morphe-patches). Slide a finger along the bar to switch tabs, with a haptic tick for each tab. The **Background blur** switch (off by default) blurs what's behind the bar and bends it at the edges on Android 12 and newer. The pill takes the wallpaper accent with Material You and stays neutral gray without it. |
 
 Settings are in **Fakh Patches** on LinkedIn's Settings screen (profile menu → Settings & Privacy), or long press
-the Home tab.
+the Home tab. Each category opens its own page; search looks through all of them.
 
 ## How the patches work
 
@@ -60,11 +60,11 @@ links has its own switch in Fakh Patches.
 **Messaging** ghost mode only blocks the read receipts the chat screen sends by itself. Marking a
 chat as read or unread from the chat list still works. With **Mark as read when you reply** on, the
 chat screen's next read receipt after your reply is sent.
+
 **Muted words** and **Muted authors** take one entry per line (or separated by commas) and match
 whole words in any case. Muted words looks at the text of a post and of the post it reposts, and
 Muted authors at the names of their authors. **Show exact post time** reads the time from the post's id, and keeps the age when
 no id fits it.
-
 
 ## Test on desktop
 
