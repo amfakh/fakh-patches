@@ -1,3 +1,10 @@
+## [2.14.2](https://github.com/amfakh/fakh-patches/compare/v2.14.1...v2.14.2) (2026-11-26)
+
+### Bug Fixes
+
+* GmsCore support is on by default ([6672205](https://github.com/amfakh/fakh-patches/commit/6672205b238d2d2a5437bfc17b2a6c6ba5463645))
+* **Muslim Pro:** show a toast when microG RE is missing ([6672205](https://github.com/amfakh/fakh-patches/commit/6672205b238d2d2a5437bfc17b2a6c6ba5463645))
+
 ## [2.14.1](https://github.com/amfakh/fakh-patches/compare/v2.14.0...v2.14.1) (2026-11-26)
 
 ### Updated App Support
