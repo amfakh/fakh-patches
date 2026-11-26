@@ -1,3 +1,9 @@
+## [2.14.1](https://github.com/amfakh/fakh-patches/compare/v2.14.0...v2.14.1) (2026-11-26)
+
+### Updated App Support
+
+* **Windy:** add support for `51.4.4`, next to `51.3.2` ([7a710f6](https://github.com/amfakh/fakh-patches/commit/7a710f6526e1a93c7df5b0bc7974953078246fd2))
+
 ## [2.14.0](https://github.com/amfakh/fakh-patches/compare/v2.13.0...v2.14.0) (2026-11-26)
 
 ### New Features
