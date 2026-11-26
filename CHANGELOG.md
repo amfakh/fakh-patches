@@ -2,7 +2,7 @@
 
 ### New Features
 
-* **Windy:** add GmsCore support ([33a1a11](https://github.com/amfakh/fakh-patches/commit/33a1a11f1c0a8f1dfb4f741dbaf2dca13c90fb71))
+* **Windy:** add GmsCore support ([33a1a11](https://github.com/amfakh/fakh-patches/commit/33a1a11f1c0a8f1dfb4f741dbaf2dca13c90fb71)), closes [#12](https://github.com/amfakh/fakh-patches/issues/12)
 
 ## [2.13.0](https://github.com/amfakh/fakh-patches/compare/v2.12.1...v2.13.0) (2026-11-25)
 

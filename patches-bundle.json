@@ -1,6 +1,6 @@
 {
   "created_at": "2026-11-26T00:06:01",
-  "description": "## [2.14.0](https://github.com/amfakh/fakh-patches/compare/v2.13.0...v2.14.0) (2026-11-26)\n\n### New Features\n\n* **Windy:** add GmsCore support ([33a1a11](https://github.com/amfakh/fakh-patches/commit/33a1a11f1c0a8f1dfb4f741dbaf2dca13c90fb71))",
+  "description": "## [2.14.0](https://github.com/amfakh/fakh-patches/compare/v2.13.0...v2.14.0) (2026-11-26)\n\n### New Features\n\n* **Windy:** add GmsCore support ([33a1a11](https://github.com/amfakh/fakh-patches/commit/33a1a11f1c0a8f1dfb4f741dbaf2dca13c90fb71)), closes [#12](https://github.com/amfakh/fakh-patches/issues/12)",
   "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v2.14.0/patches-2.14.0.mpp",
   "signature_download_url": "",
   "version": "2.14.0",
