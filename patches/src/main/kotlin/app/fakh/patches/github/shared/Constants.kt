@@ -95,6 +95,15 @@ object Constants {
         description = "Spaces and tabs show as dim marks in files and diffs.",
     )
 
+    val HTML_PREVIEW = Feature(
+        "fakh_html_preview", "HTML preview", "Code and files",
+        description = "Preview in the menu of an HTML file.",
+    )
+
+    val DOWNLOAD_FILES = Feature(
+        "fakh_download_files", "Download files", "Releases and downloads",
+        description = "Download in the menu of an open file.",
+    )
     val DOWNLOAD_ASSETS = Feature(
         "fakh_download_assets", "Download assets", "Releases and downloads",
         description = "Release files download in the app instead of the browser.",

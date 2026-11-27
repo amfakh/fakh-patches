@@ -11,11 +11,14 @@ import app.fakh.patches.github.shared.Constants.DOWNLOAD_FOLDER
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
+import app.morphe.patcher.patch.bytecodePatch
 import app.morphe.patcher.patch.patch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.TwoRegisterInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
@@ -33,11 +36,57 @@ private object AssetsDownloadFingerprint : Fingerprint(
 )
 
 /**
- * The OkHttp auth interceptor that adds `"Authorization: token <oauth>"` to GitHub API requests.
+ * The OkHttp interceptor that adds `Authorization: Bearer <token>` to the requests an account sends to its own API
+ * hosts, which it keeps in a set.
  */
 private object ApiAuthHeaderFingerprint : Fingerprint(
-    strings = listOf("Copilot-Integration-Id", "Authorization", "token "),
+    strings = listOf("Authorization", "Bearer "),
+    custom = { method, _ ->
+        method.implementation?.instructions?.any {
+            val ref = (it as? ReferenceInstruction)?.reference as? MethodReference
+            ref?.definingClass == "Ljava/util/Set;" && ref.name == "contains"
+        } == true
+    },
 )
+
+/** Hands the extension the account's API token each time the app signs a request with it. */
+internal val apiTokenPatch = bytecodePatch {
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        val method = ApiAuthHeaderFingerprint.method
+        val instructions = method.implementation!!.instructions.toList()
+        val bearerAt = instructions.indexOfFirst {
+            ((it as? ReferenceInstruction)?.reference as? StringReference)?.string == "Bearer "
+        }
+        val headerAt = (bearerAt + 1 until instructions.size).firstOrNull { index ->
+            val ref = (instructions[index] as? ReferenceInstruction)?.reference as? MethodReference
+            instructions[index].opcode == Opcode.INVOKE_VIRTUAL && ref != null &&
+                ref.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;")
+        } ?: throw PatchException("Authorization header call not found")
+        // The method starts by reading the request from the chain and the address from the request.
+        val reads = instructions.filter { it.opcode == Opcode.IGET_OBJECT }.take(2)
+            .map { (it as ReferenceInstruction).reference as FieldReference }
+        val chain = method.parameterTypes.single().toString()
+        if (reads.size < 2 || reads[0].definingClass != chain || reads[1].definingClass != reads[0].type) {
+            throw PatchException("API request address not found")
+        }
+        val header = instructions[headerAt] as FiveRegisterInstruction
+        // The register of the prefix is free once the header's value is built.
+        val scratch = (instructions[bearerAt] as OneRegisterInstruction).registerA
+        if (scratch in listOf(header.registerC, header.registerD, header.registerE)) {
+            throw PatchException("No free register at the Authorization header")
+        }
+        method.addInstructions(
+            headerAt,
+            """
+                iget-object v$scratch, p1, ${reads[0].smali}
+                iget-object v$scratch, v$scratch, ${reads[1].smali}
+                invoke-static { v${header.registerE}, v$scratch }, $ASSETS_DOWNLOAD->captureAuth(Ljava/lang/String;Ljava/lang/Object;)V
+            """,
+        )
+    }
+}
 
 @Suppress("unused")
 val assetsDownloadPatch = patch(
@@ -47,7 +96,7 @@ val assetsDownloadPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
-    dependsOn(githubSettingsPatch)
+    dependsOn(githubSettingsPatch, apiTokenPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
@@ -91,23 +140,6 @@ val assetsDownloadPatch = patch(
         method.addInstruction(
             assetUrlAt,
             "invoke-static { v$assetRegister }, $ASSETS_DOWNLOAD->prepare(Ljava/lang/Object;)V",
-        )
-
-        val authMethod = ApiAuthHeaderFingerprint.method
-        val authInstructions = authMethod.implementation!!.instructions
-        val tokenAt = authInstructions.indexOfFirst {
-            ((it as? ReferenceInstruction)?.reference as? StringReference)?.string == "token "
-        }
-        if (tokenAt < 0) throw PatchException("API token prefix not found")
-        val headerAt = (tokenAt + 1 until authInstructions.size).firstOrNull { index ->
-            val ref = (authInstructions[index] as? ReferenceInstruction)?.reference as? MethodReference
-            authInstructions[index].opcode == Opcode.INVOKE_VIRTUAL && ref != null &&
-                ref.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;")
-        } ?: throw PatchException("Authorization header call not found")
-        val valueRegister = (authInstructions[headerAt] as FiveRegisterInstruction).registerE
-        authMethod.addInstruction(
-            headerAt,
-            "invoke-static { v$valueRegister }, $ASSETS_DOWNLOAD->captureAuth(Ljava/lang/String;)V",
         )
     }
 }

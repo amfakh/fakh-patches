@@ -26,6 +26,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import app.fakh.extension.shared.AppRuntime;
 import app.fakh.extension.shared.Features;
@@ -42,8 +44,10 @@ public final class AssetsDownload {
     static final String DEFAULT_FOLDER = "GitHub";
     private static final String TAG = "FakhAssetsDownload";
     private static final int TIMEOUT_MS = 10_000;
+    private static final String API = "https://api.github.com";
     private static String pendingAsset;
-    private static volatile String authToken;
+    // Per API host, the token of the account that sent the latest request there.
+    private static final Map<String, String> TOKENS = new ConcurrentHashMap<>();
 
     private AssetsDownload() {
     }
@@ -53,12 +57,40 @@ public final class AssetsDownload {
         pendingAsset = asset == null ? null : asset.toString();
     }
 
-    /** Captures the active account's OAuth token from the app's API auth header. */
-    public static void captureAuth(String header) {
-        if (header != null && header.startsWith("token ")) {
-            String token = header.substring(6).trim();
-            if (!token.isEmpty()) authToken = token;
-        }
+    /**
+     * Captures an account's token from the header the app signs an API request with.
+     *
+     * @param header  The Authorization header.
+     * @param address The request's address.
+     */
+    public static void captureAuth(String header, Object address) {
+        if (header == null || !header.startsWith("Bearer ")) return;
+        String token = header.substring(7).trim();
+        String host = Uri.parse(String.valueOf(address)).getHost();
+        if (host != null && !token.isEmpty() && !"null".equals(token)) TOKENS.put(host, token);
+    }
+
+    /** The token for an API address, or null before the app signed a request to its host. */
+    static String token(Uri address) {
+        String host = address.getHost();
+        return host == null ? null : TOKENS.get(host);
+    }
+
+    /**
+     * Saves one file of a repository to the download folder.
+     *
+     * @param context  The screen's context.
+     * @param uri      The API address of the file, which answers with its bytes.
+     * @param fileName The name to save it as.
+     * @param page     The file's page on the web, opened when the download cannot start.
+     */
+    static void file(Context context, Uri uri, String fileName, Uri page) {
+        String sub = folder();
+        String mime = mimeType(fileName, null);
+        // Without a type the manager takes the API's, which would add .json to the name.
+        enqueue(context, new Intent(Intent.ACTION_VIEW, page), uri, fileName,
+                mime != null ? mime : "application/octet-stream", sub.isEmpty() ? fileName : sub + "/" + fileName,
+                token(uri), true);
     }
 
     /** Subfolder under Download, or empty to save directly in Download. */
@@ -107,20 +139,22 @@ public final class AssetsDownload {
         String resolvedName = fileName;
         String resolvedMime = mimeType(fileName, contentType);
 
-        if (authToken != null && isGitHubReleaseUrl(uri)) {
+        if (token(Uri.parse(API)) != null && isGitHubReleaseUrl(uri)) {
             Toast.makeText(context, I18n.f("Downloading to %1$s", location()), Toast.LENGTH_SHORT).show();
             new Thread(() -> {
                 Uri resolved = resolveForPrivateRepo(uri, resolvedName);
                 new Handler(Looper.getMainLooper()).post(() ->
-                        enqueue(context, intent, resolved != null ? resolved : uri, resolvedName, resolvedMime, subPath, false));
+                        enqueue(context, intent, resolved != null ? resolved : uri, resolvedName, resolvedMime, subPath,
+                                null, false));
             }).start();
             return;
         }
-        enqueue(context, intent, uri, resolvedName, resolvedMime, subPath, true);
+        enqueue(context, intent, uri, resolvedName, resolvedMime, subPath, null, true);
     }
 
+    /** Queues a download. A token asks the API for a file's bytes; release assets need none. */
     private static void enqueue(Context context, Intent fallbackIntent, Uri uri, String fileName,
-            String mime, String subPath, boolean showToast) {
+            String mime, String subPath, String token, boolean showToast) {
         try {
             DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
             if (manager == null) {
@@ -132,6 +166,10 @@ public final class AssetsDownload {
                     .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                     .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, subPath);
             if (mime != null) request.setMimeType(mime);
+            if (token != null) {
+                request.addRequestHeader("Authorization", "token " + token)
+                        .addRequestHeader("Accept", RepoFile.RAW);
+            }
             manager.enqueue(request);
             if (showToast) {
                 Toast.makeText(context, I18n.f("Downloading to %1$s", location()), Toast.LENGTH_SHORT).show();
@@ -150,7 +188,7 @@ public final class AssetsDownload {
 
     /**
      * Checks whether {@code uri} is publicly reachable; on 404 (private repo), resolves the asset via the GitHub
-     * REST API with {@link #authToken} to obtain a pre-signed CDN URL.
+     * REST API with the account's token to obtain a pre-signed CDN URL.
      */
     private static Uri resolveForPrivateRepo(Uri uri, String fileName) {
         try {
@@ -163,13 +201,13 @@ public final class AssetsDownload {
             head.disconnect();
             if (code == 200 || (code >= 300 && code < 400)) return uri;
 
-            String token = authToken;
+            String token = token(Uri.parse(API));
             if (token == null) return uri;
             List<String> segs = uri.getPathSegments();
             String owner = Uri.encode(segs.get(0));
             String repo = Uri.encode(segs.get(1));
             String tag = Uri.encode(segs.get(4));
-            String releaseJson = getJson("https://api.github.com/repos/" + owner + "/" + repo + "/releases/tags/" + tag, token);
+            String releaseJson = getJson(API + "/repos/" + owner + "/" + repo + "/releases/tags/" + tag, token);
             if (releaseJson == null) return uri;
 
             JSONArray assets = new JSONObject(releaseJson).optJSONArray("assets");
