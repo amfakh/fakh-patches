@@ -1,6 +1,6 @@
 # Warung Life Simulator
 
-Patches for **Warung Life Simulator** (`com.neopawstudio.warunglife`), version `1.2`, as an APKS bundle (APKCube)
+Patches for **Warung Life Simulator** (`com.neopawstudio.warunglife`), versions `1.2` and `1.3`, as an APKS bundle (APKCube)
 or merged APK.
 
 ## Patches
@@ -54,9 +54,9 @@ See the [repo README](../../README.md).
 With [morphe-desktop](https://github.com/MorpheApp/morphe-desktop/releases) 2.2.0 or newer (needs Java 21):
 
 ```bash
-java -jar morphe-desktop-2.2.0-all.jar patch -p patches/build/libs/patches-<version>.mpp -o warunglife-patched.apk <Warung Life 1.2 APKS>
+java -jar morphe-desktop-2.2.0-all.jar patch -p patches/build/libs/patches-<version>.mpp -o warunglife-patched.apk <Warung Life 1.3 APKS>
 ```
 
 ## Getting the APK
 
-Download the `1.2` APKS from APKCube by hand. Morphe Manager's own lookup only knows APKMirror and Uptodown pages.
+Download the `1.3` APKS from APKCube by hand. Morphe Manager's own lookup only knows APKMirror and Uptodown pages.
