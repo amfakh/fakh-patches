@@ -24,6 +24,8 @@ Enabled by default.
 | Feature | Show exact time | Shows dates and times instead of ages such as **20d**, in lists, issues, pull requests, comments and notifications. Where there is little room it shows the time for today and the date otherwise. |
 | Feature | Show whitespace | Spaces in files and diffs show as dim dots and tabs as dim » marks. Copied lines stay as they are. |
 | Feature | Repository age | Shows when a repository was created under its stars and forks: the date with **Show exact time**, otherwise how long ago. |
+| Feature | Release download count | Shows how many times each file of a release was downloaded, next to its size. |
+| Feature | Collapse bot comments | Comments by bots and agents such as Copilot start collapsed behind **Show bot comment**; tap it to read one. Descriptions of issues and pull requests stay open. |
 | Feature | Mermaid diagrams | Mermaid code blocks in READMEs, issues, pull requests and comments show as diagrams, drawn by a copy of Mermaid inside the app. Tap one to open it full screen, where you can zoom and drag it. |
 | Feature | Icon-only floating buttons | The floating **Comment**, **New session** and **Finish your review** buttons show without their text, so they cover less of the screen. Screen readers still read the label. |
 

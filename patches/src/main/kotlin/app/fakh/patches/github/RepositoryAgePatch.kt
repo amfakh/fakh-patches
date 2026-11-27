@@ -8,7 +8,6 @@ package app.fakh.patches.github
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.classDefByOrNull
 import app.morphe.patcher.patch.classDefForEach
@@ -16,152 +15,23 @@ import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod
 import app.morphe.patcher.util.proxy.mutableTypes.MutableMethod.Companion.toMutable
-import app.morphe.patcher.util.smali.ExternalLabel
 import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
-import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction21c
-import com.android.tools.smali.dexlib2.builder.instruction.BuilderInstruction31c
 import com.android.tools.smali.dexlib2.iface.Method
-import com.android.tools.smali.dexlib2.iface.instruction.Instruction
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
-import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.formats.Instruction35c
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
-import com.android.tools.smali.dexlib2.iface.reference.StringReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
-import com.android.tools.smali.dexlib2.immutable.reference.ImmutableStringReference
 
 private const val AGE = "Lapp/fakh/extension/github/RepositoryAge;"
 
 private const val STRING = "Ljava/lang/String;"
 
-private const val LIST = "Ljava/util/List;"
-
 /** The start of the fragment every repository query shares, up to the field the new ones go after. */
 private const val DETAILS = "fragment RepositoryDetailsFragment on Repository { __typename id "
-
-private val Instruction.string get() = ((this as? ReferenceInstruction)?.reference as? StringReference)?.string
-
-private val MethodReference.types get() = parameterTypes.map(CharSequence::toString)
-
-private val Method.instructions get() = implementation?.instructions?.toList().orEmpty()
-
-/** Whether a call reads the next field name of a response: it takes the names to look for and returns the index. */
-private val Instruction.selectsName
-    get() = opcode == Opcode.INVOKE_INTERFACE && method?.let { it.returnType == "I" && it.types == listOf(LIST) } == true
-
-/** Asks for the creation date, and for the id again under another name so the parser can tell whose date it reads. */
-private fun MutableMethod.askForDate() {
-    instructions.forEachIndexed { index, instruction ->
-        val query = instruction.string?.takeIf { DETAILS in it } ?: return@forEachIndexed
-        val register = (instruction as OneRegisterInstruction).registerA
-        val text = ImmutableStringReference(query.replace(DETAILS, "${DETAILS}fakhKey: id createdAt "))
-        replaceInstruction(
-            index,
-            if (instruction.opcode == Opcode.CONST_STRING_JUMBO) {
-                BuilderInstruction31c(Opcode.CONST_STRING_JUMBO, register, text)
-            } else {
-                BuilderInstruction21c(Opcode.CONST_STRING, register, text)
-            },
-        )
-    }
-}
-
-/**
- * Makes the response parser [type] read the two new fields. They join the end of its field names, and are handled right
- * after a name is read, before the switch whose default would end the loop.
- */
-private fun readDate(type: String) {
-    val parserClass = mutableClassDefBy(type)
-    val parser = parserClass.methods.single { method -> method.instructions.any { it.selectsName } }
-    val instructions = parser.instructions
-    val selectAt = instructions.indices.single { instructions[it].selectsName }
-    val reader = instructions[selectAt].method!!.definingClass
-    val adapters = parser.parameterTypes[1].toString()
-    if (instructions[selectAt - 1].opcode != Opcode.SGET_OBJECT ||
-        instructions[selectAt + 1].opcode != Opcode.MOVE_RESULT
-    ) {
-        throw PatchException("Repository parser $type: the field name loop changed")
-    }
-    // The reader and the adapters are read again here, so nothing may have been stored in their registers.
-    val parameters = parser.implementation!!.registerCount - 2
-    if (instructions.any { it.opcode.setsRegister() && (it as OneRegisterInstruction).registerA >= parameters }) {
-        throw PatchException("Repository parser $type reuses its parameter registers")
-    }
-    // The adapter the parser itself reads a string with: a static field, called right before a cast to a string.
-    val callAt = instructions.indices.firstOrNull { index ->
-        index > 0 && instructions[index - 1].opcode == Opcode.SGET_OBJECT &&
-            instructions[index].method?.types == listOf(reader, adapters) &&
-            instructions.subList(index + 1, minOf(index + 4, instructions.size)).any {
-                it.opcode == Opcode.CHECK_CAST && it.typeReference == STRING
-            }
-    } ?: throw PatchException("Repository parser $type: string adapter not found")
-    val call = instructions[callAt].method!!
-    val adapter = instructions[callAt - 1].field!!
-    val invoke = if (instructions[callAt].opcode == Opcode.INVOKE_INTERFACE) "invoke-interface" else "invoke-virtual"
-
-    listOf("fakhId" to "id", "fakhCreated" to "created").forEach { (name, take) ->
-        parserClass.methods.add(
-            ImmutableMethod(
-                type,
-                name,
-                listOf(ImmutableMethodParameter(reader, null, null), ImmutableMethodParameter(adapters, null, null)),
-                "V",
-                AccessFlags.PUBLIC.value or AccessFlags.STATIC.value,
-                null,
-                null,
-                MutableMethodImplementation(3),
-            ).toMutable().apply {
-                addInstructions(
-                    0,
-                    """
-                        sget-object v0, ${adapter.smali}
-                        $invoke { v0, p0, p1 }, ${call.smali}
-                        move-result-object v0
-                        invoke-static { v0 }, $AGE->$take(Ljava/lang/Object;)V
-                        return-void
-                    """,
-                )
-            },
-        )
-    }
-
-    val classInit = parserClass.methods.single { it.name == "<clinit>" }
-    val init = classInit.instructions
-    val listAt = init.indices.single { init[it].method?.returnType == LIST }
-    val names = (init[listAt - 2] as? RegisterRangeInstruction)?.registerCount
-        ?: throw PatchException("Repository parser $type: field names not found")
-
-    val register = (instructions[selectAt + 1] as OneRegisterInstruction).registerA
-    parser.addInstructionsWithLabels(
-        selectAt + 2,
-        """
-            add-int/lit8 v$register, v$register, -$names
-            if-ltz v$register, :known
-            if-nez v$register, :date
-            invoke-static/range { p0 .. p1 }, $type->fakhId($reader$adapters)V
-            goto/32 :next
-            :date
-            invoke-static/range { p0 .. p1 }, $type->fakhCreated($reader$adapters)V
-            goto/32 :next
-            :known
-            add-int/lit8 v$register, v$register, $names
-        """,
-        ExternalLabel("next", instructions[selectAt - 1]),
-    )
-
-    val list = (init[listAt + 1] as OneRegisterInstruction).registerA
-    classInit.addInstructions(
-        listAt + 2,
-        """
-            invoke-static/range { v$list .. v$list }, $AGE->names($LIST)$LIST
-            move-result-object v$list
-        """,
-    )
-}
 
 /**
  * Draws the line under the stars and forks of the repository screen. Every Compose call in it is copied from the row
@@ -372,8 +242,10 @@ val repositoryAgePatch = patch(
             statsRow,
         )
         queries.forEach { (type, name) ->
-            mutableClassDefBy(type).methods.filter { it.name == name }.forEach { it.askForDate() }
+            mutableClassDefBy(type).methods.filter { it.name == name }.forEach {
+                it.addToQuery(DETAILS, "fakhKey: id createdAt")
+            }
         }
-        parsers.forEach(::readDate)
+        parsers.forEach { readAddedFields(it, AGE, "id", "created") }
     }
 }

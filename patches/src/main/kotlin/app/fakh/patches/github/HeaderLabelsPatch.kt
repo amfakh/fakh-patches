@@ -57,8 +57,6 @@ private object HeaderModelFingerprint : Fingerprint(
 
 private val Instruction.typeName get() = ((this as? ReferenceInstruction)?.reference as? TypeReference)?.type
 
-private val MethodReference.types get() = parameterTypes.map(CharSequence::toString)
-
 /** Whether this is a label chips composable: `(Modifier, List, TextStyle, Composer, Int, Int)` reading each label's name and color. */
 private fun Method.drawsLabels(composer: String): Boolean {
     val types = parameterTypes.map(CharSequence::toString)

@@ -31,8 +31,6 @@ private object ReviewButtonFingerprint : Fingerprint(
     filters = listOf(resourceLiteral(ResourceType.STRING, "issue_pr_review_review_finish")),
 )
 
-private val MethodReference.types get() = parameterTypes.map(CharSequence::toString)
-
 /** Whether this draws an icon: `(painter, contentDescription, Modifier, tint, Composer, Int, Int)`. */
 private val Instruction.isIcon
     get() = method?.types?.let { it.size == 7 && it[1] == STRING && it[3] == "J" && it[5] == "I" && it[6] == "I" } == true

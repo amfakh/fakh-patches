@@ -456,6 +456,76 @@
       ]
     },
     {
+      "name": "Collapse bot comments",
+      "description": "Comments by bots and agents such as Copilot start collapsed. Descriptions stay open.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.282.0",
+              "versionCodes": {
+                "ARM64_V8A": 953,
+                "ARMEABI_V7A": 953,
+                "X86_64": 953,
+                "X86": 953
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.283.0",
+              "versionCodes": {
+                "ARM64_V8A": 954,
+                "ARMEABI_V7A": 954,
+                "X86_64": 954,
+                "X86": 954
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.284.0",
+              "versionCodes": {
+                "ARM64_V8A": 955,
+                "ARMEABI_V7A": 955,
+                "X86_64": 955,
+                "X86": 955
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Collapse long code blocks",
       "description": "Folds code blocks longer than 25 lines to their first 20, with a button that shows all of them.",
       "default": true,
@@ -10996,6 +11066,76 @@
                 "ARMEABI_V7A": 2318,
                 "X86_64": 2318,
                 "X86": 2318
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Release download count",
+      "description": "Shows how many times each file of a release was downloaded, next to its size.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.282.0",
+              "versionCodes": {
+                "ARM64_V8A": 953,
+                "ARMEABI_V7A": 953,
+                "X86_64": 953,
+                "X86": 953
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.283.0",
+              "versionCodes": {
+                "ARM64_V8A": 954,
+                "ARMEABI_V7A": 954,
+                "X86_64": 954,
+                "X86": 954
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.284.0",
+              "versionCodes": {
+                "ARM64_V8A": 955,
+                "ARMEABI_V7A": 955,
+                "X86_64": 955,
+                "X86": 955
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
