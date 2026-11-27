@@ -16,6 +16,10 @@ Enabled by default.
 | Feature | Landscape navigation bar position | Adds a **Landscape navigation bar position** setting in Fakh Patches that moves the landscape navigation bar to the left or right edge. |
 | Feature | Smaller navigation bar | Adds a **Smaller navigation bar** switch in Fakh Patches that shrinks the navigation bar height, the space between icon and label, and the label text size. |
 | Feature | Download assets | Downloads a release asset straight with Android's download manager when you tap **Download** in its menu, instead of opening the browser. Adds a **Download location** setting in Fakh Patches (default folder `GitHub` in Downloads). If the download cannot start, it falls back to the browser. |
+| Feature | Recently updated first | Issue and pull request lists open sorted by **Recently updated** instead of **Newest**, lists you opened before the patch included. Another sort you pick lasts until you leave the list. |
+| Feature | Tab width | Tabs in code blocks of READMEs, issues, pull requests and comments are 2, 4 (default) or 8 spaces wide, picked in the patch options. The app uses 8. |
+| Feature | Collapse long code blocks | Code blocks longer than 25 lines show their first 20 lines and a **Show all N lines** button that opens the block in place. |
+| Feature | Shorten links | A pasted GitHub link whose text is its own address reads as a short reference: `owner/repo#123`, `owner/repo#5 (comment)`, `owner/repo@0123456`, `owner/repo/path@main`, `owner/repo@v1.2`, `@user`. Other links drop `https://` and `www.`. Links with their own text stay as written, and every link still opens the same page. |
 
 The app draws its screens with both Views and Jetpack Compose, so the patch recolors both: resource
 colors for the Views, and the Compose palettes and schemes when the app starts. Markdown and README
