@@ -171,7 +171,7 @@ final class ChoiceSheets {
                 I18n.tr("Landscape navigation bar position"), null, colors[0], colors[1], colors[2], rows, null);
     }
 
-    /** The sheet of the tab width in code blocks, chosen with a tap, which also closes it. */
+    /** The sheet of the tab width in code, chosen with a tap, which also closes it. */
     private static void openTabWidth() {
         Activity from = activity.get();
         if (from == null) return;
@@ -192,7 +192,7 @@ final class ChoiceSheets {
             MaterialYou.showRestartBar(from);
         });
         sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Tab width"),
-                I18n.tr("In code blocks of comments and READMEs. The app uses 8."), colors[0], colors[1], colors[2], rows,
+                I18n.tr("In files, diffs and code blocks. The app uses 8."), colors[0], colors[1], colors[2], rows,
                 null);
     }
 

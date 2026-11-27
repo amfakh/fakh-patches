@@ -566,25 +566,41 @@ public final class NavigationBar {
             public void onGlobalLayout() {
                 if (host.getWidth() == 0 || host.getHeight() == 0) return;
                 host.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                host.postDelayed(() -> {
-                    if (!host.isAttachedToWindow()) return;
-                    // One pixel copied from what the window shows: drawing the page into a software canvas throws
-                    // on the hardware bitmaps some pages hold, such as avatars on Explore.
-                    int[] place = new int[2];
-                    host.getLocationInWindow(place);
-                    int x = place[0] + 2;
-                    int y = place[1] + host.getHeight() / 2;
-                    android.graphics.Bitmap pixel = android.graphics.Bitmap.createBitmap(1, 1, android.graphics.Bitmap.Config.ARGB_8888);
-                    android.view.PixelCopy.request(activity.getWindow(), new android.graphics.Rect(x, y, x + 1, y + 1), pixel, result -> {
-                        int color = pixel.getPixel(0, 0);
-                        if (result == android.view.PixelCopy.SUCCESS && Color.alpha(color) == 255 && capsule != null) {
-                            pageColor = color;
-                            capsule.setColor(color);
-                        }
-                    }, host.getHandler());
-                }, 600);
+                host.postDelayed(() -> readPageColor(activity, host), 600);
             }
         });
+    }
+
+    /** Copies the pixel of {@code host} that {@link #matchPage} is after, and colors the capsule with it. */
+    private static void readPageColor(Activity activity, View host) {
+        if (!host.isAttachedToWindow()) return;
+        // One pixel copied from what the window shows: drawing the page into a software canvas throws on the
+        // hardware bitmaps some pages hold, such as avatars on Explore.
+        int[] place = new int[2];
+        host.getLocationInWindow(place);
+        int x = place[0] + 2;
+        int y = place[1] + host.getHeight() / 2;
+        android.graphics.Bitmap pixel = android.graphics.Bitmap.createBitmap(1, 1, android.graphics.Bitmap.Config.ARGB_8888);
+        try {
+            android.view.PixelCopy.request(activity.getWindow(), new android.graphics.Rect(x, y, x + 1, y + 1), pixel, result -> {
+                int color = pixel.getPixel(0, 0);
+                if (result == android.view.PixelCopy.SUCCESS && Color.alpha(color) == 255 && capsule != null) {
+                    pageColor = color;
+                    capsule.setColor(color);
+                }
+            }, host.getHandler());
+        } catch (IllegalArgumentException noSurface) {
+            // The window shows nothing yet, as when a theme change rebuilds a screen behind another one. Read the
+            // color once the screen is in front.
+            host.getViewTreeObserver().addOnWindowFocusChangeListener(new android.view.ViewTreeObserver.OnWindowFocusChangeListener() {
+                @Override
+                public void onWindowFocusChanged(boolean focused) {
+                    if (!focused) return;
+                    host.getViewTreeObserver().removeOnWindowFocusChangeListener(this);
+                    host.postDelayed(() -> readPageColor(activity, host), 600);
+                }
+            });
+        }
     }
 
     private static boolean glass() {

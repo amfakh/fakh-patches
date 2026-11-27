@@ -8,8 +8,9 @@ package app.fakh.extension.github;
 import app.fakh.extension.shared.Features;
 
 /**
- * Draws the spaces and tabs of file and diff lines. The app turns each line's HTML into the HTML it shows: spaces and
- * tabs are marked while it reads the text, and the marks become dim symbols once the HTML is written.
+ * Draws the spaces and tabs of file and diff lines. The app turns each line's HTML into the HTML it shows: tabs get the
+ * picked width and spaces and tabs are marked while it reads the text, and the marks become dim symbols once the HTML is
+ * written.
  */
 @SuppressWarnings("unused")
 public final class Whitespace {
@@ -26,15 +27,19 @@ public final class Whitespace {
     }
 
     /**
-     * Marks the whitespace of a piece of code.
+     * Gives the tabs of a piece of code their width, and marks its whitespace with the switch on.
      *
      * @param text The text of one piece of a line.
-     * @return The text with each space marked, and each tab as a mark followed by the rest of its 8 columns; the text
-     *     itself with the switch off.
+     * @return The text with each marked space replaced, and each tab as a mark followed by the rest of its columns. With
+     *     the switch off, each tab is as many spaces as it is wide, or stays for the app to widen to its own 8.
      */
     public static String mark(String text) {
-        if (!Features.on("fakh_whitespace")) return text;
-        return text.replace(' ', SPACE).replace("\t", TAB + "       ");
+        int width = MarkdownSettings.pickedTabWidth();
+        String columns = "        ".substring(0, width);
+        if (Features.on("fakh_whitespace")) {
+            return text.replace(' ', SPACE).replace("\t", TAB + columns.substring(1));
+        }
+        return width == 8 ? text : text.replace("\t", columns);
     }
 
     /**

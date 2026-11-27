@@ -76,6 +76,19 @@ private fun MutableMethod.mapResults(
     return results.size
 }
 
+/** Hands the text of each piece of a file or diff line to the extension, before the app replaces its whitespace. */
+internal val codeTextPatch = patch {
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        // The first string the visitor reads is the text.
+        val marked = CodeTextFingerprint.method.mapResults("mark", limit = 1) {
+            it.parameterTypes.isEmpty() && it.returnType == STRING && it.name != "toString"
+        }
+        if (marked != 1) throw PatchException("Code line text read not found: $marked")
+    }
+}
+
 @Suppress("unused")
 val showWhitespacePatch = patch(
     name = "Show whitespace",
@@ -84,16 +97,10 @@ val showWhitespacePatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
-    dependsOn(githubSettingsPatch)
-    extendWith("extensions/extension.mpe")
+    dependsOn(githubSettingsPatch, codeTextPatch)
 
     execute {
         register(WHITESPACE_SWITCH)
-        // The text of the line, the first string the visitor reads, before the app replaces its spaces.
-        val marked = CodeTextFingerprint.method.mapResults("mark", limit = 1) {
-            it.parameterTypes.isEmpty() && it.returnType == STRING && it.name != "toString"
-        }
-        if (marked != 1) throw PatchException("Code line text read not found: $marked")
 
         // Every string the converter builds, so the finished line gets the symbols; the others hold no marks.
         val shown = CodeLineFingerprint.method.mapResults("show") {

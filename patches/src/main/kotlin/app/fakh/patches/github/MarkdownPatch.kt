@@ -62,7 +62,7 @@ internal fun appendToMarkdownView(file: File, text: String) {
 }
 
 /** Lets the scripts of the markdown page ask which switches are on, through `window.fakhSettings`. */
-private val markdownSettingsPatch = patch {
+internal val markdownSettingsPatch = patch {
     dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
@@ -72,7 +72,7 @@ private val markdownSettingsPatch = patch {
 }
 
 /** [body], run only while the switch of [feature] is on. */
-private fun whileOn(feature: Feature, body: String) =
+internal fun whileOn(feature: Feature, body: String) =
     "if (window.fakhSettings.on('${feature.id}')) {\n${body.trimIndent().prependIndent("  ")}\n}"
 
 /**
@@ -184,20 +184,20 @@ val mermaidDiagramsPatch = patch(
 @Suppress("unused")
 val tabWidthPatch = patch(
     name = "Tab width",
-    description = "Shows tabs in code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option is the width until " +
-        "another is picked in Fakh Patches.",
+    description = "Shows tabs in files, diffs and code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option " +
+        "is the width until another is picked in Fakh Patches.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
-    dependsOn(markdownSettingsPatch)
+    dependsOn(markdownSettingsPatch, codeTextPatch)
 
     val width = intOption(
         key = "width",
         default = 4,
         values = listOf(2, 4, 8).associateBy { "$it spaces" },
         title = "Width",
-        description = "How many spaces a tab takes in code blocks.",
+        description = "How many spaces a tab takes in code.",
         required = true,
     ) { value -> value in listOf(2, 4, 8) }
 
@@ -346,7 +346,7 @@ val shortenLinksPatch = patch(
                       return plain
                     }
                     for (const link of document.querySelectorAll('#content a[href]')) {
-                      if (link.childElementCount > 0) continue
+                      if (link.childElementCount > 0 || link.closest('pre, code')) continue
                       const text = link.textContent.trim()
                       if (text !== link.href && text !== link.getAttribute('href') && text + '/' !== link.href) continue
                       try {

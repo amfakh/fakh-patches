@@ -57,7 +57,7 @@ object Constants {
         description = "Issue and pull request lists open sorted by Recently updated.",
     )
     val DIM_BOTS = Feature(
-        "fakh_dim_bots", "Dim bots", "Titles and lists", description = "Fades commits, issues and pull requests by bots.",
+        "fakh_dim_bots", "Dim bots", "Titles and lists", description = "Fades commits, issues, pull requests and events by bots.",
     )
     val REPOSITORY_AGE = Feature(
         "fakh_repository_age", "Repository age", "Titles and lists",
@@ -84,6 +84,18 @@ object Constants {
         "fakh_collapse_code", "Collapse long code blocks", "Comments and markdown",
         description = "Code blocks longer than 25 lines start folded.",
     )
+    val PREVIEW_HIDDEN = Feature(
+        "fakh_preview_hidden", "Preview hidden comments", "Comments and markdown",
+        description = "The start of a hidden comment shows under its reason.",
+    )
+    val EDITOR_BUTTONS = Feature(
+        "fakh_editor_buttons", "Section and table buttons", "Comments and markdown",
+        description = "Toolbar buttons that add a collapsible section or a table.",
+    )
+    val HIDE_COPILOT_NOTE = Feature(
+        "fakh_hide_copilot_note", "Hide Copilot note", "Comments and markdown",
+        description = "Removes the AI mistakes line under Copilot's comments.",
+    )
     val MERMAID = Feature(
         "fakh_mermaid", "Mermaid diagrams", "Comments and markdown",
         description = "Draws Mermaid code blocks as diagrams.",
@@ -95,6 +107,10 @@ object Constants {
         description = "Spaces and tabs show as dim marks in files and diffs.",
     )
 
+    val LINKIFY_CODE = Feature(
+        "fakh_linkify_code", "Linkify code", "Code and files",
+        description = "Addresses and owner/repo#123 in code open when tapped.",
+    )
     val HTML_PREVIEW = Feature(
         "fakh_html_preview", "HTML preview", "Code and files",
         description = "Preview in the menu of an HTML file.",

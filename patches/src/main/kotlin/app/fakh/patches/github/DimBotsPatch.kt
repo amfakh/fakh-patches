@@ -23,12 +23,15 @@ import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.builder.MutableMethodImplementation
 import com.android.tools.smali.dexlib2.iface.Method
 import com.android.tools.smali.dexlib2.iface.instruction.OneRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val BOTS = "Lapp/fakh/extension/github/Bots;"
 
 private const val OBJECT = "Ljava/lang/Object;"
+
+private const val VIEW = "Landroid/view/View;"
 
 /** The list queries and the starts of their row fragments, up to where the new fields go. */
 private val ROWS = listOf(
@@ -80,10 +83,65 @@ private fun findAlpha(): Method {
     return found.singleOrNull() ?: throw PatchException("Modifier alpha not found: ${found.map { it.definingClass }}")
 }
 
+/**
+ * Hands each row of a timeline and its item to the extension when the list binds them, in every adapter that shows the
+ * card of a cross reference.
+ */
+private fun fadeEvents() {
+    var card: String? = null
+    classDefForEach { classDef ->
+        if (classDef.methods.any { method ->
+                method.name == "toString" &&
+                    method.instructions.any { it.string?.startsWith("ListItemCrossReference(reference=") == true }
+            }
+        ) card = classDef.type
+    }
+    val cardType = card ?: throw PatchException("Cross reference item not found")
+    // The binding methods: a row's holder, an item and its position, and a check for the card's class.
+    val binders = mutableListOf<Target>()
+    classDefForEach { classDef ->
+        classDef.methods.forEach { method ->
+            val types = method.parameterTypes.map(CharSequence::toString)
+            if (!AccessFlags.STATIC.isSet(method.accessFlags) && method.returnType == "V" && types.size == 3 &&
+                types[2] == "I" && method.instructions.any {
+                    it.opcode == Opcode.INSTANCE_OF && (it as ReferenceInstruction).reference.toString() == cardType
+                }
+            ) {
+                binders += Target(classDef.type, method.signature)
+            }
+        }
+    }
+    if (binders.isEmpty()) throw PatchException("Timeline row binding not found")
+
+    binders.forEach { target ->
+        val method = mutableClassDefBy(target.type).methods.first { it.signature == target.signature }
+        // The row's view is the one view field of the holder's base class, which the list library renames.
+        var holder = classDefByOrNull(method.parameterTypes.first().toString())
+        var view: String? = null
+        while (view == null && holder != null) {
+            val found = holder.fields.singleOrNull {
+                it.type == VIEW && AccessFlags.PUBLIC.isSet(it.accessFlags) && AccessFlags.FINAL.isSet(it.accessFlags)
+            }
+            if (found != null) view = "${holder.type}->${found.name}:$VIEW"
+            holder = holder.superclass?.let { classDefByOrNull(it) }
+        }
+        method.addInstructions(
+            0,
+            """
+                move-object/from16 v0, p1
+                iget-object v0, v0, ${view ?: throw PatchException("Timeline row view not found")}
+                move-object/from16 v1, p2
+                invoke-static { v0, v1 }, $BOTS->event($VIEW$OBJECT)V
+            """,
+        )
+    }
+}
+
 @Suppress("unused")
 val dimBotsPatch = patch(
     name = "Dim bots",
-    description = "Commits, issues and pull requests by bots are faded in their lists.",
+    description = "Commits, issues and pull requests by bots are faded in their lists, and so are the events bots " +
+        "add to timelines.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
@@ -212,6 +270,8 @@ val dimBotsPatch = patch(
                 """,
             )
         }
+
+        fadeEvents()
 
         queries.forEach { target ->
             val method = find(target)

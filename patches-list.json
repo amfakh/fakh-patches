@@ -1015,7 +1015,7 @@
     },
     {
       "name": "Dim bots",
-      "description": "Commits, issues and pull requests by bots are faded in their lists.",
+      "description": "Commits, issues and pull requests by bots are faded in their lists, and so are the events bots add to timelines.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -4572,6 +4572,40 @@
                 "ARMEABI_V7A": 49,
                 "X86_64": 49,
                 "X86": 49
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide Copilot note",
+      "description": "Removes the line under Copilot's comments that says it is powered by AI and can make mistakes.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -8594,6 +8628,40 @@
       ]
     },
     {
+      "name": "Linkify code",
+      "description": "Opens addresses and references such as owner/repo#123 in files, diffs and code blocks when tapped.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Mark as read when you reply",
       "description": "With Ghost mode on, marks a chat you reply to as read.",
       "default": true,
@@ -10615,6 +10683,40 @@
       "options": []
     },
     {
+      "name": "Preview hidden comments",
+      "description": "Shows the start of a hidden comment under the reason it is hidden.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Puzzle games shortcut",
       "description": "Adds Puzzle games to the shortcuts of the LinkedIn app icon.",
       "default": true,
@@ -11041,6 +11143,40 @@
                 "ARMEABI_V7A": 218600,
                 "X86_64": 218600,
                 "X86": 218600
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Section and table buttons",
+      "description": "Adds buttons to the markdown toolbars that insert a collapsible section or a table around the selected text.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -12142,7 +12278,7 @@
     },
     {
       "name": "Tab width",
-      "description": "Shows tabs in code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option is the width until another is picked in Fakh Patches.",
+      "description": "Shows tabs in files, diffs and code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option is the width until another is picked in Fakh Patches.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -12176,7 +12312,7 @@
         {
           "key": "width",
           "title": "Width",
-          "description": "How many spaces a tab takes in code blocks.",
+          "description": "How many spaces a tab takes in code.",
           "required": true,
           "type": "kotlin.Int",
           "default": 4,
