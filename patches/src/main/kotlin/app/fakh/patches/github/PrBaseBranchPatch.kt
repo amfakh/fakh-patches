@@ -6,7 +6,7 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
-import app.fakh.patches.github.shared.Constants.PR_BASE_BRANCH
+import app.fakh.patches.github.shared.Constants.SHOW_BASE_BRANCH
 import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -43,8 +43,8 @@ private const val PR_FRAGMENT = "fragment PullRequestItemFragment on PullRequest
 private const val BASE_FIELDS = "fakhPrId: id fakhPrBranch: baseRef { name repository { defaultBranchRef { name } } }"
 
 @Suppress("unused")
-val prBaseBranchPatch = patch(
-    name = "PR base branch",
+val showBaseBranchPatch = patch(
+    name = "Show base branch in pull requests",
     description = "Shows the base branch in pull request lists when it is not the default branch.",
     default = true,
 ) {
@@ -54,7 +54,7 @@ val prBaseBranchPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(PR_BASE_BRANCH)
+        register(SHOW_BASE_BRANCH)
 
         val queries = mutableListOf<Pair<String, String>>()
         val parsers = mutableListOf<String>()

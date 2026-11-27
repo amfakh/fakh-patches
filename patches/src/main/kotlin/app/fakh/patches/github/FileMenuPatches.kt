@@ -6,9 +6,9 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
-import app.fakh.patches.github.shared.Constants.DOWNLOAD_FILES
-import app.fakh.patches.github.shared.Constants.DOWNLOAD_FOLDER
-import app.fakh.patches.github.shared.Constants.HTML_PREVIEW
+import app.fakh.patches.github.shared.Constants.FILE_DOWNLOAD_MENU
+import app.fakh.patches.github.shared.Constants.DOWNLOAD_LOCATION
+import app.fakh.patches.github.shared.Constants.HTML_PREVIEW_MENU
 import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -88,8 +88,8 @@ private val fileMenuPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val downloadFilesPatch = patch(
-    name = "Download files",
+val addFileDownloadMenuPatch = patch(
+    name = "Add download menu to every file",
     description = "Adds Download to the menu of an open file, which saves it with the system download manager.",
     default = true,
 ) {
@@ -98,13 +98,13 @@ val downloadFilesPatch = patch(
     dependsOn(githubSettingsPatch, fileMenuPatch)
 
     execute {
-        register(DOWNLOAD_FILES, DOWNLOAD_FOLDER)
+        register(FILE_DOWNLOAD_MENU, DOWNLOAD_LOCATION)
     }
 }
 
 @Suppress("unused")
-val htmlPreviewPatch = patch(
-    name = "HTML preview",
+val addHtmlPreviewMenuPatch = patch(
+    name = "Add Preview menu to HTML files",
     description = "Adds Preview to the menu of an HTML file, which shows the page with the repository's styles and " +
         "images. Scripts stay off until you allow them.",
     default = true,
@@ -114,6 +114,6 @@ val htmlPreviewPatch = patch(
     dependsOn(githubSettingsPatch, fileMenuPatch)
 
     execute {
-        register(HTML_PREVIEW)
+        register(HTML_PREVIEW_MENU)
     }
 }

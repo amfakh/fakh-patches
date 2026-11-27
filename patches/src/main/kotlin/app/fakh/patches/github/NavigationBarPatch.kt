@@ -9,7 +9,7 @@ import app.fakh.patches.github.shared.Constants.NAV_TABS
 import app.fakh.patches.github.shared.Constants.BACKGROUND_BLUR
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.fakh.patches.github.shared.Constants.GLASS_NAVBAR
-import app.fakh.patches.github.shared.Constants.HIDE_TAB_LABELS
+import app.fakh.patches.github.shared.Constants.HIDE_NAV_BAR_LABELS
 import app.fakh.patches.github.shared.Constants.NAV_RIGHT
 import app.fakh.patches.github.shared.Constants.SMALLER_NAVBAR
 import app.fakh.patches.shared.register
@@ -341,8 +341,8 @@ val navigationBarPatch = patch(
 }
 
 @Suppress("unused")
-val hideTabLabelsPatch = patch(
-    name = "Hide tab labels",
+val hideNavigationBarLabelsPatch = patch(
+    name = "Hide navigation bar labels",
     description = "Adds a setting in Fakh Patches that removes the text under the icons of the navigation bar.",
     default = true,
 ) {
@@ -364,7 +364,7 @@ val hideTabLabelsPatch = patch(
             """,
         )
 
-        register(HIDE_TAB_LABELS)
+        register(HIDE_NAV_BAR_LABELS)
     }
 }
 

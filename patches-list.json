@@ -3,6 +3,142 @@
   "version": "2.16.0",
   "patches": [
     {
+      "name": "Add Preview menu to HTML files",
+      "description": "Adds Preview to the menu of an HTML file, which shows the page with the repository's styles and images. Scripts stay off until you allow them.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Add collapsible section",
+      "description": "Adds a button to the markdown toolbars that puts a collapsible <details> section around the selected text.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Add download menu to every file",
+      "description": "Adds Download to the menu of an open file, which saves it with the system download manager.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Add table",
+      "description": "Adds a button to the markdown toolbars that inserts a markdown table template around the selected text.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Allow Developer options",
       "description": "Lets short movies play while Developer options are turned on, instead of asking to turn them off.",
       "default": true,
@@ -456,42 +592,8 @@
       ]
     },
     {
-      "name": "Collapse bot comments",
+      "name": "Collapse bot and agent comments",
       "description": "Comments by bots and agents such as Copilot start collapsed. Descriptions stay open.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Collapse long code blocks",
-      "description": "Folds code blocks longer than 25 lines to their first 20, with a button that shows all of them.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -1014,8 +1116,8 @@
       "options": []
     },
     {
-      "name": "Dim bots",
-      "description": "Commits, issues and pull requests by bots are faded in their lists, and so are the events bots add to timelines.",
+      "name": "Dim bots and agents",
+      "description": "Commits, issues and pull requests by bots and agents such as Copilot are faded in their lists, and so are the events they add to timelines.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -2214,42 +2316,8 @@
       "options": []
     },
     {
-      "name": "Download assets",
+      "name": "Download assets natively",
       "description": "Downloads release assets directly with the system download manager instead of opening the browser.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Download files",
-      "description": "Adds Download to the menu of an open file, which saves it with the system download manager.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -2389,6 +2457,40 @@
                 "ARMEABI_V7A": 218600,
                 "X86_64": 218600,
                 "X86": 218600
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Draw Mermaid diagrams",
+      "description": "Draws Mermaid diagrams in place of their code. Tap a diagram to open it full screen and pinch to zoom.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -2803,8 +2905,8 @@
       "options": []
     },
     {
-      "name": "Follows you",
-      "description": "Shows on user profiles when that user follows you.",
+      "name": "Fold long code blocks",
+      "description": "Folds code blocks longer than 25 lines to their first 20, with a button that shows all of them.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -4162,40 +4264,6 @@
       "options": []
     },
     {
-      "name": "HTML preview",
-      "description": "Adds Preview to the menu of an HTML file, which shows the page with the repository's styles and images. Scripts stay off until you allow them.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Hide \"Recommended for you\"",
       "description": "Hides the lists of people and pages to follow from the feed.",
       "default": true,
@@ -4432,6 +4500,40 @@
       "options": []
     },
     {
+      "name": "Hide + and - diff signs",
+      "description": "Hides the + and - signs on diff lines since additions and deletions are already color coded.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Hide AI ask bar",
       "description": "Removes the \"How can I help?\" Tuya AI bar above the navigation bar and at the bottom of device panels.",
       "default": true,
@@ -4617,7 +4719,7 @@
       "options": []
     },
     {
-      "name": "Hide Copilot note",
+      "name": "Hide Copilot disclaimer",
       "description": "Removes the line under Copilot's comments that says it is powered by AI and can make mistakes.",
       "default": true,
       "category": "Feature",
@@ -6629,40 +6731,6 @@
       "options": []
     },
     {
-      "name": "Hide diff signs",
-      "description": "Hides the + and - signs on diff lines since additions and deletions are already color coded.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Hide engagement counts",
       "description": "Hides the like, comment and repost counts of posts.",
       "default": true,
@@ -7065,6 +7133,40 @@
     {
       "name": "Hide low-quality comments",
       "description": "Hides issue and pull request comments that only say +1, me too or ask for news.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Hide navigation bar labels",
+      "description": "Adds a setting in Fakh Patches that removes the text under the icons of the navigation bar.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -7886,40 +7988,6 @@
     },
     {
       "name": "Hide tab labels",
-      "description": "Adds a setting in Fakh Patches that removes the text under the icons of the navigation bar.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Hide tab labels",
       "description": "Hides the text under the icons of the navigation bar.",
       "default": true,
       "category": "Navigation bar",
@@ -8391,6 +8459,74 @@
       "options": []
     },
     {
+      "name": "Home header text",
+      "description": "Shows your username or display name in the Home header instead of Home.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Icon-only Add to list button",
+      "description": "Shows the Add to list button of a repository without its text, as small as the icon buttons beside it.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Icon-only floating buttons",
       "description": "Shows floating buttons, such as Comment, Re-run and Commit changes, without their text.",
       "default": true,
@@ -8566,40 +8702,6 @@
                 "ARMEABI_V7A": 218600,
                 "X86_64": 218600,
                 "X86": 218600
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Labels in the header",
-      "description": "Shows the labels of an issue or pull request under its title, in a row you can swipe sideways.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -9328,40 +9430,6 @@
       "options": []
     },
     {
-      "name": "Mention avatars",
-      "description": "Shows a small avatar before each @mention in comments, descriptions and READMEs.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Merge article pages",
       "description": "Shows every page of a multi-page article in one continuous article, without the page numbers.",
       "default": true,
@@ -9431,40 +9499,6 @@
                 "ARMEABI_V7A": 466,
                 "X86_64": 466,
                 "X86": 466
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Mermaid diagrams",
-      "description": "Draws Mermaid diagrams in place of their code. Tap a diagram to open it full screen and pinch to zoom.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -10218,8 +10252,56 @@
       "options": []
     },
     {
-      "name": "PR base branch",
-      "description": "Shows the base branch in pull request lists when it is not the default branch.",
+      "name": "Override tab width",
+      "description": "Shows tabs in files, diffs and code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option is the width until another is picked in Fakh Patches.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": [
+        {
+          "key": "width",
+          "title": "Width",
+          "description": "How many spaces a tab takes in code.",
+          "required": true,
+          "type": "kotlin.Int",
+          "default": 4,
+          "values": {
+            "2 spaces": 2,
+            "4 spaces": 4,
+            "8 spaces": 8
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pin important branches",
+      "description": "Lists develop, main, master and staging right after the default branch in the branch picker.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -10252,8 +10334,8 @@
       "options": []
     },
     {
-      "name": "Pinned branches",
-      "description": "Lists develop, main, master and staging right after the default branch in the branch picker.",
+      "name": "Pin recent branches",
+      "description": "Lists the most recently pushed branches near the top of the branch picker, with how long ago.",
       "default": true,
       "category": "Feature",
       "compatiblePackages": [
@@ -11005,74 +11087,6 @@
       "options": []
     },
     {
-      "name": "Recent branches",
-      "description": "Lists the most recently pushed branches near the top of the branch picker, with how long ago.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Recently updated first",
-      "description": "Sorts issue and pull request lists by Recently updated instead of Newest. Another sort you pick lasts until you leave the list.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
       "name": "Redirect Gold purchase",
       "description": "Opens connect.idn.media/my-account/gold in the browser instead of the in-app Gold top up.",
       "default": true,
@@ -11108,74 +11122,6 @@
                 "ARMEABI_V7A": 2318,
                 "X86_64": 2318,
                 "X86": 2318
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Release download count",
-      "description": "Shows how many times each file of a release was downloaded, next to its size.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Repository age",
-      "description": "Shows when a repository was created, under its stars and forks.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -11358,41 +11304,7 @@
       "options": []
     },
     {
-      "name": "Section and table buttons",
-      "description": "Adds buttons to the markdown toolbars that insert a collapsible section or a table around the selected text.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Shorten links",
+      "name": "Shorten GitHub links",
       "description": "Shows pasted links in comments and READMEs as short references, such as owner/repo#123.",
       "default": true,
       "category": "Feature",
@@ -11533,6 +11445,108 @@
                 "ARMEABI_V7A": 218600,
                 "X86_64": 218600,
                 "X86": 218600
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show avatar before each @mention",
+      "description": "Shows a small avatar before each @mention in comments, descriptions and READMEs.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show base branch in pull requests",
+      "description": "Shows the base branch in pull request lists when it is not the default branch.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show download count for assets",
+      "description": "Shows how many times each file of a release was downloaded, next to its size.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -11696,6 +11710,142 @@
       "options": []
     },
     {
+      "name": "Show if a profile follows you",
+      "description": "Shows on user profiles when that user follows you.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show labels in the header",
+      "description": "Shows the labels of an issue or pull request under its title, in a row you can swipe sideways.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show repository age",
+      "description": "Shows when a repository was created, under its stars and forks.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show tags on commits",
+      "description": "Displays git tags next to matching commits in commit lists.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Show video time",
       "description": "Shows the video's time above the seek bar, in the Video tab and the full screen video viewer.",
       "default": true,
@@ -11814,7 +11964,7 @@
       "options": []
     },
     {
-      "name": "Show whitespace",
+      "name": "Show whitespace marks",
       "description": "Shows spaces as dim dots and tabs as dim » marks in files and diffs. Copied lines stay as they are.",
       "default": true,
       "category": "Feature",
@@ -11901,6 +12051,40 @@
             {
               "version": "4.2.30",
               "versionCodes": null,
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Sort by Recently updated first",
+      "description": "Sorts issue and pull request lists by Recently updated instead of Newest. Another sort you pick lasts until you leave the list.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
               "isExperimental": false,
               "minSdk": null,
               "description": null
@@ -12470,88 +12654,6 @@
                 "ARMEABI_V7A": 15,
                 "X86_64": 15,
                 "X86": 15
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Tab width",
-      "description": "Shows tabs in files, diffs and code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option is the width until another is picked in Fakh Patches.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": [
-        {
-          "key": "width",
-          "title": "Width",
-          "description": "How many spaces a tab takes in code.",
-          "required": true,
-          "type": "kotlin.Int",
-          "default": 4,
-          "values": {
-            "2 spaces": 2,
-            "4 spaces": 4,
-            "8 spaces": 8
-          }
-        }
-      ]
-    },
-    {
-      "name": "Tags on commits",
-      "description": "Displays git tags next to matching commits in commit lists.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -13390,40 +13492,6 @@
                 "ARMEABI_V7A": 49,
                 "X86_64": 49,
                 "X86": 49
-              },
-              "isExperimental": false,
-              "minSdk": null,
-              "description": null
-            }
-          ]
-        }
-      ],
-      "options": []
-    },
-    {
-      "name": "Username on Home",
-      "description": "Shows your username or display name in the Home header instead of Home.",
-      "default": true,
-      "category": "Feature",
-      "compatiblePackages": [
-        {
-          "packageName": "com.github.android",
-          "name": "GitHub",
-          "description": null,
-          "apkFileType": "APKM",
-          "appIconColor": "#1B1F23",
-          "signatures": [
-            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
-          ],
-          "formFactor": "MOBILE",
-          "targets": [
-            {
-              "version": "1.285.0",
-              "versionCodes": {
-                "ARM64_V8A": 956,
-                "ARMEABI_V7A": 956,
-                "X86_64": 956,
-                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,

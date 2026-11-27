@@ -38,6 +38,8 @@ import app.fakh.extension.shared.Features;
  */
 @SuppressWarnings("unused")
 public final class ConventionalCommits {
+    static final String FEATURE = "fakh_conventional_commits";
+
     // Starts an issue or pull request title on its way to being drawn. The app draws other texts with the same code, and
     // they stay as they are.
     private static final String MARK = "\u2060";
@@ -221,6 +223,26 @@ public final class ConventionalCommits {
     }
 
     /**
+     * The summary of the switch's row: its description over the pills of three types.
+     *
+     * @param description The translated description.
+     * @return The description, then a line with the pills.
+     */
+    static CharSequence summary(String description) {
+        SpannableStringBuilder summary = new SpannableStringBuilder(description).append('\n');
+        for (String type : new String[]{"feat", "fix", "chore"}) {
+            Object[] label = TYPES.get(type);
+            int from = summary.length();
+            summary.append((String) label[0]);
+            summary.setSpan(new PillSpan((Integer) label[1], (Integer) label[2]), from, summary.length(),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            // The space between pills, which also gives the line its height.
+            summary.append(' ');
+        }
+        return summary;
+    }
+
+    /**
      * Styles the commit title a text view shows.
      *
      * @param view The view, already holding the title.
@@ -253,7 +275,7 @@ public final class ConventionalCommits {
 
     /** Whether titles get labels. */
     private static boolean on() {
-        return Features.on("fakh_conventional_commits");
+        return Features.on(FEATURE);
     }
 
     /** The prefix of a title with a known type and something after it, or null. */
@@ -286,7 +308,7 @@ public final class ConventionalCommits {
         return (long) argb << 32;
     }
 
-    /** Draws a commit type inside a rounded pill, in a text view and in the image Compose's text shows. */
+    /** Draws a commit type inside a rounded pill, in a text view, a settings row and the image Compose's text shows. */
     private static final class PillSpan extends ReplacementSpan {
         private final int background;
         private final int foreground;

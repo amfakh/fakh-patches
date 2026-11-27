@@ -30,9 +30,11 @@ import app.fakh.extension.shared.Features;
  */
 @SuppressWarnings("unused")
 public final class Bots {
-    // Accounts that commit like bots without the "[bot]" ending, as listed by Refined GitHub.
+    // Bots without the "[bot]" ending: accounts that commit like bots, as listed by Refined GitHub, and coding agents
+    // under the names their commits and events show. The case matters, as claude and codex are other accounts.
     private static final List<String> NAMED_BOTS = Arrays.asList(
-            "actions-user", "bors", "ImgBotApp", "renovate-bot", "rust-highfive", "scala-steward", "weblate");
+            "actions-user", "bors", "ImgBotApp", "renovate-bot", "rust-highfive", "scala-steward", "weblate",
+            "Claude", "Codex", "Copilot");
 
     // The author in the toString of a commit model.
     private static final Pattern COMMIT_AUTHOR = Pattern.compile(", author=Author\\(loginString=([^,]*),");
@@ -155,13 +157,9 @@ public final class Bots {
         return saved != null && id.find() && saved.contains(id.group(1));
     }
 
-    /**
-     * Whether the author of a commit or an event is a bot. Copilot writes changes and reviews them, so what it does stays
-     * as it is.
-     */
+    /** Whether the author of a commit or an event is a bot or a coding agent. */
     private static boolean isBot(String login) {
-        if (login == null || login.toLowerCase().contains("copilot")) return false;
-        return login.endsWith("[bot]") || NAMED_BOTS.contains(login);
+        return login != null && (login.endsWith("[bot]") || NAMED_BOTS.contains(login));
     }
 
     /** Where the ids are kept, or null before the app has started. */

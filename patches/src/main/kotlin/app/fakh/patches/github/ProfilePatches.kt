@@ -6,7 +6,7 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
-import app.fakh.patches.github.shared.Constants.FOLLOWS_YOU
+import app.fakh.patches.github.shared.Constants.SHOW_FOLLOWS_YOU
 import app.fakh.patches.github.shared.Constants.LINKIFY_LOCATION
 import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -80,8 +80,8 @@ private fun booleanFieldAfter(cls: ClassDef, label: String): FieldReference {
 }
 
 @Suppress("unused")
-val followsYouPatch = patch(
-    name = "Follows you",
+val showFollowsYouPatch = patch(
+    name = "Show if a profile follows you",
     description = "Shows on user profiles when that user follows you.",
     default = true,
 ) {
@@ -91,7 +91,7 @@ val followsYouPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(FOLLOWS_YOU)
+        register(SHOW_FOLLOWS_YOU)
 
         var userClass: ClassDef? = null
         var headerClass: ClassDef? = null

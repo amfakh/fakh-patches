@@ -6,7 +6,7 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.shared.register
-import app.fakh.patches.github.shared.Constants.COLLAPSE_BOTS
+import app.fakh.patches.github.shared.Constants.COLLAPSE_BOTS_AND_AGENTS
 import app.fakh.patches.github.shared.Constants.HIDE_LOW_QUALITY
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.fakh.patches.github.shared.Constants.PREVIEW_HIDDEN
@@ -433,8 +433,8 @@ val previewHiddenCommentsPatch = patch(
 }
 
 @Suppress("unused")
-val collapseBotCommentsPatch = patch(
-    name = "Collapse bot comments",
+val collapseBotAndAgentCommentsPatch = patch(
+    name = "Collapse bot and agent comments",
     description = "Comments by bots and agents such as Copilot start collapsed. Descriptions stay open.",
     default = true,
 ) {
@@ -443,7 +443,7 @@ val collapseBotCommentsPatch = patch(
     dependsOn(commentBodyPatch, githubSettingsPatch)
 
     execute {
-        register(COLLAPSE_BOTS)
+        register(COLLAPSE_BOTS_AND_AGENTS)
     }
 }
 

@@ -6,8 +6,8 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
-import app.fakh.patches.github.shared.Constants.PINNED_BRANCHES
-import app.fakh.patches.github.shared.Constants.RECENT_BRANCHES
+import app.fakh.patches.github.shared.Constants.PIN_IMPORTANT_BRANCHES
+import app.fakh.patches.github.shared.Constants.PIN_RECENT_BRANCHES
 import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -407,8 +407,8 @@ private val branchPickerPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val pinnedBranchesPatch = patch(
-    name = "Pinned branches",
+val pinImportantBranchesPatch = patch(
+    name = "Pin important branches",
     description = "Lists develop, main, master and staging right after the default branch in the branch picker.",
     default = true,
 ) {
@@ -416,12 +416,12 @@ val pinnedBranchesPatch = patch(
     category("Feature")
     dependsOn(githubSettingsPatch, branchPickerPatch)
 
-    execute { register(PINNED_BRANCHES) }
+    execute { register(PIN_IMPORTANT_BRANCHES) }
 }
 
 @Suppress("unused")
-val recentBranchesPatch = patch(
-    name = "Recent branches",
+val pinRecentBranchesPatch = patch(
+    name = "Pin recent branches",
     description = "Lists the most recently pushed branches near the top of the branch picker, with how long ago.",
     default = true,
 ) {
@@ -429,5 +429,5 @@ val recentBranchesPatch = patch(
     category("Feature")
     dependsOn(githubSettingsPatch, branchPickerPatch)
 
-    execute { register(RECENT_BRANCHES) }
+    execute { register(PIN_RECENT_BRANCHES) }
 }

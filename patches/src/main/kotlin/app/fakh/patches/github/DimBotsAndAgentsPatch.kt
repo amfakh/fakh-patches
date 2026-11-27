@@ -6,7 +6,7 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.shared.register
-import app.fakh.patches.github.shared.Constants.DIM_BOTS
+import app.fakh.patches.github.shared.Constants.DIM_BOTS_AND_AGENTS
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -138,10 +138,10 @@ private fun fadeEvents() {
 }
 
 @Suppress("unused")
-val dimBotsPatch = patch(
-    name = "Dim bots",
-    description = "Commits, issues and pull requests by bots are faded in their lists, and so are the events bots " +
-        "add to timelines.",
+val dimBotsAndAgentsPatch = patch(
+    name = "Dim bots and agents",
+    description = "Commits, issues and pull requests by bots and agents such as Copilot are faded in their lists, " +
+        "and so are the events they add to timelines.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
@@ -150,7 +150,7 @@ val dimBotsPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(DIM_BOTS)
+        register(DIM_BOTS_AND_AGENTS)
         val alpha = findAlpha()
         val modifier = alpha.returnType
 

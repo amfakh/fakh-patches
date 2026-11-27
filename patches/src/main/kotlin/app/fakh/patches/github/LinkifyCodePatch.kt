@@ -36,7 +36,7 @@ val linkifyCodePatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
-    dependsOn(markdownSettingsPatch, codeLineViewPatch)
+    dependsOn(markdownSettingsPatch, codeLineViewPatch, codeOptionsPatch)
 
     execute {
         register(LINKIFY_CODE)

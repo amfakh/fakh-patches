@@ -16,9 +16,9 @@ import app.fakh.extension.shared.Features;
  * it in the note's layout in place of the plain text view.
  */
 @SuppressWarnings("unused")
-public final class CopilotNoteView extends TextView {
+public final class CopilotDisclaimerView extends TextView {
     /** Called by the layout inflater. */
-    public CopilotNoteView(Context context, AttributeSet attributes) {
+    public CopilotDisclaimerView(Context context, AttributeSet attributes) {
         super(context, attributes);
     }
 

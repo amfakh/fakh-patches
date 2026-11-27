@@ -70,8 +70,9 @@ public final class PatchMenu {
                 // The saved side of the landscape bar is chosen from a sheet, not switched.
                 String key = NavigationBar.NAV_RIGHT.equals(feature.id) ? ChoiceSheets.NAV_POSITION : feature.id;
                 boolean sheet = ChoiceSheets.opens(key);
-                String summary = sheet ? ChoiceSheets.summary(key)
+                CharSequence summary = sheet ? ChoiceSheets.summary(key)
                         : feature.description.isEmpty() ? null : I18n.tr(feature.description);
+                if (ConventionalCommits.FEATURE.equals(key)) summary = ConventionalCommits.summary(summary.toString());
                 row.invoke(null, parent, key, I18n.tr(feature.title), summary,
                         sheet ? null : Boolean.valueOf(feature.defaultOn));
             }

@@ -166,7 +166,7 @@ final class HtmlPreview {
                 connection.setConnectTimeout(TIMEOUT_MS);
                 connection.setReadTimeout(TIMEOUT_MS);
                 connection.setRequestProperty("Accept", RepoFile.RAW);
-                String token = AssetsDownload.token(source);
+                String token = NativeAssetDownload.token(source);
                 if (token != null) connection.setRequestProperty("Authorization", "token " + token);
                 int code = connection.getResponseCode();
                 if (code == 200) {

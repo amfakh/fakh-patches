@@ -21,18 +21,20 @@ object Constants {
     )
 
     // The rows of the Fakh Patches pages, a page per section and a header per group, in this order. A row is a switch,
-    // except the ones the extension opens a sheet for: the navigation bar tabs, the landscape position, the username on
-    // Home, the recent branches, the tab width and the download folder.
+    // except the ones the extension opens a sheet for: the navigation bar tabs, the landscape position, the Home header
+    // text, the recent branches, the tab width and the download folder.
     val MATERIAL_YOU = Feature("fakh_material_you", "Material You", "Appearance")
     val PITCH_BLACK = Feature("fakh_amoled", "Pitch black", "Appearance", restart = false, default = false)
     val ICON_ONLY_BUTTONS = Feature(
         "fakh_icon_only_buttons", "Icon-only floating buttons", "Appearance", restart = false,
         description = "Floating buttons such as Comment show without their text.",
     )
-    val HOME_TITLE = Feature("fakh_home_title", "Username on Home", "Appearance")
+    val HOME_HEADER_TEXT = Feature("fakh_home_title", "Home header text", "Appearance")
 
     val NAV_TABS = Feature("fakh_nav_tabs", "Navigation bar tabs", "Navigation bar")
-    val HIDE_TAB_LABELS = Feature("fakh_hide_nav_labels", "Hide tab labels", "Navigation bar", default = false)
+    val HIDE_NAV_BAR_LABELS = Feature(
+        "fakh_hide_nav_labels", "Hide navigation bar labels", "Navigation bar", default = false,
+    )
     val GLASS_NAVBAR = Feature("fakh_glass_navbar", "Liquid Glass navigation bar", "Navigation bar")
     val BACKGROUND_BLUR = Feature(
         "fakh_liquid_glass", "Background blur", "Navigation bar", dependsOn = GLASS_NAVBAR, default = false,
@@ -43,139 +45,142 @@ object Constants {
 
     val CONVENTIONAL_COMMITS = Feature(
         "fakh_conventional_commits", "Conventional commits", "Titles and lists",
-        description = "Titles such as feat: add login show their type as a pill.",
+        description = "feat, fix, chore, etc. shown as pills.",
         group = "General",
     )
     val EXACT_TIME = Feature(
         "fakh_exact_time", "Show exact time", "Titles and lists",
-        description = "Dates and times instead of ages such as 20d.",
+        description = "Instead of ages such as 20d.",
         group = "General",
     )
-    val DIM_BOTS = Feature(
-        "fakh_dim_bots", "Dim bots", "Titles and lists",
-        description = "Fades commits, issues, pull requests and events by bots.",
+    val DIM_BOTS_AND_AGENTS = Feature(
+        "fakh_dim_bots", "Dim bots and agents", "Titles and lists",
+        description = "Commits, issues, pull requests, and events.",
         group = "General",
     )
-    val HEADER_LABELS = Feature(
-        "fakh_header_labels", "Labels in the header", "Titles and lists", restart = false,
-        description = "Labels under the title of an issue or pull request.",
+    val SHOW_LABELS_IN_HEADER = Feature(
+        "fakh_header_labels", "Show labels in the header", "Titles and lists", restart = false,
+        description = "Under the title of an issue or pull request.",
         group = "Issues and pull requests",
     )
-    val RECENTLY_UPDATED = Feature(
-        "fakh_recently_updated", "Recently updated first", "Titles and lists",
-        description = "Issue and pull request lists open sorted by Recently updated.",
+    val SORT_BY_RECENTLY_UPDATED = Feature(
+        "fakh_recently_updated", "Sort by Recently updated first", "Titles and lists",
+        description = "Instead of Newest.",
         group = "Issues and pull requests",
     )
-    val PR_BASE_BRANCH = Feature(
-        "fakh_pr_base_branch", "PR base branch", "Titles and lists", restart = false,
-        description = "Shows the base branch in pull request lists when it is not the default branch.",
+    val SHOW_BASE_BRANCH = Feature(
+        "fakh_pr_base_branch", "Show base branch in pull requests", "Titles and lists", restart = false,
+        description = "When it isn't the default branch.",
         group = "Issues and pull requests",
     )
 
-    val REPOSITORY_AGE = Feature(
-        "fakh_repository_age", "Repository age", "Repositories", restart = false,
-        description = "When a repository was created, under its stars and forks.",
+    val SHOW_REPOSITORY_AGE = Feature(
+        "fakh_repository_age", "Show repository age", "Repositories", restart = false,
         group = "Overview",
     )
-    val PINNED_BRANCHES = Feature(
-        "fakh_pinned_branches", "Pinned branches", "Repositories", restart = false,
-        description = "Lists develop, main, master and staging right after the default branch in the branch picker.",
+    val ICON_ONLY_LIST_BUTTON = Feature(
+        "fakh_icon_only_list_button", "Icon-only Add to list button", "Repositories", restart = false,
+        group = "Overview",
+    )
+    val PIN_IMPORTANT_BRANCHES = Feature(
+        "fakh_pinned_branches", "Pin important branches", "Repositories", restart = false,
+        description = "develop, main, master, and staging.",
         group = "Branches",
     )
-    val RECENT_BRANCHES = Feature(
-        "fakh_recent_branches", "Recent branches", "Repositories", restart = false, group = "Branches",
+    val PIN_RECENT_BRANCHES = Feature(
+        "fakh_recent_branches", "Pin recent branches", "Repositories", restart = false, group = "Branches",
     )
-    val COMMIT_TAGS = Feature(
-        "fakh_commit_tags", "Tags on commits", "Repositories", restart = false,
-        description = "Displays git tags next to matching commits in commit lists.",
+    val SHOW_COMMIT_TAGS = Feature(
+        "fakh_commit_tags", "Show tags on commits", "Repositories", restart = false,
+        description = "Next to matching commits.",
         group = "Commits",
     )
 
-    val FOLLOWS_YOU = Feature(
-        "fakh_follows_you", "Follows you", "Profiles", restart = false,
-        description = "Shows on user profiles when that user follows you.",
+    val SHOW_FOLLOWS_YOU = Feature(
+        "fakh_follows_you", "Show if a profile follows you", "Profiles", restart = false,
     )
     val LINKIFY_LOCATION = Feature(
         "fakh_linkify_location", "Linkify user location", "Profiles", restart = false,
-        description = "Makes the location on a user profile open in Maps when tapped.",
     )
 
-    val COLLAPSE_BOTS = Feature(
-        "fakh_collapse_bots", "Collapse bot comments", "Comments and markdown", restart = false,
-        description = "Comments by bots and agents start collapsed.",
+    val COLLAPSE_BOTS_AND_AGENTS = Feature(
+        "fakh_collapse_bots", "Collapse bot and agent comments", "Comments and markdown", restart = false,
         group = "Comments",
     )
     val HIDE_LOW_QUALITY = Feature(
         "fakh_hide_low_quality", "Hide low-quality comments", "Comments and markdown", restart = false,
-        description = "Hides comments that only say +1, me too or ask for news.",
+        description = "+1, me too, or asking for news.",
         group = "Comments",
     )
     val PREVIEW_HIDDEN = Feature(
         "fakh_preview_hidden", "Preview hidden comments", "Comments and markdown", restart = false,
-        description = "The start of a hidden comment shows under its reason.",
         group = "Comments",
     )
-    val HIDE_COPILOT_NOTE = Feature(
-        "fakh_hide_copilot_note", "Hide Copilot note", "Comments and markdown", restart = false,
-        description = "Removes the AI mistakes line under Copilot's comments.",
+    val HIDE_COPILOT_DISCLAIMER = Feature(
+        "fakh_hide_copilot_note", "Hide Copilot disclaimer", "Comments and markdown", restart = false,
         group = "Comments",
     )
-    val MENTION_AVATARS = Feature(
-        "fakh_mention_avatars", "Mention avatars", "Comments and markdown", restart = false,
-        description = "A small avatar before each @mention.",
+    val ADD_COLLAPSIBLE_SECTION = Feature(
+        "fakh_details_button", "Add collapsible section", "Comments and markdown", restart = false,
+        description = "<details>",
+        group = "Comment toolbar",
+    )
+    val ADD_TABLE = Feature(
+        "fakh_table_button", "Add table", "Comments and markdown", restart = false,
+        description = "Markdown table template.",
+        group = "Comment toolbar",
+    )
+    val SHOW_MENTION_AVATARS = Feature(
+        "fakh_mention_avatars", "Show avatar before each @mention", "Comments and markdown", restart = false,
         group = "Markdown",
     )
-    val SHORTEN_LINKS = Feature(
-        "fakh_shorten_links", "Shorten links", "Comments and markdown", restart = false,
-        description = "Pasted links read as short references such as owner/repo#123.",
+    val SHORTEN_GITHUB_LINKS = Feature(
+        "fakh_shorten_links", "Shorten GitHub links", "Comments and markdown", restart = false,
+        description = "owner/repo#123 or owner/repo/file@tag",
         group = "Markdown",
     )
-    val COLLAPSE_CODE = Feature(
-        "fakh_collapse_code", "Collapse long code blocks", "Comments and markdown", restart = false,
-        description = "Code blocks longer than 25 lines start folded.",
+    val FOLD_CODE = Feature(
+        "fakh_collapse_code", "Fold long code blocks", "Comments and markdown", restart = false,
+        description = "If longer than 25 lines.",
         group = "Markdown",
     )
-    val EDITOR_BUTTONS = Feature(
-        "fakh_editor_buttons", "Section and table buttons", "Comments and markdown", restart = false,
-        description = "Toolbar buttons that add a collapsible section or a table.",
-        group = "Markdown",
-    )
-    val MERMAID = Feature(
-        "fakh_mermaid", "Mermaid diagrams", "Comments and markdown", restart = false,
-        description = "Draws Mermaid code blocks as diagrams.",
+    val DRAW_MERMAID = Feature(
+        "fakh_mermaid", "Draw Mermaid diagrams", "Comments and markdown", restart = false,
+        description = "Instead of code blocks.",
         group = "Markdown",
     )
 
-    val TAB_WIDTH = Feature("fakh_tab_width", "Tab width", "Code and files")
-    val WHITESPACE = Feature(
-        "fakh_whitespace", "Show whitespace", "Code and files", restart = false,
-        description = "Spaces and tabs show as dim marks in files and diffs.",
+    val OVERRIDE_TAB_WIDTH = Feature("fakh_tab_width", "Override tab width", "Code", restart = false)
+    val WHITESPACE_MARKS = Feature(
+        "fakh_whitespace", "Show whitespace marks", "Code", restart = false,
+        description = "Spaces and tabs.",
     )
     val HIDE_DIFF_SIGNS = Feature(
-        "fakh_hide_diff_signs", "Hide diff signs", "Code and files", restart = false,
-        description = "Hides + and - signs on diff lines.",
+        "fakh_hide_diff_signs", "Hide + and - diff signs", "Code", restart = false,
+        description = "Since diffs are already color-coded.",
     )
 
     val LINKIFY_CODE = Feature(
-        "fakh_linkify_code", "Linkify code", "Code and files", restart = false,
-        description = "Addresses and owner/repo#123 in code open when tapped.",
+        "fakh_linkify_code", "Linkify code", "Code", restart = false,
+        description = "Makes URLs and owner/repo#123 clickable.",
     )
-    val HTML_PREVIEW = Feature(
-        "fakh_html_preview", "HTML preview", "Code and files", restart = false,
-        description = "Preview in the menu of an HTML file.",
+    val HTML_PREVIEW_MENU = Feature(
+        "fakh_html_preview", "Add Preview menu to HTML files", "Files and downloads", restart = false,
+        group = "Files",
     )
-
-    val DOWNLOAD_FILES = Feature(
-        "fakh_download_files", "Download files", "Releases and downloads", restart = false,
-        description = "Download in the menu of an open file.",
+    val FILE_DOWNLOAD_MENU = Feature(
+        "fakh_download_files", "Add download menu to every file", "Files and downloads", restart = false,
+        group = "Downloads",
     )
-    val DOWNLOAD_ASSETS = Feature(
-        "fakh_download_assets", "Download assets", "Releases and downloads", restart = false,
-        description = "Release files download in the app instead of the browser.",
+    val DOWNLOAD_ASSETS_NATIVELY = Feature(
+        "fakh_download_assets", "Download assets natively", "Files and downloads", restart = false,
+        group = "Downloads",
     )
-    val DOWNLOAD_FOLDER = Feature("fakh_download_folder", "Download location", "Releases and downloads")
-    val DOWNLOAD_COUNT = Feature(
-        "fakh_download_count", "Release download count", "Releases and downloads", restart = false,
-        description = "How often each release file was downloaded.",
+    val DOWNLOAD_LOCATION = Feature(
+        "fakh_download_folder", "Download location", "Files and downloads", group = "Downloads",
+    )
+    val SHOW_ASSET_DOWNLOAD_COUNT = Feature(
+        "fakh_download_count", "Show download count for assets", "Files and downloads", restart = false,
+        group = "Download count",
     )
 }

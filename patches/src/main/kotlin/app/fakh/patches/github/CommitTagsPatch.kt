@@ -5,7 +5,7 @@
 
 package app.fakh.patches.github
 
-import app.fakh.patches.github.shared.Constants.COMMIT_TAGS
+import app.fakh.patches.github.shared.Constants.SHOW_COMMIT_TAGS
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -113,8 +113,8 @@ private fun hookSingleFieldParser(type: String, any: MethodReference) {
 }
 
 @Suppress("unused")
-val commitTagsPatch = patch(
-    name = "Tags on commits",
+val showTagsOnCommitsPatch = patch(
+    name = "Show tags on commits",
     description = "Displays git tags next to matching commits in commit lists.",
     default = true,
 ) {
@@ -124,7 +124,7 @@ val commitTagsPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(COMMIT_TAGS)
+        register(SHOW_COMMIT_TAGS)
 
         val queries = mutableListOf<Pair<String, String>>()
         val parsers = mutableListOf<String>()

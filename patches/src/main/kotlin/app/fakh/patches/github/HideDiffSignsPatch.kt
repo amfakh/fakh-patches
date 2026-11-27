@@ -30,13 +30,13 @@ private const val STRING = "Ljava/lang/String;"
 
 @Suppress("unused")
 val hideDiffSignsPatch = patch(
-    name = "Hide diff signs",
+    name = "Hide + and - diff signs",
     description = "Hides the + and - signs on diff lines since additions and deletions are already color coded.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
-    dependsOn(githubSettingsPatch)
+    dependsOn(githubSettingsPatch, codeOptionsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {

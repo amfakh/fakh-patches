@@ -22,11 +22,11 @@ import app.fakh.extension.shared.Features;
  * is saved because the app can draw a release from its own cache, which does not hold the count.
  */
 @SuppressWarnings("unused")
-public final class DownloadCount {
+public final class AssetDownloadCount {
     // The id read just before a count, on the thread that parses that answer.
     private static final ThreadLocal<String> ID = new ThreadLocal<>();
 
-    private DownloadCount() {
+    private AssetDownloadCount() {
     }
 
     /**

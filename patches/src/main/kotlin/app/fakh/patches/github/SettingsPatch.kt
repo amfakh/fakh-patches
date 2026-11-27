@@ -176,7 +176,7 @@ private fun addHelper(name: String, parameters: List<String>, registers: Int, sm
  */
 private fun addRowHelper(api: PreferenceApi) = addHelper(
     "fakhRow",
-    listOf(OBJECT, STRING, STRING, STRING, OBJECT),
+    listOf(OBJECT, STRING, STRING, CHAR_SEQUENCE, OBJECT),
     8,
     """
         check-cast p0, $PREFERENCE_GROUP
@@ -259,7 +259,7 @@ private fun addCardHelper(api: PreferenceApi) = addHelper(
         const-string v3, "Fakh Patches"
         const/4 v4, 0x0
         move-object v0, v4
-        invoke-static { v1, v2, v3, v4, v0 }, $SETTINGS_FRAGMENT->fakhRow($OBJECT$STRING$STRING$STRING$OBJECT)V
+        invoke-static { v1, v2, v3, v4, v0 }, $SETTINGS_FRAGMENT->fakhRow($OBJECT$STRING$STRING$CHAR_SEQUENCE$OBJECT)V
         return-void
     """,
 )
@@ -404,6 +404,8 @@ internal val githubSettingsPatch = patch {
 private const val STRING = "Ljava/lang/String;"
 
 private const val OBJECT = "Ljava/lang/Object;"
+
+private const val CHAR_SEQUENCE = "Ljava/lang/CharSequence;"
 
 private const val PREFERENCE_SCREEN = "Landroidx/preference/PreferenceScreen;"
 

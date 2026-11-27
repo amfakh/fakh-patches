@@ -36,7 +36,7 @@ import app.fakh.extension.shared.AppRuntime;
 @SuppressWarnings("unused")
 public final class NavigationBar {
     public static final String GLASS = "fakh_glass_navbar";
-    public static final String HIDE_LABELS = "fakh_hide_nav_labels";
+    public static final String HIDE_NAV_BAR_LABELS = "fakh_hide_nav_labels";
     public static final String SMALLER = "fakh_smaller_navbar";
     /** The Liquid Glass switch, on until turned off: the settings row shows it on before it is ever saved. */
     public static final String LIQUID = "fakh_liquid_glass";
@@ -96,7 +96,7 @@ public final class NavigationBar {
 
     /** Injected before the call that draws a tab: its label composable, or null while labels are hidden. */
     public static Object label(Object label) {
-        return Features.on(HIDE_LABELS) ? null : label;
+        return Features.on(HIDE_NAV_BAR_LABELS) ? null : label;
     }
 
     /**
@@ -338,7 +338,7 @@ public final class NavigationBar {
         float density = bar.getResources().getDisplayMetrics().density;
         if (!glass) {
             ViewGroup.LayoutParams size = bar.getLayoutParams();
-            size.height = Math.round((Features.on(HIDE_LABELS) ? 48 : 52) * density) + bar.getPaddingBottom();
+            size.height = Math.round((Features.on(HIDE_NAV_BAR_LABELS) ? 48 : 52) * density) + bar.getPaddingBottom();
             bar.setLayoutParams(size);
             return;
         }
@@ -346,8 +346,8 @@ public final class NavigationBar {
         int vertical = Math.round((small ? 4 : VERTICAL_MARGIN_DP) * density);
         bar.setPadding(side, vertical, side, vertical);
         // The tabs are at least 80dp tall; a bar that is shorter clamps them and centers the icon and label.
-        int heightDp = small ? (Features.on(HIDE_LABELS) ? 42 : 46)
-                : (Features.on(HIDE_LABELS) ? ICON_ONLY_HEIGHT_DP : LABELED_HEIGHT_DP);
+        int heightDp = small ? (Features.on(HIDE_NAV_BAR_LABELS) ? 42 : 46)
+                : (Features.on(HIDE_NAV_BAR_LABELS) ? ICON_ONLY_HEIGHT_DP : LABELED_HEIGHT_DP);
         ViewGroup.LayoutParams size = bar.getLayoutParams();
         size.height = Math.round(heightDp * density) + 2 * vertical;
         bar.setLayoutParams(size);

@@ -6,8 +6,8 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.shared.register
-import app.fakh.patches.github.shared.Constants.DOWNLOAD_ASSETS
-import app.fakh.patches.github.shared.Constants.DOWNLOAD_FOLDER
+import app.fakh.patches.github.shared.Constants.DOWNLOAD_ASSETS_NATIVELY
+import app.fakh.patches.github.shared.Constants.DOWNLOAD_LOCATION
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
@@ -25,13 +25,13 @@ import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.iface.reference.StringReference
 
-private const val ASSETS_DOWNLOAD = "Lapp/fakh/extension/github/AssetsDownload;"
+private const val ASSETS_DOWNLOAD = "Lapp/fakh/extension/github/NativeAssetDownload;"
 
 /**
  * The lambda that handles the release asset overflow menu ("download" and "share"). Both branches are in the same
  * method and are not obfuscated away because the action strings and Android intent actions are literals.
  */
-private object AssetsDownloadFingerprint : Fingerprint(
+private object NativeAssetDownloadFingerprint : Fingerprint(
     strings = listOf("download", "android.intent.action.VIEW", "android.intent.action.SEND"),
 )
 
@@ -89,8 +89,8 @@ internal val apiTokenPatch = bytecodePatch {
 }
 
 @Suppress("unused")
-val assetsDownloadPatch = patch(
-    name = "Download assets",
+val downloadAssetsNativelyPatch = patch(
+    name = "Download assets natively",
     description = "Downloads release assets directly with the system download manager instead of opening the browser.",
     default = true,
 ) {
@@ -100,8 +100,8 @@ val assetsDownloadPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(DOWNLOAD_ASSETS, DOWNLOAD_FOLDER)
-        val method = AssetsDownloadFingerprint.method
+        register(DOWNLOAD_ASSETS_NATIVELY, DOWNLOAD_LOCATION)
+        val method = NativeAssetDownloadFingerprint.method
         val instructions = method.implementation!!.instructions
 
         val downloadAt = instructions.indexOfFirst {

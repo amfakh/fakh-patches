@@ -40,7 +40,7 @@ public final class FileMenu {
         }
         if (Features.on("fakh_download_files")) {
             menu.add(I18n.tr("Download")).setOnMenuItemClickListener(item -> {
-                AssetsDownload.file(context.getApplicationContext(), file.api(file.path), file.name(), file.page);
+                NativeAssetDownload.file(context.getApplicationContext(), file.api(file.path), file.name(), file.page);
                 return true;
             });
         }

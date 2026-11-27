@@ -6,7 +6,7 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.shared.register
-import app.fakh.patches.github.shared.Constants.DOWNLOAD_COUNT
+import app.fakh.patches.github.shared.Constants.SHOW_ASSET_DOWNLOAD_COUNT
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -30,7 +30,7 @@ import com.android.tools.smali.dexlib2.iface.reference.MethodReference
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
-private const val COUNT = "Lapp/fakh/extension/github/DownloadCount;"
+private const val COUNT = "Lapp/fakh/extension/github/AssetDownloadCount;"
 
 private const val STRING = "Ljava/lang/String;"
 
@@ -335,8 +335,8 @@ private fun addCountChip(method: MutableMethod, assetType: String, itemType: Str
 }
 
 @Suppress("unused")
-val releaseDownloadCountPatch = patch(
-    name = "Release download count",
+val showAssetDownloadCountPatch = patch(
+    name = "Show download count for assets",
     description = "Shows how many times each file of a release was downloaded, next to its size.",
     default = true,
 ) {
@@ -346,7 +346,7 @@ val releaseDownloadCountPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(DOWNLOAD_COUNT)
+        register(SHOW_ASSET_DOWNLOAD_COUNT)
         val names = setOf("id", "name", "size", "url", "contentType", "__typename")
         var model: String? = null
         var metaItem: String? = null

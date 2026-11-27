@@ -39,17 +39,17 @@ import app.fakh.extension.shared.I18n;
  * chooser intent if enqueueing fails.
  */
 @SuppressWarnings("unused")
-public final class AssetsDownload {
+public final class NativeAssetDownload {
     static final String FOLDER_KEY = "fakh_download_folder";
     static final String DEFAULT_FOLDER = "GitHub";
-    private static final String TAG = "FakhAssetsDownload";
+    private static final String TAG = "FakhNativeAssetDownload";
     private static final int TIMEOUT_MS = 10_000;
     private static final String API = "https://api.github.com";
     private static String pendingAsset;
     // Per API host, the token of the account that sent the latest request there.
     private static final Map<String, String> TOKENS = new ConcurrentHashMap<>();
 
-    private AssetsDownload() {
+    private NativeAssetDownload() {
     }
 
     /** Captures the {@code ReleaseAsset} metadata right before the download branch builds its view intent. */

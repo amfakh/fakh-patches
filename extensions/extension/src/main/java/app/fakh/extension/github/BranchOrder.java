@@ -158,7 +158,7 @@ public final class BranchOrder {
         if (!pinned && recent == 0) return;
         String repository = owner + "/" + name;
         OPEN.put(list, new Open(picker, repository));
-        String token = AssetsDownload.token(Uri.parse(API));
+        String token = NativeAssetDownload.token(Uri.parse(API));
         if (token == null) return;
         WeakReference<Picker> open = new WeakReference<>(picker);
         new Thread(() -> {

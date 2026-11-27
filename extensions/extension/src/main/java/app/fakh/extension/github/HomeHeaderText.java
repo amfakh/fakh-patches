@@ -12,7 +12,7 @@ import app.fakh.extension.shared.I18n;
  * Replaces the "Home" header title on the Home screen with the signed-in user's username or display name.
  */
 @SuppressWarnings("unused")
-public final class HomeTitle {
+public final class HomeHeaderText {
     static final String KEY = "fakh_home_title";
     static final String MODE_USERNAME = "username";
     static final String MODE_NAME = "name";
@@ -22,7 +22,7 @@ public final class HomeTitle {
     private static String accountLogin;
     private static String accountName;
 
-    private HomeTitle() {
+    private HomeHeaderText() {
     }
 
     /** The chosen mode: {@code "username"} (default), {@code "name"}, or {@code "home"}. */
@@ -54,7 +54,7 @@ public final class HomeTitle {
      * @param original GitHub's default "Home" title.
      * @return The title to display.
      */
-    public static String title(String login, String name, String original) {
+    public static String headerText(String login, String name, String original) {
         accountLogin = login;
         accountName = name;
         if (!Features.has(KEY)) return original;

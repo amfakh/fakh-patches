@@ -13,7 +13,7 @@ import app.fakh.extension.shared.Features;
  * written.
  */
 @SuppressWarnings("unused")
-public final class Whitespace {
+public final class WhitespaceMarks {
     // Private use characters, one per symbol, so the app counts a line's length as before.
     private static final char SPACE = '';
     private static final char TAB = '';
@@ -23,7 +23,7 @@ public final class Whitespace {
     private static final String SHOWN_SPACE = "⁠·";
     private static final String SHOWN_TAB = "⁠»";
 
-    private Whitespace() {
+    private WhitespaceMarks() {
     }
 
     /**
@@ -40,6 +40,27 @@ public final class Whitespace {
             return text.replace(' ', SPACE).replace("\t", TAB + columns.substring(1));
         }
         return width == 8 ? text : text.replace("\t", columns);
+    }
+
+    /**
+     * Keeps the column of a diff line's sign unmarked: the space that fills it on an unchanged line is not code.
+     *
+     * @param html The HTML of a diff line before the app converts it.
+     * @param type The app's {@code DiffLineType} of the line.
+     * @return The HTML, with that space as the non-breaking one the app would have turned it into.
+     */
+    public static String signColumn(String html, Object type) {
+        String name = String.valueOf(type);
+        if (html == null || !name.equals("CONTEXT") && !name.equals("INJECTED_CONTEXT")) return html;
+        int at = 0;
+        // The first character of the text, after the tags before it.
+        while (at < html.length() && html.charAt(at) == '<') {
+            int end = html.indexOf('>', at);
+            if (end < 0) return html;
+            at = end + 1;
+        }
+        if (at >= html.length() || html.charAt(at) != ' ') return html;
+        return html.substring(0, at) + '\u00A0' + html.substring(at + 1);
     }
 
     /**

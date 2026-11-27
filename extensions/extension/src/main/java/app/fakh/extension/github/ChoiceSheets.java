@@ -42,13 +42,13 @@ final class ChoiceSheets {
     /** Keys of the rows that open a sheet. */
     static final String NAV_TABS = "fakh_nav_tabs";
     static final String NAV_POSITION = "fakh_nav_position";
-    static final String DOWNLOAD_FOLDER = AssetsDownload.FOLDER_KEY;
-    static final String TAB_WIDTH = "fakh_tab_width";
-    static final String HOME_TITLE = HomeTitle.KEY;
-    static final String RECENT_BRANCHES = BranchOrder.RECENT_FEATURE;
+    static final String DOWNLOAD_LOCATION = NativeAssetDownload.FOLDER_KEY;
+    static final String OVERRIDE_TAB_WIDTH = "fakh_tab_width";
+    static final String HOME_HEADER_TEXT = HomeHeaderText.KEY;
+    static final String PIN_RECENT_BRANCHES = BranchOrder.RECENT_FEATURE;
     private static final int[] RECENT_COUNTS = {0, 3, 5, 10, 15};
     private static final int[] TAB_WIDTHS = {2, 4, 8};
-    private static final String[] HOME_MODES = {HomeTitle.MODE_USERNAME, HomeTitle.MODE_NAME, HomeTitle.MODE_HOME};
+    private static final String[] HOME_MODES = {HomeHeaderText.MODE_USERNAME, HomeHeaderText.MODE_NAME, HomeHeaderText.MODE_HOME};
     private static final String SETTINGS_FRAGMENT = "com.github.android.settings.SettingsFragment";
     private static final String TAG = "FakhPatches";
 
@@ -62,8 +62,8 @@ final class ChoiceSheets {
 
     /** Whether the row with this key opens a sheet instead of being a switch. */
     static boolean opens(String key) {
-        return NAV_TABS.equals(key) || NAV_POSITION.equals(key) || DOWNLOAD_FOLDER.equals(key)
-                || TAB_WIDTH.equals(key) || HOME_TITLE.equals(key) || RECENT_BRANCHES.equals(key);
+        return NAV_TABS.equals(key) || NAV_POSITION.equals(key) || DOWNLOAD_LOCATION.equals(key)
+                || OVERRIDE_TAB_WIDTH.equals(key) || HOME_HEADER_TEXT.equals(key) || PIN_RECENT_BRANCHES.equals(key);
     }
 
     /** The Settings fragment, which the sheets are shown from. */
@@ -79,10 +79,10 @@ final class ChoiceSheets {
         rows.put(key, new WeakReference<>(preference));
         try {
             if (NAV_TABS.equals(key)) openTabs();
-            else if (DOWNLOAD_FOLDER.equals(key)) openDownloadFolder();
-            else if (TAB_WIDTH.equals(key)) openTabWidth();
-            else if (HOME_TITLE.equals(key)) openHomeTitle();
-            else if (RECENT_BRANCHES.equals(key)) openRecentBranches();
+            else if (DOWNLOAD_LOCATION.equals(key)) openDownloadLocation();
+            else if (OVERRIDE_TAB_WIDTH.equals(key)) openTabWidth();
+            else if (HOME_HEADER_TEXT.equals(key)) openHomeHeaderText();
+            else if (PIN_RECENT_BRANCHES.equals(key)) openRecentBranches();
             else openPosition();
         } catch (RuntimeException error) {
             Log.w(TAG, "Choice sheet", error);
@@ -191,14 +191,13 @@ final class ChoiceSheets {
         }
         TabSheet[] sheet = new TabSheet[1];
         View rows = TabSheet.radioRows(from, labels, chosen, colors[1], colors[3], colors[2], index -> {
-            boolean changed = TAB_WIDTHS[index] != MarkdownSettings.pickedTabWidth();
             Features.setText(MarkdownSettings.TAB_WIDTH, String.valueOf(TAB_WIDTHS[index]));
+            // A width other than the app's 8 turns on the switch that the Code Options screen shows.
+            if (TAB_WIDTHS[index] != 8) Features.set(OVERRIDE_TAB_WIDTH, true);
             if (sheet[0] != null) sheet[0].close();
-            if (!changed) return;
-            refreshSummary(TAB_WIDTH);
-            MaterialYou.showRestartBar(from);
+            refreshSummary(OVERRIDE_TAB_WIDTH);
         });
-        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Tab width"),
+        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Override tab width"),
                 I18n.tr("In files, diffs and code blocks. The app uses 8."), colors[0], colors[1], colors[2], rows,
                 null);
     }
@@ -237,7 +236,7 @@ final class ChoiceSheets {
     }
 
     /** The sheet of the download subfolder under Download, with a text field and Save button. */
-    private static void openDownloadFolder() {
+    private static void openDownloadLocation() {
         Activity from = activity.get();
         if (from == null) return;
         int[] colors = colors(from);
@@ -255,8 +254,8 @@ final class ChoiceSheets {
         EditText input = new EditText(from);
         input.setSingleLine(true);
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
-        input.setText(AssetsDownload.folder());
-        input.setHint(AssetsDownload.DEFAULT_FOLDER);
+        input.setText(NativeAssetDownload.folder());
+        input.setHint(NativeAssetDownload.DEFAULT_FOLDER);
         input.setTextColor(text);
         input.setHintTextColor(secondary);
         input.setBackgroundTintList(ColorStateList.valueOf(accent));
@@ -278,9 +277,9 @@ final class ChoiceSheets {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         saveParams.topMargin = Math.round(16 * density);
         save.setOnClickListener(v -> {
-            Features.setText(DOWNLOAD_FOLDER, AssetsDownload.sanitize(input.getText().toString()));
+            Features.setText(DOWNLOAD_LOCATION, NativeAssetDownload.sanitize(input.getText().toString()));
             if (sheet[0] != null) sheet[0].close();
-            refreshSummary(DOWNLOAD_FOLDER);
+            refreshSummary(DOWNLOAD_LOCATION);
         });
         content.addView(save, saveParams);
 
@@ -292,27 +291,27 @@ final class ChoiceSheets {
     }
 
     /** The sheet of what the Home header shows: Username, Name, or Home. */
-    private static void openHomeTitle() {
+    private static void openHomeHeaderText() {
         Activity from = activity.get();
         if (from == null) return;
         int[] colors = colors(from);
         String[] labels = new String[HOME_MODES.length];
-        for (int i = 0; i < HOME_MODES.length; i++) labels[i] = HomeTitle.choice(HOME_MODES[i]);
-        String current = HomeTitle.mode();
+        for (int i = 0; i < HOME_MODES.length; i++) labels[i] = HomeHeaderText.choice(HOME_MODES[i]);
+        String current = HomeHeaderText.mode();
         int chosen = 0;
         for (int i = 0; i < HOME_MODES.length; i++) {
             if (HOME_MODES[i].equals(current)) chosen = i;
         }
         TabSheet[] sheet = new TabSheet[1];
         View rows = TabSheet.radioRows(from, labels, chosen, colors[1], colors[3], colors[2], index -> {
-            boolean changed = !HOME_MODES[index].equals(HomeTitle.mode());
-            Features.setText(HOME_TITLE, HOME_MODES[index]);
+            boolean changed = !HOME_MODES[index].equals(HomeHeaderText.mode());
+            Features.setText(HOME_HEADER_TEXT, HOME_MODES[index]);
             if (sheet[0] != null) sheet[0].close();
             if (!changed) return;
-            refreshSummary(HOME_TITLE);
+            refreshSummary(HOME_HEADER_TEXT);
             MaterialYou.showRestartBar(from);
         });
-        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Username on Home"),
+        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Home header text"),
                 null, colors[0], colors[1], colors[2], rows, null);
     }
 
@@ -331,9 +330,9 @@ final class ChoiceSheets {
         View rows = TabSheet.radioRows(from, labels, chosen, colors[1], colors[3], colors[2], index -> {
             BranchOrder.setRecentCount(RECENT_COUNTS[index]);
             if (sheet[0] != null) sheet[0].close();
-            refreshSummary(RECENT_BRANCHES);
+            refreshSummary(PIN_RECENT_BRANCHES);
         });
-        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Recent branches"),
+        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Pin recent branches"),
                 I18n.tr("Recently pushed branches listed first in the branch picker."), colors[0], colors[1],
                 colors[2], rows, null);
     }
@@ -346,13 +345,13 @@ final class ChoiceSheets {
     /** What a row shows under its title, such as the position or the number of shown tabs; null while unknown. */
     static String summary(String key) {
         if (NAV_POSITION.equals(key)) return I18n.tr(Features.saved(NavigationBar.NAV_RIGHT) ? "Right" : "Left");
-        if (DOWNLOAD_FOLDER.equals(key)) return AssetsDownload.location();
-        if (TAB_WIDTH.equals(key)) return spaces(MarkdownSettings.pickedTabWidth());
-        if (RECENT_BRANCHES.equals(key)) return recent(BranchOrder.recentCount());
-        if (HOME_TITLE.equals(key)) {
-            String mode = HomeTitle.mode();
-            if (HomeTitle.MODE_NAME.equals(mode)) return I18n.tr("Name");
-            if (HomeTitle.MODE_HOME.equals(mode)) return I18n.tr("Home");
+        if (DOWNLOAD_LOCATION.equals(key)) return NativeAssetDownload.location();
+        if (OVERRIDE_TAB_WIDTH.equals(key)) return spaces(MarkdownSettings.pickedTabWidth());
+        if (PIN_RECENT_BRANCHES.equals(key)) return recent(BranchOrder.recentCount());
+        if (HOME_HEADER_TEXT.equals(key)) {
+            String mode = HomeHeaderText.mode();
+            if (HomeHeaderText.MODE_NAME.equals(mode)) return I18n.tr("Name");
+            if (HomeHeaderText.MODE_HOME.equals(mode)) return I18n.tr("Home");
             return I18n.tr("Username");
         }
         if (!NAV_TABS.equals(key) || NavigationBar.allTabs.isEmpty()) return null;

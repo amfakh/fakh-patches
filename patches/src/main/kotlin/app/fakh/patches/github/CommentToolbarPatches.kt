@@ -6,7 +6,8 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
-import app.fakh.patches.github.shared.Constants.EDITOR_BUTTONS
+import app.fakh.patches.github.shared.Constants.ADD_COLLAPSIBLE_SECTION
+import app.fakh.patches.github.shared.Constants.ADD_TABLE
 import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -21,7 +22,7 @@ import com.android.tools.smali.dexlib2.AccessFlags
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.Method
 
-private const val BUTTONS = "Lapp/fakh/extension/github/EditorButtons;"
+private const val TOOLBAR_EXTENSION = "Lapp/fakh/extension/github/CommentToolbar;"
 private const val TOOLBAR_VIEW = "Lcom/github/android/views/MarkdownBarView;"
 private const val CLASS = "Ljava/lang/Class;"
 private const val STRING = "Ljava/lang/String;"
@@ -30,7 +31,7 @@ private const val STRING = "Ljava/lang/String;"
  * Adds the buttons' labels, and a table icon as large as the toolbar's other icons: the app's is a 16 dp one that
  * fills its square.
  */
-private val editorButtonsResourcePatch = patch {
+private val commentToolbarResourcePatch = patch {
     execute {
         document("res/values/strings.xml").use { document ->
             mapOf(
@@ -63,21 +64,12 @@ private fun Method.isToolbar(): Boolean {
         types.subList(1, 15).distinct().size == 1 && types[15] == "Z" && types.takeLast(3) == listOf("I", "I", "I")
 }
 
-@Suppress("unused")
-val editorButtonsPatch = patch(
-    name = "Section and table buttons",
-    description = "Adds buttons to the markdown toolbars that insert a collapsible section or a table around the " +
-        "selected text.",
-    default = true,
-) {
-    compatibleWith(COMPATIBILITY_GITHUB)
-    category("Feature")
-    dependsOn(githubSettingsPatch, editorButtonsResourcePatch)
+/** Has both markdown toolbars ask the extension for the buttons that are switched on. */
+private val commentToolbarPatch = patch {
+    dependsOn(githubSettingsPatch, commentToolbarResourcePatch)
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(EDITOR_BUTTONS)
-
         val toolbars = mutableListOf<Method>()
         classDefForEach { classDef -> toolbars += classDef.methods.filter { it.isToolbar() } }
         val toolbar = toolbars.singleOrNull() ?: throw PatchException("Compose toolbar: not found once")
@@ -116,7 +108,7 @@ val editorButtonsPatch = patch(
                 const-class v1, $click
                 const-class v2, ${toolbar.definingClass}
                 const-string v3, "${button.name}"
-                invoke-static { v0, v1, v2, v3 }, $BUTTONS->items($CLASS$CLASS$CLASS$STRING)[Ljava/lang/Object;
+                invoke-static { v0, v1, v2, v3 }, $TOOLBAR_EXTENSION->items($CLASS$CLASS$CLASS$STRING)[Ljava/lang/Object;
                 move-result-object v0
                 const/4 v1, 0x0
                 :next
@@ -141,6 +133,34 @@ val editorButtonsPatch = patch(
         // The toolbar of views gets its buttons once the screen listens to it.
         val listen = mutableClassDefBy(TOOLBAR_VIEW).methods.singleOrNull { it.name == "setOnItemSelectedListener" }
             ?: throw PatchException("Markdown toolbar: its listener setter not found")
-        listen.addInstruction(0, "invoke-static/range { p0 .. p0 }, $BUTTONS->attach(Landroid/view/View;)V")
+        listen.addInstruction(0, "invoke-static/range { p0 .. p0 }, $TOOLBAR_EXTENSION->attach(Landroid/view/View;)V")
     }
+}
+
+@Suppress("unused")
+val addCollapsibleSectionPatch = patch(
+    name = "Add collapsible section",
+    description = "Adds a button to the markdown toolbars that puts a collapsible <details> section around the " +
+        "selected text.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_GITHUB)
+    category("Feature")
+    dependsOn(commentToolbarPatch)
+
+    execute { register(ADD_COLLAPSIBLE_SECTION) }
+}
+
+@Suppress("unused")
+val addTablePatch = patch(
+    name = "Add table",
+    description = "Adds a button to the markdown toolbars that inserts a markdown table template around the " +
+        "selected text.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_GITHUB)
+    category("Feature")
+    dependsOn(commentToolbarPatch)
+
+    execute { register(ADD_TABLE) }
 }

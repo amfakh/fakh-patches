@@ -6,7 +6,7 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
-import app.fakh.patches.github.shared.Constants.HOME_TITLE
+import app.fakh.patches.github.shared.Constants.HOME_HEADER_TEXT
 import app.fakh.patches.shared.register
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -26,13 +26,13 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val HOME_FRAGMENT = "Lcom/github/android/home/HomeFragment;"
 
-private const val HOME_TITLE_CLASS = "Lapp/fakh/extension/github/HomeTitle;"
+private const val HOME_HEADER_TEXT_CLASS = "Lapp/fakh/extension/github/HomeHeaderText;"
 
 private const val STRING = "Ljava/lang/String;"
 
 @Suppress("unused")
-val homeTitlePatch = patch(
-    name = "Username on Home",
+val homeHeaderTextPatch = patch(
+    name = "Home header text",
     description = "Shows your username or display name in the Home header instead of Home.",
     default = true,
 ) {
@@ -42,7 +42,7 @@ val homeTitlePatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        register(HOME_TITLE)
+        register(HOME_HEADER_TEXT)
 
         val homeClass = mutableClassDefBy(HOME_FRAGMENT)
 
@@ -106,7 +106,7 @@ val homeTitlePatch = patch(
         homeClass.methods.add(
             ImmutableMethod(
                 HOME_FRAGMENT,
-                "fakhTitle",
+                "fakhHeaderText",
                 listOf(ImmutableMethodParameter(STRING, null, null)),
                 STRING,
                 AccessFlags.PUBLIC.value or AccessFlags.STATIC.value,
@@ -131,7 +131,7 @@ val homeTitlePatch = patch(
                         iget-object v1, v0, ${loginField.smali}
                         invoke-virtual { v0 }, ${nameGetter.smali}
                         move-result-object v2
-                        invoke-static { v1, v2, p0 }, $HOME_TITLE_CLASS->title($STRING$STRING$STRING)$STRING
+                        invoke-static { v1, v2, p0 }, $HOME_HEADER_TEXT_CLASS->headerText($STRING$STRING$STRING)$STRING
                         move-result-object v0
                         return-object v0
                         :fallback
@@ -156,7 +156,7 @@ val homeTitlePatch = patch(
             titleAt + 2,
             """
                 invoke-static/range { p0 .. p0 }, $HOME_FRAGMENT->fakhCapture($HOME_FRAGMENT)V
-                invoke-static/range { v$titleReg .. v$titleReg }, $HOME_FRAGMENT->fakhTitle($STRING)$STRING
+                invoke-static/range { v$titleReg .. v$titleReg }, $HOME_FRAGMENT->fakhHeaderText($STRING)$STRING
                 move-result-object v$titleReg
             """,
         )
