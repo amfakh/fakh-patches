@@ -44,7 +44,11 @@ final class ChoiceSheets {
     static final String NAV_POSITION = "fakh_nav_position";
     static final String DOWNLOAD_FOLDER = AssetsDownload.FOLDER_KEY;
     static final String TAB_WIDTH = "fakh_tab_width";
+    static final String HOME_TITLE = HomeTitle.KEY;
+    static final String RECENT_BRANCHES = BranchOrder.RECENT_FEATURE;
+    private static final int[] RECENT_COUNTS = {0, 3, 5, 10, 15};
     private static final int[] TAB_WIDTHS = {2, 4, 8};
+    private static final String[] HOME_MODES = {HomeTitle.MODE_USERNAME, HomeTitle.MODE_NAME, HomeTitle.MODE_HOME};
     private static final String SETTINGS_FRAGMENT = "com.github.android.settings.SettingsFragment";
     private static final String TAG = "FakhPatches";
 
@@ -58,7 +62,8 @@ final class ChoiceSheets {
 
     /** Whether the row with this key opens a sheet instead of being a switch. */
     static boolean opens(String key) {
-        return NAV_TABS.equals(key) || NAV_POSITION.equals(key) || DOWNLOAD_FOLDER.equals(key) || TAB_WIDTH.equals(key);
+        return NAV_TABS.equals(key) || NAV_POSITION.equals(key) || DOWNLOAD_FOLDER.equals(key)
+                || TAB_WIDTH.equals(key) || HOME_TITLE.equals(key) || RECENT_BRANCHES.equals(key);
     }
 
     /** The Settings fragment, which the sheets are shown from. */
@@ -76,6 +81,8 @@ final class ChoiceSheets {
             if (NAV_TABS.equals(key)) openTabs();
             else if (DOWNLOAD_FOLDER.equals(key)) openDownloadFolder();
             else if (TAB_WIDTH.equals(key)) openTabWidth();
+            else if (HOME_TITLE.equals(key)) openHomeTitle();
+            else if (RECENT_BRANCHES.equals(key)) openRecentBranches();
             else openPosition();
         } catch (RuntimeException error) {
             Log.w(TAG, "Choice sheet", error);
@@ -284,11 +291,70 @@ final class ChoiceSheets {
                 colors[0], text, secondary, content, null);
     }
 
-    /** What a row shows under its title: the position, folder, tab width or number of shown tabs; null while unknown. */
+    /** The sheet of what the Home header shows: Username, Name, or Home. */
+    private static void openHomeTitle() {
+        Activity from = activity.get();
+        if (from == null) return;
+        int[] colors = colors(from);
+        String[] labels = new String[HOME_MODES.length];
+        for (int i = 0; i < HOME_MODES.length; i++) labels[i] = HomeTitle.choice(HOME_MODES[i]);
+        String current = HomeTitle.mode();
+        int chosen = 0;
+        for (int i = 0; i < HOME_MODES.length; i++) {
+            if (HOME_MODES[i].equals(current)) chosen = i;
+        }
+        TabSheet[] sheet = new TabSheet[1];
+        View rows = TabSheet.radioRows(from, labels, chosen, colors[1], colors[3], colors[2], index -> {
+            boolean changed = !HOME_MODES[index].equals(HomeTitle.mode());
+            Features.setText(HOME_TITLE, HOME_MODES[index]);
+            if (sheet[0] != null) sheet[0].close();
+            if (!changed) return;
+            refreshSummary(HOME_TITLE);
+            MaterialYou.showRestartBar(from);
+        });
+        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Username on Home"),
+                null, colors[0], colors[1], colors[2], rows, null);
+    }
+
+    /** The sheet of how many recently pushed branches the branch picker lists first. */
+    private static void openRecentBranches() {
+        Activity from = activity.get();
+        if (from == null) return;
+        int[] colors = colors(from);
+        String[] labels = new String[RECENT_COUNTS.length];
+        int chosen = 0;
+        for (int i = 0; i < RECENT_COUNTS.length; i++) {
+            labels[i] = recent(RECENT_COUNTS[i]);
+            if (RECENT_COUNTS[i] == BranchOrder.recentCount()) chosen = i;
+        }
+        TabSheet[] sheet = new TabSheet[1];
+        View rows = TabSheet.radioRows(from, labels, chosen, colors[1], colors[3], colors[2], index -> {
+            BranchOrder.setRecentCount(RECENT_COUNTS[index]);
+            if (sheet[0] != null) sheet[0].close();
+            refreshSummary(RECENT_BRANCHES);
+        });
+        sheet[0] = TabSheet.show(from, from.findViewById(android.R.id.content), I18n.tr("Recent branches"),
+                I18n.tr("Recently pushed branches listed first in the branch picker."), colors[0], colors[1],
+                colors[2], rows, null);
+    }
+
+    /** A number of recent branches as the sheet and its row word it. */
+    private static String recent(int count) {
+        return count == 0 ? I18n.tr("Off") : String.valueOf(count);
+    }
+
+    /** What a row shows under its title, such as the position or the number of shown tabs; null while unknown. */
     static String summary(String key) {
         if (NAV_POSITION.equals(key)) return I18n.tr(Features.saved(NavigationBar.NAV_RIGHT) ? "Right" : "Left");
         if (DOWNLOAD_FOLDER.equals(key)) return AssetsDownload.location();
         if (TAB_WIDTH.equals(key)) return spaces(MarkdownSettings.pickedTabWidth());
+        if (RECENT_BRANCHES.equals(key)) return recent(BranchOrder.recentCount());
+        if (HOME_TITLE.equals(key)) {
+            String mode = HomeTitle.mode();
+            if (HomeTitle.MODE_NAME.equals(mode)) return I18n.tr("Name");
+            if (HomeTitle.MODE_HOME.equals(mode)) return I18n.tr("Home");
+            return I18n.tr("Username");
+        }
         if (!NAV_TABS.equals(key) || NavigationBar.allTabs.isEmpty()) return null;
         int shown = 0;
         for (Object tab : NavigationBar.allTabs) {

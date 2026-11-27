@@ -64,23 +64,31 @@ public final class DownloadCount {
     }
 
     /**
-     * The size line of a release file.
+     * The formatted download count of a release file.
      *
-     * @param id   The file's id.
-     * @param size The app's size text.
-     * @return The size followed by the download count, or the size alone while the count is unknown.
+     * @param id The file's id.
+     * @return The formatted count, or null while the count is unknown or the switch is off.
      */
-    public static String label(String id, String size) {
+    public static String text(String id) {
         SharedPreferences saved = saved();
         String count = saved == null ? null : saved.getString(id, null);
-        if (count == null || !Features.on("fakh_download_count")) return size;
+        if (count == null || !Features.on("fakh_download_count")) return null;
         try {
-            long downloads = Long.parseLong(count);
-            return size + " \u00b7 " + NumberFormat.getIntegerInstance().format(downloads)
-                    + (downloads == 1 ? " download" : " downloads");
+            return NumberFormat.getIntegerInstance().format(Long.parseLong(count));
         } catch (NumberFormatException e) {
-            return size;
+            return null;
         }
+    }
+
+    /**
+     * The app's download icon.
+     *
+     * @return Its drawable id.
+     */
+    @SuppressWarnings("DiscouragedApi")
+    public static int icon() {
+        Application app = AppRuntime.application();
+        return app.getResources().getIdentifier("ic_download_16", "drawable", app.getPackageName());
     }
 
     /** Where the counts are kept, or null before the app has started. */

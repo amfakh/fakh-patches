@@ -7,9 +7,10 @@ Patches for the GitHub app (`com.github.android`, version `1.285.0`, APKM from A
 Enabled by default.
 
 Settings gets a **Patches** card with a **Fakh Patches** row. It opens the patches in groups
-(Appearance, Navigation bar, Titles and lists, Comments and markdown, Code and files, Releases and
-downloads), with a switch or a setting for each patch in the bundle. **Disable analytics** has no
-switch, because it changes the app's manifest.
+(Appearance, Navigation bar, Titles and lists, Repositories, Profiles, Comments and markdown, Code and
+files, Releases and downloads), with a switch or a setting for each patch in the bundle. Titles and
+lists, Repositories and Comments and markdown have headers within. **Disable analytics** has no switch,
+because it changes the app's manifest.
 
 | Category | Patch | What it does |
 |---|---|---|
@@ -33,7 +34,15 @@ switch, because it changes the app's manifest.
 | Feature | Show exact time | Shows dates and times instead of ages such as **20d**, in lists, issues, pull requests, comments and notifications. Where there is little room it shows the time for today and the date otherwise. |
 | Feature | Show whitespace | Spaces in files and diffs show as dim dots and tabs as dim » marks. Copied lines stay as they are. |
 | Feature | Repository age | Shows when a repository was created under its stars and forks: the date with **Show exact time**, otherwise how long ago. |
-| Feature | Release download count | Shows how many times each file of a release was downloaded, next to its size. |
+| Feature | Release download count | Shows how many times each file of a release was downloaded, with a download icon next to its size. |
+| Feature | Tags on commits | A commit with a tag shows the tag's name under its author in commit lists. Only the 100 tags with the newest commits are read. |
+| Feature | PR base branch | In pull request lists, a pull request into another branch than the repository's default shows that branch. |
+| Feature | Pinned branches | The branch picker lists `develop`, `main`, `master` and `staging` right after the default branch. The rest stays alphabetical, and so do search results. |
+| Feature | Recent branches | The branch picker lists the most recently pushed branches near the top, after any pinned ones, with how long ago. **Recent branches** in Fakh Patches picks how many: **Off**, 3, 5 (default), 10 or 15. They come from the repository's latest 100 pushes, merges and branch changes. |
+| Feature | Follows you | A **Follows you** row shows on the profile of someone who follows you. |
+| Feature | Linkify user location | The location on a profile opens in Google Maps, or the app you use for its links, when tapped. |
+| Feature | Username on Home | The Home header shows your username instead of **Home**. **Username on Home** in Fakh Patches picks your username (default), your name or **Home**. |
+| Feature | Hide diff signs | The **+** and **-** at the start of diff lines are hidden, and the code stays aligned. |
 | Feature | Collapse bot comments | Comments by bots and agents such as Copilot start collapsed behind **Show bot comment**; tap it to read one. Descriptions of issues and pull requests stay open. |
 | Feature | Preview hidden comments | A hidden comment of an issue, pull request or review shows its first line under the reason it is hidden. Discussions stay as they are. |
 | Feature | Section and table buttons | The markdown toolbars get a button for a collapsible `<details>` section and one for a table, put around the selected text. Android 10 and later. |
