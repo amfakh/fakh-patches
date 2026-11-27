@@ -184,8 +184,7 @@ val drawMermaidDiagramsPatch = patch(
 @Suppress("unused")
 val overrideTabWidthPatch = patch(
     name = "Override tab width",
-    description = "Shows tabs in files, diffs and code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option " +
-        "is the width until another is picked in Fakh Patches.",
+    description = "Shows tabs in files, diffs and code blocks as 2, 4 or 8 spaces wide. The app uses 8.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
