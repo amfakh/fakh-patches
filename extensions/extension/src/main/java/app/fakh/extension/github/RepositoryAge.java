@@ -21,6 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import app.fakh.extension.shared.AppRuntime;
+import app.fakh.extension.shared.Features;
 
 /**
  * When a repository was created, shown on its screen. The app does not ask GitHub for the date, so the patch adds it to
@@ -83,10 +84,10 @@ public final class RepositoryAge {
         String id = idOf(repository);
         SharedPreferences saved = saved();
         String date = saved == null || id == null ? null : saved.getString(id, null);
-        if (date == null) return null;
+        if (date == null || !Features.on("fakh_repository_age")) return null;
         try {
             Instant created = Instant.parse(date);
-            if (ExactTime.applied()) {
+            if (ExactTime.on()) {
                 return "Created " + DateUtils.formatDateTime(AppRuntime.application(), created.toEpochMilli(),
                         DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_ABBREV_MONTH);
             }

@@ -10,19 +10,17 @@ import android.text.format.DateUtils;
 
 import java.time.ZonedDateTime;
 
+import app.fakh.extension.shared.Features;
+
 /** The date and time the app shows in place of an age such as "20d". */
 @SuppressWarnings("unused")
 public final class ExactTime {
     private ExactTime() {
     }
 
-    /**
-     * Whether Show exact time is applied, for other patches that word a moment. The patch makes this true.
-     *
-     * @return False in an app without the patch.
-     */
-    public static boolean applied() {
-        return false;
+    /** Whether dates show instead of ages, which other patches that word a moment follow. */
+    static boolean on() {
+        return Features.on("fakh_exact_time");
     }
 
     /**
@@ -32,10 +30,10 @@ public final class ExactTime {
      * @param time    The moment, or null.
      * @param brief   Whether the app asked for its short form, used where there is little room: only the time for a
      *                moment of today, otherwise only the date.
-     * @return The text, or null for no moment, which leaves the app's own text.
+     * @return The text, or null for no moment or with the switch off, which leaves the app's own text.
      */
     public static String format(Context context, ZonedDateTime time, boolean brief) {
-        if (context == null || time == null) return null;
+        if (!on() || context == null || time == null) return null;
         long millis = time.toInstant().toEpochMilli();
         int flags = DateUtils.FORMAT_ABBREV_MONTH;
         if (!brief) {

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import app.fakh.extension.shared.AppRuntime;
+import app.fakh.extension.shared.Features;
 
 /**
  * How often each file of a release was downloaded, shown next to its size. The app does not ask GitHub for the count, so
@@ -72,7 +73,7 @@ public final class DownloadCount {
     public static String label(String id, String size) {
         SharedPreferences saved = saved();
         String count = saved == null ? null : saved.getString(id, null);
-        if (count == null) return size;
+        if (count == null || !Features.on("fakh_download_count")) return size;
         try {
             long downloads = Long.parseLong(count);
             return size + " \u00b7 " + NumberFormat.getIntegerInstance().format(downloads)

@@ -5,6 +5,14 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.shared.Feature
+import app.morphe.patcher.patch.mutableClassDefBy
+import app.fakh.patches.github.shared.Constants.MERMAID
+import app.fakh.patches.github.shared.Constants.COLLAPSE_CODE
+import app.fakh.patches.github.shared.Constants.SHORTEN_LINKS
+import app.fakh.patches.github.shared.Constants.MENTION_AVATARS
+import app.fakh.patches.github.shared.Constants.TAB_WIDTH
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -18,6 +26,8 @@ import java.io.File
 
 private const val VIEWER = "Lapp/fakh/extension/github/DiagramViewer;"
 
+private const val MARKDOWN_SETTINGS = "Lapp/fakh/extension/github/MarkdownSettings;"
+
 /** The constructor of the WebView that renders READMEs, bodies and comments. */
 private object MarkdownViewFingerprint : Fingerprint(
     name = "<init>",
@@ -25,21 +35,51 @@ private object MarkdownViewFingerprint : Fingerprint(
 )
 
 /**
+ * Hands each new markdown WebView to an extension method, right after the app adds its own JavaScript bridge and so
+ * before the page loads.
+ *
+ * @param method The smali reference of a static method that takes the `WebView`.
+ */
+internal fun withMarkdownView(method: String) {
+    val view = MarkdownViewFingerprint.method
+    val instructions = view.implementation!!.instructions.toList()
+    val bridgeAt = instructions.indexOfFirst { it.method?.name == "addJavascriptInterface" }
+    if (bridgeAt < 0) throw PatchException("GitHub: the markdown view's JavaScript bridge not found")
+    val self = (instructions[bridgeAt] as? FiveRegisterInstruction)?.registerC
+        ?: (instructions[bridgeAt] as RegisterRangeInstruction).startRegister
+    view.addInstructions(bridgeAt + 1, "invoke-static/range { v$self .. v$self }, $method(Landroid/webkit/WebView;)V")
+}
+
+/**
  * Appends [text] to one of the files of the WebView that renders READMEs, issue and pull request bodies and comments.
  *
  * @param file `assets/webview/markdown.css` or `assets/webview/markdown.js`.
  * @param text The CSS rules or the script to add after the app's own.
  */
-private fun appendToMarkdownView(file: File, text: String) {
+internal fun appendToMarkdownView(file: File, text: String) {
     if (!file.exists()) throw PatchException("GitHub: ${file.name} not found in assets/webview")
     file.appendText("\n/* Fakh Patches */\n${text.trimIndent()}\n")
 }
+
+/** Lets the scripts of the markdown page ask which switches are on, through `window.fakhSettings`. */
+private val markdownSettingsPatch = patch {
+    dependsOn(githubSettingsPatch)
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        withMarkdownView("$MARKDOWN_SETTINGS->attach")
+    }
+}
+
+/** [body], run only while the switch of [feature] is on. */
+private fun whileOn(feature: Feature, body: String) =
+    "if (window.fakhSettings.on('${feature.id}')) {\n${body.trimIndent().prependIndent("  ")}\n}"
 
 /**
  * Runs [body] after the WebView loads each piece of content, by wrapping `GitHub.prototype._didLoad`, which
  * `markdown.js` calls once the HTML is in the page and before it reports the height to the app.
  */
-private fun afterLoad(body: String) = """
+internal fun afterLoad(body: String) = """
     ;(() => {
       const didLoad = GitHub.prototype._didLoad
       GitHub.prototype._didLoad = function () {
@@ -60,20 +100,14 @@ val mermaidDiagramsPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(markdownSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        register(MERMAID)
+
         // The page asks for the full screen viewer through its own bridge, added before the page loads.
-        val view = MarkdownViewFingerprint.method
-        val instructions = view.implementation!!.instructions.toList()
-        val bridgeAt = instructions.indexOfFirst { it.method?.name == "addJavascriptInterface" }
-        if (bridgeAt < 0) throw PatchException("GitHub: the markdown view's JavaScript bridge not found")
-        val self = (instructions[bridgeAt] as? FiveRegisterInstruction)?.registerC
-            ?: (instructions[bridgeAt] as RegisterRangeInstruction).startRegister
-        view.addInstructions(
-            bridgeAt + 1,
-            "invoke-static/range { v$self .. v$self }, $VIEWER->attach(Landroid/webkit/WebView;)V",
-        )
+        withMarkdownView("$VIEWER->attach")
 
         // The library ships inside the app, so a diagram needs no request to another server. It is loaded only by a
         // body that has a diagram.
@@ -92,7 +126,9 @@ val mermaidDiagramsPatch = patch(
         appendToMarkdownView(
             resourceFile("assets/webview/markdown.js"),
             afterLoad(
-                """
+                whileOn(
+                    MERMAID,
+                    """
                     const sources = document.querySelectorAll(
                       '#content pre[lang="mermaid"], #content .highlight-source-mermaid pre')
                     if (sources.length > 0) {
@@ -139,6 +175,7 @@ val mermaidDiagramsPatch = patch(
                       sources.forEach(draw)
                     }
                 """,
+                ),
             ),
         )
     }
@@ -147,11 +184,13 @@ val mermaidDiagramsPatch = patch(
 @Suppress("unused")
 val tabWidthPatch = patch(
     name = "Tab width",
-    description = "Shows tabs in code blocks as 2, 4 or 8 spaces wide. The app uses 8.",
+    description = "Shows tabs in code blocks as 2, 4 or 8 spaces wide. The app uses 8. The option is the width until " +
+        "another is picked in Fakh Patches.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(markdownSettingsPatch)
 
     val width = intOption(
         key = "width",
@@ -163,11 +202,26 @@ val tabWidthPatch = patch(
     ) { value -> value in listOf(2, 4, 8) }
 
     execute {
+        register(TAB_WIDTH)
+        mutableClassDefBy(MARKDOWN_SETTINGS).methods.first { it.name == "defaultTabWidth" }.addInstructions(
+            0,
+            """
+                const/4 v0, ${width.value}
+                return v0
+            """,
+        )
         appendToMarkdownView(
             resourceFile("assets/webview/markdown.css"),
             """
-                .markdown-body pre, .markdown-body code { tab-size: ${width.value}; -moz-tab-size: ${width.value}; }
+                .markdown-body pre, .markdown-body code {
+                  tab-size: var(--fakh-tab, 8);
+                  -moz-tab-size: var(--fakh-tab, 8);
+                }
             """,
+        )
+        appendToMarkdownView(
+            resourceFile("assets/webview/markdown.js"),
+            afterLoad("document.documentElement.style.setProperty('--fakh-tab', window.fakhSettings.tabWidth())"),
         )
     }
 }
@@ -180,8 +234,11 @@ val collapseLongCodeBlocksPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(markdownSettingsPatch)
 
     execute {
+        register(COLLAPSE_CODE)
+
         // The WebView is as tall as its content and sits in a scrolling list, so a code block with its own vertical
         // scroll never gets the swipe. Folding it keeps the list short and a tap opens it in place.
         appendToMarkdownView(
@@ -212,7 +269,9 @@ val collapseLongCodeBlocksPatch = patch(
         appendToMarkdownView(
             resourceFile("assets/webview/markdown.js"),
             afterLoad(
-                """
+                whileOn(
+                    COLLAPSE_CODE,
+                    """
                     for (const pre of document.querySelectorAll('#content pre')) {
                       const lines = pre.textContent.replace(/\n$/, '').split('\n').length
                       if (lines <= 25 || pre.classList.contains('fakh-folded')) continue
@@ -229,6 +288,7 @@ val collapseLongCodeBlocksPatch = patch(
                       pre.after(button)
                     }
                 """,
+                ),
             ),
         )
     }
@@ -242,14 +302,19 @@ val shortenLinksPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(markdownSettingsPatch)
 
     execute {
+        register(SHORTEN_LINKS)
+
         // Only links whose text is their own address are rewritten; a link with its own text stays as written.
         // The address itself is not touched, so tapping it opens the same page.
         appendToMarkdownView(
             resourceFile("assets/webview/markdown.js"),
             afterLoad(
-                """
+                whileOn(
+                    SHORTEN_LINKS,
+                    """
                     const reserved = new Set(['about', 'apps', 'collections', 'explore', 'features', 'marketplace',
                       'new', 'notifications', 'orgs', 'organizations', 'pricing', 'search', 'settings', 'sponsors',
                       'topics', 'trending', 'users'])
@@ -290,6 +355,57 @@ val shortenLinksPatch = patch(
                       } catch (e) {}
                     }
                 """,
+                ),
+            ),
+        )
+    }
+}
+
+@Suppress("unused")
+val mentionAvatarsPatch = patch(
+    name = "Mention avatars",
+    description = "Shows a small avatar before each @mention in comments, descriptions and READMEs.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_GITHUB)
+    category("Feature")
+    dependsOn(markdownSettingsPatch)
+
+    execute {
+        register(MENTION_AVATARS)
+
+        // The size is fixed, so the text does not move when an avatar arrives.
+        appendToMarkdownView(
+            resourceFile("assets/webview/markdown.css"),
+            """
+                .markdown-body img.fakh-avatar {
+                  width: 1.15em;
+                  height: 1.15em;
+                  margin-right: 0.2em;
+                  vertical-align: -0.2em;
+                  border-radius: 50%;
+                }
+            """,
+        )
+        appendToMarkdownView(
+            resourceFile("assets/webview/markdown.js"),
+            afterLoad(
+                whileOn(
+                    MENTION_AVATARS,
+                    """
+                    for (const mention of document.querySelectorAll('#content a.user-mention[href]')) {
+                      // A person or organization links to /name. Apps and teams have longer paths and no avatar there.
+                      const [, name, rest] = new URL(mention.href).pathname.split('/')
+                      if (!name || rest || mention.querySelector('.fakh-avatar')) continue
+                      const avatar = document.createElement('img')
+                      avatar.className = 'fakh-avatar'
+                      avatar.alt = ''
+                      avatar.addEventListener('error', () => avatar.remove())
+                      avatar.src = 'https://github.com/' + name + '.png?size=64'
+                      mention.prepend(avatar)
+                    }
+                """,
+                ),
             ),
         )
     }

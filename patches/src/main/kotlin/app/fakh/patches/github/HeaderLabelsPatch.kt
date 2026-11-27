@@ -5,6 +5,8 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.github.shared.Constants.HEADER_LABELS
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -35,6 +37,8 @@ import com.android.tools.smali.dexlib2.immutable.ImmutableMethod
 import com.android.tools.smali.dexlib2.immutable.ImmutableMethodParameter
 
 private const val LABELS_FIELD = "fakhLabels"
+
+private const val HEADER_LABELS_CLASS = "Lapp/fakh/extension/github/HeaderLabels;"
 
 private const val LIST = "Ljava/util/List;"
 
@@ -272,8 +276,12 @@ val headerLabelsPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(githubSettingsPatch)
+    extendWith("extensions/extension.mpe")
 
     execute {
+        register(HEADER_LABELS)
+
         // The GraphQL fragments have a `toString` like this one too; the model is the one the header is built from.
         val issueModels = IssueModelFingerprint.matchAll().map { it.originalMethod }.associateBy { it.definingClass }
 
@@ -343,6 +351,8 @@ val headerLabelsPatch = patch(
                 """
                     iget-object v$free, v$holder, ${read.field!!.smali}
                     iget-object v$free, v$free, ${labels.smali}
+                    invoke-static/range { v$free .. v$free }, $HEADER_LABELS_CLASS->labels($LIST)$LIST
+                    move-result-object v$free
                     iput-object v$free, v$built, $model->$LABELS_FIELD:$LIST
                 """,
             )

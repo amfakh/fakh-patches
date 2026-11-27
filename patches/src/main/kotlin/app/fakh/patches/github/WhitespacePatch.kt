@@ -5,6 +5,8 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.github.shared.Constants.WHITESPACE as WHITESPACE_SWITCH
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -82,9 +84,11 @@ val showWhitespacePatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        register(WHITESPACE_SWITCH)
         // The text of the line, the first string the visitor reads, before the app replaces its spaces.
         val marked = CodeTextFingerprint.method.mapResults("mark", limit = 1) {
             it.parameterTypes.isEmpty() && it.returnType == STRING && it.name != "toString"

@@ -5,6 +5,8 @@
 
 package app.fakh.extension.github;
 
+import app.fakh.extension.shared.Features;
+
 /**
  * Draws the spaces and tabs of file and diff lines. The app turns each line's HTML into the HTML it shows: spaces and
  * tabs are marked while it reads the text, and the marks become dim symbols once the HTML is written.
@@ -27,9 +29,11 @@ public final class Whitespace {
      * Marks the whitespace of a piece of code.
      *
      * @param text The text of one piece of a line.
-     * @return The text with each space marked, and each tab as a mark followed by the rest of its 8 columns.
+     * @return The text with each space marked, and each tab as a mark followed by the rest of its 8 columns; the text
+     *     itself with the switch off.
      */
     public static String mark(String text) {
+        if (!Features.on("fakh_whitespace")) return text;
         return text.replace(' ', SPACE).replace("\t", TAB + "       ");
     }
 

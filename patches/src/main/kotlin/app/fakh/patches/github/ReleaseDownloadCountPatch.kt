@@ -5,6 +5,8 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.github.shared.Constants.DOWNLOAD_COUNT
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
@@ -25,9 +27,11 @@ val releaseDownloadCountPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        register(DOWNLOAD_COUNT)
         val names = setOf("id", "name", "size", "url", "contentType", "__typename")
         var model: String? = null
         val queries = mutableListOf<Pair<String, String>>()

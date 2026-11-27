@@ -5,12 +5,12 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.github.shared.Constants.RECENTLY_UPDATED
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
-import app.morphe.patcher.extensions.InstructionExtensions.replaceInstruction
 import app.morphe.patcher.patch.PatchException
-import app.morphe.patcher.patch.mutableClassDefBy
 import app.morphe.patcher.patch.patch
 import com.android.tools.smali.dexlib2.Opcode
 import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
@@ -56,11 +56,14 @@ val recentlyUpdatedFirstPatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        register(RECENTLY_UPDATED)
+
         // Every default filter set builds `new SortFilter()`, which takes the sort from this static field, and the
-        // filter bar counts a sort as changed only when it differs from it. Pointing the field at UpdatedDescending
+        // filter bar counts a sort as changed only when it differs from it. Storing UpdatedDescending there
         // changes the default everywhere and keeps the sort chip unmarked.
         val init = SortFilterInitFingerprint.method
         val instructions = init.implementation!!.instructions.toList()
@@ -74,20 +77,15 @@ val recentlyUpdatedFirstPatch = patch(
         }?.minus(1) ?: throw PatchException("SortFilter default sort not found")
         val sortEnum = ((instructions[loadAt] as ReferenceInstruction).reference as FieldReference).type
 
-        // The enum's static initializer names each constant with a string, then stores it in its renamed field.
-        val enumInit = mutableClassDefBy(sortEnum).methods.first { it.name == "<clinit>" }
-        val enumInstructions = enumInit.implementation!!.instructions.toList()
-        val nameAt = enumInstructions.indexOfFirst {
-            ((it as? ReferenceInstruction)?.reference as? StringReference)?.string == "UpdatedDescending"
-        }
-        if (nameAt < 0) throw PatchException("UpdatedDescending sort not found")
-        val updated = (nameAt until enumInstructions.size).firstNotNullOfOrNull { index ->
-            val field = (enumInstructions[index] as? ReferenceInstruction)?.reference as? FieldReference
-            field?.takeIf { enumInstructions[index].opcode == Opcode.SPUT_OBJECT && it.type == sortEnum }
-        } ?: throw PatchException("UpdatedDescending field not found")
-
         val register = (instructions[loadAt] as OneRegisterInstruction).registerA
-        init.replaceInstruction(loadAt, "sget-object v$register, $sortEnum->${updated.name}:$sortEnum")
+        init.addInstructions(
+            loadAt + 1,
+            """
+                invoke-static/range { v$register .. v$register }, $DEFAULT_SORT->saved(Ljava/lang/Object;)Ljava/lang/Object;
+                move-result-object v$register
+                check-cast v$register, $sortEnum
+            """,
+        )
 
         // The app saves the filters of every list it opens, the sort included even when it is the default, and reads
         // them back by decoding the sort's name and building `new SortFilter(sort)`. A saved Newest is read as the

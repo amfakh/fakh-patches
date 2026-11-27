@@ -5,6 +5,8 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.github.shared.Constants.ICON_ONLY_BUTTONS
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
@@ -29,6 +31,16 @@ private const val STRING = "Ljava/lang/String;"
 /** The content of the "Finish your review" button, which reads that text. */
 private object ReviewButtonFingerprint : Fingerprint(
     filters = listOf(resourceLiteral(ResourceType.STRING, "issue_pr_review_review_finish")),
+)
+
+/** The content of the "Re-run" buttons of Actions, which reads that text. */
+private object RerunButtonFingerprint : Fingerprint(
+    filters = listOf(resourceLiteral(ResourceType.STRING, "actions_rerun_check_button_label")),
+)
+
+/** The content of the "Commit changes" button, which reads that text. */
+private object CommitButtonFingerprint : Fingerprint(
+    filters = listOf(resourceLiteral(ResourceType.STRING, "commit_changes_button_label")),
 )
 
 /** Whether this draws an icon: `(painter, contentDescription, Modifier, tint, Composer, Int, Int)`. */
@@ -104,17 +116,57 @@ private fun MutableMethod.hideText(places: Triple<Int, Int, Int>) {
     )
 }
 
+/**
+ * Drops the text of the buttons in this method that upper-case their label and end in a menu arrow, and gives the arrow
+ * the label to read out. The extension leaves every other upper-cased text as it is.
+ */
+private fun MutableMethod.hideMenuText(): Int {
+    val instructions = implementation!!.instructions.toList()
+    var hidden = 0
+    instructions.indices.reversed().forEach { upperAt ->
+        val call = instructions[upperAt].method ?: return@forEach
+        if (call.definingClass != STRING || call.name != "toUpperCase") return@forEach
+        // The arrow is the next icon, drawn before the code leaves this branch.
+        val arrowAt = (upperAt + 1 until instructions.size)
+            .takeWhile { instructions[it].opcode.canContinue() }
+            .firstOrNull { instructions[it].isIcon } ?: return@forEach
+        val text = (instructions[upperAt + 1] as OneRegisterInstruction).registerA
+        val description = (instructions[arrowAt] as? RegisterRangeInstruction)?.startRegister?.plus(1)
+            ?: throw PatchException("Menu button: arrow registers not found")
+
+        addInstructions(arrowAt + 1, "const/16 v$description, 0x0")
+        addInstructions(
+            arrowAt,
+            """
+                invoke-static {}, $BUTTONS->menuDescription()$STRING
+                move-result-object v$description
+            """,
+        )
+        addInstructions(
+            upperAt + 2,
+            """
+                invoke-static/range { v$text .. v$text }, $BUTTONS->menuText($STRING)$STRING
+                move-result-object v$text
+            """,
+        )
+        hidden++
+    }
+    return hidden
+}
+
 @Suppress("unused")
 val iconOnlyButtonsPatch = patch(
     name = "Icon-only floating buttons",
-    description = "Shows the floating Comment, New session and Finish your review buttons without their text.",
+    description = "Shows floating buttons, such as Comment, Re-run and Commit changes, without their text.",
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        register(ICON_ONLY_BUTTONS)
         val contents = mutableListOf<Pair<String, String>>()
         classDefForEach { classDef ->
             classDef.methods.forEach { method ->
@@ -130,6 +182,14 @@ val iconOnlyButtonsPatch = patch(
             method.hideText(buttonContent(method.implementation!!.instructions.toList())!!)
         }
 
+        // The matches of one fingerprint are one per method, and both labels can be read in the same one.
+        val menus = listOf(RerunButtonFingerprint, CommitButtonFingerprint).map { fingerprint ->
+            fingerprint.matchAll().map { it.method }.ifEmpty { throw PatchException("Menu button not found") }
+        }
+        menus.flatten().distinct().forEach {
+            if (it.hideMenuText() == 0) throw PatchException("Menu button content not found in ${it.definingClass}")
+        }
+
         // The review button keeps its icon and the arrow of its menu.
         var reviews = 0
         ReviewButtonFingerprint.matchAll().forEach { match ->
@@ -143,7 +203,13 @@ val iconOnlyButtonsPatch = patch(
             val text = (instructions[textAt] as OneRegisterInstruction).registerA
             val description = (instructions[iconAt] as RegisterRangeInstruction).startRegister + 1
 
-            method.addInstructions(textAt + 1, "const-string v$text, \"\"")
+            method.addInstructions(
+                textAt + 1,
+                """
+                    invoke-static/range { v$text .. v$text }, $BUTTONS->reviewText($STRING)$STRING
+                    move-result-object v$text
+                """,
+            )
             method.addInstructions(iconAt + 1, "const/16 v$description, 0x0")
             method.addInstructions(
                 iconAt,

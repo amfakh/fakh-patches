@@ -70,8 +70,15 @@ internal fun MutableMethod.addToQuery(anchor: String, fields: String) {
  * @param extension The class with `names(List): List`, which adds the two names, and the two methods below.
  * @param first The method taking the value of the first added field, as `(Object)V`.
  * @param second The method taking the value of the second.
+ * @param any The app's reader of any JSON value, `(Reader)Object`, when the second field is not a string.
  */
-internal fun readAddedFields(type: String, extension: String, first: String, second: String) {
+internal fun readAddedFields(
+    type: String,
+    extension: String,
+    first: String,
+    second: String,
+    any: MethodReference? = null,
+) {
     val parserClass = mutableClassDefBy(type)
     val parser = parserClass.methods.single { method -> method.instructions.any { it.selectsName } }
     val instructions = parser.instructions
@@ -117,11 +124,12 @@ internal fun readAddedFields(type: String, extension: String, first: String, sec
                 null,
                 MutableMethodImplementation(3),
             ).toMutable().apply {
+                val value = any?.takeIf { name == "fakhSecond" }?.let { "invoke-static { p0 }, ${it.smali}" }
+                    ?: "sget-object v0, ${adapter.smali}\n$invoke { v0, p0, p1 }, ${call.smali}"
                 addInstructions(
                     0,
                     """
-                        sget-object v0, ${adapter.smali}
-                        $invoke { v0, p0, p1 }, ${call.smali}
+                        $value
                         move-result-object v0
                         invoke-static { v0 }, $extension->$take(Ljava/lang/Object;)V
                         return-void

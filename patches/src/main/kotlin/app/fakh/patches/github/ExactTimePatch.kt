@@ -5,9 +5,10 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.github.shared.Constants.EXACT_TIME as EXACT_TIME_SWITCH
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
-import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
@@ -35,16 +36,11 @@ val showExactTimePatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
-        mutableClassDefBy(EXACT_TIME).methods.first { it.name == "applied" }.addInstructions(
-            0,
-            """
-                const/4 v0, 0x1
-                return v0
-            """,
-        )
+        register(EXACT_TIME_SWITCH)
 
         val relative = RelativeTimeFingerprint.matchAll().singleOrNull()?.method
             ?: throw PatchException("The app's relative time formatter is not one method")

@@ -5,6 +5,8 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.shared.register
+import app.fakh.patches.github.shared.Constants.REPOSITORY_AGE
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
@@ -184,9 +186,11 @@ val repositoryAgePatch = patch(
 ) {
     compatibleWith(COMPATIBILITY_GITHUB)
     category("Feature")
+    dependsOn(githubSettingsPatch)
     extendWith("extensions/extension.mpe")
 
     execute {
+        register(REPOSITORY_AGE)
         var model: String? = null
         val queries = mutableListOf<Pair<String, String>>()
         val parsers = mutableListOf<String>()

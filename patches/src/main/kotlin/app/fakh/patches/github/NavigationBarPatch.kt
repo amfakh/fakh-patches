@@ -5,6 +5,7 @@
 
 package app.fakh.patches.github
 
+import app.fakh.patches.github.shared.Constants.NAV_TABS
 import app.fakh.patches.github.shared.Constants.BACKGROUND_BLUR
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.fakh.patches.github.shared.Constants.GLASS_NAVBAR
@@ -335,7 +336,7 @@ val navigationBarPatch = patch(
         }
         addExtraTabs(tabType)
 
-        addRow("fakh_nav_tabs", "Navigation bar tabs")
+        register(NAV_TABS)
     }
 }
 
@@ -363,7 +364,7 @@ val hideTabLabelsPatch = patch(
             """,
         )
 
-        addSwitch(HIDE_TAB_LABELS)
+        register(HIDE_TAB_LABELS)
     }
 }
 
@@ -499,8 +500,7 @@ val glassNavigationBarPatch = patch(
             """,
         )
         removeTabRipple()
-        addSwitch(GLASS_NAVBAR)
-        addSwitch(BACKGROUND_BLUR)
+        register(GLASS_NAVBAR, BACKGROUND_BLUR)
     }
 }
 
@@ -516,7 +516,7 @@ val smallerNavigationBarPatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
-        addSwitch(SMALLER_NAVBAR)
+        register(SMALLER_NAVBAR)
     }
 }
 
@@ -534,7 +534,6 @@ val navigationBarRightPatch = patch(
     execute {
         watchActivities()
         register(NAV_RIGHT)
-        addRow("fakh_nav_position", "Landscape navigation bar position")
     }
 }
 
