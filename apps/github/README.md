@@ -22,6 +22,10 @@ Enabled by default.
 | Feature | Shorten links | A pasted GitHub link whose text is its own address reads as a short reference: `owner/repo#123`, `owner/repo#5 (comment)`, `owner/repo@0123456`, `owner/repo/path@main`, `owner/repo@v1.2`, `@user`. Other links drop `https://` and `www.`. Links with their own text stay as written, and every link still opens the same page. |
 | Feature | Labels in the header | Shows the labels of an issue or pull request under its title, in a row you can swipe sideways, without opening the info sheet. |
 | Feature | Show exact time | Shows dates and times instead of ages such as **20d**, in lists, issues, pull requests, comments and notifications. Where there is little room it shows the time for today and the date otherwise. |
+| Feature | Show whitespace | Spaces in files and diffs show as dim dots and tabs as dim » marks. Copied lines stay as they are. |
+| Feature | Repository age | Shows when a repository was created under its stars and forks: the date with **Show exact time**, otherwise how long ago. |
+| Feature | Mermaid diagrams | Mermaid code blocks in READMEs, issues, pull requests and comments show as diagrams, drawn by a copy of Mermaid inside the app. Tap one to open it full screen, where you can zoom and drag it. |
+| Feature | Icon-only floating buttons | The floating **Comment**, **New session** and **Finish your review** buttons show without their text, so they cover less of the screen. Screen readers still read the label. |
 
 The app draws its screens with both Views and Jetpack Compose, so the patch recolors both: resource
 colors for the Views, and the Compose palettes and schemes when the app starts. Markdown and README

@@ -8265,6 +8265,76 @@
       "options": []
     },
     {
+      "name": "Icon-only floating buttons",
+      "description": "Shows the floating Comment, New session and Finish your review buttons without their text.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.282.0",
+              "versionCodes": {
+                "ARM64_V8A": 953,
+                "ARMEABI_V7A": 953,
+                "X86_64": 953,
+                "X86": 953
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.283.0",
+              "versionCodes": {
+                "ARM64_V8A": 954,
+                "ARMEABI_V7A": 954,
+                "X86_64": 954,
+                "X86": 954
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.284.0",
+              "versionCodes": {
+                "ARM64_V8A": 955,
+                "ARMEABI_V7A": 955,
+                "X86_64": 955,
+                "X86": 955
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Instant ad rewards",
       "description": "Gives the rewards of rewarded ads without watching them and skips the level-up ads.",
       "default": true,
@@ -9277,6 +9347,76 @@
                 "ARMEABI_V7A": 466,
                 "X86_64": 466,
                 "X86": 466
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Mermaid diagrams",
+      "description": "Draws Mermaid diagrams in place of their code. Tap a diagram to open it full screen and pinch to zoom.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.282.0",
+              "versionCodes": {
+                "ARM64_V8A": 953,
+                "ARMEABI_V7A": 953,
+                "X86_64": 953,
+                "X86": 953
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.283.0",
+              "versionCodes": {
+                "ARM64_V8A": 954,
+                "ARMEABI_V7A": 954,
+                "X86_64": 954,
+                "X86": 954
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.284.0",
+              "versionCodes": {
+                "ARM64_V8A": 955,
+                "ARMEABI_V7A": 955,
+                "X86_64": 955,
+                "X86": 955
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,
@@ -10867,6 +11007,76 @@
       "options": []
     },
     {
+      "name": "Repository age",
+      "description": "Shows when a repository was created, under its stars and forks.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.282.0",
+              "versionCodes": {
+                "ARM64_V8A": 953,
+                "ARMEABI_V7A": 953,
+                "X86_64": 953,
+                "X86": 953
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.283.0",
+              "versionCodes": {
+                "ARM64_V8A": 954,
+                "ARMEABI_V7A": 954,
+                "X86_64": 954,
+                "X86": 954
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.284.0",
+              "versionCodes": {
+                "ARM64_V8A": 955,
+                "ARMEABI_V7A": 955,
+                "X86_64": 955,
+                "X86": 955
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
       "name": "Sales income multiplier",
       "description": "Makes every sale to a customer pay several times its price.",
       "default": true,
@@ -11521,6 +11731,76 @@
                 "ARMEABI_V7A": 218600,
                 "X86_64": 218600,
                 "X86": 218600
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            }
+          ]
+        }
+      ],
+      "options": []
+    },
+    {
+      "name": "Show whitespace",
+      "description": "Shows spaces as dim dots and tabs as dim » marks in files and diffs. Copied lines stay as they are.",
+      "default": true,
+      "category": "Feature",
+      "compatiblePackages": [
+        {
+          "packageName": "com.github.android",
+          "name": "GitHub",
+          "description": null,
+          "apkFileType": "APKM",
+          "appIconColor": "#1B1F23",
+          "signatures": [
+            "df08c9f2d809189d9d506497c15745a7395a41536efb433e3aee1aedbe11b261"
+          ],
+          "formFactor": "MOBILE",
+          "targets": [
+            {
+              "version": "1.282.0",
+              "versionCodes": {
+                "ARM64_V8A": 953,
+                "ARMEABI_V7A": 953,
+                "X86_64": 953,
+                "X86": 953
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.283.0",
+              "versionCodes": {
+                "ARM64_V8A": 954,
+                "ARMEABI_V7A": 954,
+                "X86_64": 954,
+                "X86": 954
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.284.0",
+              "versionCodes": {
+                "ARM64_V8A": 955,
+                "ARMEABI_V7A": 955,
+                "X86_64": 955,
+                "X86": 955
+              },
+              "isExperimental": false,
+              "minSdk": null,
+              "description": null
+            },
+            {
+              "version": "1.285.0",
+              "versionCodes": {
+                "ARM64_V8A": 956,
+                "ARMEABI_V7A": 956,
+                "X86_64": 956,
+                "X86": 956
               },
               "isExperimental": false,
               "minSdk": null,

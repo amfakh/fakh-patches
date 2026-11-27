@@ -17,6 +17,15 @@ public final class ExactTime {
     }
 
     /**
+     * Whether Show exact time is applied, for other patches that word a moment. The patch makes this true.
+     *
+     * @return False in an app without the patch.
+     */
+    public static boolean applied() {
+        return false;
+    }
+
+    /**
      * Formats a moment in the phone's language and time zone. The year is left out when it is the current one.
      *
      * @param context The context to format with.

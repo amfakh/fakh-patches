@@ -6,11 +6,23 @@
 package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
+import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
 import app.morphe.patcher.patch.intOption
 import app.morphe.patcher.patch.patch
 import app.morphe.patcher.patch.resourceFile
+import com.android.tools.smali.dexlib2.iface.instruction.FiveRegisterInstruction
+import com.android.tools.smali.dexlib2.iface.instruction.RegisterRangeInstruction
 import java.io.File
+
+private const val VIEWER = "Lapp/fakh/extension/github/DiagramViewer;"
+
+/** The constructor of the WebView that renders READMEs, bodies and comments. */
+private object MarkdownViewFingerprint : Fingerprint(
+    name = "<init>",
+    strings = listOf("/android_asset/", "native"),
+)
 
 /**
  * Appends [text] to one of the files of the WebView that renders READMEs, issue and pull request bodies and comments.
@@ -38,6 +50,99 @@ private fun afterLoad(body: String) = """
       }
     })()
 """
+
+@Suppress("unused")
+val mermaidDiagramsPatch = patch(
+    name = "Mermaid diagrams",
+    description = "Draws Mermaid diagrams in place of their code. Tap a diagram to open it full screen and pinch " +
+        "to zoom.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_GITHUB)
+    category("Feature")
+    extendWith("extensions/extension.mpe")
+
+    execute {
+        // The page asks for the full screen viewer through its own bridge, added before the page loads.
+        val view = MarkdownViewFingerprint.method
+        val instructions = view.implementation!!.instructions.toList()
+        val bridgeAt = instructions.indexOfFirst { it.method?.name == "addJavascriptInterface" }
+        if (bridgeAt < 0) throw PatchException("GitHub: the markdown view's JavaScript bridge not found")
+        val self = (instructions[bridgeAt] as? FiveRegisterInstruction)?.registerC
+            ?: (instructions[bridgeAt] as RegisterRangeInstruction).startRegister
+        view.addInstructions(
+            bridgeAt + 1,
+            "invoke-static/range { v$self .. v$self }, $VIEWER->attach(Landroid/webkit/WebView;)V",
+        )
+
+        // The library ships inside the app, so a diagram needs no request to another server. It is loaded only by a
+        // body that has a diagram.
+        val library = object {}.javaClass.getResourceAsStream("/github/mermaid.min.js")?.use { it.readBytes() }
+            ?: throw PatchException("GitHub: the bundled Mermaid library is missing")
+        val css = resourceFile("assets/webview/markdown.css")
+        css.resolveSibling("mermaid.min.js").writeBytes(library)
+        appendToMarkdownView(
+            css,
+            """
+                .markdown-body .fakh-mermaid { margin-bottom: 16px; }
+                .markdown-body .fakh-mermaid svg { display: block; margin: 0 auto; height: auto; }
+            """,
+        )
+        // The code stays when a diagram cannot be drawn, without the spinner GitHub's page would remove.
+        appendToMarkdownView(
+            resourceFile("assets/webview/markdown.js"),
+            afterLoad(
+                """
+                    const sources = document.querySelectorAll(
+                      '#content pre[lang="mermaid"], #content .highlight-source-mermaid pre')
+                    if (sources.length > 0) {
+                      window.fakhMermaid = window.fakhMermaid || new Promise((resolve, reject) => {
+                        const script = document.createElement('script')
+                        script.src = 'mermaid.min.js'
+                        script.onload = () => {
+                          // Strict: the text comes from other people, and this page can send messages to the app.
+                          window.mermaid.initialize({
+                            startOnLoad: false,
+                            securityLevel: 'strict',
+                            suppressErrorRendering: true,
+                            theme: document.documentElement.dataset.colorMode === 'dark' ? 'dark' : 'default'
+                          })
+                          resolve(window.mermaid)
+                        }
+                        script.onerror = reject
+                        document.head.appendChild(script)
+                      })
+                      const draw = async (pre) => {
+                        const block = pre.closest('section[data-type="mermaid"], .highlight-source-mermaid') || pre
+                        try {
+                          const mermaid = await window.fakhMermaid
+                          window.fakhDiagrams = (window.fakhDiagrams || 0) + 1
+                          const { svg } = await mermaid.render('fakh-mermaid-' + window.fakhDiagrams, pre.textContent)
+                          const diagram = document.createElement('div')
+                          diagram.className = 'fakh-mermaid'
+                          diagram.innerHTML = svg
+                          diagram.addEventListener('click', (event) => {
+                            // A link in the diagram keeps its own tap.
+                            if (event.target.closest('a')) return
+                            window.fakhDiagram.open(diagram.innerHTML,
+                              document.documentElement.dataset.colorMode === 'dark')
+                          })
+                          // The button that Collapse long code blocks puts after a long block.
+                          const button = block.nextElementSibling
+                          if (button && button.classList.contains('fakh-unfold')) button.remove()
+                          block.replaceWith(diagram)
+                        } catch (e) {
+                          const spinner = block.querySelector('.js-render-enrichment-loader')
+                          if (spinner) spinner.remove()
+                        }
+                      }
+                      sources.forEach(draw)
+                    }
+                """,
+            ),
+        )
+    }
+}
 
 @Suppress("unused")
 val tabWidthPatch = patch(

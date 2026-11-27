@@ -7,6 +7,7 @@ package app.fakh.patches.github
 
 import app.fakh.patches.github.shared.Constants.COMPATIBILITY_GITHUB
 import app.morphe.patcher.Fingerprint
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructionsWithLabels
 import app.morphe.patcher.extensions.InstructionExtensions.getInstruction
 import app.morphe.patcher.patch.PatchException
@@ -37,6 +38,14 @@ val showExactTimePatch = patch(
     extendWith("extensions/extension.mpe")
 
     execute {
+        mutableClassDefBy(EXACT_TIME).methods.first { it.name == "applied" }.addInstructions(
+            0,
+            """
+                const/4 v0, 0x1
+                return v0
+            """,
+        )
+
         val relative = RelativeTimeFingerprint.matchAll().singleOrNull()?.method
             ?: throw PatchException("The app's relative time formatter is not one method")
         // The same class words the age a second way, always with "ago", for a few headers.
