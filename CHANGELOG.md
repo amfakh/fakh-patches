@@ -1,3 +1,14 @@
+## [2.17.1](https://github.com/amfakh/fakh-patches/compare/v2.17.0...v2.17.1) (2026-11-27)
+
+### Updated App Support
+
+* **detikcom:** add support for `7.15.1`, next to `7.15.0` ([96069f8](https://github.com/amfakh/fakh-patches/commit/96069f894648dd84ba0a4007b6407f44e9711c28))
+* **DoDo Music:** add support for `2.0.20`, next to `2.0.18` ([96069f8](https://github.com/amfakh/fakh-patches/commit/96069f894648dd84ba0a4007b6407f44e9711c28))
+* **FlipSide:** add support for `2.0`, next to `1.7.1` ([96069f8](https://github.com/amfakh/fakh-patches/commit/96069f894648dd84ba0a4007b6407f44e9711c28))
+* **KOMPAS.com:** add support for `9.8.9`, next to `9.8.7` ([96069f8](https://github.com/amfakh/fakh-patches/commit/96069f894648dd84ba0a4007b6407f44e9711c28))
+* **Todaii: Learn German A1-C1:** add support for `2.8.3`, next to `2.8.2` ([96069f8](https://github.com/amfakh/fakh-patches/commit/96069f894648dd84ba0a4007b6407f44e9711c28))
+* **Warung Life Simulator:** add support for `1.3`, next to `1.2` ([96069f8](https://github.com/amfakh/fakh-patches/commit/96069f894648dd84ba0a4007b6407f44e9711c28))
+
 ## [2.17.0](https://github.com/amfakh/fakh-patches/compare/v2.16.0...v2.17.0) (2026-11-27)
 
 ### New Features
