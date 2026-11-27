@@ -20,6 +20,8 @@ Enabled by default.
 | Feature | Tab width | Tabs in code blocks of READMEs, issues, pull requests and comments are 2, 4 (default) or 8 spaces wide, picked in the patch options. The app uses 8. |
 | Feature | Collapse long code blocks | Code blocks longer than 25 lines show their first 20 lines and a **Show all N lines** button that opens the block in place. |
 | Feature | Shorten links | A pasted GitHub link whose text is its own address reads as a short reference: `owner/repo#123`, `owner/repo#5 (comment)`, `owner/repo@0123456`, `owner/repo/path@main`, `owner/repo@v1.2`, `@user`. Other links drop `https://` and `www.`. Links with their own text stay as written, and every link still opens the same page. |
+| Feature | Labels in the header | Shows the labels of an issue or pull request under its title, in a row you can swipe sideways, without opening the info sheet. |
+| Feature | Show exact time | Shows dates and times instead of ages such as **20d**, in lists, issues, pull requests, comments and notifications. Where there is little room it shows the time for today and the date otherwise. |
 
 The app draws its screens with both Views and Jetpack Compose, so the patch recolors both: resource
 colors for the Views, and the Compose palettes and schemes when the app starts. Markdown and README
