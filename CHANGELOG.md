@@ -1,3 +1,9 @@
+## [2.18.2](https://github.com/amfakh/fakh-patches/compare/v2.18.1...v2.18.2) (2026-11-28)
+
+### Bug Fixes
+
+* **Facer:** move Wear OS patches into their own Wear OS category and label Phone and Wear OS targets ([3e54298](https://github.com/amfakh/fakh-patches/commit/3e54298ad2d04b92be97414353f81bbf3468f223))
+
 ## [2.18.1](https://github.com/amfakh/fakh-patches/compare/v2.18.0...v2.18.1) (2026-11-28)
 
 ### Bug Fixes
