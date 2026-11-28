@@ -22,6 +22,7 @@ import com.android.tools.smali.dexlib2.iface.instruction.ReferenceInstruction
 import com.android.tools.smali.dexlib2.iface.instruction.WideLiteralInstruction
 import com.android.tools.smali.dexlib2.iface.reference.FieldReference
 import com.android.tools.smali.dexlib2.iface.reference.MethodReference
+import com.android.tools.smali.dexlib2.iface.reference.TypeReference
 
 private const val AUTOPLAY_EXT = "Lapp/fakh/extension/facer/FacerAutoplay;"
 
@@ -90,9 +91,17 @@ internal val looksAutoplayHookPatch = patch {
         }
         if (playCallIndex < 0) throw PatchException("ExoPlayer playWhenReady call not found in ExoPlayerPool")
         val playMethodRef = (createInsns[playCallIndex] as ReferenceInstruction).reference as MethodReference
-        val createPoolField = mutableClassDefBy(exoPlayerPoolCreateFingerprint.classDef).instanceFields
-            .singleOrNull { it.type == "Ljava/lang/Object;" && it.name == "b" }
-            ?: throw PatchException("Pool field not found on ${createMethod.definingClass}")
+        val createPoolFieldName = createInsns.indices.firstNotNullOfOrNull { idx ->
+            val insn = createInsns[idx]
+            if (insn.opcode != Opcode.IGET_OBJECT) return@firstNotNullOfOrNull null
+            val fieldRef = (insn as ReferenceInstruction).reference as? FieldReference ?: return@firstNotNullOfOrNull null
+            if (fieldRef.definingClass != createMethod.definingClass || fieldRef.type != "Ljava/lang/Object;") {
+                return@firstNotNullOfOrNull null
+            }
+            val next = createInsns.getOrNull(idx + 1) ?: return@firstNotNullOfOrNull null
+            val castType = ((next as? ReferenceInstruction)?.reference as? TypeReference)?.type
+            if (next.opcode == Opcode.CHECK_CAST && castType == poolType) fieldRef.name else null
+        } ?: throw PatchException("Pool field not found on ${createMethod.definingClass}")
         val createCallInsn = createInsns[playCallIndex] as FiveRegisterInstruction
         val createArgReg = createCallInsn.registerD
         val createPlayerReg = createCallInsn.registerC
@@ -103,7 +112,7 @@ internal val looksAutoplayHookPatch = patch {
             playCallIndex,
             """
                 move-object/from16 v$createArgReg, p0
-                iget-object v$createArgReg, v$createArgReg, ${createMethod.definingClass}->${createPoolField.name}:Ljava/lang/Object;
+                iget-object v$createArgReg, v$createArgReg, ${createMethod.definingClass}->$createPoolFieldName:Ljava/lang/Object;
                 check-cast v$createArgReg, $poolType
                 iget-object v$createArgReg, v$createArgReg, $poolType->${poolTypeField.name}:$feedTypeClass
                 instance-of v$createArgReg, v$createArgReg, $feedSubclassType

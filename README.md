@@ -18,6 +18,7 @@ Each app has its own README with the full patch list.
 | CoverScreen OS | `apps.ijp.coverscreenos` | `CSOS_9.0.3_BETA` | APKM from APKMirror | [apps/coverscreen](apps/coverscreen/README.md) |
 | detikcom | `org.detikcom.rss` | `7.15.0`, `7.15.1` | APK from APKMirror | [apps/detik](apps/detik/README.md) |
 | DoDo Music | `com.dundunstudio.autoplay` | `2.0.14`, `2.0.17`, `2.0.18`, `2.0.20` | XAPK from APKPure | [apps/dodo](apps/dodo/README.md) |
+| Facer Watch Faces | `com.jeremysteckling.facerrel` | `7.0.82` (phone & Wear OS) | APKM from APKMirror | [apps/facer](apps/facer/README.md) |
 | FlipSide | `com.dinoster.flipside` | `1.6`, `1.7.1`, `2.0` | APKS from APKCube | [apps/flipside](apps/flipside/README.md) |
 | FOMO Indonesia | `id.anon.android` | `9.0.64` | XAPK from APKPure | [apps/fomo](apps/fomo/README.md) |
 | Genius | `com.genius.android` | `8.2.3.5414` | APK from APKMirror | [apps/genius](apps/genius/README.md) |
