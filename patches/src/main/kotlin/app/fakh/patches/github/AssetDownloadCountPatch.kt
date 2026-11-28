@@ -93,24 +93,21 @@ private fun addCountChip(method: MutableMethod, assetType: String, itemType: Str
         it.type == it.definingClass && classDefByOrNull(it.type)?.interfaces?.contains(modifier) == true
     }
 
-    // Grab the Row measure policy (Arrangement.Start, Alignment.CenterVertically) and padding from the app.
+    // Grab the Row measure policy (Alignment.CenterVertically) and Arrangement.spacedBy (`su4`) from the app.
     var rowMeasure: MethodReference? = null
-    var rowArgs: List<FieldReference>? = null
-    var padding: MethodReference? = null
+    var rowAlign: FieldReference? = null
+    var spacedInit: MethodReference? = null
     var commitType: String? = null
     classDefForEach { classDef ->
         if (classDef.methods.any { m -> m.name == "toString" && m.instructions.any { it.string == "SimpleCommit(id=" } }) {
             commitType = classDef.type
         }
-        if (padding == null) {
-            classDef.methods.forEach { m ->
-                if (padding == null) {
-                    padding = m.instructions.firstNotNullOfOrNull {
-                        it.method?.takeIf { ref ->
-                            ref.types == listOf(modifier, "F", "F", "F", "F", "I") && ref.returnType == modifier
-                        }
-                    }
-                }
+        if (spacedInit == null && classDef.methods.any { m ->
+                m.name == "toString" && m.instructions.any { it.string == "Arrangement#spacedAligned(" }
+            }
+        ) {
+            spacedInit = classDef.methods.singleOrNull { m ->
+                m.name == "<init>" && m.types.size == 3 && m.types[0] == "F" && m.types[1] == "Z"
             }
         }
     }
@@ -120,7 +117,7 @@ private fun addCountChip(method: MutableMethod, assetType: String, itemType: Str
             val body = m.instructions
             val commitAt = body.indexOfFirst { it.field?.definingClass == commitType }
             if (commitAt < 0) return@forEach
-            // Right after SimpleCommit is read, the next measurePolicy call is the author Row (Arrangement.Start, CenterVertically).
+            // Right after SimpleCommit is read, the next measurePolicy call is the author Row (CenterVertically).
             val at = (commitAt until body.size).firstOrNull { i ->
                 val call = body[i].method ?: return@firstOrNull false
                 call.types.size == 4 && call.types[2] == composer && call.types[3] == "I" &&
@@ -128,22 +125,16 @@ private fun addCountChip(method: MutableMethod, assetType: String, itemType: Str
             } ?: return@forEach
             rowMeasure = body[at].method
             val mRef = rowMeasure!!
-            val arg0 = body.take(at).last {
-                it.opcode == Opcode.SGET_OBJECT && it.field?.let { f ->
-                    f.type == mRef.types[0] || classDefByOrNull(f.type)?.interfaces?.contains(mRef.types[0]) == true
-                } == true
-            }.field!!
-            val arg1 = body.take(at).last {
+            rowAlign = body.take(at).last {
                 it.opcode == Opcode.SGET_OBJECT && it.field?.let { f ->
                     f.type == mRef.types[1] || classDefByOrNull(f.type)?.interfaces?.contains(mRef.types[1]) == true
                 } == true
             }.field!!
-            rowArgs = listOf(arg0, arg1)
         }
     }
     val measure = rowMeasure ?: throw PatchException("Release asset row: Row measure policy not found")
-    val args = rowArgs ?: throw PatchException("Release asset row: Row arguments not found")
-    val pad = padding ?: throw PatchException("Release asset row: padding not found")
+    val align = rowAlign ?: throw PatchException("Release asset row: Row alignment not found")
+    val spaced = spacedInit ?: throw PatchException("Release asset row: Arrangement.spacedBy not found")
 
     // SimpleMetadataItem constructor and fields: (text, drawableRes, drawableTint, contentDescription, bg, stroke, style, mask)
     val itemClass = classDefByOrNull(itemType) ?: throw PatchException("SimpleMetadataItem not found")
@@ -223,9 +214,13 @@ private fun addCountChip(method: MutableMethod, assetType: String, itemType: Str
             addInstructionsWithLabels(
                 0,
                 """
-                    sget-object v0, ${args[0].smali}
-                    sget-object v1, ${args[1].smali}
-                    const/16 v2, 0x30
+                    new-instance v0, ${spaced.definingClass}
+                    const/high16 v1, 0x41000000
+                    const/4 v2, 0x1
+                    const/4 v3, 0x0
+                    invoke-direct { v0, v1, v2, v3 }, ${spaced.smali}
+                    sget-object v1, ${align.smali}
+                    const/16 v2, 0x36
                     invoke-static { v0, v1, p2, v2 }, ${measure.smali}
                     move-result-object v0
                     iget-wide v1, p2, ${keyHash.smali}
@@ -287,20 +282,12 @@ private fun addCountChip(method: MutableMethod, assetType: String, itemType: Str
                     const/16 v8, 0xf4
                     invoke-direct/range { v0 .. v8 }, ${itemInit.smali}
 
-                    sget-object v1, ${companion.smali}
-                    const/high16 v2, 0x41000000
-                    const/4 v3, 0x0
-                    const/4 v4, 0x0
-                    const/4 v5, 0x0
-                    const/16 v6, 0xe
-                    invoke-static/range { v1 .. v6 }, ${pad.smali}
-                    move-result-object v1
-
+                    const/4 v1, 0x0
                     move-object/from16 v2, p0
                     move-object v3, v0
                     move-object/from16 v4, p2
                     const/4 v5, 0x0
-                    const/4 v6, 0x0
+                    const/4 v6, 0x1
                     invoke-static/range { v1 .. v6 }, ${chipCall.smali}
 
                     :done

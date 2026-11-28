@@ -644,8 +644,9 @@ public final class NavigationBar {
         int count = tabCount > 0 ? tabCount : tabIcons.size();
         if (count == 0 || bar.getWidth() == 0) return;
         float density = bar.getResources().getDisplayMetrics().density;
+        int maxTab = Features.on(HIDE_NAV_BAR_LABELS) ? GlassTabs.MAX_ICON_TAB_DP : GlassTabs.MAX_TAB_DP;
         int side = GlassTabs.sidePadding(bar.getWidth(), count, Math.round(TAB_GAP_DP * density),
-                Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density), density);
+                Math.round((SIDE_MARGIN_DP + INNER_PADDING_DP) * density), density, maxTab);
         if (bar.getPaddingLeft() != side || bar.getPaddingRight() != side) {
             bar.setPadding(side, bar.getPaddingTop(), side, bar.getPaddingBottom());
         }
