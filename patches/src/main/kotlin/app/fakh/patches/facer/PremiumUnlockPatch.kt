@@ -5,7 +5,8 @@
 
 package app.fakh.patches.facer
 
-import app.fakh.patches.facer.shared.Constants.COMPATIBILITY_FACER
+import app.fakh.patches.facer.shared.Constants.COMPATIBILITY_FACER_PHONE
+import app.fakh.patches.facer.shared.Constants.COMPATIBILITY_FACER_WEAR
 import app.fakh.patches.shared.disableProviders
 import app.fakh.patches.shared.returnTrue
 import app.morphe.patcher.Fingerprint
@@ -73,7 +74,8 @@ val premiumUnlockPatch = patch(
     description = "Unlocks Facer Premium, Facer Plus, and removes ads.",
     default = true,
 ) {
-    compatibleWith(COMPATIBILITY_FACER)
+    compatibleWith(COMPATIBILITY_FACER_PHONE)
+    compatibleWith(COMPATIBILITY_FACER_WEAR)
     category("Premium")
     dependsOn(adProvidersManifestPatch)
 

@@ -5,7 +5,8 @@
 
 package app.fakh.patches.facer
 
-import app.fakh.patches.facer.shared.Constants.COMPATIBILITY_FACER
+import app.fakh.patches.facer.shared.Constants.COMPATIBILITY_FACER_PHONE
+import app.fakh.patches.facer.shared.Constants.COMPATIBILITY_FACER_WEAR
 import app.fakh.patches.shared.firebase.firebaseManifestPatch
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.PatchException
@@ -19,7 +20,8 @@ val disableAnalyticsPatch = patch(
     description = "Turns off Firebase Analytics, Crashlytics, Performance and Sessions, plus AppsFlyer.",
     default = true,
 ) {
-    compatibleWith(COMPATIBILITY_FACER)
+    compatibleWith(COMPATIBILITY_FACER_PHONE)
+    compatibleWith(COMPATIBILITY_FACER_WEAR)
     category("Privacy")
     dependsOn(firebaseManifestPatch())
 

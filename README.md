@@ -18,7 +18,8 @@ Each app has its own README with the full patch list.
 | CoverScreen OS | `apps.ijp.coverscreenos` | `CSOS_9.0.3_BETA` | APKM from APKMirror | [apps/coverscreen](apps/coverscreen/README.md) |
 | detikcom | `org.detikcom.rss` | `7.15.0`, `7.15.1` | APK from APKMirror | [apps/detik](apps/detik/README.md) |
 | DoDo Music | `com.dundunstudio.autoplay` | `2.0.14`, `2.0.17`, `2.0.18`, `2.0.20` | XAPK from APKPure | [apps/dodo](apps/dodo/README.md) |
-| Facer Watch Faces | `com.jeremysteckling.facerrel` | `7.0.82` (phone & Wear OS) | APKM from APKMirror | [apps/facer](apps/facer/README.md) |
+| Facer | `com.jeremysteckling.facerrel` | `7.0.82_11172253_mobile_receiver.phone` | APKM from APKMirror | [apps/facer](apps/facer/README.md) |
+| Facer (Wear OS) | `com.jeremysteckling.facerrel` | `7.0.82_11172254_wear_receiver.watch` | APKM from APKMirror | [apps/facer](apps/facer/README.md) |
 | FlipSide | `com.dinoster.flipside` | `1.6`, `1.7.1`, `2.0` | APKS from APKCube | [apps/flipside](apps/flipside/README.md) |
 | FOMO Indonesia | `id.anon.android` | `9.0.64` | XAPK from APKPure | [apps/fomo](apps/fomo/README.md) |
 | Genius | `com.genius.android` | `8.2.3.5414` | APK from APKMirror | [apps/genius](apps/genius/README.md) |
@@ -36,7 +37,7 @@ Each app has its own README with the full patch list.
 | Todaii: Learn German A1-C1 | `mobi.eup.easygerman` | `2.8.2`, `2.8.3` | XAPK from APKPure | [apps/todaiigerman](apps/todaiigerman/README.md) |
 | Todaii: Learn Japanese N5-N1 | `mobi.eup.jpnews` | `5.6.0` | APKM from APKMirror | [apps/todaii](apps/todaii/README.md) |
 | Tuya Smart | `com.tuya.smart` | `7.12.3-870`, `7.12.6-872`, `7.13.0-875`, `7.13.3-877` | APKM from APKMirror | [apps/smartlife](apps/smartlife/README.md) |
-| Warung Life Simulator | `com.neopawstudio.warunglife` | `1.2`, `1.3` | APKS from APKCube | [apps/warunglife](apps/warunglife/README.md) |
+| Warung Life Simulator | `com.neopawstudio.warunglife` | `1.3` | APKS from APKCube | [apps/warunglife](apps/warunglife/README.md) |
 | Windy | `com.windyty.android` | `51.3.2`, `51.4.4` | APKM from APKMirror | [apps/windy](apps/windy/README.md) |
 
 ## Use
