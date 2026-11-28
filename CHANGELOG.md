@@ -1,3 +1,15 @@
+## [2.18.0](https://github.com/amfakh/fakh-patches/compare/v2.17.1...v2.18.0) (2026-11-28)
+
+### New Features
+
+* **Facer:** add support for `7.0.82` with Premium unlock, Dark mode, Stop video autoplay, Stop Featured Looks autoplay, Hide hero carousel, Hide welcome card, Hide storefront pill icons, Hide category header emoji, Hide Looks like tip, Disable analytics and GmsCore support ([3e071cf](https://github.com/amfakh/fakh-patches/commit/3e071cfef3b0207fc7b761356bf5bee33a9c104c))
+* **Warung Life Simulator:** add Disable analytics and drop support for `1.2` ([6163c74](https://github.com/amfakh/fakh-patches/commit/6163c7450bcbe8d5668069f2e529f616175f12d5))
+
+### Bug Fixes
+
+* **GitHub:** space the download count chip from the file size chip ([8befd54](https://github.com/amfakh/fakh-patches/commit/8befd544201ef2b94c70a62e94c09fa6335655b7))
+* GitHub, LinkedIn, Smart Life, Tuya Smart, BARDI Smart Home and SYNC by Krisbow narrow the floating glass bar with fewer tabs ([8befd54](https://github.com/amfakh/fakh-patches/commit/8befd544201ef2b94c70a62e94c09fa6335655b7))
+
 ## [2.17.1](https://github.com/amfakh/fakh-patches/compare/v2.17.0...v2.17.1) (2026-11-27)
 
 ### Updated App Support
