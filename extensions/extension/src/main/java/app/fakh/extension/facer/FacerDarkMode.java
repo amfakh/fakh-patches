@@ -24,9 +24,9 @@ import app.fakh.extension.shared.AppRuntime;
  */
 @SuppressWarnings("unused")
 public final class FacerDarkMode {
-    private static final long COLOR_CANVAS_DARK = 0x121212L;
-    private static final long COLOR_SURFACE_DARK = 0x1C1C1EL;
-    private static final long COLOR_RAISED_DARK = 0x262629L;
+    private static final long COLOR_CANVAS_DARK = 0x000000L;
+    private static final long COLOR_SURFACE_DARK = 0x101012L;
+    private static final long COLOR_RAISED_DARK = 0x1C1C1EL;
     private static final long COLOR_TEXT_PRIMARY_DARK = 0xEAEAEAL;
     private static final long COLOR_TEXT_SECONDARY_DARK = 0xA8A8B0L;
 
@@ -106,14 +106,14 @@ public final class FacerDarkMode {
      * light mode).
      */
     public static long shimmerBase() {
-        return (isDark() ? 0xFF222226L : 0xFFE6E8EBL) << 32;
+        return (isDark() ? 0xFF141416L : 0xFFE6E8EBL) << 32;
     }
 
     /**
      * Highlight shimmer skeleton color (slightly lighter dark gray in night mode).
      */
     public static long shimmerHighlight() {
-        return (isDark() ? 0xFF323238L : 0xFFF7F8F9L) << 32;
+        return (isDark() ? 0xFF242428L : 0xFFF7F8F9L) << 32;
     }
 
     /**
@@ -132,18 +132,18 @@ public final class FacerDarkMode {
             int max = Math.max(r, Math.max(g, b));
             int min = Math.min(r, Math.min(g, b));
             if (max - min <= 20 && min >= 230) {
-                colors[i] = (a << 24) | 0x121212;
+                colors[i] = (a << 24) | 0x000000;
             }
         }
     }
 
     /**
-     * Replaces `null` chrome color on CustomToolbarView with dark surface in night
+     * Replaces `null` chrome color on CustomToolbarView with pitch black in night
      * mode so title and icons turn white.
      */
     public static Integer toolbarChromeColor(Integer color) {
         if (color == null && isDark()) {
-            return 0xFF1C1C1E;
+            return 0xFF000000;
         }
         return color;
     }
@@ -186,7 +186,7 @@ public final class FacerDarkMode {
         int max = Math.max(r, Math.max(g, b));
         int min = Math.min(r, Math.min(g, b));
         if (max - min <= 20 && min >= 226) {
-            return (a << 24) | 0x121212;
+            return (a << 24) | 0x000000;
         }
         return color;
     }
