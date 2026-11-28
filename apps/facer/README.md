@@ -11,16 +11,18 @@ Every patch is on by default. Morphe Manager groups them by category. `Premium u
 | Category | Patch | Target | What it does |
 |---|---|---|---|
 | Feature | GmsCore support | Phone | Makes "Sign in with Google" work through [microG RE](https://github.com/MorpheApp/microg-RE) (GmsCore) instead of Google Play services, while keeping Wear OS watch sync on Google Play services. Needs microG RE installed and signed in to a Google account. |
-| Layout | Hide category header emoji | Phone | Removes emoji and icons from Home category headers. |
-| Layout | Hide hero carousel | Phone | Removes the hero banner carousel at the top of Home. |
+| Feature | Stop Featured Looks autoplay | Phone | Pauses Featured Looks video cards on Home at the 1-second frame instead of autoplaying. |
+| Feature | Stop video autoplay | Phone | Pauses Looks feed and legacy promo videos at the 1-second frame while keeping Looks Detail playback active. |
+| Home | Hide category header emoji | Phone | Removes emoji and icons from Home category headers. |
+| Home | Hide hero carousel | Phone | Removes the hero banner carousel at the top of Home. |
+| Home | Hide storefront pill icons | Phone | Removes icons from Home storefront filter pills. |
+| Home | Hide welcome card | Phone | Removes the "Welcome to Facer" promo card on Home. |
 | Layout | Hide Looks like tip | Phone | Removes the "See a Look you like?" onboarding banner from the Looks tab. |
-| Layout | Hide storefront pill icons | Phone | Removes icons from Home storefront filter pills. |
-| Layout | Hide welcome card | Phone | Removes the "Welcome to Facer" promo card on Home. |
-| Premium | Premium unlock | Phone, Watch | Unlocks Facer Premium on your phone and watch, removes ads, and hides premium upsell prompts. |
-| Privacy | Disable analytics | Phone, Watch | Turns off Firebase Analytics, Crashlytics, Performance and Sessions, plus AppsFlyer. |
+| Premium | Premium unlock | Phone | Unlocks Facer Premium, Facer Plus, and removes ads. |
+| Privacy | Disable analytics | Phone | Turns off Firebase Analytics, Crashlytics, Performance and Sessions, plus AppsFlyer. |
 | Theme | Dark mode | Phone | Follows the system dark theme across XML and Compose screens, including shimmers, headers, toolbars, Explore, Collection Detail, Watchbox, Settings, and Onboarding. |
-| Video | Stop Featured Looks autoplay | Phone | Pauses Featured Looks video cards on Home at the 1-second frame instead of autoplaying. |
-| Video | Stop video autoplay | Phone | Pauses Looks feed and legacy promo videos at the 1-second frame while keeping Looks Detail playback active. |
+| Wear OS | Disable analytics (Wear OS) | Watch | Turns off Firebase Analytics, Crashlytics, Performance and Sessions, plus AppsFlyer on the Wear OS companion app. |
+| Wear OS | Premium unlock (Wear OS) | Watch | Unlocks Facer Premium and Facer Plus on the Wear OS companion app. |
 
 ## Wear OS companion note
 
@@ -50,7 +52,7 @@ With [morphe-desktop](https://github.com/MorpheApp/morphe-cli/releases) (needs J
 
 ```bash
 java -jar morphe-desktop-2.2.0-all.jar patch -p patches/build/libs/patches-<version>.mpp --keystore ~/.morphe/morphe-manager.keystore -o facer-patched.apk <Facer phone APKM>
-java -jar morphe-desktop-2.2.0-all.jar patch -p patches/build/libs/patches-<version>.mpp --exclusive -e "Premium unlock" -e "Disable analytics" --keystore ~/.morphe/morphe-manager.keystore -o facer-watch-patched.apk <Facer watch APKM>
+java -jar morphe-desktop-2.2.0-all.jar patch -p patches/build/libs/patches-<version>.mpp --exclusive -e "Premium unlock (Wear OS)" -e "Disable analytics (Wear OS)" --keystore ~/.morphe/morphe-manager.keystore -o facer-watch-patched.apk <Facer watch APKM>
 ```
 
 ## Getting the APK

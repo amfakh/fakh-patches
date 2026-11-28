@@ -19,7 +19,11 @@ object Constants {
         appIconColor = 0x2BADE3,
         formFactor = FormFactor.MOBILE,
         targets = listOf(
-            AppTarget(version = "7.0.82_11172253_mobile_receiver.phone", versionCode = 11172253),
+            AppTarget(
+                version = "7.0.82_11172253_mobile_receiver.phone",
+                versionCode = 11172253,
+                description = "Phone",
+            ),
         ),
     )
 
@@ -31,7 +35,11 @@ object Constants {
         appIconColor = 0x2BADE3,
         formFactor = FormFactor.WEARABLE,
         targets = listOf(
-            AppTarget(version = "7.0.82_11172254_wear_receiver.watch", versionCode = 11172254),
+            AppTarget(
+                version = "7.0.82_11172254_wear_receiver.watch",
+                versionCode = 11172254,
+                description = "Wear OS",
+            ),
         ),
     )
 }

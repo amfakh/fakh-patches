@@ -75,91 +75,102 @@ val premiumUnlockPatch = patch(
     default = true,
 ) {
     compatibleWith(COMPATIBILITY_FACER_PHONE)
-    compatibleWith(COMPATIBILITY_FACER_WEAR)
     category("Premium")
     dependsOn(adProvidersManifestPatch)
 
     execute {
-        val watchUserMatch = watchUserToStringFingerprint.methodOrNull
-        if (watchUserMatch != null) {
-            val watchUserMutable = mutableClassDefBy(watchUserToStringFingerprint.classDef)
-            val watchUserInit = watchUserMutable.methods.singleOrNull {
-                it.name == "<init>" &&
-                    it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;", "Z", "Z")
-            } ?: throw PatchException("Watch User constructor not found")
-            watchUserInit.addInstructions(
-                0,
-                """
-                    const/4 p3, 0x1
-                    const/4 p4, 0x1
-                """,
-            )
+        val loggedInClass = loggedInStateToStringFingerprint.classDef
+        val domainUserStateType = loggedInClass.superclass
+            ?: throw PatchException("DomainUserState superclass not found on ${loggedInClass.type}")
 
-            val loggedInWatchMutable = mutableClassDefBy(loggedInStateToStringFingerprint.classDef)
-            val loggedInWatchInit = loggedInWatchMutable.methods.singleOrNull {
-                it.name == "<init>" &&
-                    it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;", "Z", "Z")
-            } ?: throw PatchException("Watch DomainUserState.LoggedIn constructor not found")
-            loggedInWatchInit.addInstructions(
-                0,
-                """
-                    const/4 p3, 0x1
-                    const/4 p4, 0x1
-                """,
-            )
-        } else {
-            val loggedInClass = loggedInStateToStringFingerprint.classDef
-            val domainUserStateType = loggedInClass.superclass
-                ?: throw PatchException("DomainUserState superclass not found on ${loggedInClass.type}")
-
-            var baseFlags = 0
-            classDefForEach { classDef ->
-                if (classDef.type != domainUserStateType) return@classDefForEach
-                mutableClassDefBy(classDef).methods
-                    .filter { it.parameters.isEmpty() && it.returnType == "Z" && it.implementation != null }
-                    .forEach {
-                        it.returnTrue()
-                        baseFlags++
-                    }
-            }
-            if (baseFlags != 2) throw PatchException("Expected 2 DomainUserState boolean getters, found $baseFlags")
-
-            val loggedInMutable = mutableClassDefBy(loggedInClass)
-            val loggedInInit = loggedInMutable.methods.singleOrNull {
-                it.name == "<init>" &&
-                    it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Z", "Ljava/lang/String;", "Z")
-            } ?: throw PatchException("DomainUserState.LoggedIn constructor not found")
-            loggedInInit.addInstructions(
-                0,
-                """
-                    const/4 p2, 0x1
-                    const/4 p4, 0x1
-                """,
-            )
-            val loggedInPlusGetter = loggedInMutable.methods.singleOrNull {
-                it.parameters.isEmpty() && it.returnType == "Z" && it.implementation != null
-            } ?: throw PatchException("DomainUserState.LoggedIn isUserPlus override not found")
-            loggedInPlusGetter.returnTrue()
-
-            val loggedOutMutable = mutableClassDefBy(loggedOutStateToStringFingerprint.classDef)
-            val loggedOutInit = loggedOutMutable.methods.singleOrNull {
-                it.name == "<init>" && it.parameterTypes.map(CharSequence::toString) == listOf("Z")
-            } ?: throw PatchException("DomainUserState.LoggedOut constructor not found")
-            loggedOutInit.addInstructions(0, "const/4 p1, 0x1")
-            val loggedOutPlusGetter = loggedOutMutable.methods.singleOrNull {
-                it.parameters.isEmpty() && it.returnType == "Z" && it.implementation != null
-            } ?: throw PatchException("DomainUserState.LoggedOut isUserPlus override not found")
-            loggedOutPlusGetter.returnTrue()
-
-            val inventoryClass = mutableClassDefBy(userInventoryInitFingerprint.classDef)
-            val isOwnedMethod = inventoryClass.methods.singleOrNull {
-                it.returnType == "Z" &&
-                    it.parameters.size == 2 &&
-                    it.parameterTypes[1].toString() == "Landroid/content/Context;" &&
-                    it.implementation != null
-            } ?: throw PatchException("UserInventoryStatus ownership check method not found")
-            isOwnedMethod.returnTrue()
+        var baseFlags = 0
+        classDefForEach { classDef ->
+            if (classDef.type != domainUserStateType) return@classDefForEach
+            mutableClassDefBy(classDef).methods
+                .filter { it.parameters.isEmpty() && it.returnType == "Z" && it.implementation != null }
+                .forEach {
+                    it.returnTrue()
+                    baseFlags++
+                }
         }
+        if (baseFlags != 2) throw PatchException("Expected 2 DomainUserState boolean getters, found $baseFlags")
+
+        val loggedInMutable = mutableClassDefBy(loggedInClass)
+        val loggedInInit = loggedInMutable.methods.singleOrNull {
+            it.name == "<init>" &&
+                it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Z", "Ljava/lang/String;", "Z")
+        } ?: throw PatchException("DomainUserState.LoggedIn constructor not found")
+        loggedInInit.addInstructions(
+            0,
+            """
+                const/4 p2, 0x1
+                const/4 p4, 0x1
+            """,
+        )
+        val loggedInPlusGetter = loggedInMutable.methods.singleOrNull {
+            it.parameters.isEmpty() && it.returnType == "Z" && it.implementation != null
+        } ?: throw PatchException("DomainUserState.LoggedIn isUserPlus override not found")
+        loggedInPlusGetter.returnTrue()
+
+        val loggedOutMutable = mutableClassDefBy(loggedOutStateToStringFingerprint.classDef)
+        val loggedOutInit = loggedOutMutable.methods.singleOrNull {
+            it.name == "<init>" && it.parameterTypes.map(CharSequence::toString) == listOf("Z")
+        } ?: throw PatchException("DomainUserState.LoggedOut constructor not found")
+        loggedOutInit.addInstructions(0, "const/4 p1, 0x1")
+        val loggedOutPlusGetter = loggedOutMutable.methods.singleOrNull {
+            it.parameters.isEmpty() && it.returnType == "Z" && it.implementation != null
+        } ?: throw PatchException("DomainUserState.LoggedOut isUserPlus override not found")
+        loggedOutPlusGetter.returnTrue()
+
+        val inventoryClass = mutableClassDefBy(userInventoryInitFingerprint.classDef)
+        val isOwnedMethod = inventoryClass.methods.singleOrNull {
+            it.returnType == "Z" &&
+                it.parameters.size == 2 &&
+                it.parameterTypes[1].toString() == "Landroid/content/Context;" &&
+                it.implementation != null
+        } ?: throw PatchException("UserInventoryStatus ownership check method not found")
+        isOwnedMethod.returnTrue()
+
+        legacyAllAccessFingerprint.method.returnTrue()
+    }
+}
+
+@Suppress("unused")
+val premiumUnlockWearPatch = patch(
+    name = "Premium unlock (Wear OS)",
+    description = "Unlocks Facer Premium and Facer Plus on the Wear OS companion app.",
+    default = true,
+) {
+    compatibleWith(COMPATIBILITY_FACER_WEAR)
+    category("Wear OS")
+    dependsOn(adProvidersManifestPatch)
+
+    execute {
+        val watchUserMutable = mutableClassDefBy(watchUserToStringFingerprint.classDef)
+        val watchUserInit = watchUserMutable.methods.singleOrNull {
+            it.name == "<init>" &&
+                it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;", "Z", "Z")
+        } ?: throw PatchException("Watch User constructor not found")
+        watchUserInit.addInstructions(
+            0,
+            """
+                const/4 p3, 0x1
+                const/4 p4, 0x1
+            """,
+        )
+
+        val loggedInWatchMutable = mutableClassDefBy(loggedInStateToStringFingerprint.classDef)
+        val loggedInWatchInit = loggedInWatchMutable.methods.singleOrNull {
+            it.name == "<init>" &&
+                it.parameterTypes.map(CharSequence::toString) == listOf("Ljava/lang/String;", "Ljava/lang/String;", "Z", "Z")
+        } ?: throw PatchException("Watch DomainUserState.LoggedIn constructor not found")
+        loggedInWatchInit.addInstructions(
+            0,
+            """
+                const/4 p3, 0x1
+                const/4 p4, 0x1
+            """,
+        )
 
         legacyAllAccessFingerprint.method.returnTrue()
     }
