@@ -1,3 +1,9 @@
+## [2.18.1](https://github.com/amfakh/fakh-patches/compare/v2.18.0...v2.18.1) (2026-11-28)
+
+### Bug Fixes
+
+* **Facer:** list the phone and Wear OS apps as separate entries ([e5763dc](https://github.com/amfakh/fakh-patches/commit/e5763dc2c0561b2aef797c9eb1253bd76b57f1c3))
+
 ## [2.18.0](https://github.com/amfakh/fakh-patches/compare/v2.17.1...v2.18.0) (2026-11-28)
 
 ### New Features

@@ -1,8 +1,8 @@
 {
-  "created_at": "2026-11-28T03:14:05",
-  "description": "## [2.18.0](https://github.com/amfakh/fakh-patches/compare/v2.17.1...v2.18.0) (2026-11-28)\n\n### New Features\n\n* **Facer:** add support for `7.0.82` with Premium unlock, Dark mode, Stop video autoplay, Stop Featured Looks autoplay, Hide hero carousel, Hide welcome card, Hide storefront pill icons, Hide category header emoji, Hide Looks like tip, Disable analytics and GmsCore support ([3e071cf](https://github.com/amfakh/fakh-patches/commit/3e071cfef3b0207fc7b761356bf5bee33a9c104c))\n* **Warung Life Simulator:** add Disable analytics and drop support for `1.2` ([6163c74](https://github.com/amfakh/fakh-patches/commit/6163c7450bcbe8d5668069f2e529f616175f12d5))\n\n### Bug Fixes\n\n* **GitHub:** space the download count chip from the file size chip ([8befd54](https://github.com/amfakh/fakh-patches/commit/8befd544201ef2b94c70a62e94c09fa6335655b7))\n* GitHub, LinkedIn, Smart Life, Tuya Smart, BARDI Smart Home and SYNC by Krisbow narrow the floating glass bar with fewer tabs ([8befd54](https://github.com/amfakh/fakh-patches/commit/8befd544201ef2b94c70a62e94c09fa6335655b7))",
-  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v2.18.0/patches-2.18.0.mpp",
+  "created_at": "2026-11-28T03:23:05",
+  "description": "## [2.18.1](https://github.com/amfakh/fakh-patches/compare/v2.18.0...v2.18.1) (2026-11-28)\n\n### Bug Fixes\n\n* **Facer:** list the phone and Wear OS apps as separate entries ([e5763dc](https://github.com/amfakh/fakh-patches/commit/e5763dc2c0561b2aef797c9eb1253bd76b57f1c3))",
+  "download_url": "https://github.com/amfakh/fakh-patches/releases/download/v2.18.1/patches-2.18.1.mpp",
   "signature_download_url": "",
-  "version": "2.18.0",
+  "version": "2.18.1",
   "public_key": "nc1YwEs3krD1RUOqS0yPCgPBbEghEwaSuL+204GzCV4="
 }
